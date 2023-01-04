@@ -20,7 +20,7 @@ function Header() {
         <div className='flex items-center gap-6'>
 
           <a 
-            className='p-6 bg-violet-500 hover:bg-violet-600 rounded-full font-semibold tracking-wide'
+            className='p-6 bg-violet-500 hover:bg-violet-600 rounded-full font-bold tracking-wide'
             href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
             target={"_blank"}
           >
