@@ -1,13 +1,37 @@
-import React from 'react'
+import React,{useEffect,useState,useRef} from 'react'
 
 import HeaderImagesBg from './Components/HeaderImagesBg'
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+import * as THREE from 'three'
+import BIRDS from 'vanta/src/vanta.birds'
+import WAVES from 'vanta/src/vanta.waves'
 function Header() {
+  const [vantaEffect, setVantaEffect] = useState(0)
+  const vantaRef = useRef(null)
+  useEffect(() => {
+    if (!vantaEffect) {
+       setVantaEffect(WAVES({
+        el: vantaRef.current,
+        THREE:THREE,
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        scaleMobile: 1.00,
+        color: 0x122a
+     }))        
+     }
+     return () => {
+       if (vantaEffect) vantaEffect.destroy()
+     }
+   }, [vantaEffect])
   return (
     <div className='flex flex-row'>
 
-      <div className='w-1/2 text-white relative px-[10%] py-[10%]'>
+      <div className='w-1/2 text-white relative px-[10%] py-[10%]' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}

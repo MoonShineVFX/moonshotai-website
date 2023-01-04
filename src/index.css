@@ -34,7 +34,7 @@ body{
 #headerBg{
   -webkit-animation: linear infinite;
   -webkit-animation-name: run;
-  -webkit-animation-duration: 50s;
+  -webkit-animation-duration: 60s;
   transform: translateX(-50%)
 }
 @keyframes run {
