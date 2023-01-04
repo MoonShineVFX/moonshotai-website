@@ -29,9 +29,9 @@ function Header() {
      }
    }, [vantaEffect])
   return (
-    <div className='flex flex-row'>
+    <div className='flex flex-col md:flex-row'>
 
-      <div className='w-1/2 text-white relative px-[10%] py-[10%] h-screen overflow-hidden' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[10%]  overflow-hidden' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -70,8 +70,8 @@ function Header() {
         
 
       </div>
-      <div className='w-1/2 h-screen overflow-hidden brightness-75'>
-        <div className='w-[1500px]' id="headerBg">
+      <div className='w-full md:w-1/2 h-[300px] md:h-screen overflow-hidden brightness-75'>
+        <div className=' w-[800px] md:w-[1500px]' id="headerBg">
           <HeaderImagesBg />
         </div>
 
