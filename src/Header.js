@@ -7,7 +7,7 @@ function Header() {
     <div className='flex flex-row'>
 
       <div className='w-1/2 text-white relative px-[10%] py-[10%]'>
-        <div className='text-5xl font-bold my-5'>MoonShot ai</div>
+        <div className='text-5xl font-black my-5'>MoonShot ai</div>
         <div className='text-base text-zinc-400 my-2'>Moonshot 是可以在 Line 群組中執行的 Ai 繪圖機器人。</div>
         <div className='my-6 leading-10'>
           <div className='flex items-center gap-2'> <FaCheckCircle /> 免安裝</div>
