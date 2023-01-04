@@ -2,7 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@layer base {
+  html {
+    /* font-family: Montserrat, sans-serif; */
+    font-family: 'Mulish', sans-serif;
+  }
+}
 body{
   background: #1A202C;
 }
