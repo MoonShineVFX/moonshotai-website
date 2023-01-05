@@ -41,8 +41,8 @@ function Header() {
             delay: 0.5,
           }}
         >
-          <div className='text-5xl font-black my-5'>MoonShot</div>
-          <div className='text-base text-zinc-400 my-2'>Moonshot 是可以在 Line 群組中執行的 Ai 繪圖機器人。</div>
+          <div className='text-5xl font-black my-5'>Moonshot</div>
+          <div className='text-base text-zinc-400 my-2'>在Line群組內實現AI繪圖</div>
           <div className='my-6 leading-10 hidden'>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 免安裝</div>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 免下載</div>
@@ -52,20 +52,23 @@ function Header() {
             <div className='flex items-center gap-2'> <FaCheckCircle /> 持續更新，未來有pro版本</div>
           </div>
           <div className='flex items-center gap-4 md:gap-6 my-12 text-xs md:text-lg'>
+            <div className='flex flex-col items-center'>
+              <div className='text-sm text-zinc-300 mb-2'>按此加入好友</div> 
+              <a 
+                className=' flex justify-center w-auto'
+                href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
+                target={"_blank"}
+              >
+                <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
+                  MoonShot Line
+                </div> 
+              </a>
+            </div>
 
-            <a 
-              className=' flex justify-center w-auto'
-              href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
-              target={"_blank"}
-            >
-              <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
-                加入 MoonShot Line
-              </div> 
-            </a>
             <div>或</div>
             <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/qr.png'} alt="" className='max-w-full' /></div>
           </div>
-          <div className='text-sm text-zinc-400 mt-12'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
+          <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
 
         </motion.div>
         
