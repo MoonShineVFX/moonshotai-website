@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from 'react'
-import { workitems,workitems2 } from './Components/ItemData'
-import { motion } from "framer-motion";
+import { workitems,workitems2,workitems3 } from './Components/ItemData'
+import { TextMode,ImageMode,EtcMode } from './Components/ModeItems';
+import { AnimatePresence,motion } from "framer-motion";
 function Section2() {
   const [data,setData] = useState(workitems)
   const [currentDataIndex , setCurrentDataIndex] = useState(0)
   const [currentItem , setCurrentItem] = useState(0)
   const [mode,setMode] = useState('text')
+  const [title,setTitle] = useState('')
   const handleClick = (id) =>{
     setCurrentDataIndex(id)
   }
@@ -20,7 +22,7 @@ function Section2() {
         setData(workitems2)
         break;
       case 2:
-        setData(workitems)
+        setData(workitems3)
         break;
       default:
         break;
@@ -30,100 +32,44 @@ function Section2() {
     {
       id:1,
       title:"以字生圖",
-      mode:'text'
+      mode:'text',
+      slogan:"你可以\n讓 Moonshot 幫你畫圖"
     },
     {
       id:2,
       title:"以圖生圖",
-      mode:'image'
+      mode:'image',
+      slogan:"也可以\n利用參考圖來延伸做畫"
     },
     {
       id:3,
       title:"其他",
-      mode:'text'
+      mode:'etc',
+      slogan:"還可以\n單純的聊聊天"
     },
   ]
-  const TextMode = ({data})=>{
-    return (
-      <ul className="space-y-4 pt-32">
-        <li className="flex justify-end">
-          <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
-            <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
-              <span className="block">{data[currentDataIndex].message}</span>
-            </div>
-          </div>
-        </li>
 
-        <li className="flex justify-start">
-          <div>
-            <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
-            <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
-              <div className='flex gap-3 overflow-y-auto pb-3'>
-                {
-                  data[currentDataIndex].images.map((item,index)=>{
-                    return(
-                      <img src={process.env.PUBLIC_URL+'/images/'+item} alt=""  className=' rounded-md w-5/12'/>
-                    )
-                  })
-                }
 
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    )
-  }
-  const ImageMode = ({data}) =>{
-    return (
-      <ul className="space-y-4 pt-10">
-        <li className="flex justify-end">
-          <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
-            <div className="relative max-w-xl px-4 py-2 text-gray-700  rounded-2xl shadow ">
-              <img src={process.env.PUBLIC_URL+'/images/'+data[currentDataIndex].image} alt=""  className=' rounded-md w-full'/>
-            </div>
-          </div>
-        </li>
-        <li className="flex justify-end">
-          <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
-            <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
-              <span className="block">{data[currentDataIndex].message}</span>
-            </div>
-          </div>
-        </li>
-
-        <li className="flex justify-start">
-          <div>
-            <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
-            <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
-              <div className='flex gap-3 overflow-y-auto pb-3'>
-                {
-                  data[currentDataIndex].images.map((item,index)=>{
-                    return(
-                      <img src={process.env.PUBLIC_URL+'/images/'+item} alt=""  className=' rounded-md w-5/12'/>
-                    )
-                  })
-                }
-
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    )
-  }
   
   useEffect(()=>{
   },[])
   return (
     <div className='my-10 w-11/12 mx-auto md:w-[460px]'>
-      <div className='text-3xl font-extrabold mb-10 text-white'>
-        你可以 <br />
-        讓 Moonshot 幫你畫圖
-      </div>
+      <AnimatePresence initial={false}> 
+        <motion.div 
+        initial={{ opacity: 0,y:'15' }}
+        animate={{ opacity: 1,y:0 }}
+        exit={{ opacity: 0,y:'15' }}
+        transition={{
+          ease: "easeInOut",
+          duration: .6,
+          delay: 0.5,
+        }}
+        className='text-3xl font-extrabold mb-10 text-white break-all  whitespace-pre-wrap'>
+          {menuitems[currentItem].slogan}
+        </motion.div>
+      </AnimatePresence>
+
       <div className='flex flex-col '>
         <div id="menu" className='flex justify-start gap-1  pb-1'>
           {
@@ -143,11 +89,20 @@ function Section2() {
             <div>
               <div className="w-full">
                 <div className="relative w-full p-3 overflow-y-auto min-h-[30rem]">
-                  {data && mode === 'image' ? 
-                    <ImageMode data={data}/>
-                  :
-                    <TextMode data={data}/>
+                 
+                  {( ()=>{
+                    switch (mode) {
+                      case 'image':
+                        return <ImageMode data={data} currentDataIndex={currentDataIndex}/>;
+                      case 'text':
+                        return <TextMode data={data} currentDataIndex={currentDataIndex}/>;
+                      case 'etc':
+                        return <EtcMode data={data} currentDataIndex={currentDataIndex}/>;
+                      default: return null;
+                    }
                   }
+
+                  )()}
 
                 </div>
                 <div className="grid  grid-cols-4 justify-center w-full p-3 border-t border-gray-600 gap-2"> 

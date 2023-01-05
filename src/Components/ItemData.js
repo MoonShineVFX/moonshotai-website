@@ -143,3 +143,40 @@ export const workitems2 = [
     ]
   }
 ]
+
+export const workitems3 = [
+  {
+    id:1,
+    title:"指定比例(直)", 
+    message:"幫畫概念 白馬王子 直" ,
+    image:'m02.png',
+    images:[
+      "v/p01.png",
+      "v/p02.png",
+      "v/p03.png",
+    ]
+  },
+  {
+    id:2,
+    title:"指定比例(橫)", 
+    message:"幫畫概念 白馬王子 橫" ,
+    image:'m02.png',
+    images:[
+      "h/p01.png",
+      "h/p02.png",
+      "h/p03.png",
+    ]
+  },
+  {
+    id:3,
+    title:"Q&A", 
+    message:"想問機器人 如何做出好吃的威靈頓牛排" ,
+    answer:"1.準備所需材料：威靈頓牛排、蒜頭、作法糖、鹽巴、胡椒粉，醬汁(如BBQ或芥末膏)。2.將威靈頓牛排放入深盤中，加入少許鹽巴和胡椒粉，拌勻。3.在鍋中加入油，加熱到7成熱時，放入蒜頭，將之炸至金黃色，取出備用。4.將威靈頓牛排放入鍋中，煎6分鐘，然後將牛排翻面，繼續煎約6分鐘。5.在煎完牛排後，加入熱點的蒜頭、鹽巴、胡椒粉和作法糖，並輕輕攪拌牛排，讓醬汁浸透，即可將威靈頓牛排完成！"
+  },
+  {
+    id:2,
+    title:"翻譯", 
+    message:"翻譯 如何做出好吃的威靈頓牛排" ,
+    answer:"How to make delicious Wellington steak",
+  }
+]

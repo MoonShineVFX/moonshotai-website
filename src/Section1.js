@@ -9,7 +9,7 @@ function Section1() {
             <div><img src={process.env.PUBLIC_URL+'/images/step1.png'} alt="" className='saturate-50' /></div>
             <div className='text-sm text-blue-600 font-bold'>STEP 01</div>
             <div className='text-2xl font-bold  '>掃描QRcode</div> 
-            <div className='text-base text-zinc-300 text-center'>點選超連結或掃描 QRCdoe 都可以將 Moonshot 加入好友</div> 
+            <div className='text-base text-zinc-300 text-center'>點連結或掃描 QRCdoe 加入 Moonshot。</div> 
           </div>
           <div className='hidden md:block'> <FaArrowRight size={30} /> </div>
           <div className='md:hidden my-6'> <FaArrowDown size={30} /> </div>
@@ -17,7 +17,7 @@ function Section1() {
             <div><img src={process.env.PUBLIC_URL+'/images/step2.png'} alt="" className='saturate-50' /></div>
             <div className='text-sm text-purple-600 font-bold'>STEP 02</div>
             <div className='text-2xl font-bold '>邀請至群組 </div> 
-            <div className='text-base text-zinc-300 text-center'>將 Moonshot 邀請到拰的你與好友群組</div> 
+            <div className='text-base text-zinc-300 text-center'>將 Moonshot 邀請到你與好友的群組。</div> 
           </div>
           <div className='hidden md:block'> <FaArrowRight size={30} /> </div>
           <div className='md:hidden my-6'> <FaArrowDown size={30} /> </div>
@@ -25,7 +25,7 @@ function Section1() {
             <div><img src={process.env.PUBLIC_URL+'/images/step3.png'} alt="" className='saturate-50' /></div>
             <div className='text-sm text-orange-600 font-bold'>STEP 03</div>
             <div className='text-2xl font-bold '>開始使用 </div> 
-            <div className='text-base text-zinc-300 text-center'>可輸入/?出現使用說明，就可以立即使用</div> 
+            <div className='text-base text-zinc-300 text-center'>輸入/?使用說明。</div> 
           </div>
         </div>
     </div>
