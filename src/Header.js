@@ -5,7 +5,21 @@ import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import * as THREE from 'three'
 import WAVES from 'vanta/src/vanta.waves'
+
+import {headerImagesItem} from './Components/ItemData'
+import {isMobile} from 'react-device-detect';
+
 function Header() {
+  const [imgData , setImgData] = useState(headerImagesItem)
+  const half = Math.ceil(headerImagesItem.length / 2);    
+  const firstHalf = headerImagesItem.slice(0, half)
+  
+  useEffect(()=>{
+    if(isMobile){
+      setImgData(firstHalf)
+    }
+    console.log(imgData)
+  },[])
   const [vantaEffect, setVantaEffect] = useState(0)
   const vantaRef = useRef(null)
   useEffect(() => {
@@ -90,7 +104,7 @@ function Header() {
       </div>
       <div className='w-full md:w-1/2 h-[300px] md:h-screen overflow-hidden brightness-75'>
         <div className=' w-[800px] md:w-[1500px]' id="headerBg">
-          <HeaderImagesBg />
+          <HeaderImagesBg  data={imgData}/>
         </div>
 
       </div>

@@ -18,7 +18,7 @@ export const TextMode = ({data,currentDataIndex})=>{
                   { 
                     data[currentDataIndex].images.map((item,index)=>{
                       return(
-                        <img src={process.env.PUBLIC_URL+'/images/'+item} alt=""  className=' rounded-md w-5/12'/>
+                        <img src={process.env.PUBLIC_URL+'/images/'+item} key={'t'+index} alt=""  className=' rounded-md w-5/12'/>
                       )
                     })
                   }
@@ -60,7 +60,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
               {
                 data[currentDataIndex].images.map((item,index)=>{
                   return(
-                    <img src={process.env.PUBLIC_URL+'/images/'+item} alt=""  className=' rounded-md w-5/12'/>
+                    <img src={process.env.PUBLIC_URL+'/images/'+item} key={'i'+index} alt=""  className=' rounded-md w-5/12'/>
                   )
                 })
               }
@@ -93,7 +93,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
                   { 
                     data[currentDataIndex].images.map((item,index)=>{
                       return(
-                        <img src={process.env.PUBLIC_URL+'/images/'+item} alt=""  className='w-5/12 bg-black rounded-md aspect-[1/1] object-contain  '/>
+                        <img src={process.env.PUBLIC_URL+'/images/'+item} key={'e'+index} alt=""  className='w-5/12 bg-black rounded-md aspect-[1/1] object-contain  '/>
                       )
                     })
                   }
