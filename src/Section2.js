@@ -132,7 +132,7 @@ function Section2() {
                 <div
                   key={'m'+index} 
                   onClick={()=>{handleClickMenu(item.mode,index)}}
-                  className={' hover:bg-[#324567]  text-white w-1/3 rounded-t-2xl text-center p-2' + (currentItem === index ? ' bg-[#324567]'  : ' bg-[#273145]' )}
+                  className={' hover:bg-[#324567]  text-white w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentItem === index ? ' bg-[#324567]'  : ' bg-[#273145]' )}
                 >{item.title}</div>
               )
             })
@@ -156,7 +156,7 @@ function Section2() {
                       return(
                         <div 
                           onClick={()=>{handleClick(index)}}
-                          className={'bg-[#B5DF0F] text-zinc-600  text-center p-1  rounded-3xl ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
+                          className={'bg-[#B5DF0F] text-zinc-600  text-center p-1  rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
                       )
                     })
                   }
