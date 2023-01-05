@@ -26,7 +26,7 @@ function CallToAction() {
      }
    }, [vantaEffect])
   return (
-    <div className='w-full  text-white relative  py-[15%] ' ref={vantaRef}>
+    <div className='w-10/12 mx-auto  text-white relative  py-[15%] ' ref={vantaRef}>
       <div className='text-4xl text-center font-bold mb-24'>
           讓機器人幫你實現你的想像
       </div>
@@ -43,16 +43,18 @@ function CallToAction() {
         >
           <div className='flex items-center gap-4 md:gap-6 ext-lg '>
             <div className='flex flex-col items-center '>
-              <div className='text-sm text-zinc-300 mb-2'>按此加入好友</div> 
+              
               <a 
                 className=' flex justify-center w-auto'
                 href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
                 target={"_blank"} rel="noreferrer"
               >
                 <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
-                  MoonShot Line
+                  Moonshot Line
                 </div> 
+                
               </a>
+              <div className='text-sm text-zinc-300 mt-2'>按此加入好友</div> 
             </div>
 
             <div className='text-zinc-300'>或</div>

@@ -30,7 +30,7 @@ function Header() {
   return (
     <div className='flex flex-col md:flex-row'>
 
-      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[18%] md:px-[10%] md:py-[15%]  overflow-hidden' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative  overflow-hidden' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -40,13 +40,13 @@ function Header() {
             delay: 0.5,
           }}
         >
-          <div className='flex flex-row items-center '>
+          <div className='flex flex-row items-center mx-auto w-[350px] my-20 md:my-36 '>
             <div className='w-[100px] mr-5 '>
               <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className='min-w-[80px] rounded-full aspect-square'/>
             </div>
-            <div className='w-4/5'>
+            <div className='w-4/5 text-justify flex flex-col '>
               <div className='text-5xl font-black mb-3'>Moonshot</div>
-              <div className='text-base text-zinc-400 '>讓機器人幫你實現你的想像</div>
+              <div className=' text-white text-justify w-full tracking-[0.2rem]'>讓機器人幫你實現你的想像</div>
             </div>
           </div>
           
@@ -59,18 +59,19 @@ function Header() {
             <div className='flex items-center gap-2'> <FaCheckCircle /> 超多隱藏功能等你發現</div>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 持續更新，未來有pro版本</div>
           </div>
-          <div className='flex items-center gap-4 md:gap-6 mt-20 md:mt-36 text-xs md:text-lg'>
+          <div className='flex items-center gap-4 md:gap-6 mt-20 md:mt-36 text-xs md:text-lg hidden'>
             <div className='flex flex-col items-center'>
-              <div className='text-sm text-zinc-300 mb-2'>按此加入好友</div> 
+              
               <a 
                 className=' flex justify-center w-auto'
                 href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
                 target={"_blank"} rel="noreferrer"
               >
                 <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
-                  MoonShot Line
+                  Moonshot Line
                 </div> 
               </a>
+              <div className='text-sm text-zinc-300 mt-2'>按此加入好友</div> 
             </div>
 
             <div className='text-zinc-300'>或</div>

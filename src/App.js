@@ -14,10 +14,12 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Section1 />
       <Section2 />
-      <Footer />
+
+      
+      <Section1 />
       <CallToAction />
+      <Footer />
 
     </div>
   );
