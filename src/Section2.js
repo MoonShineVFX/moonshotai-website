@@ -88,7 +88,7 @@ function Section2() {
           <div className=" rounded-md bg-[#232F46]">
             <div>
               <div className="w-full">
-                <div className="relative w-full p-3 overflow-y-auto min-h-[30rem]">
+                <div className="relative  p-3 overflow-y-auto h-[37rem] flex items-end w-full  mb-3">
                  
                   {( ()=>{
                     switch (mode) {

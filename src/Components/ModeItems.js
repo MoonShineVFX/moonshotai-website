@@ -1,9 +1,9 @@
 export const TextMode = ({data,currentDataIndex})=>{
   return (
-    <ul className="space-y-4 pt-32">
-      <li className="flex justify-end">
+    <ul className="space-y-4 pt-32 ">
+      <li className="flex justify-end ">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
+          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -37,7 +37,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
     <ul className="space-y-4 pt-5">
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
+          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700  rounded-2xl shadow ">
             <img src={process.env.PUBLIC_URL+'/images/'+data[currentDataIndex].image} alt=""  className=' rounded-md w-full'/>
           </div>
@@ -45,7 +45,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
       </li>
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
+          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -75,10 +75,10 @@ export const ImageMode = ({data,currentDataIndex}) =>{
 
 export const EtcMode = ({data,currentDataIndex})=>{
   return (
-    <ul className="space-y-4 pt-32">
+    <ul className="space-y-4 pt-32 w-full">
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
+          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -106,13 +106,13 @@ export const EtcMode = ({data,currentDataIndex})=>{
       {
         data[currentDataIndex].answer &&
         <li className="flex justify-start">
-            <div>
-              <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
-              <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#d2dad2] rounded-2xl shadow">
-                <span className="block">{data[currentDataIndex].answer}</span>
-              </div>
+          <div>
+            <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+            <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#d2dad2] rounded-2xl shadow">
+              <span className="block">{data[currentDataIndex].answer}</span>
             </div>
-          </li>
+          </div>
+        </li>
       }
 
     </ul>
