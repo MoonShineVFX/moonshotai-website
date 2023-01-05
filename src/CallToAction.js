@@ -5,11 +5,10 @@ function CallToAction() {
 
   return (
     <div className='w-10/12 mx-auto  text-white relative  py-[10%] '>
-      <div className='text-4xl text-center font-bold mb-24'>
+      <div className='text-4xl text-center font-bold mb-20'>
           讓機器人幫你實現你的想像
       </div>
       <div className=' overflow-hidden flex justify-center' >
-        
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -19,8 +18,9 @@ function CallToAction() {
             delay: 0.5,
           }}
         >
-          <div className='flex items-center gap-4 md:gap-6 ext-lg '>
-            <div className='flex flex-col items-center '>
+          <div className='flex items-center gap-4 md:gap-8 ext-lg flex-col justify-center'>
+            <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_b.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
+            <div className='flex flex-col items-center justify-center '>
               
               <a 
                 className=' flex justify-center w-auto'
@@ -35,8 +35,7 @@ function CallToAction() {
               <div className='text-sm text-zinc-300 mt-2'>按此加入好友</div> 
             </div>
 
-            <div className='text-zinc-300'>或</div>
-            <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_b.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
+           
           </div>
 
         </motion.div>
