@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 function CallToAction() {
 
   return (
-    <div className='w-10/12 mx-auto  text-white relative  py-[15%] '>
+    <div className='w-10/12 mx-auto  text-white relative  py-[10%] '>
       <div className='text-4xl text-center font-bold mb-24'>
           讓機器人幫你實現你的想像
       </div>
@@ -27,7 +27,7 @@ function CallToAction() {
                 href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
                 target={"_blank"} rel="noreferrer"
               >
-                <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
+                <div className='p-3 md:p-4 bg-[#B5DF0F] text-base hover:bg-[#8aa423] text-zinc-700 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
                   Moonshot Line
                 </div> 
                 
