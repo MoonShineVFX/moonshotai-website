@@ -119,7 +119,7 @@ function Section2() {
   useEffect(()=>{
   },[])
   return (
-    <div className='my-10 w-11/12 mx-auto md:w-1/2'>
+    <div className='my-10 w-11/12 mx-auto md:w-[460px]'>
       <div className='text-3xl font-extrabold mb-10 text-white'>
         你可以 <br />
         讓 Moonshot 幫你畫圖
