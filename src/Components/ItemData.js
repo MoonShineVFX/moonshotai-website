@@ -167,7 +167,7 @@ export const workitems2 = [
 export const workitems3 = [
   {
     id:1,
-    title:"指定比例(直)", 
+    title:"指定直圖", 
     message:"幫畫概念 白馬王子 直" ,
     image:'m02.png',
     images:[
@@ -178,7 +178,7 @@ export const workitems3 = [
   },
   {
     id:2,
-    title:"指定比例(橫)", 
+    title:"指定橫圖", 
     message:"幫畫概念 美麗的雪景 橫" ,
     image:'m02.png',
     images:[
