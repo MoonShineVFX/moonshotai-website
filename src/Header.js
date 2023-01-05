@@ -4,7 +4,6 @@ import HeaderImagesBg from './Components/HeaderImagesBg'
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import * as THREE from 'three'
-import BIRDS from 'vanta/src/vanta.birds'
 import WAVES from 'vanta/src/vanta.waves'
 function Header() {
   const [vantaEffect, setVantaEffect] = useState(0)
@@ -57,7 +56,7 @@ function Header() {
               <a 
                 className=' flex justify-center w-auto'
                 href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
-                target={"_blank"}
+                target={"_blank"} rel="noreferrer"
               >
                 <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
                   MoonShot Line

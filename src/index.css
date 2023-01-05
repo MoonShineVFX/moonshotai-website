@@ -11,6 +11,26 @@
 body{
   background: #161718;
 }
+/* Scroll Bar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background-color: #3c3c3c;
+  border-radius: 5px;
+} 
+::-webkit-scrollbar-thumb {
+  background-color: #666;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-button {
+  background-color: #555;
+  height: 0;
+}
+::-webkit-scrollbar-corner {
+  background-color: #555;
+}
 
 .my-masonry-grid {
   display: -webkit-box; /* Not needed if autoprefixing */

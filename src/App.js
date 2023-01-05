@@ -3,6 +3,7 @@ import React,{useEffect} from 'react'
 import Header from "./Header";
 import Footer from "./Footer";
 import Section1 from "./Section1";
+import Section2 from './Section2';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 function App() {
@@ -13,7 +14,7 @@ function App() {
     <div className="App">
       <Header />
       <Section1 />
-      <div>2</div>
+      <Section2 />
       <Footer />
 
     </div>
