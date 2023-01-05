@@ -25,7 +25,7 @@ function Section1() {
             <div><img src={process.env.PUBLIC_URL+'/images/step3.png'} alt="" className='saturate-50' /></div>
             <div className='text-sm text-orange-600 font-bold'>STEP 03</div>
             <div className='text-2xl font-bold '>開始使用 </div> 
-            <div className='text-base text-zinc-300 text-center'>輸入/?使用說明。</div> 
+            <div className='text-base text-zinc-300 text-center'>輸入 / ? 使用說明。</div> 
           </div>
         </div>
     </div>
