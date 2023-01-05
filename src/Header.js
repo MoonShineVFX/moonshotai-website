@@ -51,7 +51,7 @@ function Header() {
             <div className='flex items-center gap-2'> <FaCheckCircle /> 超多隱藏功能等你發現</div>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 持續更新，未來有pro版本</div>
           </div>
-          <div className='flex items-center gap-4 md:gap-6 my-12 text-xs md:text-lg justify-center'>
+          <div className='flex items-center gap-4 md:gap-6 my-12 text-xs md:text-lg'>
 
             <a 
               className=' flex justify-center w-auto'
