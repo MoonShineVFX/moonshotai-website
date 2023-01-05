@@ -13,6 +13,7 @@
     "react-icons": "^4.7.1",
     "react-masonry-css": "^1.0.16",
     "react-scripts": "5.0.1",
+    "sass": "^1.57.1",
     "three": "^0.134.0",
     "vanta": "^0.5.24",
     "web-vitals": "^2.1.4"
