@@ -41,8 +41,8 @@ function Header() {
           }}
         >
           <div className='flex flex-row items-center mx-auto w-[350px] my-20 md:my-36 '>
-            <div className='w-[100px] mr-5 '>
-              <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className='min-w-[80px] rounded-full aspect-square'/>
+            <div className='w-[100px] mr-5 hover:translate-y-[1px] cursor-pointer '>
+              <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='min-w-[80px] rounded-full aspect-square'/>
             </div>
             <div className='w-4/5 text-justify flex flex-col '>
               <div className='text-5xl font-black mb-3'>Moonshot</div>
