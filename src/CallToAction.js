@@ -6,7 +6,7 @@ function CallToAction() {
   return (
     <div className='w-10/12 mx-auto  text-white relative  py-[10%] '>
       <div className='text-4xl text-center font-bold mb-20'>
-          讓機器人幫你實現你的想像
+        讓機器人幫你畫出你的想像
       </div>
       <div className=' overflow-hidden flex justify-center' >
         <motion.div

@@ -46,7 +46,7 @@ function Header() {
             </div>
             <div className='w-4/5 text-justify flex flex-col '>
               <div className='text-5xl font-black mb-3'>Moonshot</div>
-              <div className=' text-white text-justify w-full tracking-[0.2rem]'>讓機器人幫你實現你的想像</div>
+              <div className=' text-white text-justify w-full tracking-[0.2rem]'>讓機器人幫你畫出你的想像</div>
             </div>
           </div>
           
