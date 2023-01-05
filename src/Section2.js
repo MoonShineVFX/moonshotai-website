@@ -54,7 +54,7 @@ function Section2() {
   useEffect(()=>{
   },[])
   return (
-    <div className='my-10 w-11/12 mx-auto md:w-[460px]'>
+    <div className='my-16 w-11/12 mx-auto md:w-[460px]'>
       <AnimatePresence initial={false}> 
         <motion.div 
         initial={{ opacity: 0,y:'15' }}
