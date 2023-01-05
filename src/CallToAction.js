@@ -1,32 +1,10 @@
 import React,{useEffect,useState,useRef}from 'react'
 import { motion } from "framer-motion";
-import p5 from 'p5'
-import TOPOLOGY from 'vanta/src/vanta.topology'
+
 function CallToAction() {
-  const [vantaEffect, setVantaEffect] = useState(0)
-  const vantaRef = useRef(null)
-  useEffect(() => {
-    if (!vantaEffect) {
-       setVantaEffect(TOPOLOGY({
-        el: vantaRef.current,
-        p5: p5,
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-        backgroundColor: 0x161718,
-        color: 0xd5555
-     }))        
-     }
-     return () => {
-       if (vantaEffect) vantaEffect.destroy()
-     }
-   }, [vantaEffect])
+
   return (
-    <div className='w-10/12 mx-auto  text-white relative  py-[15%] ' ref={vantaRef}>
+    <div className='w-10/12 mx-auto  text-white relative  py-[15%] '>
       <div className='text-4xl text-center font-bold mb-24'>
           讓機器人幫你實現你的想像
       </div>
