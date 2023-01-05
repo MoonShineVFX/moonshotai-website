@@ -159,7 +159,7 @@ export const workitems3 = [
   {
     id:2,
     title:"指定比例(橫)", 
-    message:"幫畫概念 白馬王子 橫" ,
+    message:"幫畫概念 美麗的雪景 橫" ,
     image:'m02.png',
     images:[
       "h/p01.png",

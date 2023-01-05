@@ -33,7 +33,7 @@ function Section2() {
       id:1,
       title:"以字生圖",
       mode:'text',
-      slogan:"你可以\n讓 Moonshot 幫你做這些"
+      slogan:"你可以\n讓 Moonshot 幫你畫圖"
     },
     {
       id:2,
@@ -45,7 +45,7 @@ function Section2() {
       id:3,
       title:"其他",
       mode:'etc',
-      slogan:"還可以\n單純的聊聊天"
+      slogan:"還可以\n做到這些"
     },
   ]
 

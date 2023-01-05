@@ -30,7 +30,7 @@ function Header() {
   return (
     <div className='flex flex-col md:flex-row'>
 
-      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[10%] md:px-[10%] md:py-[15%]  overflow-hidden' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[18%] md:px-[10%] md:py-[15%]  overflow-hidden' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -59,7 +59,7 @@ function Header() {
             <div className='flex items-center gap-2'> <FaCheckCircle /> 超多隱藏功能等你發現</div>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 持續更新，未來有pro版本</div>
           </div>
-          <div className='flex items-center gap-4 md:gap-6 my-14 text-xs md:text-lg'>
+          <div className='flex items-center gap-4 md:gap-6 mt-20 md:mt-36 text-xs md:text-lg'>
             <div className='flex flex-col items-center'>
               <div className='text-sm text-zinc-300 mb-2'>按此加入好友</div> 
               <a 
@@ -73,7 +73,7 @@ function Header() {
               </a>
             </div>
 
-            <div>或</div>
+            <div className='text-zinc-300'>或</div>
             <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_b.png'} alt="" className='max-w-full min-w-[80px]' /></div>
           </div>
           <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
