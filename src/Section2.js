@@ -48,7 +48,7 @@ function Section2() {
       <ul className="space-y-4 pt-32">
         <li className="flex justify-end">
           <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>User</div>
+            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
             <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
               <span className="block">{data[currentDataIndex].message}</span>
             </div>
@@ -80,7 +80,7 @@ function Section2() {
       <ul className="space-y-4 pt-10">
         <li className="flex justify-end">
           <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>User</div>
+            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
             <div className="relative max-w-xl px-4 py-2 text-gray-700  rounded-2xl shadow ">
               <img src={process.env.PUBLIC_URL+'/images/'+data[currentDataIndex].image} alt=""  className=' rounded-md w-full'/>
             </div>
@@ -88,7 +88,7 @@ function Section2() {
         </li>
         <li className="flex justify-end">
           <div className=' '>
-            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>User</div>
+            <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'>You</div>
             <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
               <span className="block">{data[currentDataIndex].message}</span>
             </div>
