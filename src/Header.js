@@ -66,7 +66,7 @@ function Header() {
             </div>
 
             <div>或</div>
-            <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/qr.png'} alt="" className='max-w-full' /></div>
+            <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_white.png'} alt="" className='max-w-full' /></div>
           </div>
           <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
 
