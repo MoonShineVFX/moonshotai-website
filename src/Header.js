@@ -30,7 +30,7 @@ function Header() {
   return (
     <div className='flex flex-col md:flex-row'>
 
-      <div className='w-full md:w-1/2 md:h-screen text-white relative flex items-center justify-center overflow-hidden ' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl ' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
