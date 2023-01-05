@@ -10,7 +10,7 @@ function Header() {
   const [vantaEffect, setVantaEffect] = useState(0)
   const vantaRef = useRef(null)
   useEffect(() => {
-    if (!vantaEffect) {
+    if (vantaEffect) {
        setVantaEffect(WAVES({
         el: vantaRef.current,
         THREE:THREE,
@@ -31,7 +31,7 @@ function Header() {
   return (
     <div className='flex flex-col md:flex-row'>
 
-      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[10%]  overflow-hidden' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative px-[10%] py-[10%] md:px-[10%] md:py-[10%]  overflow-hidden' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -51,16 +51,17 @@ function Header() {
             <div className='flex items-center gap-2'> <FaCheckCircle /> 超多隱藏功能等你發現</div>
             <div className='flex items-center gap-2'> <FaCheckCircle /> 持續更新，未來有pro版本</div>
           </div>
-          <div className='flex items-center gap-6 my-12 text-xs md:text-lg'>
+          <div className='flex items-center gap-4 md:gap-6 my-12 text-xs md:text-lg justify-center'>
 
             <a 
-              className='p-4 md:p-6 bg-violet-500 hover:bg-violet-600 rounded-full font-bold tracking-wide'
+              className=' flex justify-center w-auto'
               href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
               target={"_blank"}
             >
-              加入 MoonShot Line
+              <div className='p-3 md:p-4 bg-[#B5DF0F] text-sm hover:bg-[#8aa423] rounded-full font-bold tracking-wide min-w-[180px] text-center'>
+                加入 MoonShot Line
+              </div> 
             </a>
-      
             <div>或</div>
             <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/qr.png'} alt="" className='max-w-full' /></div>
           </div>
