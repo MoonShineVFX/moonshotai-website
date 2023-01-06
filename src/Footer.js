@@ -6,7 +6,7 @@ function Footer() {
 
       <div>
         {/* 版權所有© 2023 夢想動畫 Moonshine, 國家高速網路與計算中心 */}
-        info@moonshot.today
+        service@moonshine.tw
       </div>
 
     </div>
