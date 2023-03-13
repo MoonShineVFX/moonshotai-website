@@ -3,19 +3,21 @@ import Test from './Test'
 import ReadyToTake from './ReadyToTake'
 function index() {
   return (
-    <div className='text-white'> 
-      camera index
-      <div>Test</div>
-      <div className='bg-gray-500 p-10'>
+    <div className='text-white'>       
+      <div className='bg-gray-500 p-5'>
+        <div>Test upload image </div>
         <Test />
       </div>
       #Welcome page
       #camera page
       #loading
-      #result
+      #result&share
 
-      <div className=' text-xl text-center py-3'>Take a photo(wip testing)</div>
-      <ReadyToTake />
+      <div className=' text-xl text-center py-3 font-bold'>Take a photo(wip testing)</div>
+
+        <ReadyToTake />
+
+
 
     </div>
   )

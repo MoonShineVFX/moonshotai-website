@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
+import { FaSyncAlt,FaCamera } from "react-icons/fa";
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -16,12 +17,12 @@ const Control = styled.div`
   min-width: 130px;
   min-height: 130px;
   height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(51, 51, 51, 0.8);
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 50px;
+  padding: 20px;
   box-sizing: border-box;
   flex-direction: column-reverse;
   @media (max-aspect-ratio: 1/1) {
@@ -31,7 +32,7 @@ const Control = styled.div`
     height: 20%;
   }
   @media (max-width: 400px) {
-    padding: 10px;
+    padding: 5px;
   }
 `;
 
@@ -103,36 +104,84 @@ const ImagePreview = styled.div`
   }
 `;
 function ReadyToTake() {
-  const [numberOfCameras, setNumberOfCameras] = useState(0);
+  const [numberOfCameras, setNumberOfCameras] = useState(1);
   const [image, setImage] = useState(null);
   const camera = useRef(null);
+  const handleClick = ({photo})=>{
+    if (image) {
+      UploadImage(photo)
+      return
+    } else{
+      return
+    }
+  }
+  const UploadImage = (base64Data)=>{
+    const formData = new FormData();
+    formData.append('image', base64Data);
+
+    // 使用Fetch API上傳圖片
+    fetch('https://camera.moonshot.today/gen', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(responseData => {
+      console.log(responseData);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
   return (
-    <div>
-      
-      <div>
-        <Camera ref={camera} aspectRatio={9/16} numberOfCamerasCallback={setNumberOfCameras}/>
-        <Control>
-          <ImagePreview image={image} />
-          <TakePhotoButton
-            onClick={() => {
-              if (camera.current) {
-                const photo = camera.current.takePhoto();
-                console.log(photo);
-                setImage(photo);
-              }
-            }}
-          />
-          <ChangeFacingCameraButton
-            disabled={numberOfCameras <= 1}
-            onClick={() => {
-              if (camera.current) {
-                const result = camera.current.switchCamera();
-                console.log(result);
-              }
-            }}
-          />
-        </Control>
+    <div className="mx-14">
+      <Camera ref={camera} aspectRatio={9/16} numberOfCamerasCallback={setNumberOfCameras}/>
+      <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center">
+        <ImagePreview image={image} />
+        <div 
+          className="flex items-center gap-3  rounded-full bg-zinc-600 p-3 "
+          onClick={() => {
+            if (camera.current) {
+              const result = camera.current.switchCamera();
+              console.log(result);
+            }
+          }}
+           
+        > <FaSyncAlt /></div>
+        <div 
+          className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
+          onClick={() => {
+            if (camera.current) {
+              const photo = camera.current.takePhoto();
+              console.log(photo);
+              setImage(photo);
+              handleClick(photo)
+            }
+          }} 
+        > <FaCamera color="black" size={24}/>  </div>
+         
       </div>
+     
+      {/* <Control >
+        <ImagePreview image={image} />
+        <TakePhotoButton
+          onClick={() => {
+            if (camera.current) {
+              const photo = camera.current.takePhoto();
+              console.log(photo);
+              setImage(photo);
+            }
+          }}
+        />
+        <ChangeFacingCameraButton
+          disabled={numberOfCameras <= 1}
+          onClick={() => {
+            if (camera.current) {
+              const result = camera.current.switchCamera();
+              console.log(result);
+            }
+          }}
+        />
+      </Control> */}
     </div>
   )
 }
