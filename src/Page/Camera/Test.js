@@ -5,9 +5,10 @@ function Test() {
 
   const onSubmit = (data) => {
     console.log(data); // data.image 將是base64編碼的圖像數據
-    // 使用Fetch API上傳圖片
+   
     const formData = new FormData();
     formData.append('image', data.image[0]); // 將文件對象添加到FormData
+    // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
       body: formData
