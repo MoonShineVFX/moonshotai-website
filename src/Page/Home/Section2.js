@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react'
-import { workitems,workitems2,workitems3 } from './Components/ItemData'
-import { TextMode,ImageMode,EtcMode } from './Components/ModeItems';
+import { workitems,workitems2,workitems3 } from '../../Components/ItemData'
+import { TextMode,ImageMode,EtcMode } from '../../Components/ModeItems';
 import { AnimatePresence,motion } from "framer-motion";
 function Section2() {
   const [data,setData] = useState(workitems)

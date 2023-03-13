@@ -1,12 +1,12 @@
 import React,{useEffect,useState,useRef} from 'react'
 
-import HeaderImagesBg from './Components/HeaderImagesBg'
+import HeaderImagesBg from '../../Components/HeaderImagesBg'
 import { FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 import * as THREE from 'three'
 import WAVES from 'vanta/src/vanta.waves'
 
-import {headerImagesItem} from './Components/ItemData'
+import {headerImagesItem} from '../../Components/ItemData'
 import {isMobile} from 'react-device-detect';
 
 function Header() {

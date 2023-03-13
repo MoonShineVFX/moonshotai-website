@@ -1,10 +1,9 @@
 
 import React,{useEffect} from 'react'
-import Header from "./Header";
-import Footer from "./Footer";
-import Section1 from "./Section1";
-import Section2 from './Section2';
-import CallToAction from './CallToAction';
+import { BrowserRouter , Routes, Route} from 'react-router-dom';
+
+import Home from './Page/Home'
+import Camera from './Page/Camera'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 function App() {
@@ -12,16 +11,13 @@ function App() {
     AOS.init();
   }, [])
   return (
-    <div className="App">
-      <Header />
-      <Section2 />
+    <BrowserRouter>
+      <Routes> 
+        <Route path="/" element={<Home />} />
+        <Route path="/camera" element={<Camera />} />
 
-      
-      <Section1 />
-      <CallToAction />
-      <Footer />
-
-    </div>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
