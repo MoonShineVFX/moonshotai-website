@@ -9,6 +9,10 @@ function index() {
       <div className='bg-gray-500 p-10'>
         <Test />
       </div>
+      #Welcome page
+      #camera page
+      #loading
+      #result
 
       <div className=' text-xl text-center py-3'>Take a photo(wip testing)</div>
       <ReadyToTake />
