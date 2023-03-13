@@ -8,6 +8,7 @@ function Test() {
    
     const formData = new FormData();
     formData.append('image', data.image[0]); // 將文件對象添加到FormData
+    console.log(data.image[0])
     // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',

@@ -103,22 +103,31 @@ const ImagePreview = styled.div`
     height: 120px;
   }
 `;
+const ResultImagePreview = styled.div`
+  width: 300px;
+  height: 800px;
+  ${({ ResultImage }) => (ResultImage ? `background-image:  url(${ResultImage});` : '')}
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  position:absolute;
+  @media (max-width: 400px) {
+    width: 50px;
+    height: 120px;
+  }
+`;
 function ReadyToTake() {
   const [numberOfCameras, setNumberOfCameras] = useState(1);
   const [image, setImage] = useState(null);
+  const [ResultImage, setResultImage] = useState(null);
   const camera = useRef(null);
-  const handleClick = ({photo})=>{
-    if (image) {
-      UploadImage(photo)
-      return
-    } else{
-      return
-    }
-  }
-  const UploadImage = (base64Data)=>{
-    const formData = new FormData();
-    formData.append('image', base64Data);
+  const handleClick = (photo)=>{
 
+    const binaryImage = atob(photo.split(",")[1]);
+    const files =base64toFileList(photo)
+    const formData = new FormData();
+    formData.append('image', files[0]); // 將文件對象添加到FormData
+    console.log(files[0])
     // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
@@ -126,16 +135,41 @@ function ReadyToTake() {
     })
     .then(response => response.json())
     .then(responseData => {
-      console.log(responseData);
+      console.log( responseData.substring(0, responseData.length - 2).slice(6));
+      setResultImage(responseData.substring(0, responseData.length - 2).slice(6))
     })
     .catch(error => {
       console.error(error);
     });
+
   }
+  function base64toFileList(base64String) {
+    const byteCharacters = atob(base64String.split(",")[1]);
+    const byteArrays = [];
+  
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+      const slice = byteCharacters.slice(offset, offset + 512);
+  
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+  
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+  
+    const file = new File(byteArrays,  "image.jpeg", { type: 'image/jpeg' });
+  
+    return [file];
+  }
+
   return (
     <div className="mx-14">
+      {ResultImage && <div className="  absolute bottom-0 left-0 z-50 w-1/2 "><img src={ResultImage} alt="" />
+      </div>  }
       <Camera ref={camera} aspectRatio={9/16} numberOfCamerasCallback={setNumberOfCameras}/>
-      <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center">
+      <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center ">
         <ImagePreview image={image} />
         <div 
           className="flex items-center gap-3  rounded-full bg-zinc-600 p-3 "
