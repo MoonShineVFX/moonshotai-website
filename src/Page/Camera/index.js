@@ -1,22 +1,32 @@
-import React from 'react'
-import Test from './Test'
+import React,{useState} from 'react'
+import { motion, AnimatePresence } from "framer-motion";
 import ReadyToTake from './ReadyToTake'
 import FrontPage from './FrontPage'
-function index() {
+function Index() {
+  const [showNextPage, setShowNextPage] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
+  const handleButtonClick = () => {
+    setIsButtonVisible(false);
+    setTimeout(() => setShowNextPage(true), 500);
+  };
+  const handleBackButtonClick = () => {
+    setShowNextPage(false);
+    setTimeout(() => setIsButtonVisible(true), 500);
+  };
   return (
     <div className='text-white'>  
-      {/* <FrontPage />
-      <div className='bg-gray-500 p-5'>
-        <div>Test upload image </div>
-        <Test />
-      </div> */}
-      #Welcome page
-      #camera page
-      #loading
-      #result&share
+      <AnimatePresence>
+        {
+          isButtonVisible && <FrontPage handleClick={handleButtonClick} /> 
+        }
+      </AnimatePresence>
+      <AnimatePresence>
+        {showNextPage && <ReadyToTake handleBackClick={handleBackButtonClick}/>
+        }
 
-      <div className=' text-xl text-center py-3 font-bold'>Take a photo(wip testing)</div>
-      <ReadyToTake />
+      </AnimatePresence>
+
+
 
 
 
@@ -24,4 +34,4 @@ function index() {
   )
 }
 
-export default index
+export default Index

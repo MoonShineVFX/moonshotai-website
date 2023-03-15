@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
-import { FaSyncAlt,FaCamera } from "react-icons/fa";
+import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -116,13 +117,15 @@ const ResultImagePreview = styled.div`
     height: 120px;
   }
 `;
-function ReadyToTake() {
+function ReadyToTake({handleBackClick}) {
   const [numberOfCameras, setNumberOfCameras] = useState(1);
   const [image, setImage] = useState(null);
+  const [waitImage, setwaitImage] = useState(false);
   const [ResultImage, setResultImage] = useState(null);
+ 
   const camera = useRef(null);
   const handleClick = (photo)=>{
-
+    setwaitImage(true)
     const binaryImage = atob(photo.split(",")[1]);
     const files =base64toFileList(photo)
     const formData = new FormData();
@@ -163,14 +166,26 @@ function ReadyToTake() {
   
     return [file];
   }
+  const handleCloseClick = () =>{
+    setwaitImage(false)
+    setResultImage(null)
+
+  }
 
   return (
-    <div className="mx-14">
-      {ResultImage && <div className="  absolute bottom-0 left-0 z-50 w-1/2 "><img src={ResultImage} alt="" />
-      </div>  }
-      <Camera ref={camera} aspectRatio={9/16} numberOfCamerasCallback={setNumberOfCameras}/>
+    <div className="">
+      {waitImage && 
+        <div className="  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-50 w-2/3  bg-white p-3">
+          <div className="  absolute -top-5 -right-5 bg-white p-2 rounded-full" onClick={()=>handleCloseClick()}><FaTimes size={20} color="black"/></div>
+          {ResultImage ? <img src={ResultImage} alt="" /> : <div className="text-black">已拍照 等待結果..</div>}
+        </div>  
+      }
+      <div className="">
+        <Camera ref={camera} aspectRatio={9/16}  numberOfCamerasCallback={setNumberOfCameras}/>
+      </div>
+     <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
       <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center ">
-        <ImagePreview image={image} />
+        {/* <ImagePreview image={image} /> */}
         <div 
           className="flex items-center gap-3  rounded-full bg-zinc-600 p-3 "
           onClick={() => {

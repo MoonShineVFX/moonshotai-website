@@ -1,20 +1,49 @@
 import React from 'react'
-
-function FrontPage() {
+import { motion, AnimatePresence } from "framer-motion";
+import { FaArrowRight } from "react-icons/fa";
+function FrontPage({handleClick}) {
   return (
-    <div className='min-h-[60vh] relative '>
-      <div
-        className='min-h-[60vh] bg-cover bg-center bg-no-repeat brightness-75 '
-        style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/c02.jpeg'})`}}
+    <div 
+      className='min-h-[100vh] relative '
+    >
+      <motion.div
+        className='min-h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 '
+        style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/Background.png'})`}}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
       >
+      </motion.div>
+      <div class="bg-gradient-to-t from-black  absolute w-full h-[50vh] bottom-0"></div>
+      <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50'>
+        <motion.div 
+          className='text-[5rem] font-black leading-none '
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div>AI</div>   
+          <div>CAMERA</div> 
+        </motion.div>
+        <motion.div 
+          className='text-lg font-bold my-4 text-zinc-200 '
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >拿起你的相機，創建屬於自己的 AI 圖吧！</motion.div>
+        <motion.div 
+          className="text-white backdrop-blur-sm bg-white/30 border border-white/50  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10"
+          initial={{ opacity: 0, x: '-40px' }}
+          animate={{ opacity: 1, x: 0  , transition:{delay:.5, duration:.8}}}
+          exit={{ opacity: 0 }}
+          
+          onClick={handleClick}
+        >
+            Get Started <FaArrowRight />
+        </motion.div>
+
       </div>
 
-      <button 
-        type="button" 
-        className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 
-        absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          開始拍拍
-        </button>
 
     </div>
   )
