@@ -173,7 +173,7 @@ function ReadyToTake({handleBackClick}) {
   }
 
   return (
-    <div className="">
+    <div className="min-h-[100svh]">
       {waitImage && 
         <div className="  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-50 w-2/3  bg-white p-3">
           <div className="  absolute -top-5 -right-5 bg-white p-2 rounded-full" onClick={()=>handleCloseClick()}><FaTimes size={20} color="black"/></div>
