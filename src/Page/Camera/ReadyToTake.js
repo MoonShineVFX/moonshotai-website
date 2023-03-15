@@ -175,9 +175,14 @@ function ReadyToTake({handleBackClick}) {
   return (
     <div className="min-h-[100svh]">
       {waitImage && 
-        <div className="  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-50 w-2/3  bg-white p-3">
-          <div className="  absolute -top-5 -right-5 bg-white p-2 rounded-full" onClick={()=>handleCloseClick()}><FaTimes size={20} color="black"/></div>
-          {ResultImage ? <img src={ResultImage} alt="" /> : <div className="text-black">已拍照 等待結果..</div>}
+        <div className="  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-50 w-2/3 p-3 backdrop-blur-sm bg-white/30 shadow-[.7px_-.8px_0px_1px_rgba(255,255,255,0.8)] rounded-lg">
+          <div className="  absolute -top-5 -right-5 bg-white/40 p-2 rounded-full" onClick={()=>handleCloseClick()}><FaTimes size={20} color="black"/></div>
+          {ResultImage ? <img src={ResultImage} alt="" /> 
+          : 
+          <div className="flex flex-col items-center ">
+            <div className="my-2 text-black  bg-white px-2 py-1 rounded-full "> 這是你拍的照片 等待 AI 結果..</div>
+            <img src={image} alt="" />
+          </div>}
         </div>  
       }
       <div className="">
