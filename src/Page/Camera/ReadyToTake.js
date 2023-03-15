@@ -181,7 +181,7 @@ function ReadyToTake({handleBackClick}) {
         </div>  
       }
       <div className="">
-        <Camera ref={camera} aspectRatio={9/16}  numberOfCamerasCallback={setNumberOfCameras}/>
+        <Camera ref={camera} aspectRatio={9/14}  numberOfCamerasCallback={setNumberOfCameras}/>
       </div>
      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
       <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center ">
