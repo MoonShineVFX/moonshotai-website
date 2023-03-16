@@ -180,21 +180,15 @@ function ReadyToTake({handleBackClick}) {
 
   }
   const handleShare = async () => {
-    const newFile = await toBlob(imageRef.current);
-    const data = {
-      files: [
-        new File([newFile], 'image.jpg', {
-          type: newFile.type,
-        }),
-      ],
-      title: 'Image',
-      text: 'image',
-    };
-  
+    console.log(document.querySelector('.resultImage'))
+    console.log(document.querySelector('.resultImage').src)
     try {
-      await navigator.share(data);
-    } catch (err) {
-      console.error(err);
+      await navigator.share({
+        files: [document.querySelector('.resultImage').src],
+        text: '分享圖片到App',
+      });
+    } catch (error) {
+      console.error('Error sharing:', error);
     }
   };
 
@@ -210,7 +204,7 @@ function ReadyToTake({handleBackClick}) {
           
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
-              <img src={ResultImage} alt="" ref={imageRef} /> 
+              <img src={ResultImage} alt="" className="resultImage" /> 
               <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
                 <div>分享(testing)</div>
                 <div className="flex gap-1">
