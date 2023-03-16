@@ -184,14 +184,18 @@ function ReadyToTake({handleBackClick}) {
     console.log(document.querySelector('.resultImage').src)
     const imgUrl = document.querySelector('.resultImage').src
     const blob = await fetch(imgUrl).then(r=>r.blob())
+    const data = {
+      files: [
+        new File([blob], 'image.jpg', {
+          type: blob.type,
+        }),
+      ],
+      title: title,
+      text: text,
+    };
     if (navigator.share) {
       navigator
-        .share({
-          files:  new File([blob], "image.jpg", {
-            type: blob.type
-          }),
-          text: '分享圖片到App',
-        })
+        .share(data)
         .then(() => console.log("Successful share"))
         .catch((error) => {
           console.log("Error sharing", error)
