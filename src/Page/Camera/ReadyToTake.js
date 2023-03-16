@@ -131,9 +131,14 @@ function ReadyToTake({handleBackClick}) {
   const [waitImage, setwaitImage] = useState(false);
   const [ResultImage, setResultImage] = useState(null);
   const [shareMsg, setShareMsg] = useState("");
+  const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
   const handleClick = (photo)=>{
-    setwaitImage(true)
+    // setShowFlashImage(true);
+    setTimeout(() => setShowFlashImage(true), 200);
+    setTimeout(() => setShowFlashImage(false), 220); // 3秒後隱藏圖片
+    setTimeout(() => setwaitImage(true), 300);
+    
     const binaryImage = atob(photo.split(",")[1]);
     const files =base64toFileList(photo)
     const formData = new FormData();
@@ -199,12 +204,15 @@ function ReadyToTake({handleBackClick}) {
       }
     } catch (error) {
       console.error('Error sharing:', error);
-      setShareMsg('Error sharing', error)
+      setShareMsg('Error sharing:'+ error)
     }
     
 
 
 
+  };
+  const handleClickFlash = () => {
+    
   };
 
   return (
@@ -239,7 +247,20 @@ function ReadyToTake({handleBackClick}) {
           
         </motion.div>  
       }
-      <div className="">
+      <div>
+      
+      </div>
+      <div className=" relative">
+        {showFlashImage && (
+          <div className=" absolute top-0  w-full h-full  z-50 bg-white   overflow-hidden">
+            <img
+              src={process.env.PUBLIC_URL+'/images/camera_page/whiteflash4.png'}
+              alt="Flash Image"
+              className="   scale-150 overflow-hidden"
+              
+            />
+          </div>
+        )}
         <Camera ref={camera} aspectRatio={9/14}  numberOfCamerasCallback={setNumberOfCameras}/>
 
       </div>
