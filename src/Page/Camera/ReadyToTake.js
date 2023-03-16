@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
-import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft } from "react-icons/fa";
+import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FacebookShareButton,FacebookIcon,
@@ -213,15 +213,15 @@ function ReadyToTake({handleBackClick}) {
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
               <img src={ResultImage} alt="" className="resultImage" /> 
-              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
-                <div>分享(testing)</div>
-                <div className="flex gap-1">
+              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start flex-wrap">
+                <div className="flex-1"></div>
+                <div className="flex gap-1  items-center">
 
-                  <button className=" bg-slate-500" onClick={handleShare}>Share</button>
+                  <button className="w-20 bg-slate-500 p-1 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享 <FaShareAlt size={18} color="white"/></button>
 
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
-                <div>{shareMsg}</div>
+                <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
               </div>
            </div>
           : 
