@@ -3,6 +3,12 @@ import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  FacebookShareButton,FacebookIcon,
+  InstapaperShareButton,InstapaperIcon,
+  LineShareButton,LineIcon,
+  TwitterShareButton,TwitterIcon,
+} from "react-share";
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -175,18 +181,37 @@ function ReadyToTake({handleBackClick}) {
   return (
     <div className="min-h-[100svh]">
       {waitImage && 
-        <div className="  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  z-50 w-2/3 p-3 backdrop-blur-sm bg-white/30 shadow-[.7px_-.8px_0px_1px_rgba(255,255,255,0.8)] rounded-lg">
-          <div className="  absolute -top-5 -right-5 bg-white/40 p-2 rounded-full" onClick={()=>handleCloseClick()}><FaTimes size={20} color="black"/></div>
-          {ResultImage ? <img src={ResultImage} alt="" /> 
+        <motion.div 
+          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-white shadow-[.7px_-.8px_0px_1px_rgba(255,255,255,0.8)] rounded-lg"
+          initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
+          animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
+          exit={{ opacity: 0 }}
+        >
+          
+          {ResultImage ?  
+           <div className="flex flex-col items-center relative ">
+              <img src={ResultImage} alt="" /> 
+              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
+                <div>分享(testing)</div>
+                <div className="flex gap-1">
+                  <LineShareButton url={ResultImage} ><LineIcon size={40} round={true}/></LineShareButton>
+                  <FacebookShareButton url={ResultImage} ><FacebookIcon size={40} round={true}/></FacebookShareButton>
+                  <TwitterShareButton url={ResultImage} ><TwitterIcon size={40} round={true}/></TwitterShareButton>
+                  <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
+                </div>
+              </div>
+           </div>
           : 
-          <div className="flex flex-col items-center ">
-            <div className="my-2 text-black  bg-white px-2 py-1 rounded-full "> 這是你拍的照片 等待 AI 結果..</div>
+          <div className="flex flex-col items-center relative ">
+            <div className="my-2 text-black  bg-white px-2 py-1 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 text-center "> 已拍照片 等待 AI 結果..</div>
             <img src={image} alt="" />
           </div>}
-        </div>  
+          
+        </motion.div>  
       }
       <div className="">
         <Camera ref={camera} aspectRatio={9/14}  numberOfCamerasCallback={setNumberOfCameras}/>
+
       </div>
      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
       <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center ">
