@@ -10,6 +10,7 @@ import {
   TwitterShareButton,TwitterIcon,
 } from "react-share";
 import { RWebShare } from "react-web-share";
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -178,6 +179,24 @@ function ReadyToTake({handleBackClick}) {
     setResultImage(null)
 
   }
+  const handleShare = async (imageUrl) => {
+    const newFile = await toBlob(imageUrl);
+    const data = {
+      files: [
+        new File([newFile], 'image.png', {
+          type: newFile.type,
+        }),
+      ],
+      title: 'Image',
+      text: 'image',
+    };
+  
+    try {
+      await navigator.share(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="min-h-[100svh]">
@@ -195,14 +214,9 @@ function ReadyToTake({handleBackClick}) {
               <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
                 <div>分享(testing)</div>
                 <div className="flex gap-1">
-                  <RWebShare
-                    data={{
-                      url: {ResultImage},
-                    }}
-                    onClick={() => console.info("share successful!")}
-                  >
-                    <button>Share</button>
-                  </RWebShare>
+
+                    <button className=" bg-slate-500" onClick={()=>handleShare(ResultImage)}>Share</button>
+
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
               </div>
