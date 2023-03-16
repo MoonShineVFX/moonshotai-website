@@ -183,7 +183,10 @@ function ReadyToTake({handleBackClick}) {
     console.log(document.querySelector('.resultImage'))
     console.log(document.querySelector('.resultImage').src)
     const imgUrl = document.querySelector('.resultImage').src
-    const blob = await fetch(imgUrl).then(r=>r.blob())
+    const blob = await fetch(imgUrl).then(r=>{
+      console.log(r.blob())
+      return r.blob()
+    })
     const data = {
       files: [
         new File([blob], 'image.jpg', {
