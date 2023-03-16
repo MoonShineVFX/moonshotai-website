@@ -215,6 +215,15 @@ function ReadyToTake({handleBackClick}) {
                 <div className="flex gap-1">
 
                     <button className=" bg-slate-500" onClick={handleShare}>Share</button>
+                    <RWebShare
+                      data={{
+                        files: [document.querySelector('.resultImage').src],
+                        text: '分享圖片到App',
+                      }}
+                      onClick={() => console.log("shared successfully!")}
+                    >
+                      <button>Share2 🔗</button>
+                    </RWebShare>
 
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
