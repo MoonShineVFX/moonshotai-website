@@ -130,7 +130,7 @@ function ReadyToTake({handleBackClick}) {
   const [image, setImage] = useState(null);
   const [waitImage, setwaitImage] = useState(false);
   const [ResultImage, setResultImage] = useState(null);
-  const imageRef = useRef(null);
+  const [shareMsg, setShareMsg] = useState("");
   const camera = useRef(null);
   const handleClick = (photo)=>{
     setwaitImage(true)
@@ -186,7 +186,7 @@ function ReadyToTake({handleBackClick}) {
     if (navigator.share) {
       navigator
         .share({
-          files:  new File([document.querySelector('.resultImage').src], "image.txt", {
+          files:  new File([document.querySelector('.resultImage').src], "image.jpg", {
             type: "image/jpeg"
           }),
           text: '分享圖片到App',
@@ -195,6 +195,7 @@ function ReadyToTake({handleBackClick}) {
         .catch((error) => console.log("Error sharing", error));
     } else {
       console.error("Browser doesn't support Web Share API");
+      setShareMsg('瀏覽器不支援這功能')
     }
 
   };
