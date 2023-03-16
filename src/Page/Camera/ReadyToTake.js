@@ -180,33 +180,30 @@ function ReadyToTake({handleBackClick}) {
 
   }
   const handleShare = async () => {
-    console.log(document.querySelector('.resultImage'))
-    console.log(document.querySelector('.resultImage').src)
     const imgUrl = document.querySelector('.resultImage').src
-    const blob = await fetch(imgUrl).then(r=>{
-      console.log(r.blob())
-      return r.blob()
-    })
-    const data = {
-      files: [
-        new File([blob], 'image.jpg', {
-          type: blob.type,
-        }),
-      ],
-      text: 'share',
-    };
-    if (navigator.share) {
-      navigator
-        .share(data)
-        .then(() => console.log("Successful share"))
-        .catch((error) => {
-          console.log("Error sharing", error)
-          setShareMsg('Error sharing')
-        });
-    } else {
-      console.error("Browser doesn't support Web Share API");
-      setShareMsg('如果是桌面瀏覽器不支援這功能')
+    console.log(imgUrl)
+    try {
+      if (navigator.share) {
+        const response = await fetch(imgUrl);
+        const blob = await response.blob();
+        const filesArray = [new File([blob], 'image.jpg', { type: 'image/jpeg' })];
+        const shareData = {
+          title: 'Check out this image!',
+          text: 'I found this image and wanted to share it with you.',
+          files: filesArray,
+        };
+        await navigator.share(shareData);
+      } else {
+        console.log('Web Share API not supported');
+        setShareMsg('如果是桌面瀏覽器不支援這功能')
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+      setShareMsg('Error sharing')
     }
+    
+
+
 
   };
 
