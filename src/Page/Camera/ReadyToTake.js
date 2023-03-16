@@ -193,7 +193,10 @@ function ReadyToTake({handleBackClick}) {
           text: '分享圖片到App',
         })
         .then(() => console.log("Successful share"))
-        .catch((error) => console.log("Error sharing", error));
+        .catch((error) => {
+          console.log("Error sharing", error)
+          setShareMsg('Error sharing')
+        });
     } else {
       console.error("Browser doesn't support Web Share API");
       setShareMsg('瀏覽器不支援這功能')
