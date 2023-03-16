@@ -182,14 +182,19 @@ function ReadyToTake({handleBackClick}) {
   const handleShare = async () => {
     console.log(document.querySelector('.resultImage'))
     console.log(document.querySelector('.resultImage').src)
-    try {
-      await navigator.share({
-        files: [document.querySelector('.resultImage').src],
-        text: '分享圖片到App',
-      });
-    } catch (error) {
-      console.error('Error sharing:', error);
+
+    if (navigator.share) {
+      navigator
+        .share({
+          files: [document.querySelector('.resultImage').src],
+          text: '分享圖片到App',
+        })
+        .then(() => console.log("Successful share"))
+        .catch((error) => console.log("Error sharing", error));
+    } else {
+      console.error("Browser doesn't support Web Share API");
     }
+
   };
 
   return (
