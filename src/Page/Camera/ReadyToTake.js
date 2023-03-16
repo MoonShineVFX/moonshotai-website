@@ -203,7 +203,7 @@ function ReadyToTake({handleBackClick}) {
         });
     } else {
       console.error("Browser doesn't support Web Share API");
-      setShareMsg('瀏覽器不支援這功能')
+      setShareMsg('如果是桌面瀏覽器不支援這功能')
     }
 
   };
