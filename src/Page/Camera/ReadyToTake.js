@@ -182,12 +182,13 @@ function ReadyToTake({handleBackClick}) {
   const handleShare = async () => {
     console.log(document.querySelector('.resultImage'))
     console.log(document.querySelector('.resultImage').src)
-
+    const imgUrl = document.querySelector('.resultImage').src
+    const blob = await fetch(imgUrl).then(r=>r.blob())
     if (navigator.share) {
       navigator
         .share({
-          files:  new File([document.querySelector('.resultImage').src], "image.jpg", {
-            type: "image/jpeg"
+          files:  new File([blob], "image.jpg", {
+            type: blob.type
           }),
           text: '分享圖片到App',
         })
@@ -213,7 +214,7 @@ function ReadyToTake({handleBackClick}) {
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
               <img src={ResultImage} alt="" className="resultImage" /> 
-              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start flex-wrap">
+              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap">
                 <div className="flex-1"></div>
                 <div className="flex gap-1  items-center">
 
