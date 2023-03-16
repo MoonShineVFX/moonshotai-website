@@ -9,6 +9,7 @@ import {
   LineShareButton,LineIcon,
   TwitterShareButton,TwitterIcon,
 } from "react-share";
+import { RWebShare } from "react-web-share";
 const Wrapper = styled.div`
   position: fixed;
   width: 100%;
@@ -194,9 +195,14 @@ function ReadyToTake({handleBackClick}) {
               <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
                 <div>分享(testing)</div>
                 <div className="flex gap-1">
-                  <LineShareButton url={ResultImage} ><LineIcon size={40} round={true}/></LineShareButton>
-                  <FacebookShareButton url={ResultImage} ><FacebookIcon size={40} round={true}/></FacebookShareButton>
-                  <TwitterShareButton url={ResultImage} ><TwitterIcon size={40} round={true}/></TwitterShareButton>
+                  <RWebShare
+                    data={{
+                      url: {ResultImage},
+                    }}
+                    onClick={() => console.info("share successful!")}
+                  >
+                    <button>Share</button>
+                  </RWebShare>
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
               </div>
