@@ -130,7 +130,7 @@ function ReadyToTake({handleBackClick}) {
   const [image, setImage] = useState(null);
   const [waitImage, setwaitImage] = useState(false);
   const [ResultImage, setResultImage] = useState(null);
- 
+  const imageRef = useRef(null);
   const camera = useRef(null);
   const handleClick = (photo)=>{
     setwaitImage(true)
@@ -179,11 +179,11 @@ function ReadyToTake({handleBackClick}) {
     setResultImage(null)
 
   }
-  const handleShare = async (imageUrl) => {
-    const newFile = await toBlob(imageUrl);
+  const handleShare = async () => {
+    const newFile = await toBlob(imageRef.current);
     const data = {
       files: [
-        new File([newFile], 'image.png', {
+        new File([newFile], 'image.jpg', {
           type: newFile.type,
         }),
       ],
@@ -210,12 +210,12 @@ function ReadyToTake({handleBackClick}) {
           
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
-              <img src={ResultImage} alt="" /> 
+              <img src={ResultImage} alt="" ref={imageRef} /> 
               <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-start">
                 <div>分享(testing)</div>
                 <div className="flex gap-1">
 
-                    <button className=" bg-slate-500" onClick={()=>handleShare(ResultImage)}>Share</button>
+                    <button className=" bg-slate-500" onClick={handleShare}>Share</button>
 
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
