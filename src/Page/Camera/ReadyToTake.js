@@ -217,10 +217,11 @@ function ReadyToTake({handleBackClick}) {
                 <div>分享(testing)</div>
                 <div className="flex gap-1">
 
-                    <button className=" bg-slate-500" onClick={handleShare}>Share</button>
+                  <button className=" bg-slate-500" onClick={handleShare}>Share</button>
 
                   <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
                 </div>
+                <div>{shareMsg}</div>
               </div>
            </div>
           : 
