@@ -199,7 +199,7 @@ function ReadyToTake({handleBackClick}) {
       }
     } catch (error) {
       console.error('Error sharing:', error);
-      setShareMsg('Error sharing')
+      setShareMsg('Error sharing', error)
     }
     
 
