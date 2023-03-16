@@ -190,8 +190,7 @@ function ReadyToTake({handleBackClick}) {
           type: blob.type,
         }),
       ],
-      title: title,
-      text: text,
+      text: 'share',
     };
     if (navigator.share) {
       navigator
