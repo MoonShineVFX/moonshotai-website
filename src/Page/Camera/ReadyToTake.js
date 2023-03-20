@@ -197,9 +197,7 @@ function ReadyToTake({handleBackClick}) {
         const blob = await response.blob();
         const filesArray = [new File([blob], 'image.jpg', { type: 'image/jpeg' })];
         const shareData = {
-          title: 'Check out this image!',
-          text: '我用 AI 相機拍了一張照片!',
-          url:'https://moonshot.today/camera',
+          title: '分享這張圖片',
           files: filesArray,
         };
         await navigator.share(shareData);

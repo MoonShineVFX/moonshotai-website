@@ -31,8 +31,9 @@ function FrontPage({handleClick}) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >拿起你的相機，創建屬於自己的 AI 圖吧！</motion.div>
+        
         <motion.div 
-          className="text-white backdrop-blur-sm bg-white/30 border-0 border-white/50 shadow-[.7px_-.8px_0px_1px_rgba(255,255,255,0.8)]  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10"
+          className="text-white backdrop-blur-sm bg-white/30 border-1 border-white/80 shadow-[.7px_-.8px_6px_1px_rgba(255,255,255,0.9)]  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10"
           initial={{ opacity: 0, x: '-40px' }}
           animate={{ opacity: 1, x: 0  , transition:{delay:.5, duration:.8}}}
           exit={{ opacity: 0 }}
