@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
-import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt } from "react-icons/fa";
+import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FacebookShareButton,FacebookIcon,
@@ -203,8 +203,11 @@ function ReadyToTake({handleBackClick}) {
         setShareMsg('如果是桌面瀏覽器不支援這功能')
       }
     } catch (error) {
+      if (error.toString().includes('AbortError')) {
+        console.log('取消分享')
+      }
       console.error('Error sharing:', error);
-      setShareMsg('Error sharing:'+ error)
+      // setShareMsg('Error sharing:'+ error)
     }
     
 
@@ -216,33 +219,38 @@ function ReadyToTake({handleBackClick}) {
   };
 
   return (
-    <div className="min-h-[100svh]">
+    <div className="min-h-[90svh]">
       {waitImage && 
         <motion.div 
-          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-white shadow-[.7px_-.8px_0px_1px_rgba(255,255,255,0.8)] rounded-lg"
+          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-white  rounded-lg"
           initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
           animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
           exit={{ opacity: 0 }}
         >
-          
+          {/* 拍照顯示區 */}
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
               <img src={ResultImage} alt="" className="resultImage" /> 
               <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap">
-                <div className="flex-1"></div>
-                <div className="flex gap-1  items-center">
+                <div className="flex gap-2  items-center w-full">
 
-                  <button className="w-20 bg-slate-500 p-1 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享 <FaShareAlt size={18} color="white"/></button>
+                  <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享( for 手機 ) <FaShareAlt size={18} color="white"/></div>
 
-                  <div className="w-20 ml-auto  p-1 rounded-full bg-black/50 flex items-center justify-center text-white" onClick={()=>handleCloseClick()}> 關閉 <FaTimes size={18} color="white"/></div>
+                  <div className="w-30 ml-auto py-2 px-4 rounded-full bg-black/0 flex items-center justify-center text-black/70 border" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
                 </div>
                 <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
               </div>
            </div>
           : 
           <div className="flex flex-col items-center relative ">
-            <div className="my-2 text-black  bg-white px-2 py-1 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 text-center "> 已拍照片 等待 AI 結果..</div>
-            <img src={image} alt="" />
+            <div className="   absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 z-20 flex flex-col"> 
+              <div className="animate-bounce w-[90px] mx-auto translate-z-0  ">
+                <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className="  " />
+              </div>
+              {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
+            </div>
+            <img src={image} alt="" className=" blur-sm brightness-80 " />
+            <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">已拍照片 等待 AI 結果..</div> 
           </div>}
           
         </motion.div>  
