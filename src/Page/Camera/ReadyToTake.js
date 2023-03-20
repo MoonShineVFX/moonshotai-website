@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
@@ -133,6 +133,10 @@ function ReadyToTake({handleBackClick}) {
   const [shareMsg, setShareMsg] = useState("");
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0,
+  });
   const handleClick = (photo)=>{
     // setShowFlashImage(true);
     setTimeout(() => setShowFlashImage(true), 200);
@@ -214,12 +218,24 @@ function ReadyToTake({handleBackClick}) {
 
 
   };
-  const handleClickFlash = () => {
-    
-  };
+
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+  useEffect(()=>{
+    function handleResize() {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+      
+    }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  },[])
 
   return (
-    <div className="min-h-[90svh]">
+    <div className="min-h-[100svh]">
       {waitImage && 
         <motion.div 
           className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-white  rounded-lg"
@@ -236,7 +252,7 @@ function ReadyToTake({handleBackClick}) {
 
                   <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享( for 手機 ) <FaShareAlt size={18} color="white"/></div>
 
-                  <div className="w-30 ml-auto py-2 px-4 rounded-full bg-black/0 flex items-center justify-center text-black/70 border" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
+                  <div className="w-30 ml-auto py-2 px-4 rounded-full bg-black/0 flex items-center justify-center text-black/70 border gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
                 </div>
                 <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
               </div>
@@ -251,7 +267,8 @@ function ReadyToTake({handleBackClick}) {
             </div>
             <img src={image} alt="" className=" blur-sm brightness-80 " />
             <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">已拍照片 等待 AI 結果..</div> 
-          </div>}
+          </div>
+          }
           
         </motion.div>  
       }
@@ -269,7 +286,7 @@ function ReadyToTake({handleBackClick}) {
             />
           </div>
         )}
-        <Camera ref={camera} aspectRatio={9/14}  numberOfCamerasCallback={setNumberOfCameras}/>
+        <Camera ref={camera} aspectRatio={9/13}  numberOfCamerasCallback={setNumberOfCameras}/>
 
       </div>
      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
@@ -298,7 +315,7 @@ function ReadyToTake({handleBackClick}) {
         > <FaCamera color="black" size={24}/>  </div>
          
       </div>
-     
+     <div className=" absolute top-0 left-0"> {windowSize.height}</div>
       {/* <Control >
         <ImagePreview image={image} />
         <TakePhotoButton
