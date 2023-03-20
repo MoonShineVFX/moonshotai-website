@@ -237,7 +237,7 @@ function ReadyToTake({handleBackClick}) {
     <div className="min-h-[100svh]">
       {waitImage && 
         <motion.div 
-          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-white  rounded-lg"
+          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-black  rounded-lg"
           initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
           animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
           exit={{ opacity: 0 }}
@@ -246,12 +246,12 @@ function ReadyToTake({handleBackClick}) {
           {ResultImage ?  
            <div className="flex flex-col items-center relative ">
               <img src={ResultImage} alt="" className="resultImage" /> 
-              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap">
+              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
                 <div className="flex gap-2  items-center w-full">
 
                   <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享( for 手機 ) <FaShareAlt size={18} color="white"/></div>
 
-                  <div className="w-30 ml-auto py-2 px-4 rounded-full bg-black/0 flex items-center justify-center text-black/70 border gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
+                  <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white/30 text-white  gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
                 </div>
                 <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
               </div>
@@ -265,7 +265,7 @@ function ReadyToTake({handleBackClick}) {
               {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
             </div>
             <img src={image} alt="" className=" blur-sm brightness-80 " />
-            <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">已拍照片 等待 AI 結果..</div> 
+            <div className="bg-black text-center text-white  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">已拍照片 等待 AI 結果..</div> 
           </div>
           }
           
