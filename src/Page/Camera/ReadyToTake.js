@@ -140,7 +140,7 @@ function ReadyToTake({handleBackClick}) {
   const handleClick = (photo)=>{
     // setShowFlashImage(true);
     setTimeout(() => setShowFlashImage(true), 200);
-    setTimeout(() => setShowFlashImage(false), 220); // 3秒後隱藏圖片
+    setTimeout(() => setShowFlashImage(false), 220); // 秒後隱藏圖片
     setTimeout(() => setwaitImage(true), 300);
     
     const binaryImage = atob(photo.split(",")[1]);
@@ -198,13 +198,13 @@ function ReadyToTake({handleBackClick}) {
         const filesArray = [new File([blob], 'image.jpg', { type: 'image/jpeg' })];
         const shareData = {
           title: 'Check out this image!',
-          text: 'I found this image and wanted to share it with you.',
+          text: '我用 AI 相機拍了一張照片！ https://moonshot.today/camera',
           files: filesArray,
         };
         await navigator.share(shareData);
       } else {
         console.log('Web Share API not supported');
-        setShareMsg('如果是桌面瀏覽器不支援這功能')
+        setShareMsg('如果是桌面瀏覽器不支援分享功能')
       }
     } catch (error) {
       if (error.toString().includes('AbortError')) {
@@ -315,7 +315,7 @@ function ReadyToTake({handleBackClick}) {
         > <FaCamera color="black" size={24}/>  </div>
          
       </div>
-     <div className=" absolute top-0 left-0"> {windowSize.height}</div>
+      {/* <div className=" absolute top-0 left-0"> {windowSize.height}</div> */}
       {/* <Control >
         <ImagePreview image={image} />
         <TakePhotoButton
