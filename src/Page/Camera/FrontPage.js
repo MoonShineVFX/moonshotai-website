@@ -4,10 +4,10 @@ import { FaArrowRight } from "react-icons/fa";
 function FrontPage({handleClick}) {
   return (
     <div 
-      className='min-h-[90svh] h-[100svh] relative '
+      className='min-h-[90svh] h-[90vh] relative '
     >
       <motion.div
-        className='min-h-[90svh] w-full aspect-[9/16] bg-cover bg-center bg-no-repeat brightness-75 '
+        className='min-h-[90svh] w-full aspect-[9/16] h-[90vh] bg-cover bg-center bg-no-repeat brightness-75 '
         style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/Background.png'})`}}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -22,15 +22,15 @@ function FrontPage({handleClick}) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         > 
-          <div>MOONSHOT AI</div>
-          <div>CAMERA</div>   
+          <div>Moonshot </div>
+          <div>AI CAMERA</div>   
         </motion.div>
         <motion.div 
           className='text-lg font-bold my-4 text-zinc-200 '
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-        >拿起你的相機，創建屬於自己的 AI 圖吧！</motion.div>
+        >開啟你的相機看看 AI 給你什麼驚喜吧！</motion.div>
         
         <motion.div 
           className="text-white backdrop-blur-sm bg-white/30 border-1 border-white/80 shadow-[.7px_-.8px_6px_1px_rgba(255,255,255,0.9)]  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10"
