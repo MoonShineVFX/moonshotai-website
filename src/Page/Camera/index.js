@@ -15,6 +15,7 @@ function Index() {
   };
   return (
     <div className='text-white'>  
+
       <AnimatePresence>
         {
           isButtonVisible && <FrontPage handleClick={handleButtonClick} /> 
