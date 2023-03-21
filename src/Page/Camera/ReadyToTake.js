@@ -271,7 +271,7 @@ function ReadyToTake({handleBackClick}) {
           
         </motion.div>  
       }
-      <div>
+      <div> 
       
       </div>
       <div className=" relative">
