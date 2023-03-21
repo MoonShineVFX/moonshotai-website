@@ -3,48 +3,8 @@ import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FacebookShareButton,FacebookIcon,
-  InstapaperShareButton,InstapaperIcon,
-  LineShareButton,LineIcon,
-  TwitterShareButton,TwitterIcon,
-} from "react-share";
-import { RWebShare } from "react-web-share";
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-const Wrapper = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-`;
-
-const Control = styled.div`
-  position: fixed;
-  display: flex;
-  right: 0;
-  width: 20%;
-  min-width: 130px;
-  min-height: 130px;
-  height: 100%;
-  background: rgba(51, 51, 51, 0.8);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  box-sizing: border-box;
-  flex-direction: column-reverse;
-  @media (max-aspect-ratio: 1/1) {
-    flex-direction: row;
-    bottom: 0;
-    width: 100%;
-    height: 20%;
-  }
-  @media (max-width: 400px) {
-    padding: 5px;
-  }
-`;
-
+import Resizer from "react-image-file-resizer";
+import useProgressiveImg from "../../Helper/useProgressiveImg";
 const Button = styled.button`
   outline: none;
   color: white;
@@ -69,49 +29,6 @@ const Button = styled.button`
   }
 `;
 
-const TakePhotoButton = styled(Button)`
-  background: url('https://img.icons8.com/ios/50/000000/compact-camera.png');
-  background-position: center;
-  background-size: 50px;
-  background-repeat: no-repeat;
-  width: 80px;
-  height: 80px;
-  border: solid 4px black;
-  border-radius: 50%;
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-`;
-
-const ChangeFacingCameraButton = styled(Button)`
-  background: url(https://img.icons8.com/ios/50/000000/switch-camera.png);
-  background-position: center;
-  background-size: 40px;
-  background-repeat: no-repeat;
-  width: 40px;
-  height: 40px;
-  padding: 40px;
-  &:disabled {
-    opacity: 1;
-    cursor: default;
-  }
-  @media (max-width: 400px) {
-    padding: 40px 5px;
-  }
-`;
-
-const ImagePreview = styled.div`
-  width: 120px;
-  height: 120px;
-  ${({ image }) => (image ? `background-image:  url(${image});` : '')}
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  @media (max-width: 400px) {
-    width: 50px;
-    height: 120px;
-  }
-`;
 const ResultImagePreview = styled.div`
   width: 300px;
   height: 800px;
@@ -133,21 +50,22 @@ function ReadyToTake({handleBackClick}) {
   const [shareMsg, setShareMsg] = useState("");
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
-  const [windowSize, setWindowSize] = useState({
-    width: 0,
-    height: 0,
-  });
-  const handleClick = (photo)=>{
+  
+
+  const handleClick = async (photo)=>{
     // setShowFlashImage(true);
     setTimeout(() => setShowFlashImage(true), 200);
     setTimeout(() => setShowFlashImage(false), 220); // 秒後隱藏圖片
     setTimeout(() => setwaitImage(true), 300);
-    
-    const binaryImage = atob(photo.split(",")[1]);
-    const files =base64toFileList(photo)
+    // const binaryImage = await atob(photo.split(",")[1]);
+   
+    const files = await base64toFileList(photo)
+    const compressFiles = await resizeFile(files[0]);
+    // console.log(image)
     const formData = new FormData();
-    formData.append('image', files[0]); // 將文件對象添加到FormData
+    formData.append('image', compressFiles); // 將文件對象添加到FormData
     console.log(files[0])
+    console.log(compressFiles)
     // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
@@ -183,11 +101,28 @@ function ReadyToTake({handleBackClick}) {
   
     return [file];
   }
+  const resizeFile = (file) => 
+    new Promise((resolve) => {
+      Resizer.imageFileResizer(
+        file,
+        300, // 設置圖像的最大寬度
+        400, // 設置圖像的最大高度
+        'JPEG', // 設置圖像的格式
+        70, // 設置圖像的質量
+        0, // 設置圖像的旋轉角度
+        (uri) => {
+          resolve(uri);
+        },
+        'file' // 設置返回的圖像格式
+      );
+    });
+
   const handleCloseClick = () =>{
     setwaitImage(false)
     setResultImage(null)
 
   }
+  //給分享圖片
   const handleShare = async () => {
     const imgUrl = document.querySelector('.resultImage').src
     console.log(imgUrl)
@@ -197,7 +132,6 @@ function ReadyToTake({handleBackClick}) {
         const blob = await response.blob();
         const filesArray = [new File([blob], 'image.jpg', { type: 'image/jpeg' })];
         const shareData = {
-          title: '分享這張圖片',
           files: filesArray,
         };
         await navigator.share(shareData);
@@ -218,58 +152,54 @@ function ReadyToTake({handleBackClick}) {
 
   };
 
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-  useEffect(()=>{
-    function handleResize() {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-      
-    }
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  },[])
 
+
+  const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
   return (
     <div className="min-h-[100svh]">
       {waitImage && 
-        <motion.div 
-          className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-black  rounded-lg"
-          initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
-          animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
-          exit={{ opacity: 0 }}
-        >
-          {/* 拍照顯示區 */}
-          {ResultImage ?  
-           <div className="flex flex-col items-center relative ">
-              <img src={ResultImage} alt="" className="resultImage" /> 
-              <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
-                <div className="flex gap-2  items-center w-full">
+        <div className="absolute top-0 left-0  w-full">
+          <div className="absolute top-0 left-0 w-full h-[100vh] bg-black/60 z-10"></div>
+          <motion.div 
+            className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-black  rounded-lg"
+            initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
+            animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
+            exit={{ opacity: 0 }}
+          >
+            
+            {/* 拍照顯示區 */}
+            {ResultImage ?  
+            <div className="flex flex-col items-center relative ">
+                <img src={src} alt="" className="resultImage" style={{
+                  filter: blur ? "blur(10px)" : "none",
+                  transition: blur ? "none" : "filter 0.3s ease-out"
+                }}/> 
+                <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
+                  <div className="flex gap-2  items-center w-full">
 
-                  <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享( for 手機 ) <FaShareAlt size={18} color="white"/></div>
+                    <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享 <FaShareAlt size={18} color="white"/></div>
 
-                  <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white/30 text-white  gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <FaRedo size={18} /></div>
+                    <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white/30 text-white  gap-1" onClick={()=>handleCloseClick()}> 返回 <FaRedo size={18} /></div>
+                  </div>
+                  <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
                 </div>
-                <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
-              </div>
-           </div>
-          : 
-          <div className="flex flex-col items-center relative ">
-            <div className="   absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 z-20 flex flex-col"> 
-              <div className="animate-bounce w-[90px] mx-auto translate-z-0  ">
-                <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className="  " />
-              </div>
-              {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
             </div>
-            <img src={image} alt="" className=" blur-sm brightness-80 " />
-            <div className="bg-black text-center text-white  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">已拍照片 等待 AI 結果..</div> 
-          </div>
-          }
-          
-        </motion.div>  
+            : 
+            <div className="flex flex-col items-center relative ">
+              <div className="   absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 z-20 flex flex-col"> 
+                <div className="animate-bounce w-[90px] mx-auto translate-z-0  ">
+                  <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className="  " />
+                </div>
+                {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
+              </div>
+              <img src={image} alt="" className=" blur-sm brightness-80 " />
+              <div className="bg-black text-center text-white  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">AI 圖像生成中...</div> 
+            </div>
+            }
+            
+          </motion.div>  
+        </div>
+        
       }
       <div> 
       
@@ -289,10 +219,10 @@ function ReadyToTake({handleBackClick}) {
 
       </div>
      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
-      <div className="flex justify-center gap-3 my-4  p-2 rounded-xl items-center ">
+      <div className="flex justify-center gap-7 my-4  p-2 rounded-xl items-center ">
         {/* <ImagePreview image={image} /> */}
         <div 
-          className="flex items-center gap-3  rounded-full bg-zinc-600 p-3 "
+          className="flex items-center gap-3  rounded-full bg-zinc-600 p-5 "
           onClick={() => {
             if (camera.current) {
               const result = camera.current.switchCamera();
@@ -300,13 +230,13 @@ function ReadyToTake({handleBackClick}) {
             }
           }}
            
-        > <FaSyncAlt /></div>
+        > <FaSyncAlt size={24}/> </div>
         <div 
           className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
           onClick={() => {
             if (camera.current) {
               const photo = camera.current.takePhoto();
-              console.log(photo);
+              // console.log(photo);
               setImage(photo);
               handleClick(photo)
             }

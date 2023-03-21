@@ -4,10 +4,10 @@ import { FaArrowRight } from "react-icons/fa";
 function FrontPage({handleClick}) {
   return (
     <div 
-      className='min-h-[90svh] h-[90vh] relative '
+      className='min-h-[90svh] h-[100vh] relative '
     >
       <motion.div
-        className='min-h-[90svh] w-full aspect-[9/16] h-[90vh] bg-cover bg-center bg-no-repeat brightness-75 '
+        className='min-h-[90svh] w-full aspect-[9/16] h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 '
         style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/Background.png'})`}}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
