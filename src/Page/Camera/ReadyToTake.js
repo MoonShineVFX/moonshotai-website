@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
+import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import Resizer from "react-image-file-resizer";
 import useProgressiveImg from "../../Helper/useProgressiveImg";
@@ -176,10 +177,10 @@ function ReadyToTake({handleBackClick}) {
                 }}/> 
                 <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
                   <div className="flex gap-2  items-center w-full">
+                    <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white text-black  gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <MdPhotoCamera size={18} /></div>
+                    <div className="w bg-[#21D8A2] py-2 px-4 rounded-full flex items-center justify-center text-black gap-1" onClick={handleShare}>分享 <MdMobileScreenShare size={18} /></div>
 
-                    <div className="w bg-green-500 py-2 px-4 rounded-full flex items-center justify-center text-white gap-1" onClick={handleShare}>分享 <FaShareAlt size={18} color="white"/></div>
-
-                    <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white/30 text-white  gap-1" onClick={()=>handleCloseClick()}> 返回 <FaRedo size={18} /></div>
+                    
                   </div>
                   <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
                 </div>
@@ -215,7 +216,8 @@ function ReadyToTake({handleBackClick}) {
             />
           </div>
         )}
-        <Camera ref={camera} aspectRatio={9/13}  numberOfCamerasCallback={setNumberOfCameras}/>
+        <Camera ref={camera} aspectRatio={9/13}  numberOfCamerasCallback={setNumberOfCameras} 
+        />
 
       </div>
      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
@@ -230,7 +232,7 @@ function ReadyToTake({handleBackClick}) {
             }
           }}
            
-        > <FaSyncAlt size={24}/> </div>
+        > <MdCameraswitch size={24}/> </div>
         <div 
           className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
           onClick={() => {
@@ -241,7 +243,7 @@ function ReadyToTake({handleBackClick}) {
               handleClick(photo)
             }
           }} 
-        > <FaCamera color="black" size={24}/>  </div>
+        > <MdPhotoCamera color="black" size={24}/>  </div>
          
       </div>
       {/* <div className=" absolute top-0 left-0"> {windowSize.height}</div> */}
