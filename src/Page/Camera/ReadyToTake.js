@@ -66,17 +66,15 @@ function ReadyToTake({handleBackClick}) {
     // console.log(image)
     const formData = new FormData();
     formData.append('image', compressFiles); // 將文件對象添加到FormData
+    formData.append('token', token); // 將文件對象添加到FormData
     console.log(files[0])
     console.log(compressFiles)
 
 
     // 使用Fetch API上傳圖片
-    fetch('https://camera.moonshot.today/gentest', {
+    fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
-      body: JSON.stringify({
-        file:formData,
-        token:token
-      })
+      body: formData
     })
     .then(response => response.json())
     .then(responseData => {
