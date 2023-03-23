@@ -73,10 +73,10 @@ function ReadyToTake({handleBackClick}) {
     // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
-      body: {
+      body: JSON.stringify({
         file:formData,
         token:token
-      }
+      })
     })
     .then(response => response.json())
     .then(responseData => {
