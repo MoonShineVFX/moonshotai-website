@@ -1,7 +1,20 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa";
 function FrontPage({handleClick}) {
+  useEffect(()=>{
+    fetch(process.env.PUBLIC_URL+'/images/test/00127-2318642455.png')
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const image = new Image();
+        image.onload = () => {
+          console.log("Image width: ", image.width);
+          console.log("Image height: ", image.height);
+        };
+        console.log(blob)
+      });
+  },[])
   return (
     <div 
       className='min-h-[90svh] h-[100vh] relative '

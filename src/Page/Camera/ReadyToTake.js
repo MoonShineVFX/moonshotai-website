@@ -51,6 +51,7 @@ function ReadyToTake({handleBackClick}) {
   const [shareMsg, setShareMsg] = useState("");
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
+  const [token, setToken] = useState(null);
   
 
   const handleClick = async (photo)=>{
@@ -67,10 +68,15 @@ function ReadyToTake({handleBackClick}) {
     formData.append('image', compressFiles); // 將文件對象添加到FormData
     console.log(files[0])
     console.log(compressFiles)
+
+
     // 使用Fetch API上傳圖片
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
-      body: formData
+      body: {
+        formData,
+        token
+      }
     })
     .then(response => response.json())
     .then(responseData => {
@@ -80,6 +86,8 @@ function ReadyToTake({handleBackClick}) {
     .catch(error => {
       console.error(error);
     });
+
+
 
   }
   function base64toFileList(base64String) {
@@ -152,6 +160,19 @@ function ReadyToTake({handleBackClick}) {
 
 
   };
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.google.com/recaptcha/api.js?render=6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU';
+    script.async = true;
+    script.defer = true;
+    script.addEventListener('load', () => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha.execute('6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU', { action: 'submit' })
+          .then(token => setToken(token));
+      });
+    });
+    document.head.appendChild(script);
+  }, []);
 
 
 
