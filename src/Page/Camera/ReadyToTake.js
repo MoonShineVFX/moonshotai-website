@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
-import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare, MdClose,MdDownload,MdRefresh } from "react-icons/md";
+import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare, MdClose,MdDownload,MdRefresh,MdReply } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import Resizer from "react-image-file-resizer";
 import useProgressiveImg from "../../Helper/useProgressiveImg";
@@ -59,8 +59,18 @@ function ReadyToTake({handleBackClick}) {
     setTimeout(() => setShowFlashImage(true), 200);
     setTimeout(() => setShowFlashImage(false), 220); // 秒後隱藏圖片
     setTimeout(() => setwaitImage(true), 300);
+    fetchAiRenderApi(photo)
+  }
+  //再算一次
+  const handleReRender = async ()=>{
+    getNewGToken()
+    setTimeout(() => setResultImage(null), 200);
+    await fetchAiRenderApi(image)
+  }
+  const fetchAiRenderApi= async(photo)=>{
     // const binaryImage = await atob(photo.split(",")[1]);
-   
+    // console.log(photo)
+    console.log(token)
     const files = await base64toFileList(photo)
     const compressFiles = await resizeFile(files[0]);
     // console.log(image)
@@ -84,9 +94,6 @@ function ReadyToTake({handleBackClick}) {
     .catch(error => {
       console.error(error);
     });
-
-
-
   }
   function base64toFileList(base64String) {
     const byteCharacters = atob(base64String.split(",")[1]);
@@ -124,10 +131,10 @@ function ReadyToTake({handleBackClick}) {
       );
     });
 
-  const handleCloseClick = () =>{
+  const handleCloseClick = async() =>{
     setwaitImage(false)
     setResultImage(null)
-
+    getNewGToken()
   }
   //給分享圖片
   const handleShare = async () => {
@@ -154,6 +161,7 @@ function ReadyToTake({handleBackClick}) {
       // setShareMsg('Error sharing:'+ error)
     }
   };
+  //下載圖片
   const handleDownloadImage = async ()=>{
     const imgUrl = document.querySelector('.resultImage').src
     fetch(imgUrl)
@@ -176,16 +184,20 @@ function ReadyToTake({handleBackClick}) {
       console.error('Error downloading image: ', error);
     });
   }
+  const getNewGToken = async ()=>{
+    window.grecaptcha.ready(() => {
+      window.grecaptcha.execute('6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU', { action: 'submit' })
+        .then(token => setToken(token));
+    });
+  }
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://www.google.com/recaptcha/api.js?render=6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU';
     script.async = true;
     script.defer = true;
     script.addEventListener('load', () => {
-      window.grecaptcha.ready(() => {
-        window.grecaptcha.execute('6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU', { action: 'submit' })
-          .then(token => setToken(token));
-      });
+      getNewGToken()
     });
     document.head.appendChild(script);
   }, []);
@@ -213,11 +225,11 @@ function ReadyToTake({handleBackClick}) {
                   filter: blur ? "blur(10px)" : "none",
                   transition: blur ? "none" : "filter 0.3s ease-out"
                 }}/> 
-                <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
-                  <div className="flex gap-2  items-center w-full rounded-full bg-white divide-x border-black justify-center">
-                    <div className="py-2 px-4  flex items-center justify-center  text-black  gap-1" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
-                    <div className="py-2 px-4  flex items-center justify-center bg-white text-black  gap-1" onClick={()=>handleCloseClick()}>  <MdRefresh size={18} /></div>
-                    <div className="py-2 px-4  flex items-center justify-center text-black gap-1" onClick={handleShare}> <MdMobileScreenShare size={18} /></div>
+                <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-1">
+                  <div className="flex gap-2  items-center w-full rounded-full bg-black/60  border-black justify-center">
+                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
+                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={()=>handleReRender()}>  <MdRefresh size={18} /></div>
+                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={handleShare}> <MdReply size={18} style = {{transform: 'scaleX(-1)' }} /></div>
 
                     
                   </div>
