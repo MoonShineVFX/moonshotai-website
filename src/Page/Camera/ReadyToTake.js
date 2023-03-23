@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
-import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare } from "react-icons/md";
+import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare, MdClose,MdDownload,MdRefresh } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import Resizer from "react-image-file-resizer";
 import useProgressiveImg from "../../Helper/useProgressiveImg";
@@ -65,8 +65,8 @@ function ReadyToTake({handleBackClick}) {
     const compressFiles = await resizeFile(files[0]);
     // console.log(image)
     const formData = new FormData();
-    formData.append('image', compressFiles); // 將文件對象添加到FormData
-    formData.append('token', token); // 將文件對象添加到FormData
+    formData.append('image', compressFiles); 
+    formData.append('token', token); 
     // console.log(files[0])
     console.log(compressFiles)
 
@@ -153,11 +153,29 @@ function ReadyToTake({handleBackClick}) {
       console.error('Error sharing:', error);
       // setShareMsg('Error sharing:'+ error)
     }
-    
-
-
-
   };
+  const handleDownloadImage = async ()=>{
+    const imgUrl = document.querySelector('.resultImage').src
+    fetch(imgUrl)
+    .then(response => {
+      if (response.ok) {
+        return response.blob();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'image.jpg');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+    .catch(error => {
+      console.error('Error downloading image: ', error);
+    });
+  }
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://www.google.com/recaptcha/api.js?render=6Lf2JiElAAAAALbuDb9WVQYIiUIcyUi4W9bbToHU';
@@ -190,14 +208,16 @@ function ReadyToTake({handleBackClick}) {
             {/* 拍照顯示區 */}
             {ResultImage ?  
             <div className="flex flex-col items-center relative ">
+                <div className=" absolute top-2 right-2  bg-black/30 rounded-full p-2" onClick={()=>handleCloseClick()}><MdClose /></div>
                 <img src={src} alt="" className="resultImage" style={{
                   filter: blur ? "blur(10px)" : "none",
                   transition: blur ? "none" : "filter 0.3s ease-out"
                 }}/> 
                 <div className="text-black flex items-center gap-2 mt-8 mb-6 justify-center flex-wrap text-sm">
-                  <div className="flex gap-2  items-center w-full">
-                    <div className="w-30 ml-auto py-2 px-4 rounded-full  flex items-center justify-center bg-white text-black  gap-1" onClick={()=>handleCloseClick()}> 再拍一張 <MdPhotoCamera size={18} /></div>
-                    <div className="w bg-[#21D8A2] py-2 px-4 rounded-full flex items-center justify-center text-black gap-1" onClick={handleShare}>分享 <MdMobileScreenShare size={18} /></div>
+                  <div className="flex gap-2  items-center w-full rounded-full bg-white divide-x border-black justify-center">
+                    <div className="py-2 px-4  flex items-center justify-center  text-black  gap-1" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
+                    <div className="py-2 px-4  flex items-center justify-center bg-white text-black  gap-1" onClick={()=>handleCloseClick()}>  <MdRefresh size={18} /></div>
+                    <div className="py-2 px-4  flex items-center justify-center text-black gap-1" onClick={handleShare}> <MdMobileScreenShare size={18} /></div>
 
                     
                   </div>

@@ -50,14 +50,18 @@ function FrontPage({handleClick}) {
           initial={{ opacity: 0, x: '-40px' }}
           animate={{ opacity: 1, x: 0  , transition:{delay:.5, duration:.8}}}
           exit={{ opacity: 0 }}
-          
           onClick={handleClick}
         >
             Get Started <FaArrowRight />
         </motion.div>
+        
 
       </div>
-
+      <div className='text-sm text-white/30  text-center p-2'>
+        This site is protected by reCAPTCHA and the Google
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+        <a href="https://policies.google.com/terms">Terms of Service</a> apply.
+      </div>
 
     </div>
   )
