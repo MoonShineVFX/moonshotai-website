@@ -74,8 +74,8 @@ function ReadyToTake({handleBackClick}) {
     fetch('https://camera.moonshot.today/gen', {
       method: 'POST',
       body: {
-        formData,
-        token
+        file:formData,
+        token:token
       }
     })
     .then(response => response.json())
