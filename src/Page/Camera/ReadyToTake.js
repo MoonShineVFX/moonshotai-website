@@ -67,7 +67,7 @@ function ReadyToTake({handleBackClick}) {
     const formData = new FormData();
     formData.append('image', compressFiles); // 將文件對象添加到FormData
     formData.append('token', token); // 將文件對象添加到FormData
-    console.log(files[0])
+    // console.log(files[0])
     console.log(compressFiles)
 
 
