@@ -63,14 +63,12 @@ function ReadyToTake({handleBackClick}) {
   }
   //再算一次
   const handleReRender = async ()=>{
-    getNewGToken()
     setTimeout(() => setResultImage(null), 200);
-    await fetchAiRenderApi(image)
+    fetchAiRenderApi(image)
   }
   const fetchAiRenderApi= async(photo)=>{
     // const binaryImage = await atob(photo.split(",")[1]);
     // console.log(photo)
-    console.log(token)
     const files = await base64toFileList(photo)
     const compressFiles = await resizeFile(files[0]);
     // console.log(image)
@@ -90,6 +88,7 @@ function ReadyToTake({handleBackClick}) {
     .then(responseData => {
       console.log( responseData.substring(0, responseData.length - 2).slice(6));
       setResultImage(responseData.substring(0, responseData.length - 2).slice(6))
+      getNewGToken()
     })
     .catch(error => {
       console.error(error);
@@ -134,7 +133,6 @@ function ReadyToTake({handleBackClick}) {
   const handleCloseClick = async() =>{
     setwaitImage(false)
     setResultImage(null)
-    getNewGToken()
   }
   //給分享圖片
   const handleShare = async () => {

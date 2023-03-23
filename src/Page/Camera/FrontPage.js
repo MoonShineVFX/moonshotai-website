@@ -30,13 +30,13 @@ function FrontPage({handleClick}) {
       <div class="bg-gradient-to-t from-black  absolute w-full h-[50vh] bottom-0"></div>
       <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50'>
         <motion.div 
-          className='text-[2.8rem] font-black leading-none '
+          className='text-[3.2rem] font-black  leading-tight'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         > 
           <div>Moonshot </div>
-          <div>AI CAMERA</div>   
+          <div>AI Camera</div>   
         </motion.div>
         <motion.div 
           className='text-lg font-bold my-4 text-zinc-200 '
