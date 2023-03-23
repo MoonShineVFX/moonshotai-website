@@ -218,20 +218,26 @@ function ReadyToTake({handleBackClick}) {
             {/* 拍照顯示區 */}
             {ResultImage ?  
             <div className="flex flex-col items-center relative ">
-                <div className=" absolute top-2 right-2  bg-black/30 rounded-full p-2" onClick={()=>handleCloseClick()}><MdClose /></div>
-                <img src={src} alt="" className="resultImage" style={{
-                  filter: blur ? "blur(10px)" : "none",
-                  transition: blur ? "none" : "filter 0.3s ease-out"
-                }}/> 
-                <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-1">
-                  <div className="flex gap-2  items-center w-full rounded-full bg-black/60  border-black justify-center">
-                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
-                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={()=>handleReRender()}>  <MdRefresh size={18} /></div>
-                    <div className="py-2 px-4  flex items-center justify-center text-white  gap-1" onClick={handleShare}> <MdReply size={18} style = {{transform: 'scaleX(-1)' }} /></div>
+                <div className=" relative">
+                  <div className=" absolute top-2 right-2  bg-black/30 rounded-full p-2" onClick={()=>handleCloseClick()}><MdClose /></div>
+                  <img src={src} alt="" className="resultImage" style={{
+                    filter: blur ? "blur(10px)" : "none",
+                    transition: blur ? "none" : "filter 0.3s ease-out"
+                  }}/> 
+                  <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-2  w-1/2 left-1/2 -translate-x-1/2 rounded-full bg-black/60  border-black ">
+                    <div className="flex gap-2 items-center justify-center py-2">
+                      <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
+                      <div className=" flex items-center justify-center text-white  gap-1" onClick={()=>handleReRender()}>  <MdRefresh size={18} /></div>
+                      <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={handleShare}> <MdReply size={18} style = {{transform: 'scaleX(-1)' }} /></div>
 
-                    
+                    </div>
+                    <div className="  flex-[0_0_100%] text-center hidden">{shareMsg}</div>
                   </div>
-                  <div className="  flex-[0_0_100%] text-center">{shareMsg}</div>
+                </div>
+                
+                <div className=" text-white font-bold flex flex-col items-center my-6 text-xs">
+                  <div>長按圖片以儲存或分享</div>
+                  <div>Press & hold to download image.</div>
                 </div>
             </div>
             : 
