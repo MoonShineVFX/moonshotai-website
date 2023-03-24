@@ -274,7 +274,7 @@ function ReadyToTake({handleBackClick}) {
             />
           </div>
         )}
-        <Camera ref={camera} aspectRatio={9/13}   
+        <Camera ref={camera} aspectRatio={9/13} facingMode='environment'
         />
 
       </div>
@@ -302,7 +302,7 @@ function ReadyToTake({handleBackClick}) {
             }
           }} 
         > <MdPhotoCamera color="black" size={24}/>  </div>
-         <div  
+         <div  className="hidden"
          onClick={() => {
             if (camera.current) {
               const result = camera.current.getNumberOfCameras();
