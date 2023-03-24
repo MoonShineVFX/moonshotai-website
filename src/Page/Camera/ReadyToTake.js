@@ -271,7 +271,7 @@ function ReadyToTake({handleBackClick}) {
             />
           </div>
         )}
-        <Camera ref={camera} aspectRatio={9/13}  numberOfCamerasCallback={setNumberOfCameras} 
+        <Camera ref={camera} aspectRatio={9/13}   
         />
 
       </div>
