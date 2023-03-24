@@ -40,20 +40,20 @@ function CallToAction() {
           data-aos-duration="1000"
         >
           <div className='flex items-center gap-4 md:gap-8 ext-lg flex-col justify-center mt-7 md:mt-0'>
-            <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/lineqr.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
+            <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/lineqr2.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
             <div className='flex flex-col items-center justify-center '>
               
               <a 
                 className=' flex justify-center w-auto'
-                href="https://line.me/ti/g/xb4sv1szou"
+                href="https://line.me/ti/g2/0nEqJgPJlUZitp5pYpwLeoPKmswnBuzpRGoBnw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                 target={"_blank"} rel="noreferrer"
               >
                 <div className='p-3 md:p-4 bg-[#423EF5] text-base hover:bg-[#3532d6] text-zinc-200 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
-                  教學測試群組
+                  交流分享群組
                 </div> 
                 
               </a>
-              <div className='text-sm text-zinc-300 mt-2'>按此加入教學測試群組</div> 
+              <div className='text-sm text-zinc-300 mt-2'>按此加入交流分享群組</div> 
             </div>
 
            
