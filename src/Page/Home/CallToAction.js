@@ -40,7 +40,7 @@ function CallToAction() {
           data-aos-duration="1000"
         >
           <div className='flex items-center gap-4 md:gap-8 ext-lg flex-col justify-center mt-7 md:mt-0'>
-            <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/lineqr2.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
+            <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/lineqr2.jpg'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
             <div className='flex flex-col items-center justify-center '>
               
               <a 
