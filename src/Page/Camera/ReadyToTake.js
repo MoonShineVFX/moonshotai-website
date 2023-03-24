@@ -44,7 +44,7 @@ const ResultImagePreview = styled.div`
   }
 `;
 function ReadyToTake({handleBackClick}) {
-  const [numberOfCameras, setNumberOfCameras] = useState(1);
+  const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [image, setImage] = useState(null);
   const [waitImage, setwaitImage] = useState(false);
   const [ResultImage, setResultImage] = useState(null);
@@ -235,7 +235,7 @@ function ReadyToTake({handleBackClick}) {
                   </div>
                 </div>
                 
-                <div className=" text-white font-bold flex flex-col items-center my-6 text-xs">
+                <div className=" text-white font-bold flex flex-col items-center my-6 text-xs"  onClick={handleShare}>
                   <div>長按圖片以儲存或分享</div>
                   <div>Press & hold to download image.</div>
                 </div>
