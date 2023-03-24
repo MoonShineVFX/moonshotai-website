@@ -52,6 +52,9 @@ function ReadyToTake({handleBackClick}) {
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
   const [token, setToken] = useState(null);
+  const [testMsg, setTestMsg] = useState({
+    getNumberOfCameras:""
+  });
   
 
   const handleClick = async (photo)=>{
@@ -299,7 +302,17 @@ function ReadyToTake({handleBackClick}) {
             }
           }} 
         > <MdPhotoCamera color="black" size={24}/>  </div>
-         
+         <div  
+         onClick={() => {
+            if (camera.current) {
+              const result = camera.current.getNumberOfCameras();
+              console.log(result);
+              setTestMsg({
+                getNumberOfCameras:result
+              })
+            }
+          }}
+         >test {testMsg?.getNumberOfCameras}</div>
       </div>
       {/* <div className=" absolute top-0 left-0"> {windowSize.height}</div> */}
       {/* <Control >
