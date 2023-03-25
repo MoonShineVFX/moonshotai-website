@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import {Camera} from "react-camera-pro";
 import styled from 'styled-components';
 import { FaSyncAlt,FaCamera,FaTimes,FaArrowLeft,FaShareAlt,FaReply,FaRedo } from "react-icons/fa";
-import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare, MdClose,MdDownload,MdRefresh,MdReply } from "react-icons/md";
+import { MdCameraswitch, MdPhotoCamera,MdMobileScreenShare, MdClose,MdDownload,MdRefresh,MdReply,MdEast,MdKeyboardReturn } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import Resizer from "react-image-file-resizer";
 import useProgressiveImg from "../../Helper/useProgressiveImg";
@@ -52,6 +52,9 @@ function ReadyToTake({handleBackClick}) {
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
   const [token, setToken] = useState(null);
+  const [countdown, setCountdown] = useState(15);
+  const [timerId, setTimerId] = useState(null);
+  const countdownRef = useRef(countdown);
   const [testMsg, setTestMsg] = useState({
     getNumberOfCameras:""
   });
@@ -69,6 +72,27 @@ function ReadyToTake({handleBackClick}) {
     setTimeout(() => setResultImage(null), 200);
     fetchAiRenderApi(image)
   }
+  const startCountdown = async() => {
+    if (countdownRef.current === 15) {
+      setTimerId(
+        setInterval(() => {
+          setCountdown((prevCountdown) => prevCountdown - 1);
+        }, 1000)
+      );
+    }
+  };
+
+  const cancelCountdown = async() => {
+    clearInterval(timerId);
+    setCountdown(15);
+    setTimerId(null);
+  };
+  const restartCountdown = () => {
+    clearInterval(timerId);
+    setCountdown(15);
+    setTimerId(null);
+    startCountdown();
+  };
   const fetchAiRenderApi= async(photo)=>{
     // const binaryImage = await atob(photo.split(",")[1]);
     // console.log(photo)
@@ -89,6 +113,7 @@ function ReadyToTake({handleBackClick}) {
     })
     .then(response => response.json())
     .then(responseData => {
+      cancelCountdown()
       console.log( responseData.substring(0, responseData.length - 2).slice(6));
       setResultImage(responseData.substring(0, responseData.length - 2).slice(6))
       getNewGToken()
@@ -136,6 +161,7 @@ function ReadyToTake({handleBackClick}) {
   const handleCloseClick = async() =>{
     setwaitImage(false)
     setResultImage(null)
+    cancelCountdown()
   }
   //給分享圖片
   const handleShare = async () => {
@@ -202,7 +228,12 @@ function ReadyToTake({handleBackClick}) {
     });
     document.head.appendChild(script);
   }, []);
-
+  useEffect(() => {
+    if (countdown === 0) {
+      clearInterval(timerId);
+      setTimerId(null);
+    }
+  }, [countdown, timerId]);
 
 
   const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
@@ -227,11 +258,11 @@ function ReadyToTake({handleBackClick}) {
                     filter: blur ? "blur(10px)" : "none",
                     transition: blur ? "none" : "filter 0.3s ease-out"
                   }}/> 
-                  <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-2  w-1/2 left-1/2 -translate-x-1/2 rounded-full bg-black/60  border-black ">
+                  <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-2  w-1/2 left-1/2 -translate-x-1/2 rounded-full bg-black/60  border-black " onClick={()=>handleReRender()}>
                     <div className="flex gap-2 items-center justify-center py-2">
-                      <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div>
-                      <div className=" flex items-center justify-center text-white  gap-1" onClick={()=>handleReRender()}>  <MdRefresh size={18} /></div>
-                      <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={handleShare}> <MdReply size={18} style = {{transform: 'scaleX(-1)' }} /></div>
+                      {/* <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div> */}
+                      <div className=" flex items-center justify-center text-white  gap-1" >  <MdRefresh size={18} /></div>
+                      {/* <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={handleShare}> <MdReply size={18} style = {{transform: 'scaleX(-1)' }} /></div> */}
 
                     </div>
                     <div className="  flex-[0_0_100%] text-center hidden">{shareMsg}</div>
@@ -246,9 +277,27 @@ function ReadyToTake({handleBackClick}) {
             : 
             <div className="flex flex-col items-center relative ">
               <div className="   absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  w-10/12 z-20 flex flex-col"> 
-                <div className="animate-bounce w-[90px] mx-auto translate-z-0  ">
+                {countdown === 0 ? 
+                <div className=" w-[90px] mx-auto translate-z-0  mb-2">
+                  <img src={process.env.PUBLIC_URL+'/images/camera_page/erro_face.png'} alt="" className="  " />
+                </div>
+                : 
+                <div className="animate-bounce w-[90px] mx-auto translate-z-0 mb-2 ">
                   <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className="  " />
                 </div>
+                }
+
+                {countdown === 0 && 
+                  <motion.div 
+                    className="flex flex-col gap-3 justify-center items-center"
+                    initial={{ opacity: 0, scale: 0  , transition:{ duration:.4} }}
+                    animate={{ opacity: 1, scale: 1 , transition:{ duration:.4}}}
+                    exit={{ opacity: 0, scale: 0 , transition:{ duration:.4}}}
+                  >
+                    <div className="text-sm">線上人數過多有點塞車了 ! 請問你要：</div>
+                    <div className="flex items-center justify-center text-white  gap-1 bg-black px-4 py-2 rounded-full text-sm" onClick={restartCountdown}><MdEast />繼續等待</div>
+                    <div className="flex items-center justify-center text-white  gap-1 bg-black px-4 py-2 rounded-full text-sm" onClick={handleCloseClick}><MdKeyboardReturn />重新拍攝</div>
+                  </motion.div>}
                 {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
               </div>
               <img src={image} alt="" className=" blur-sm brightness-80 " />
@@ -299,20 +348,21 @@ function ReadyToTake({handleBackClick}) {
               // console.log(photo);
               setImage(photo);
               handleClick(photo)
+              startCountdown()
             }
           }} 
         > <MdPhotoCamera color="black" size={24}/>  </div>
          <div  className="hidden"
-         onClick={() => {
-            if (camera.current) {
-              const result = camera.current.getNumberOfCameras();
-              console.log(result);
-              setTestMsg({
-                getNumberOfCameras:result
-              })
-            }
-          }}
-         >test {testMsg?.getNumberOfCameras}</div>
+          onClick={() => {
+              if (camera.current) {
+                const result = camera.current.getNumberOfCameras();
+                console.log(result);
+                setTestMsg({
+                  getNumberOfCameras:result
+                })
+              }
+            }}
+          >test {testMsg?.getNumberOfCameras}</div>
       </div>
       {/* <div className=" absolute top-0 left-0"> {windowSize.height}</div> */}
       {/* <Control >
