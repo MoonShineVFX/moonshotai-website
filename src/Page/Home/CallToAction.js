@@ -49,11 +49,11 @@ function CallToAction() {
                 target={"_blank"} rel="noreferrer"
               >
                 <div className='p-3 md:p-4 bg-[#423EF5] text-base hover:bg-[#3532d6] text-zinc-200 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
-                  交流分享群組
+                  交流分享社群
                 </div> 
                 
               </a>
-              <div className='text-sm text-zinc-300 mt-2'>按此加入交流分享群組</div> 
+              <div className='text-sm text-zinc-300 mt-2'>按此加入交流分享社群</div> 
             </div>
 
            
