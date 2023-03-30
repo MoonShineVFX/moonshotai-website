@@ -47,7 +47,7 @@ function ReadyToTake({handleBackClick}) {
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [image, setImage] = useState(null);
   const [waitImage, setwaitImage] = useState(false);
-  const [ResultImage, setResultImage] = useState(null);
+  const [ResultImage, setResultImage] = useState('https://media-cdn.tripadvisor.com/media/photo-s/0c/bb/a3/97/predator-ride-in-the.jpg');
   const [shareMsg, setShareMsg] = useState("");
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
@@ -266,7 +266,7 @@ function ReadyToTake({handleBackClick}) {
         <div className="absolute top-0 left-0  w-full">
           <div className="absolute top-0 left-0 w-full h-[100vh] bg-black/60 z-10"></div>
           <motion.div 
-            className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 landscape:w-3/5 p-2 bg-black  rounded-lg"
+            className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 landscape:top-2 landscape:w-7/12 p-2 bg-black  rounded-lg"
             initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
             animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
             exit={{ opacity: 0 }}
@@ -281,7 +281,7 @@ function ReadyToTake({handleBackClick}) {
                     filter: blur ? "blur(10px)" : "none",
                     transition: blur ? "none" : "filter 0.3s ease-out"
                   }}/> 
-                  <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-2  w-1/2 left-1/2 -translate-x-1/2 rounded-full bg-black/60  border-black " onClick={()=>handleReRender()}>
+                  <div className="text-black flex items-center gap-2 mt-8 mb-1 justify-center flex-wrap text-sm absolute bottom-2  w-1/2 left-1/2 -translate-x-1/2  landscape: rounded-full bg-black/60  border-black " onClick={()=>handleReRender()}>
                     <div className="flex gap-2 items-center justify-center py-2">
                       {/* <div className=" flex items-center justify-center text-white  gap-1 hidden" onClick={()=>handleDownloadImage()}>  <MdDownload size={18} /></div> */}
                       <div className=" flex items-center justify-center text-white  gap-1" >  <MdRefresh size={18} /></div>
@@ -292,7 +292,7 @@ function ReadyToTake({handleBackClick}) {
                   </div>
                 </div>
                 
-                <div className=" text-white font-bold flex flex-col items-center my-6 text-xs"  onClick={handleShare}>
+                <div className=" text-white font-bold flex flex-col items-center my-6 text-xs landscape:absolute"  onClick={handleShare}>
                   <div>長按圖片以儲存或分享</div>
                   <div>Press & hold to download image.</div>
                 </div>
