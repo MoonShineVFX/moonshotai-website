@@ -20,7 +20,7 @@ function FrontPage({handleClick}) {
       className='min-h-[90svh] h-[100vh] relative landscape:bg-white'
     >
       <motion.div
-        className='min-h-[90svh] w-full aspect-[9/16] h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 landscape:bg-[center_top_-32rem]'
+        className='min-h-[90svh] w-full aspect-[9/16] h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 landscape:bg-[center_top_-32rem] '
         style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/Background.png'})`}}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -28,7 +28,7 @@ function FrontPage({handleClick}) {
       >
       </motion.div>
       <div class="bg-gradient-to-t from-black  absolute w-full h-[50vh] bottom-0"></div>
-      <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50 landscape:mb-12'>
+      <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50 landscape:mb-20 landscape:px-20 landscape:justify-center'>
         <motion.div 
           className='text-[3.2rem] font-black  leading-tight'
           initial={{ opacity: 0 }}
@@ -46,7 +46,7 @@ function FrontPage({handleClick}) {
         >開啟你的相機看看 AI 給你什麼驚喜吧！</motion.div>
         
         <motion.div 
-          className="text-white backdrop-blur-sm bg-white/30 border-1 border-white/80 shadow-[.7px_-.8px_6px_1px_rgba(255,255,255,0.9)]  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10"
+          className="text-white backdrop-blur-sm bg-white/30 border-1 border-white/80 shadow-[.7px_-.8px_6px_1px_rgba(255,255,255,0.9)]  font-medium rounded-full text-lg px-8 py-4 text-center  flex items-center justify-center gap-2  w-3/5 ml-auto mt-10 landscape:w-1/3"
           initial={{ opacity: 0, x: '-40px' }}
           animate={{ opacity: 1, x: 0  , transition:{delay:.5, duration:.8}}}
           exit={{ opacity: 0 }}

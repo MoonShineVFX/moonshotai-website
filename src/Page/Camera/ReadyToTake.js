@@ -259,7 +259,7 @@ function ReadyToTake({handleBackClick}) {
   const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
   return (
     <div className="min-h-[100svh] ">
-      <div className="absolute top-0 left-0 z-50">
+      <div className="absolute top-0 left-0 z-50 hidden">
         <p>目前螢幕方向：{isLandscape ? "橫式" : "直式"}</p>
       </div>
       {waitImage && 
