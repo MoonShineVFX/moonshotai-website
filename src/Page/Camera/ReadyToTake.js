@@ -47,7 +47,7 @@ function ReadyToTake({handleBackClick}) {
   const [numberOfCameras, setNumberOfCameras] = useState(0);
   const [image, setImage] = useState(null);
   const [waitImage, setwaitImage] = useState(false);
-  const [ResultImage, setResultImage] = useState('https://media-cdn.tripadvisor.com/media/photo-s/0c/bb/a3/97/predator-ride-in-the.jpg');
+  const [ResultImage, setResultImage] = useState(null);
   const [shareMsg, setShareMsg] = useState("");
   const [showFlashImage, setShowFlashImage] = useState(false);
   const camera = useRef(null);
