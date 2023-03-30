@@ -17,10 +17,10 @@ function FrontPage({handleClick}) {
   },[])
   return (
     <div 
-      className='min-h-[90svh] h-[100vh] relative '
+      className='min-h-[90svh] h-[100vh] relative landscape:bg-white'
     >
       <motion.div
-        className='min-h-[90svh] w-full aspect-[9/16] h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 '
+        className='min-h-[90svh] w-full aspect-[9/16] h-[100vh] bg-cover bg-center bg-no-repeat brightness-75 landscape:bg-[center_top_-32rem]'
         style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/camera_page/Background.png'})`}}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -28,7 +28,7 @@ function FrontPage({handleClick}) {
       >
       </motion.div>
       <div class="bg-gradient-to-t from-black  absolute w-full h-[50vh] bottom-0"></div>
-      <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50'>
+      <div className='absolute bottom-0 mb-32 flex flex-col w-full  justify-start px-5 z-50 landscape:mb-12'>
         <motion.div 
           className='text-[3.2rem] font-black  leading-tight'
           initial={{ opacity: 0 }}

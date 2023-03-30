@@ -55,6 +55,7 @@ function ReadyToTake({handleBackClick}) {
   const [countdown, setCountdown] = useState(15);
   const [timerId, setTimerId] = useState(null);
   const countdownRef = useRef(countdown);
+  const [isLandscape, setIsLandscape] = useState(false);
   const [testMsg, setTestMsg] = useState({
     getNumberOfCameras:""
   });
@@ -227,6 +228,7 @@ function ReadyToTake({handleBackClick}) {
       getNewGToken()
     });
     document.head.appendChild(script);
+
   }, []);
   useEffect(() => {
     if (countdown === 0) {
@@ -234,16 +236,37 @@ function ReadyToTake({handleBackClick}) {
       setTimerId(null);
     }
   }, [countdown, timerId]);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(orientation: landscape)");
+
+    function handleOrientationChange(mq) {
+      if (mq.matches) {
+        setIsLandscape(true);
+      } else {
+        setIsLandscape(false);
+      }
+    }
+
+    handleOrientationChange(mediaQuery);
+    mediaQuery.addListener(handleOrientationChange);
+
+    return () => {
+      mediaQuery.removeListener(handleOrientationChange);
+    };
+  }, []);
 
 
   const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
   return (
-    <div className="min-h-[100svh]">
+    <div className="min-h-[100svh] ">
+      <div className="absolute top-0 left-0 z-50">
+        <p>目前螢幕方向：{isLandscape ? "橫式" : "直式"}</p>
+      </div>
       {waitImage && 
         <div className="absolute top-0 left-0  w-full">
           <div className="absolute top-0 left-0 w-full h-[100vh] bg-black/60 z-10"></div>
           <motion.div 
-            className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 p-2 bg-black  rounded-lg"
+            className="  absolute top-5 left-1/2 -translate-x-1/2   z-50 w-11/12 landscape:w-3/5 p-2 bg-black  rounded-lg"
             initial={{ opacity: 0, scale: 0 ,x:'-50%' }}
             animate={{ opacity: 1, scale: 1 ,x:'-50%' , transition:{ duration:.4}}}
             exit={{ opacity: 0 }}
@@ -300,8 +323,8 @@ function ReadyToTake({handleBackClick}) {
                   </motion.div>}
                 {/* <div className="bg-white text-center text-black  mt-10  px-2 py-1 rounded-full perspective translate-z-0">已拍照片 等待 AI 結果..</div>  */}
               </div>
-              <img src={image} alt="" className=" blur-sm brightness-80 " />
-              <div className="bg-black text-center text-white  mt-10  px-2 py-1 rounded-full absolute top-0 z-50">AI 圖像生成中...</div> 
+              <img src={image} alt="" className=" blur-sm brightness-80  landscape:w-full" />
+              <div className="bg-black text-center text-white  mt-10 landscape:mt-5  px-2 py-1 rounded-full absolute top-0 z-50">AI 圖像生成中...</div> 
             </div>
             }
             
@@ -309,50 +332,46 @@ function ReadyToTake({handleBackClick}) {
         </div>
         
       }
-      <div> 
-      
-      </div>
-      <div className=" relative">
+    <div className="flex flex-col landscape:flex-row">
+      <div className=" relative w-full landscape:w-2/3">
         {showFlashImage && (
-          <div className=" absolute top-0  w-full h-full  z-50 bg-white   overflow-hidden">
+          <div className=" absolute top-0 w-full h-full z-50 bg-white overflow-hidden">
             <img
               src={process.env.PUBLIC_URL+'/images/camera_page/whiteflash4.png'}
               alt="Flash Image"
-              className="   scale-150 overflow-hidden"
+              className="scale-150 overflow-hidden"
               
             />
           </div>
         )}
-        <Camera ref={camera} aspectRatio={9/13} facingMode='environment'
-        />
-
+        {isLandscape ?<Camera ref={camera} aspectRatio={13/9} facingMode='environment'/> : <Camera ref={camera} aspectRatio={9/13} facingMode='environment'/>}
       </div>
-     <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
-      <div className="flex justify-center gap-7 my-4  p-2 rounded-xl items-center ">
+      <div className=" absolute top-5 left-5  " onClick={handleBackClick}><FaArrowLeft size={20} /></div>
+      <div className="flex flex-row  justify-center gap-7 my-4  p-2 rounded-xl items-center landscape:w-1/3 landscape:flex-row ">
         {/* <ImagePreview image={image} /> */}
-        <div 
-          className="flex items-center gap-3  rounded-full bg-zinc-600 p-5 "
-          onClick={() => {
-            if (camera.current) {
-              const result = camera.current.switchCamera();
-              console.log(result);
-            }
-          }}
-           
-        > <MdCameraswitch size={24}/> </div>
-        <div 
-          className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
-          onClick={() => {
-            if (camera.current) {
-              const photo = camera.current.takePhoto();
-              // console.log(photo);
-              setImage(photo);
-              handleClick(photo)
-              startCountdown()
-            }
-          }} 
-        > <MdPhotoCamera color="black" size={24}/>  </div>
-         <div  className="hidden"
+          <div 
+            className="flex items-center gap-3  rounded-full bg-zinc-600 p-5 "
+            onClick={() => {
+              if (camera.current) {
+                const result = camera.current.switchCamera();
+                console.log(result);
+              }
+            }}
+            
+          > <MdCameraswitch size={24}/> </div>
+          <div 
+            className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
+            onClick={() => {
+              if (camera.current) {
+                const photo = camera.current.takePhoto();
+                // console.log(photo);
+                setImage(photo);
+                handleClick(photo)
+                startCountdown()
+              }
+            }} 
+          > <MdPhotoCamera color="black" size={24}/>  </div>
+          <div  className="hidden"
           onClick={() => {
               if (camera.current) {
                 const result = camera.current.getNumberOfCameras();
@@ -364,28 +383,8 @@ function ReadyToTake({handleBackClick}) {
             }}
           >test {testMsg?.getNumberOfCameras}</div>
       </div>
-      {/* <div className=" absolute top-0 left-0"> {windowSize.height}</div> */}
-      {/* <Control >
-        <ImagePreview image={image} />
-        <TakePhotoButton
-          onClick={() => {
-            if (camera.current) {
-              const photo = camera.current.takePhoto();
-              console.log(photo);
-              setImage(photo);
-            }
-          }}
-        />
-        <ChangeFacingCameraButton
-          disabled={numberOfCameras <= 1}
-          onClick={() => {
-            if (camera.current) {
-              const result = camera.current.switchCamera();
-              console.log(result);
-            }
-          }}
-        />
-      </Control> */}
+    </div>
+    
     </div>
   )
 }
