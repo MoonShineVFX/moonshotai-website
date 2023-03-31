@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 function CallToAction() {
 
   return (
-    <div className='w-10/12 mx-auto  text-white relative  py-[10%] '>
+    <div className='w-10/12 mx-auto  text-white relative  my-36'>
       <div className='text-4xl text-center font-bold mb-20' data-aos="fade-up" data-aos-duration="1000">
         讓機器人幫你畫出你的想像
       </div>

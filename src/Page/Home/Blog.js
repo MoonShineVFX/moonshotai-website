@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import { MdArticle } from "react-icons/md";
 function Blog() {
   const mediumRssFeed = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@ai_72180"
-  const MAX_ARTICLES = 10;
+  const MAX_ARTICLES = 6;
   const [articles, setArticles] = useState();
   // 讀取 medium 文章
   useEffect(() => {
@@ -38,7 +38,7 @@ function Blog() {
                   <div className="text-xl font-bold my-3 text-white/90">
                     <a href={link} target="_blank" rel="noreferrer"  className='flex items-center gap-2 hover:text-white/80'> <MdArticle />{title}</a>
                   </div>
-                  <div className="text-sm my-1 text-white/50">{description.replace(/(<([^>]+)>)/ig,"").substr(0,120)}...</div>
+                  <div className="text-sm my-1 text-white/50">{description.replace(/(<([^>]+)>)/ig,"").substr(0,80)}...</div>
                   <div className="text-xs my-1 text-white/30">{pubDate.substr(0,10)}</div>
                 </div>
               </div>
