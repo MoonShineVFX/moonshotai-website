@@ -94,7 +94,7 @@ function Header() {
           <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
 
         </motion.div>
-        <div className=' absolute mx-auto bottom-5 left-0 right-0 flex-col items-center hidden md:flex'>
+        <div className=' absolute mx-auto bottom-5 left-0 right-0 flex-col items-center hidden md:hidden'>
           <div className='scroll-down '></div>
           <div className='text-xs text-zinc-400'>往下看更多介紹</div>
         </div>

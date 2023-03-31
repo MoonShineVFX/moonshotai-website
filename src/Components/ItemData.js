@@ -1,73 +1,47 @@
 export const headerImagesItem = [
-  {image:"p1.png"},
-  {image:"p2.png"},
-  {image:"p3.png"},
-  {image:"p4.png"},
-  {image:"p5.png"},
-  {image:"p6.png"},
-  {image:"p7.png"},
-  {image:"p8.png"},
-  {image:"p9.png"},
-  {image:"p10.png"},
-  {image:"p11.png"},
-  {image:"p12.png"},
-  {image:"p13.png"},
-  {image:"p14.png"},
-  {image:"p15.png"},
-  {image:"p16.png"},
-  {image:"p17.png"},
-  {image:"p18.png"},
-  {image:"p19.png"},
-  {image:"p20.png"},
-  {image:"p21.png"},
-  {image:"p22.png"},
-  {image:"p23.png"},
-  {image:"p24.png"},
-  {image:"p25.png"},
-  {image:"p26.png"},
-  {image:"p27.png"},
-  {image:"p28.png"},
-  {image:"p29.png"},
-  {image:"p30.png"},
-  {image:"p31.png"},
-  {image:"p32.png"},
-  {image:"p33.png"},
-  {image:"p34.png"},
-  {image:"p35.png"},
-  {image:"p36.png"},
-  {image:"p37.png"},
-  {image:"p38.png"},
-  {image:"p39.png"},
-  {image:"p40.png"},
-  {image:"p41.png"},
-  {image:"p42.png"},
-  {image:"p43.png"},
-  {image:"p44.png"},
-  {image:"p45.png"},
-  {image:"p46.png"},
-  {image:"p47.png"},
-  {image:"p48.png"},
-  {image:"p49.png"},
-  {image:"p50.png"},
-  {image:"p51.png"},
-  {image:"p52.png"},
-  {image:"p53.png"},
-  {image:"p54.png"},
-  {image:"p55.png"},
-  {image:"p56.png"},
-  {image:"p57.png"},
-  {image:"p58.png"},
-  {image:"p59.png"},
-  {image:"p60.png"},
-  {image:"p61.png"},
-  {image:"p62.png"},
-  {image:"p63.png"},
-  {image:"p64.png"},
-  {image:"p65.png"},
-  {image:"p66.png"},
-  {image:"p67.png"},
-  {image:"p68.png"},
-  {image:"p69.png"},
+  {image:"p1.jpg"},
+  {image:"p2.jpg"},
+  {image:"p3.jpg"},
+  {image:"p4.jpg"},
+  {image:"p5.jpg"},
+  {image:"p6.jpg"},
+  {image:"p7.jpg"},
+  {image:"p8.jpg"},
+  {image:"p9.jpg"},
+  {image:"p10.jpg"},
+  {image:"p11.jpg"},
+  {image:"p12.jpg"},
+  {image:"p13.jpg"},
+  {image:"p14.jpg"},
+  {image:"p15.jpg"},
+  {image:"p16.jpg"},
+  {image:"p17.jpg"},
+  {image:"p18.jpg"},
+  {image:"p19.jpg"},
+  {image:"p20.jpg"},
+  {image:"p21.jpg"},
+  {image:"p22.jpg"},
+  {image:"p23.jpg"},
+  {image:"p24.jpg"},
+  {image:"p25.jpg"},
+  {image:"p26.jpg"},
+  {image:"p27.jpg"},
+  {image:"p28.jpg"},
+  {image:"p29.jpg"},
+  {image:"p30.jpg"},
+  {image:"p31.jpg"},
+  {image:"p32.jpg"},
+  {image:"p33.jpg"},
+  {image:"p34.jpg"},
+  {image:"p35.jpg"},
+  {image:"p36.jpg"},
+  {image:"p37.jpg"},
+  {image:"p38.jpg"},
+  {image:"p39.jpg"},
+  {image:"p40.jpg"},
+  {image:"p41.jpg"},
+  {image:"p42.jpg"},
+
 ]
 
 export const workitems = [
@@ -198,5 +172,135 @@ export const workitems3 = [
     title:"翻譯", 
     message:"翻譯 如何做出好吃的威靈頓牛排" ,
     answer:"How to make delicious Wellington steak",
+  }
+]
+
+
+export const newVerWorkItem = [
+  {id:1,title:"寫實 PR",      
+    message1:"指令範例: PR a cheese burger" ,message2:"   " ,                       
+    image1:'pr01.png',image2:'pr02.png'
+  },
+  {id:2,title:"插畫 CT",      
+    message1:"指令範例: CT spacebase,spaceship,outerspace" ,message2:"" ,                       
+    image1:'ct01.png',image2:'ct02.png'
+  },
+  {id:3,title:"漫畫 CM",      
+    message1:"指令範例: CM girl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful" ,message2:"線條較粗的動漫風格" ,                       
+    image1:'cm01.png',image2:'cm02.png'
+  },
+  {id:5,title:"寫實人像 PC",    
+    message1:"指令範例: PC wasteland,dusty,Broken glass,exploding,building" ,message2:"漂亮精緻的人物，尤其是女性的臉部會特別好看。" ,                       
+    image1:'pc01.png',image2:'pc02.png',
+    pro:true
+  }
+]
+export const newVerWorkItem2 = [
+  {id:1,title:"物件 Element",  
+    images:[
+      {
+        img:"e_pr01.png",
+        title:"寫實 PR",
+        description:'指令範例: PR a cheese burger'
+      },
+      {
+        img:"e_ct01.png",
+        title:"插畫 CT",
+        description:'指令範例: CT spacebase,spaceship,outerspace'
+      },
+      {
+        img:"e_cm01.png",
+        title:"漫畫 CM",
+        description:'指令範例: CM girl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful'
+      }
+    ]
+  },
+  {id:2,title:"場景 Scene",      
+    images:[
+      {
+        img:"s_pr01.png",
+        title:"寫實 PR",
+        description:'指令範例: PR a cheese burger'
+      },
+      {
+        img:"s_ct01.png",
+        title:"插畫 CT",
+        description:'指令範例: CT spacebase,spaceship,outerspace'
+      },
+      {
+        img:"s_cm01.png",
+        title:"漫畫 CM",
+        description:'指令範例: CM girl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful'
+      }
+    ]
+  },
+  {id:3,title:"人物 Charater",      
+    images:[
+      {
+        img:"c_pr01.png",
+        title:"寫實 PR",
+        description:'指令範例: PR a cheese burger'
+      },
+      {
+        img:"c_ct01.png",
+        title:"插畫 CT",
+        description:'指令範例: CM girl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful'
+      },
+      {
+        img:"c_cm01.png",
+        title:"漫畫 CM",
+        description:'指令範例: CM girl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful'
+      }
+    ]
+  }
+]
+
+export const ver2LineItem = [
+  {
+    id:1,
+    title:"以字生圖",
+    mode:'text',
+    slogan:"你可以\n讓 Moonshot 幫你畫圖",
+    prompt_cht:"寫實 廣角，魚眼，城市，雪景",
+    prompt_en:"PR wide angle lens,fisheye lens,a city, snow scenes",
+
+    steps:[
+      {
+        title:'Step1 輸入指令',
+      },
+      {
+        title:'Step2 等待生圖',
+      }
+    ],
+    images:[
+      "step01/p01.jpeg",
+      "step01/p02.jpeg",
+      "step01/p03.jpeg",
+    ]
+  },
+  {
+    id:2,
+    title:"以圖生圖",
+    mode:'image',
+    slogan:"也可以\n利用參考圖來延伸做畫",
+    prompt_cht:"參考漫畫 女孩,戶外,淡粉色鮑伯頭,單寧吊帶,極度細節和美麗",
+    prompt_en:"PR irl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful",
+    steps:[
+      {
+        title:'Step1 上傳圖片',
+      },
+      {
+        title:'Step2 輸入指令',
+      },
+      {
+        title:'Step3 等待生圖',
+      }
+    ],
+    refimg:"step02/refimg.jpg",
+    images:[
+      "step02/p01.jpeg",
+      "step02/p02.jpeg",
+      "step02/p03.jpeg",
+    ]
   }
 ]

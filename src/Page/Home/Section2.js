@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react'
 import { workitems,workitems2,workitems3 } from '../../Components/ItemData'
 import { TextMode,ImageMode,EtcMode } from '../../Components/ModeItems';
 import { AnimatePresence,motion } from "framer-motion";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+
 function Section2() {
   const [data,setData] = useState(workitems)
   const [currentDataIndex , setCurrentDataIndex] = useState(0)
@@ -55,7 +57,7 @@ function Section2() {
   },[])
   return (
     <div className='my-16 w-11/12 mx-auto md:w-[460px]'>
-      <AnimatePresence initial={false}> 
+      <AnimatePresence > 
         <motion.div 
         initial={{ opacity: 0,y:'15' }}
         animate={{ opacity: 1,y:0 }}
@@ -78,18 +80,23 @@ function Section2() {
                 <div
                   key={'m'+index} 
                   onClick={()=>{handleClickMenu(item.mode,index)}}
-                  className={' hover:bg-[#324567]  text-white w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentItem === index ? ' bg-[#324567]'  : ' bg-[#273145]' )}
+                  className={' hover:bg-[#8CABD8]  text-white w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentItem === index ? ' bg-[#8CABD8]'  : ' bg-[#273145]' )}
                 >{item.title}</div>
               )
             })
           }
         </div>
         <div id="chat" className="mx-auto w-full">
-          <div className=" rounded-md bg-[#232F46]">
+          <div className=" rounded-md bg-[#8CABD8]">
+            <div className='flex items-center  p-2 gap-2'>
+
+              <div className=' text-md font-bold flex items-center'> <MdKeyboardArrowLeft size={28} /> Moonshot</div>
+              
+            </div>
             <div>
               <div className="w-full">
                 <div className="relative  p-3 overflow-y-auto h-[32rem] flex items-end w-full  mb-3">
-                 
+                  
                   {( ()=>{
                     switch (mode) {
                       case 'image':
