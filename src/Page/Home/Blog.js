@@ -17,7 +17,7 @@ function Blog() {
     loadArticles();
     }, [MAX_ARTICLES]);
   return (
-    <div className='text-white my-28 w-9/12 mx-auto'>
+    <div className='text-white my-36 w-9/12 mx-auto'>
       <div className='text-4xl text-center font-bold mb-20'>最新消息 <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'>News</span></div>
       <div className="jsonContent flex gap-10 flex-col md:flex-row">
         {

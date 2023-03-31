@@ -11,7 +11,7 @@ function Section3() {
     setCurrentDataIndex(id)
   }
   return (
-    <div className='text-white my-28 w-11/12 mx-auto'>
+    <div className='text-white my-36 w-11/12 mx-auto'>
       <div className='text-4xl text-center font-bold mb-20'>Make Your <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'>Own Creation</span></div>
       {newVerWorkItem2 && <div className='flex flex-col md:flex-row justify-center gap-4'>
         {
