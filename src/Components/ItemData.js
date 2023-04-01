@@ -261,7 +261,7 @@ export const ver2LineItem = [
     title:"以字生圖",
     mode:'text',
     slogan:"你可以\n讓 Moonshot 幫你畫圖",
-    prompt_cht:"寫實 廣角，魚眼，城市，雪景",
+    prompt_cht:"寫實 廣角,魚眼,城市,雪景",
     prompt_en:"PR wide angle lens,fisheye lens,a city, snow scenes",
 
     steps:[
