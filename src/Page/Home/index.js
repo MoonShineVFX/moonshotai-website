@@ -7,6 +7,7 @@ import CallToAction from './CallToAction';
 import Section3 from './Section3';
 import Section2_ver2 from './Section2_ver2';
 import Blog from './Blog';
+import Section1_ver2 from './Section1_ver2';
 import { AnimatePresence,motion } from "framer-motion";
 function Modal(props) {
   return (
@@ -69,7 +70,7 @@ function Index() {
       <Section2_ver2 />
       <Section3 />
       
-      <Section1 />
+      <Section1_ver2 />
       <Blog />
       <CallToAction />
       <Footer openModal={openModal}/>

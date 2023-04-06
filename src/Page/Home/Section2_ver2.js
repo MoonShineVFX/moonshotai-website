@@ -39,23 +39,25 @@ function Section2_ver2() {
 
 
   return (
-    <div className='my-16 w-11/12 mx-auto md:w-[460px]'>
-      <AnimatePresence > 
-        <motion.div 
-        initial={{ opacity: 0,y:'15' }}
-        animate={{ opacity: 1,y:0 }}
-        exit={{ opacity: 0,y:'15' }}
-        transition={{
-          ease: "easeInOut",
-          duration: .6,
-          delay: 0.5,
-        }}
-        className='text-3xl font-extrabold mb-10 text-white break-all  whitespace-pre-wrap'>
-          {ver2LineItem[currentDataIndex].slogan}
-        </motion.div>
-      </AnimatePresence>
+    <div className='my-16 w-11/12 mx-auto  flex flex-col md:flex-row items-center justify-center gap-20'>
+      <motion.div 
+      className='mb-2 text-white break-all  whitespace-pre-wrap w-full flex flex-col justify-center items-center block md:hidden'>
+        <div className='text-5xl md:text-5xl text-center font-bold mb-3 text-white'>
+          Let 
+          <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Moonshot </span>
+          <div className=' md:indent-32'>
+            <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Create </span>For You
+          </div>  
+        </div>
+        <div className='text-white/70 text-lg text-left'>
+          {ver2LineItem[currentDataIndex].slogan2}
+        </div>
+        <div className='my-2'>
+          {ver2LineItem[currentDataIndex].description}
+        </div>
 
-      <div className='flex flex-col '>
+      </motion.div>
+      <div className='flex flex-col w-11/12 md:w-[460px]'>
         <div id="menu" className='flex justify-start gap-1  pb-1'>
           {
             ver2LineItem.map((item,index)=>{
@@ -93,6 +95,30 @@ function Section2_ver2() {
           </div>
         </div>
       </div>
+      <motion.div 
+      initial={{ opacity: 0}}
+      animate={{ opacity: 1}}
+      transition={{
+        ease: "easeInOut",
+        duration: .6,
+        delay: 0.5,
+      }}
+      className='mb-10 text-white break-all  whitespace-pre-wrap w-1/2  flex-col justify-center items-center hidden md:flex'>
+        <div className='text-5xl text-center font-bold mb-3 text-white'>
+          Let 
+          <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Moonshot </span>
+          <div className=' indent-32'>
+            <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Create </span>For You
+          </div>  
+        </div>
+        <div className='text-white/70 text-xl text-left'>
+          {ver2LineItem[currentDataIndex].slogan2}
+        </div>
+        <div className='my-14'>
+          {ver2LineItem[currentDataIndex].description}
+        </div>
+
+      </motion.div>
                 
       
     </div>

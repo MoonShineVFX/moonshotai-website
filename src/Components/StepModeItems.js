@@ -81,7 +81,9 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
       <div className='flex justify-between w-full items-center'>  
         <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
         <div className='flex gap-2 items-center'>
-          <div onClick={()=>{ 
+          <div 
+          className=' cursor-pointer'
+          onClick={()=>{ 
             setShowFirst(false) 
             setShowSecond(false) }} >
             <MdReplay size={18}/>
@@ -223,7 +225,9 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
         <div className='flex justify-between w-full items-center'>  
           <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
           <div className='flex gap-2 items-center'>
-            <div onClick={()=>{ 
+            <div 
+              className=' cursor-pointer'
+              onClick={()=>{ 
               setShowFirst(false) 
               setShowSecond(false) 
               setShowThird(false) 
