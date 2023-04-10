@@ -39,7 +39,9 @@ function Section2_ver2() {
 
 
   return (
-    <div className='my-16 w-11/12 mx-auto  flex flex-col md:flex-row items-center justify-center gap-20'>
+    <div className='bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-black-600 '>
+
+    <div className='py-28 w-11/12 mx-auto  flex flex-col md:flex-row items-center justify-center gap-20 '>
       <motion.div 
       className='mb-2 text-white break-all  whitespace-pre-wrap w-full flex flex-col justify-center items-center block md:hidden'>
         <div className='text-5xl md:text-5xl text-center font-bold mb-3 text-white'>
@@ -65,20 +67,20 @@ function Section2_ver2() {
                 <div
                   key={'m'+index} 
                   onClick={()=>{handleClick(item.mode,index)}}
-                  className={' hover:bg-[#8CABD8] hover:text-black   w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentDataIndex === index ? ' text-black bg-[#8CABD8]'  : ' text-white/40 bg-[#273145]' )}
+                  className={' hover:bg-white hover:text-black   w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentDataIndex === index ? ' text-black bg-white'  : ' text-white/70 bg-zinc-700' )}
                 >{item.title}</div>
               )
             })
           }
         </div>
-        <div id="chat" className="mx-auto w-full">
-          <div className=" rounded-md bg-[#8CABD8]">
-            <div className='flex items-center  p-2 gap-2'>
+        <div id="chat" className="mx-auto w-full ">
+          <div className=" rounded-md bg-black/15">
+            <div className='flex items-center  p-2 gap-2 bg-white rounded-t-lg'>
 
-              <div className=' text-md font-bold flex items-center'> <MdKeyboardArrowLeft size={28} />   Moonshot</div>
+              <div className=' text-md font-bold flex items-center '> <MdKeyboardArrowLeft size={28} />   Moonshot</div>
               
             </div>
-            <div>
+            <div className=''>
               {( ()=>{
                   switch (mode) {
                     case 'text':
@@ -121,6 +123,7 @@ function Section2_ver2() {
       </motion.div>
                 
       
+    </div>
     </div>
   )
 }

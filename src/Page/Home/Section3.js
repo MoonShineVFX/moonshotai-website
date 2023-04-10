@@ -12,7 +12,7 @@ function Section3() {
   }
   return (
     <div className='text-white my-36 w-11/12 mx-auto'>
-      <div className='text-4xl text-center font-bold mb-20'>Make Your <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'>Own Creation</span></div>
+      <div className='text-4xl text-center font-bold mb-8'>Make Your <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'>Own Creation</span></div>
       {newVerWorkItem2 && <div className='flex flex-col md:flex-row justify-center gap-4'>
         {
           newVerWorkItem2.map((item,index)=>{
@@ -21,7 +21,7 @@ function Section3() {
               <div 
                 key={'new'+id} 
                 onClick={()=>{handleClick(index)}}
-                className={'bg-zinc-800 py-2 px-5 rounded-full text-sm transition-all cursor-pointer hover:text-black hover:bg-[#BDDE48] relative'  + (currentDataIndex === index ? ' bg-[#BDDE48] text-black'  : ' bg-[#273145] text-white/60' )}>
+                className={' py-2 px-5 rounded-full text-sm transition-all cursor-pointer hover:text-black hover:bg-[#BDDE48] relative '  + (currentDataIndex === index ? ' bg-[#BDDE48] text-black'  : ' bg-zinc-700 text-white/60' )}>
                   {title}
                   {pro && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1  rotate-12 " + (currentDataIndex === index ? '  text-rose-400 '  : '  text-rose-400' )}>PRO</div> }
               </div>
@@ -32,7 +32,7 @@ function Section3() {
 
       }
       <AnimatePresence mode="wait"  initial={false} > 
-      <motion.div  className='flex flex-col md:flex-row items-start justify-center gap-10 my-20 w-10/12 mx-auto relative min-h-[400px] ' key={'item'+newVerWorkItem2[currentDataIndex].id}>
+      <motion.div  className='flex flex-col md:flex-row items-start justify-center gap-10 my-32 w-10/12 mx-auto relative min-h-[400px] ' key={'item'+newVerWorkItem2[currentDataIndex].id}>
       {
         newVerWorkItem2 &&
           

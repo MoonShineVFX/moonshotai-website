@@ -121,8 +121,13 @@ body{
   50% { transform: scale(1.1, 0.9); }
   75% { transform: scale(0.95, 1.05); }
 }
-
-
+.fp-watermark{
+  display: none;
+}
+#fp-nav ul li a span, 
+.fp-slidesNav ul li a span{
+  background: #cccccc !important;
+}
 // @media screen and (orientation: landscape) {
 //   body {
 //     transform: rotate(90deg);

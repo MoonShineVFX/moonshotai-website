@@ -44,7 +44,7 @@ function Header() {
   return (
     <div className='flex flex-col md:flex-row'>
 
-      <div className='w-full md:w-1/2 md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl ' ref={vantaRef}>
+      <div className='w-full md:w-1/2 md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#49531F]   to-black-600 ' ref={vantaRef}>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
           animate={{ opacity: 1,y:0 }}
@@ -54,12 +54,14 @@ function Header() {
             delay: 0.5,
           }}
         >
-          <div className='flex flex-row items-center mx-auto w-[350px] my-20 md:my-36 '>
+          <div className='flex flex-row items-center mx-auto w-[400px] my-20 md:my-36 '>
             <div className='w-[100px] mr-5 hover:translate-y-[1px] cursor-pointer '>
               <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='min-w-[80px] rounded-full aspect-square'/>
             </div>
             <div className='w-4/5 text-justify flex flex-col '>
-              <div className='text-5xl font-black mb-3'>Moonshot</div>
+              <div className='text-5xl font-black mb-3'>
+                <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
+              </div>
               <div className=' text-white text-justify w-full tracking-[0.2rem]'>讓機器人幫你畫出你的想像</div>
             </div>
           </div>
@@ -94,7 +96,7 @@ function Header() {
           <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
 
         </motion.div>
-        <div className=' absolute mx-auto bottom-5 left-0 right-0 flex-col items-center hidden md:hidden'>
+        <div className=' absolute mx-auto bottom-5 left-0 right-0 flex-col items-center hidden md:flex'>
           <div className='scroll-down '></div>
           <div className='text-xs text-zinc-400'>往下看更多介紹</div>
         </div>

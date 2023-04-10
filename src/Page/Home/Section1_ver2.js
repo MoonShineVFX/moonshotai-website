@@ -9,7 +9,7 @@ function Section1_ver2() {
         <Step>
           <div className='flex flex-col  justify-center items-center'>
             <div className='text-2xl text-center font-bold mb-10 text-white'>STEP 1</div>
-            <div>
+            <div className='w-4/5'>
               <img src={process.env.PUBLIC_URL+'/images/ver2_images/howtojoin/linestep01.png'} alt="" />
             </div>
           </div>
@@ -17,7 +17,7 @@ function Section1_ver2() {
         <Step>
           <div className='flex flex-col  justify-center items-center'>
             <div className='text-2xl text-center font-bold mb-10 text-white'>STEP 2</div>
-            <div>
+            <div className='w-4/5'>
               <img src={process.env.PUBLIC_URL+'/images/ver2_images/howtojoin/linestep02.png'} alt="" />
             </div>
           </div>
@@ -25,7 +25,7 @@ function Section1_ver2() {
         <Step>
           <div className='flex flex-col  justify-center items-center'>
             <div className='text-2xl text-center font-bold mb-10 text-white'>STEP 3</div>
-            <div>
+            <div className='w-4/5'>
               <img src={process.env.PUBLIC_URL+'/images/ver2_images/howtojoin/linestep03.png'} alt="" />
             </div>
           </div>

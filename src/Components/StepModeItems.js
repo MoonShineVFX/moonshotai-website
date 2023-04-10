@@ -19,11 +19,11 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
     return () => clearTimeout(timeout);
   }, [showFirst]);
   return (
-    <div className="w-full">
-      <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end w-full mb-3">
+    <div className="w-full ">
+      <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end w-full  border-x-2">
         <ul className="space-y-4 pt-32 ">
           {/* 訊息內容 */}
-          {currentStep === 0 && <div className='text-black/40 text-center pr-3 '>等待指令中..</div> }
+          {currentStep === 0 && <div className='text-white/60 text-center pr-3 '>等待指令中..</div> }
           {showFirst && 
             <motion.li 
               className="flex justify-end "
@@ -37,7 +37,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
             >
               <div className=' '>
                 <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
-                <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
+                <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-white rounded-2xl shadow">
                   <span className="block">{data.prompt_cht}</span>
                 </div>
               </div>
@@ -55,8 +55,8 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-left text-zinc-700 text-xs font-bold mb-2 flex items-center gap-2'>
-                  <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='w-[25px] rounded-full aspect-square'/>
+                <div className='relative max-w-xl text-left text-zinc-200 text-xs font-bold mb-2 flex items-center gap-2'>
+                  <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='w-[25px] rounded-full aspect-square '/>
                   Moonshot
                 </div>
                 <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
@@ -77,7 +77,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
 
         </ul>
       </div>
-      <div className="flex  justify-center w-full p-3 border-t border-gray-600 gap-2"> 
+      <div className="flex  justify-center w-full p-3  gap-2 bg-white rounded-b-lg"> 
       <div className='flex justify-between w-full items-center'>  
         <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
         <div className='flex gap-2 items-center'>
@@ -90,7 +90,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
           </div>
           <div 
             onClick={()=>{handleClickStep(1)}} 
-            className={'bg-white  text-center px-4 py-2 text-black  rounded-3xl cursor-pointer flex items-center  justify-center relative' }>
+            className={'bg-white  text-center px-4 py-2 text-black pr-2  rounded-full cursor-pointer flex items-center  justify-center relative border border-zinc-300' }>
               <MdSend size={18}/>
               {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                 <span class="relative flex h-3 w-3">
@@ -146,10 +146,10 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
   }, [showFirst, showSecond]);
   return (
     <div className="w-full">
-      <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end  mb-3">
+      <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end  border-x-2">
         <ul className="space-y-3">
           {/* 訊息內容 */}
-          {currentStep === 0 && <div className='text-black/40 text-center flex justify-center pr-3'>等待指令中..</div> }
+          {currentStep === 0 && <div className='text-white/60 text-center flex justify-center pr-3'>等待指令中..</div> }
           {showFirst && 
             <motion.li 
               className="flex justify-end "
@@ -221,7 +221,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
           }
         </ul>
       </div>
-      <div className="flex  justify-center w-full p-2 border-t border-gray-600 gap-2"> 
+      <div className="flex  justify-center w-full p-2 gap-2 bg-white rounded-b-lg"> 
         <div className='flex justify-between w-full items-center'>  
           <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
           <div className='flex gap-2 items-center'>
@@ -236,7 +236,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
             </div>
             <div 
               onClick={()=>{handleClickStep(1)}} 
-              className={'bg-white  text-center px-4 py-2 text-black  rounded-3xl cursor-pointer flex items-center  justify-center relative' }>
+              className={'bg-white  text-center px-4 py-2 pr-2 text-black  rounded-3xl cursor-pointer flex items-center  justify-center relative border border-zinc-300' }>
                 <MdSend size={18}/>
                 {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                   <span class="relative flex h-3 w-3">

@@ -5,14 +5,11 @@ function CallToAction() {
 
   return (
     <div className='w-10/12 mx-auto  text-white relative  my-36'>
-      <div className='text-4xl text-center font-bold mb-20' data-aos="fade-up" data-aos-duration="1000">
+      <div className='text-4xl text-center font-bold mb-20' >
         讓機器人幫你畫出你的想像
       </div>
       <div className='  flex justify-center flex-col gap-8 md:flex-row' >
-        <div
-          data-aos="fade-up"
-          data-aos-duration="1000"
-        >
+        <div>
           <div className='flex items-center gap-4 md:gap-8 ext-lg flex-col justify-center'>
             <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_b.png'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
             <div className='flex flex-col items-center justify-center '>
@@ -34,11 +31,7 @@ function CallToAction() {
           </div>
 
         </div>
-        <div
-          data-aos="fade-up"
-          data-aos-delay="300"
-          data-aos-duration="1000"
-        >
+        <div>
           <div className='flex items-center gap-4 md:gap-8 ext-lg flex-col justify-center mt-7 md:mt-0'>
             <div className=' mx-auto mb-4'><img src={process.env.PUBLIC_URL+'/images/lineqr2.jpg'} alt="" className='max-w-[120px] min-w-[60px]' /></div>
             <div className='flex flex-col items-center justify-center '>

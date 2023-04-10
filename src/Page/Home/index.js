@@ -1,4 +1,5 @@
 import React ,{ useState } from 'react'
+import ReactFullpage from '@fullpage/react-fullpage';
 import Header from "./Header";
 import Footer from "./Footer";
 import Section1 from "./Section1";
@@ -8,6 +9,7 @@ import Section3 from './Section3';
 import Section2_ver2 from './Section2_ver2';
 import Blog from './Blog';
 import Section1_ver2 from './Section1_ver2';
+import Section4 from './Section4';
 import { AnimatePresence,motion } from "framer-motion";
 function Modal(props) {
   return (
@@ -51,7 +53,7 @@ function Modal(props) {
 
 function Index() {
   const [showModal, setShowModal] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState('');
   const openModal = () => {
     console.log('123')
     setShowModal(true);
@@ -61,20 +63,51 @@ function Index() {
     setShowModal(false);
   };
   return (
-    <div id="home">
-      <AnimatePresence>
-        <Modal show={showModal} onClose={closeModal} content="This is the content of the modal." />
-      </AnimatePresence>
-      
-      <Header />
-      <Section2_ver2 />
-      <Section3 />
-      
-      <Section1_ver2 />
-      <Blog />
-      <CallToAction />
-      <Footer openModal={openModal}/>
-    </div>
+    <ReactFullpage
+      //fullpage options
+      licenseKey = {'VKGDI-QLS3J-S8IPJ-NAEY6-JXCCJ'}
+      navigation
+      scrollingSpeed = {600} /* Options here */
+      onLeave={(section, origin, destination, direction)=>{
+        console.log(origin.index)
+        setCurrentPage(origin.index)
+      }}
+      render={({ state, fullpageApi }) => {
+        return (
+          <ReactFullpage.Wrapper>
+            <AnimatePresence>
+              <Modal show={showModal} onClose={closeModal}  />
+            </AnimatePresence>
+            <div className="section">
+
+              <Header />
+            </div>
+            <div className="section">
+              <Section2_ver2 />
+            </div>
+            <div className="section">
+              <Section3 />
+            </div>
+            <div className="section">
+              <Section1_ver2 />
+            </div>
+            <div className="section ">
+              <Blog />
+            </div>
+            <div className="section">
+            <Section4 />
+            </div>
+            <div className="section ">
+     
+              <CallToAction />
+              <Footer openModal={openModal}/>
+            </div>
+
+            
+          </ReactFullpage.Wrapper>
+        )
+      }}
+    />
   )
 }
 

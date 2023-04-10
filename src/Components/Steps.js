@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 import { MdKeyboardArrowLeft,MdKeyboardArrowRight,MdCheck } from "react-icons/md";
-
+import { motion } from "framer-motion";
 
 function Steps({children}) {
   const [currentStep, setCurrentStep] = useState(0);
   const stepsCount = React.Children.count(children);
+  const variants = {
+    hidden: {
+      opacity: 0,
+      x: 20,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: 'spring',
+        stiffness: 260,
+        damping: 20,
+      },
+    },
+  };
   return (
     <div className='flex  flex-col relative items-center'>
 
@@ -14,33 +29,64 @@ function Steps({children}) {
         });
       })}
 
-      <div className=' absolute md:flex  justify-between w-3/4 top-1/2 px-32 items-center hidden '>
+      <div className=' absolute md:flex  justify-between w-3/4 top-1/2 -translate-y-1/2 px-32 items-center hidden '>
         {currentStep > 0 ? 
-          <button 
+          <motion.button 
+            initial={{ opacity: 0,x:0 }}
+            animate={{ opacity: 1,x:0 }}
+            transition={{
+              ease: "easeInOut",
+              duration: .6,
+              delay: 0.1,
+            }}
             className='text-white bg-[#BDDE48] p-4 rounded-full '
             onClick={() => setCurrentStep(currentStep - 1)} disabled={currentStep === 0}>
             <MdKeyboardArrowLeft size={32} color={'black'}/>
-          </button>
+          </motion.button>
           :     
-          <div className='text-4xl font-bold text-white  gap-2 w-[120px] ' data-aos="fade" data-aos-duration="1000">
+          <motion.div 
+            initial={{ opacity: 0,x:0 }}
+            animate={{ opacity: 1,x:0 }}
+            transition={{
+              ease: "easeInOut",
+              duration: .6,
+              delay: 0.1,
+            }}
+
+            className='text-4xl font-bold text-white  gap-2 w-[220px] '>
           How To  
           <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Join </span> 
           Moonshot
-          </div>
+          </motion.div>
         }
         {
           currentStep === stepsCount - 1 ? 
-          <div className='text-4xl font-bold text-white  gap-2 w-[200px] ' data-aos="fade" data-aos-duration="1000">
+          <motion.div 
+            initial={{ opacity: 0,x:0 }}
+            animate={{ opacity: 1,x:0 }}
+            transition={{
+              ease: "easeInOut",
+              duration: .6,
+              delay: 0.1,
+            }}
+            className='text-4xl font-bold text-white  gap-2 w-[200px] '>
           Enjoy your
           <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> AI </span> 
           journey !
-          </div>
+          </motion.div>
           :
-          <button
+          <motion.button
+            initial={{ opacity: 0,x:0 }}
+            animate={{ opacity: 1,x:0 }}
+            transition={{
+              ease: "easeInOut",
+              duration: .6,
+              delay: 0.1,
+            }}
             className='text-white bg-[#BDDE48] p-4 rounded-full'
             onClick={() => setCurrentStep(currentStep + 1)} disabled={currentStep === stepsCount - 1}>
             <MdKeyboardArrowRight size={32} color={'black'}/>
-          </button>
+          </motion.button>
         }
 
 
