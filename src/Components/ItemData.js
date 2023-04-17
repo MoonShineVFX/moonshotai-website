@@ -261,7 +261,7 @@ export const ver2LineItem = [
     title:"以字生圖",
     mode:'text',
     slogan:"你可以\n讓 Moonshot 幫你畫圖",
-    slogan2:"延伸想像力，圖像思考也ok。",
+    slogan2:"簡單好上手，用文字建構畫面。",
     description:"STEP 1 選擇以字生圖\nSTEP 2 輸入欲生成圖片情境的關鍵字",
     prompt_cht:"寫實 廣角,魚眼,城市,雪景",
     prompt_en:"PR wide angle lens,fisheye lens,a city, snow scenes",
@@ -285,9 +285,9 @@ export const ver2LineItem = [
     title:"以圖生圖",
     mode:'image',
     slogan:"也可以\n利用參考圖來延伸做畫",
-    slogan2:"簡單好上手，用文字建構畫面。",
+    slogan2:"用圖片延伸想像力，圖像思考也沒問題！",
     description:"STEP 1 選擇以圖生圖\nSTEP 2 上傳圖片\nSTEP 3 輸入欲生成圖片情境的關鍵字",
-    prompt_cht:"參考漫畫 女孩,戶外,淡粉色鮑伯頭,單寧吊帶,極度細節和美麗",
+    prompt_cht:"參考漫畫 粉紅色鮑伯頭女孩穿著單寧吊帶在公園",
     prompt_en:"PR irl,outdoors,pale pink bob hair,denim suspenders,an extremely delicate and beautiful",
     steps:[
       {

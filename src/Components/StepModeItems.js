@@ -1,30 +1,41 @@
 import React,{useState,useEffect} from 'react'
 import { AnimatePresence,motion } from "framer-motion";
 import { MdSend,MdReplay } from "react-icons/md";
+import TypingEffect from './TypingEffect';
 export const TextSteoMode1 = ({data,currentDataIndex})=>{
   const [currentStep, setCurrentStep] = useState(0);
   const [showFirst, setShowFirst] = useState(false);
   const [showSecond, setShowSecond] = useState(false);
+  const [showThird, setShowThird] = useState(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const handleClickStep = (step)=>{
     setCurrentStep(step)
     setShowFirst(true);
   }
+  const handleTypingComplete = () => {
+    setIsTypingComplete(true);
+  };
   useEffect(() => {
     let timeout;
     if (showFirst) {
+      // timeout = setTimeout(() => {
+      //   setShowSecond(true);
+      // }, 1500);
+    }
+    if(isTypingComplete){
       timeout = setTimeout(() => {
         setShowSecond(true);
       }, 1500);
     }
     return () => clearTimeout(timeout);
-  }, [showFirst]);
+  }, [showFirst,isTypingComplete]);
   return (
     <div className="w-full ">
       <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end w-full  border-x-2">
         <ul className="space-y-4 pt-32 ">
           {/* 訊息內容 */}
           {currentStep === 0 && <div className='text-white/60 text-center pr-3 '>等待指令中..</div> }
-          {showFirst && 
+          {isTypingComplete && 
             <motion.li 
               className="flex justify-end "
               initial={{ opacity: 0,x:0 }}
@@ -79,7 +90,11 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
       </div>
       <div className="flex  justify-center w-full p-3  gap-2 bg-white rounded-b-lg"> 
       <div className='flex justify-between w-full items-center'>  
-        <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
+        <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
+          {
+            showFirst ? <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete} /> : <div className='animate-fade-loop'>_</div>
+          } 
+        </div>
         <div className='flex gap-2 items-center'>
           <div 
           className=' cursor-pointer'
@@ -123,10 +138,14 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
   const [showFirst, setShowFirst] = useState(false);
   const [showSecond, setShowSecond] = useState(false);
   const [showThird, setShowThird] = useState(false);
+  const [isTypingComplete, setIsTypingComplete] = useState(false);
   const handleClickStep = (mode,step,index)=>{
     setCurrentStep(step)
     setShowFirst(true);
   }
+  const handleTypingComplete = () => {
+    setIsTypingComplete(true);
+  };
   useEffect(() => {
     let timeout1, timeout2;
     if (showFirst) {
@@ -134,7 +153,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
         setShowSecond(true);
       }, 2000);
     }
-    if (showSecond) {
+    if (isTypingComplete) {
       timeout2 = setTimeout(() => {
         setShowThird(true);
       }, 2000);
@@ -143,7 +162,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
       clearTimeout(timeout1);
       clearTimeout(timeout2);
     };
-  }, [showFirst, showSecond]);
+  }, [showFirst, showSecond,isTypingComplete]);
   return (
     <div className="w-full">
       <div className="relative  p-3 overflow-y-auto h-[32rem] flex flex-col justify-end items-end  border-x-2">
@@ -169,7 +188,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
               </div>
             </motion.li> 
           }
-          {showSecond && 
+          {isTypingComplete && 
             <motion.li 
               className="flex justify-end "
               initial={{ opacity: 0,x:0 }}
@@ -223,7 +242,11 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
       </div>
       <div className="flex  justify-center w-full p-2 gap-2 bg-white rounded-b-lg"> 
         <div className='flex justify-between w-full items-center'>  
-          <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full'>{data.prompt_cht} </div>
+          <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
+          {
+            showSecond && <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete}/> 
+          }
+          </div>
           <div className='flex gap-2 items-center'>
             <div 
               className=' cursor-pointer'
