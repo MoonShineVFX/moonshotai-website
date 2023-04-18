@@ -8,8 +8,8 @@ function Footer({openModal}) {
         {/* 版權所有© 2023 夢想動畫 Moonshine, 國家高速網路與計算中心 */}
         service@moonshine.tw
       </div>
-      <div className= ' cursor-pointer' onClick={()=>window.open('/about' , "_blank")}>
-        關於 Moonshot
+      <div className= ' cursor-pointer' onClick={()=>window.open('/docs' , "_blank")}>
+        Moonshot Docs
       </div>
 
     </div>
