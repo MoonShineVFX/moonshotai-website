@@ -38,15 +38,14 @@ function Login() {
   return (
     <div className='text-white'>
       <div>
-        {!profile ? (
-          <button onClick={handleClick}>Login with LINE</button>
-        ) : (
+      <button onClick={handleClick}>Login with LINE</button>
+        {profile &&
           <div>
             <p>{`Hello, ${profile.displayName}`}</p>
             <p>{`Your user ID is: ${profile.userId}`}</p>
             <img src={profile.pictureUrl} width="300px" height="300px" alt="" />
           </div>
-        )}
+        }
       </div>
     </div>
   )
