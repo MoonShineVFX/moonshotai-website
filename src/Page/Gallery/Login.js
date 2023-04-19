@@ -6,7 +6,8 @@ function Login() {
     try {
       await liff.init({ liffId: "1660658719-0BvpAjkG" })
       if (liff.isLoggedIn()) {
-        getLineProfile();
+        const profile = await liff.getProfile();
+        setProfile(profile);
       } else {
         liff.login();
       } 
@@ -43,7 +44,6 @@ function Login() {
           <div>
             <p>{`Hello, ${profile.displayName}`}</p>
             <p>{`Your user ID is: ${profile.userId}`}</p>
-            <img src={profile.pictureUrl} width="300px" height="300px" alt="" />
           </div>
         }
       </div>
