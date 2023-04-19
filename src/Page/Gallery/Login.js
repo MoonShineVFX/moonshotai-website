@@ -4,7 +4,7 @@ function Login() {
   const [profile, setProfile] = useState(null);
   const initializeLineLogin = async () => {
     try {
-      await liff.init({ liffId: "1660658719-NORQ2Kvo" })
+      await liff.init({ liffId: "1660658719-0BvpAjkG" })
       if (liff.isLoggedIn()) {
         getLineProfile();
       } else {
