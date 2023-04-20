@@ -29,11 +29,12 @@ function Index() {
       <Header />
       <div className='w-10/12 mx-auto my-10'>
         <div className='my-5 text-white flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span>  woodwu testing</div>
-        <ResponsiveMasonry
+        {images ?
+          <ResponsiveMasonry
           className=''
           columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}
-        >
-          <Masonry gutter={20}>
+          >
+          <Masonry gutter='20'>
           {images.map((image,index) => (
             <motion.div key={image.id} 
               variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -58,6 +59,10 @@ function Index() {
           ))}
           </Masonry>
         </ResponsiveMasonry>
+        :
+        <div>Loading</div> 
+      }
+        
         <AnimatePresence>
           {selectedImage && (
             <motion.div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
