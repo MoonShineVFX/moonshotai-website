@@ -34,7 +34,7 @@ function Index() {
           className=''
           columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}
           >
-          <Masonry gutter='20'>
+          <Masonry gutter={20}>
           {images.map((image,index) => (
             <motion.div key={image.id} 
               variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
