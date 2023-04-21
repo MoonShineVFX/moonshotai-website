@@ -41,7 +41,7 @@ function Index() {
               className=' rounded-lg overflow-hidden relative'
             >
               <img  
-                src={image.urls.regular} alt={image.description} 
+                src={image.imgurl} alt={image?.description} 
                 className='w-full h-auto object-cover cursor-pointer'
                 onClick={() => handleImageClick(image)} 
               />
@@ -69,15 +69,15 @@ function Index() {
               <div className="bg-zinc-800 rounded-md shadow-lg p-4 max-w-screen-lg mx-auto flex gap-3 text-white/80 ">
                 <div className="flex w-1/2 relative justify-center items-center ">
                   <div className='w-full h-full'>
-                    <img src={selectedImage.urls.regular} alt={selectedImage.description} className="max-h-full  rounded-md" />
+                    <img src={selectedImage.imgurl} alt={selectedImage?.description } className="max-h-full  rounded-md" />
                   </div>
                   
                   <button className="absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
                 </div>
                 <div className='border border-zinc-500 rounded-md p-3 w-1/2'>
-                  <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at.substr(0,10)}</div>
+                  <div className='text-xs mb-3 text-white/30'>Created at {selectedImage?.created_at.substr(0,10)}</div>
                   <div className='text-white font-bold mb-3'>Description</div>
-                  {selectedImage.description && <p className="">{selectedImage.description}</p>}
+                  {selectedImage?.description && <p className="">{selectedImage?.description}</p>}
 
                   <div className='text-white font-bold my-3'>Prompt</div>
                   <div className='bg-zinc-700 p-3 rounded-md'>
