@@ -16,13 +16,13 @@ function Index() {
   };
   const liffID = '1660658719-0BvpAjkG'
 
-  const fetchUserImages = ()=>{
-    if(currentProfile){
+  const fetchUserImages = (profile)=>{
+    if(profile){
       fetch('https://linebot.moonshot.today/api/gallery?id='+currentProfile.userId)
       .then(res => res.json())
       .then(images => setImages(images));
     } else{
-      
+
     }
 
   }
@@ -46,6 +46,7 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
+            fetchUserImages(profile)
           }).catch(err => console.log(err))
         }
 
@@ -68,38 +69,38 @@ function Index() {
       <Header />
       <div className='w-10/12 mx-auto my-10'>
         <div className='my-5 text-white flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span> {currentProfile && currentProfile.displayName}</div>
-        {images ?
+        {!images ?
+          <div className='text-white'>Loading</div> 
+          : 
           <ResponsiveMasonry
-          className=''
-          columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}
-          >
-          <Masonry gutter={20}>
-          {images.map((image,index) => (
-            <motion.div key={image.id} 
-              variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-              className=' rounded-lg overflow-hidden relative'
+            className=''
+            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}
             >
-              <img  
-                src={image.imgurl} alt={image?.description} 
-                className='w-full h-auto object-cover cursor-pointer'
-                onClick={() => handleImageClick(image)} 
-              />
-              <div className=' backdrop-blur-md bg-black/30 flex flex-col gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                <div className=''>
-                  Image Title
+            <Masonry gutter={20}>
+            {images.map((image,index) => (
+              <motion.div key={image.id} 
+                variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
+                className=' rounded-lg overflow-hidden relative'
+              >
+                <img  
+                  src={image.imgurl} alt={image?.description} 
+                  className='w-full h-auto object-cover cursor-pointer'
+                  onClick={() => handleImageClick(image)} 
+                />
+                <div className=' backdrop-blur-md bg-black/30 flex flex-col gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                  <div className=''>
+                    Image Title
+                  </div>
+                  <div className='ml-auto flex items-center gap-3'>
+                    <FiHeart />
+                    <FiDownload />
+                  </div>
                 </div>
-                <div className='ml-auto flex items-center gap-3'>
-                  <FiHeart />
-                  <FiDownload />
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
 
-          ))}
-          </Masonry>
-        </ResponsiveMasonry>
-        :
-        <div>Loading</div> 
+            ))}
+            </Masonry>
+          </ResponsiveMasonry>
       }
         
         <AnimatePresence>
