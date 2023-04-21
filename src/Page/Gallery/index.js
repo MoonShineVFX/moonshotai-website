@@ -32,14 +32,14 @@ function Index() {
     setSelectedImage(image);
     readImageFile(image.imgurl)
   };
-  const readImageFile = ()=>{
+  const readImageFile = (data)=>{
     const reader = new FileReader();
     reader.onloadend = () => {
       const tags = exif.readFromBinaryFile(reader.result);
       const headerText = tags.ImageDescription;
       setHeader(headerText);
     }
-    reader.readAsArrayBuffer(file);
+    reader.readAsArrayBuffer(data);
   }
 
   const handleModalClose = () => {
