@@ -86,7 +86,7 @@ function Index() {
           : 
           <ResponsiveMasonry
             className=''
-            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4}}
+            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
             >
             <Masonry gutter={20}>
             {images.map((image,index) => (
