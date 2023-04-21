@@ -15,11 +15,17 @@ function Index() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
   const liffID = '1660658719-0BvpAjkG'
-  useEffect(() => {
-    fetch('https://linebot.moonshot.today/api/gallery?id=U69bcd47e7cd06b7d251519b9414ffa52')
+
+  const fetchUserImages = ()=>{
+    if(currentProfile){
+      fetch('https://linebot.moonshot.today/api/gallery?id='+currentProfile.userId)
       .then(res => res.json())
       .then(images => setImages(images));
-  }, []);
+    } else{
+      
+    }
+
+  }
   const handleImageClick = image => {
     setSelectedImage(image);
   };
@@ -61,7 +67,7 @@ function Index() {
     <div className='w-full'>
       <Header />
       <div className='w-10/12 mx-auto my-10'>
-        <div className='my-5 text-white flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span>  woodwu testing</div>
+        <div className='my-5 text-white flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span> {currentProfile && currentProfile.displayName}</div>
         {images ?
           <ResponsiveMasonry
           className=''
