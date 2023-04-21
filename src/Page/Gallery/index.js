@@ -13,7 +13,7 @@ function Index() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
   useEffect(() => {
-    fetch('https://api.unsplash.com/photos/random/?count=20&query=comic&client_id=DCUhBM_oZlz9QER7d4jrb-Eqq6gqygd8aHwRIFA2TGI')
+    fetch('https://linebot.moonshot.today/api/gallery?id=U69bcd47e7cd06b7d251519b9414ffa52')
       .then(res => res.json())
       .then(images => setImages(images));
   }, []);
