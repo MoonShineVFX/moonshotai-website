@@ -32,14 +32,22 @@ function Index() {
     setSelectedImage(image);
     readImageFile(image.imgurl)
   };
-  const readImageFile = (data)=>{
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const tags = exif.readFromBinaryFile(reader.result);
-      const headerText = tags.ImageDescription;
-      setHeader(headerText);
+  const readImageFile = async(imageUrl)=>{
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const tags = exif.readFromBinaryFile(reader.result);
+        const headerText = tags.ImageDescription;
+        setHeader(headerText);
+      }
+
+      reader.readAsArrayBuffer(blob);
+    } catch (error) {
+      console.error(error);
     }
-    reader.readAsArrayBuffer(data);
   }
 
   const handleModalClose = () => {
