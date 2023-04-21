@@ -68,7 +68,7 @@ function Index() {
     <div className='w-full'>
       <Header />
       <div className='w-10/12 mx-auto my-10'>
-        <div className='my-5 text-white flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span> {currentProfile && currentProfile.displayName}</div>
+        <div className='my-5 text-white/80 flex items-center gap-2'> <span className=' rounded-md bg-zinc-600 text-sm text-white px-3 py- '>User</span> {currentProfile && currentProfile.displayName}</div>
         {!images ?
           <div className='text-white'>Loading</div> 
           : 
