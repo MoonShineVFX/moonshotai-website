@@ -5,13 +5,16 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdDownload } from "react-icons/md";
 import { FiHeart,FiDownload } from "react-icons/fi";
 import Header from './header'
+import liff from '@line/liff';
 function Index() {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [profile, setProfile] = useState(null);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+  const liffID = '1660658719-0BvpAjkG'
   useEffect(() => {
     fetch('https://linebot.moonshot.today/api/gallery?id=U69bcd47e7cd06b7d251519b9414ffa52')
       .then(res => res.json())
@@ -24,6 +27,31 @@ function Index() {
   const handleModalClose = () => {
     setSelectedImage(null);
   };
+  const initializeLineLogin = async () => {
+    liff.init({
+      liffId: liffID
+    }).then(function() {
+      console.log('LIFF init');
+      if (liff.isLoggedIn()) {
+        const accessToken = liff.getAccessToken();
+
+        console.log("getAccessToken", accessToken);
+        // liff.getProfile().then(profile => {
+        //   window.location.href = "https://linebot.moonshot.today/gallery?id="+profile.userId;
+        // });
+      } else {
+        liff.login();
+      }
+
+    
+    }).catch(function(error) {
+      console.log(error);
+    });
+  }
+  useEffect(() => {
+    initializeLineLogin()
+    // initializeLineLogin();
+  }, []);
   return (
     <div className='w-full'>
       <Header />
