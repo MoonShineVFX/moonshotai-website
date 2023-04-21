@@ -6,10 +6,12 @@ import { MdDownload } from "react-icons/md";
 import { FiHeart,FiDownload } from "react-icons/fi";
 import Header from './header'
 import liff from '@line/liff';
+import exif from 'exif-js';
 function Index() {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentProfile, setCurrentProfile] = useState(null);
+  const [header, setHeader] = useState(null);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -28,7 +30,17 @@ function Index() {
   }
   const handleImageClick = image => {
     setSelectedImage(image);
+    readImageFile(image.imgurl)
   };
+  const readImageFile = ()=>{
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const tags = exif.readFromBinaryFile(reader.result);
+      const headerText = tags.ImageDescription;
+      setHeader(headerText);
+    }
+    reader.readAsArrayBuffer(file);
+  }
 
   const handleModalClose = () => {
     setSelectedImage(null);
@@ -127,6 +139,7 @@ function Index() {
                   <div className='bg-zinc-700 p-3 rounded-md'>
                     (worst quality:2, low quality:2), (zombie, sketch, interlocked fingers, comic),
                   </div>
+                  {header && <p>{header}</p>}
                   
                 </div>
                 
