@@ -9,7 +9,7 @@ import liff from '@line/liff';
 function Index() {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [currentProfile, setCurrentProfile] = useState(null);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -36,11 +36,14 @@ function Index() {
         const accessToken = liff.getAccessToken();
 
         console.log("getAccessToken", accessToken);
-        const profile = liff.getProfile()
-        console.log(profile)
-        // liff.getProfile().then(profile => {
-        //   window.location.href = "https://linebot.moonshot.today/gallery?id="+profile.userId;
-        // });
+        if(accessToken){
+          liff.getProfile().then(profile=>{
+            console.log(profile)
+            setCurrentProfile(profile)
+          }).catch(err => console.log(err))
+        }
+
+
       } else {
         liff.login();
       }
