@@ -18,7 +18,7 @@ function Index() {
 
   const fetchUserImages = (profile)=>{
     if(profile){
-      fetch('https://linebot.moonshot.today/api/gallery?id='+currentProfile.userId)
+      fetch('https://linebot.moonshot.today/api/gallery?id='+profile.userId)
       .then(res => res.json())
       .then(images => setImages(images));
     } else{
