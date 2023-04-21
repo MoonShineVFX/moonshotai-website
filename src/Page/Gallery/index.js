@@ -36,6 +36,8 @@ function Index() {
         const accessToken = liff.getAccessToken();
 
         console.log("getAccessToken", accessToken);
+        const profile = liff.getProfile()
+        console.log(profile)
         // liff.getProfile().then(profile => {
         //   window.location.href = "https://linebot.moonshot.today/gallery?id="+profile.userId;
         // });
