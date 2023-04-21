@@ -127,7 +127,7 @@ function Index() {
           {selectedImage && (
             <motion.div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="bg-zinc-800 rounded-md shadow-lg p-4 max-w-screen-lg mx-auto flex gap-3 text-white/80 ">
-                <div className="flex w-1/2 relative justify-center items-center ">
+                <div className="flex flex-col md:flex-row  w-1/2 relative justify-center items-center ">
                   <div className='w-full h-full'>
                     <img src={selectedImage.imgurl} alt={selectedImage.description && selectedImage.description  } className="max-h-full  rounded-md" />
                   </div>
