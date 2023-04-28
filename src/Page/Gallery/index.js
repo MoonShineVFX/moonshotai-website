@@ -16,7 +16,7 @@ function Index() {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-  const liffID = '1660658719-0BvpAjkG'
+  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 
   const fetchUserImages = (profile)=>{
     if(profile){
@@ -30,7 +30,6 @@ function Index() {
   }
   const handleImageClick = image => {
     setSelectedImage(image);
-    readImageFile(image.imgurl)
   };
   const readImageFile = async(imageUrl)=>{
     try {
@@ -121,7 +120,7 @@ function Index() {
             ))}
             </Masonry>
           </ResponsiveMasonry>
-      }
+        }
         
         <AnimatePresence>
           {selectedImage && (
@@ -147,7 +146,6 @@ function Index() {
                   <div className='bg-zinc-700 p-3 rounded-md'>
                     (worst quality:2, low quality:2), (zombie, sketch, interlocked fingers, comic),
                   </div>
-                  {header && <p>{header}</p>}
                   
                 </div>
                 

@@ -7,7 +7,8 @@ import Camera from './Page/Camera'
 import Docs from './Page/Docs'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Gallery from './Page/Gallery'
+import Gallery from './Page/Gallery';
+import AppHome from './Page/Gallery/App';
 function App() {
   useEffect(() => {
     AOS.init();
@@ -19,6 +20,7 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/app" element={<AppHome />} />
 
       </Routes>
     </BrowserRouter>

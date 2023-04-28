@@ -104,8 +104,12 @@ function Header() {
         
 
       </div>
-      <div className='w-full md:w-1/2 h-[300px] md:h-screen overflow-hidden brightness-75'>
-        <div className=' w-[800px] md:w-[1500px]' id="headerBg">
+      <div className='w-full md:w-1/2 h-[300px] md:h-screen overflow-hidden  relative'>
+        <div className='text-white font-semibold  text-lg absolute top-5 right-5 z-50 flex gap-5'>
+          <button class="rounded-full bg-gradient-to-r from-rose-800 to-rose-500 py-2 px-10 " disabled> Gallery </button>
+          <button class="rounded-full bg-gradient-to-r from-blue-800 to-blue-500 py-2 px-10 " disabled> Sign In  </button>
+        </div>
+        <div className=' w-[800px] md:w-[1500px] brightness-75' id="headerBg">
           <HeaderImagesBg  data={imgData}/>
         </div>
 
