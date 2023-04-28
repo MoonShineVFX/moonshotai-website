@@ -7,6 +7,7 @@ import liff from '@line/liff';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [images, setImages] = useState([]);
+  const [imagesResults, setImagesResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentProfile, setCurrentProfile] = useState(null);
   const imageVariants = {
@@ -18,7 +19,10 @@ function App() {
     if(profile){
       fetch('https://linebot.moonshot.today/api/gallery?id='+profile.userId)
       .then(res => res.json())
-      .then(images => setImages(images));
+      .then(images => {
+        setImages(images)
+        setImagesResults(images)
+      });
     } else{
 
     }
@@ -37,9 +41,10 @@ function App() {
       console.log('LIFF init');
       if (liff.isLoggedIn()) {
         const accessToken = liff.getAccessToken();
-
+        setIsLoggedIn(true)
         console.log("getAccessToken", accessToken);
         if(accessToken){
+
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
@@ -86,8 +91,8 @@ function App() {
           <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Following</div>
         </div>
         <div>
-          <div className='text-white text-3xl my-10'>Renders</div>
-          {!images ?
+          <div className='text-white text-3xl my-10'>Renders {images && images.count} images</div>
+          {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
           <ResponsiveMasonry
@@ -95,28 +100,31 @@ function App() {
             columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
             >
             <Masonry gutter={20}>
-            {images.map((image,index) => (
-              <motion.div key={image.id} 
-                variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' rounded-lg overflow-hidden relative'
-              >
-                <img  
-                  src={image.imgurl} alt={image?.description} 
-                  className='w-full h-auto object-cover cursor-pointer'
-                  onClick={() => handleImageClick(image)} 
-                />
-                <div className=' backdrop-blur-md bg-black/30 flex flex-col gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                  <div className=''>
-                    Image Title
+            {imagesResults.map((image,index) => {
+              const {id, urls, created_at, display_home, filename   } = image
+              return (
+                <motion.div key={id} 
+                  variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
+                  className=' rounded-lg overflow-hidden relative'
+                >
+                  <img  
+                    src={image.imgurl} alt={image?.description} 
+                    className='w-full h-auto object-cover cursor-pointer'
+                    onClick={() => handleImageClick(image)} 
+                  />
+                  <div className=' backdrop-blur-md bg-black/30 flex flex-col gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                    <div className=' opacity-0'>
+                      Image Title
+                    </div>
+                    <div className='ml-auto flex items-center gap-3'>
+                      <FiHeart />
+                    </div>
                   </div>
-                  <div className='ml-auto flex items-center gap-3'>
-                    <FiHeart />
-                    <FiDownload />
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
 
-            ))}
+              )
+
+            })}
             </Masonry>
           </ResponsiveMasonry>
         }
