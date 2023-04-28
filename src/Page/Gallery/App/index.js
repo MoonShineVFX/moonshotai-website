@@ -66,12 +66,18 @@ function App() {
       <div className='w-10/12 mx-auto my-10'>
 
         <div className='px-6 py-10 bg-gradient-to-b from-zinc-600 to-zinc-800 rounded-lg min-h-20 text-white'>
-          <div className='flex items-center gap-5'>
-            <div className='w-[64px] h-[64px] rounded-full overflow-hidden'>
-              <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="" className='max-w-full' />
+          {
+            isLoggedIn ?
+            <div className='flex items-center gap-5'>
+              <div className='w-[64px] h-[64px] rounded-full overflow-hidden'>
+                <img src={currentProfile && currentProfile.pictureUrl} alt="" className='max-w-full' />
+              </div>
+              <div className=' font-bold text-xl '>{currentProfile && currentProfile.displayName}</div>
             </div>
-            <div className=' font-bold text-xl '>{isLoggedIn ? 'NAme' : '用戶未登入'}</div>
-          </div>
+            :
+            <div className=' font-bold text-xl '>用戶未登入</div>
+          }
+
         </div>
         <div className='flex items-center gap-3 my-5'>
           <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Renders</div>
