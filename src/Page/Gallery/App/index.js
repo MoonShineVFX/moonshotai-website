@@ -63,7 +63,7 @@ function App() {
     });
   }
   useEffect(() => {
-    // initializeLineLogin()
+    initializeLineLogin()
   }, []);
   return (
     <div>
