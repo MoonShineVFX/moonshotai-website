@@ -63,7 +63,7 @@ function App() {
     });
   }
   useEffect(() => {
-    initializeLineLogin()
+    // initializeLineLogin()
   }, []);
   return (
     <div>
@@ -84,14 +84,14 @@ function App() {
           }
 
         </div>
-        <div className='flex items-center gap-3 my-5'>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Renders</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Collections</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Loved</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer'>Following</div>
+        <div className='grid grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap'>
+          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'>Renders</div>
+          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30' >Collections</div>
+          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30'>Loved</div>
+          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30'>Following</div>
         </div>
-        <div>
-          <div className='text-white text-3xl my-10'>Renders {images && images.count} images</div>
+        <div className='my-5'>
+          <div className='text-white text-xl text-center md:text-left md:text-3xl '>Renders {images && images.count} images</div>
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
