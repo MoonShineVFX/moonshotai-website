@@ -1,16 +1,16 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 function index({isLoggedIn}) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleLogout = async()=>{
       try {
         await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
         if (liff.isLoggedIn()) {
           await liff.logout();
         }
-        history.push('/');
+        navigate('/');
       } catch (err) {
         console.log('登出失敗');
       }
