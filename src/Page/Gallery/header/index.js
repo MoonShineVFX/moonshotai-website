@@ -16,7 +16,7 @@ function Index({isLoggedIn}) {
       }
   }
   return (
-    <div className='text-white border-b border-white/10 p-5 w-full  bg-black/0 z-50'>
+    <div className='text-white border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50'>
       <div className='flex justify-between flex-col md:flex-row'>
         <div className='flex items-center gap-2 mx-auto md:mx-0'>
             <div className='text-3xl font-black w-32'>
