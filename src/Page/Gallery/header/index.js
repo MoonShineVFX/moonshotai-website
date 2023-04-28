@@ -1,17 +1,19 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
+import { useHistory } from 'react-router-dom';
 function index({isLoggedIn}) {
-  const logOutAccount = ()=>{
-    liff.init({
-      　liffId: process.env.REACT_APP_LIFF_LOGIN_ID
-      }) .then(() => {
-      　if (liff.isLoggedIn()) {
-        liff.logout();
+  const history = useHistory();
+  const handleLogout = async()=>{
+      try {
+        await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
+        if (liff.isLoggedIn()) {
+          await liff.logout();
+        }
+        history.push('/');
+      } catch (err) {
+        console.log('登出失敗');
       }
-      }).catch((err) => {
-       console.log('初始化失敗')
-      });
   }
   return (
     <div className='text-white border-b border-white/10 p-5 w-full  bg-black/0 z-50'>
@@ -28,7 +30,7 @@ function index({isLoggedIn}) {
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
-            <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={()=>logOutAccount()}>Log Out</div>
+            <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
             :
             <Link to='/app' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
           }
