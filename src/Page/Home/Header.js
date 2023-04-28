@@ -8,6 +8,7 @@ import WAVES from 'vanta/src/vanta.waves'
 
 import {headerImagesItem} from '../../Components/ItemData'
 import {isMobile} from 'react-device-detect';
+import { Link } from "react-router-dom";
 
 function Header() {
   const [imgData , setImgData] = useState(headerImagesItem)
@@ -106,8 +107,8 @@ function Header() {
       </div>
       <div className='w-full md:w-1/2 h-[300px] md:h-screen overflow-hidden  relative'>
         <div className='text-white font-semibold  text-lg absolute top-5 right-5 z-50 flex gap-5'>
-          <button class="rounded-full bg-gradient-to-r from-rose-800 to-rose-500 py-2 px-10 " disabled> Gallery </button>
-          <button class="rounded-full bg-gradient-to-r from-blue-800 to-blue-500 py-2 px-10 " disabled> Sign In  </button>
+          <Link to="/gallery" class="rounded-full bg-gradient-to-r from-rose-800 to-rose-500 py-2 px-10 " disabled> Gallery </Link>
+          <Link to="/app" class="rounded-full bg-gradient-to-r from-blue-800 to-blue-500 py-2 px-10 " disabled> Sign In  </Link>
         </div>
         <div className=' w-[800px] md:w-[1500px] brightness-75' id="headerBg">
           <HeaderImagesBg  data={imgData}/>
