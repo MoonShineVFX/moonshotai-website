@@ -70,7 +70,7 @@ function App() {
       <Header />
       <div className='w-10/12 mx-auto my-10'>
 
-        <div className='px-6 py-10 bg-gradient-to-b from-zinc-600 to-zinc-800 rounded-lg min-h-20 text-white'>
+        <div className='px-6 py-10 bg-gradient-to-b from-zinc-600 to-zinc-900 rounded-lg min-h-20 text-white'>
           {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
