@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
-function index({isLoggedIn}) {
+function Index({isLoggedIn}) {
   const navigate = useNavigate();
   const handleLogout = async()=>{
       try {
@@ -42,4 +42,4 @@ function index({isLoggedIn}) {
   )
 }
 
-export default index
+export default Index
