@@ -70,12 +70,7 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
-            fetchUserImages(profile.userId)
-              .then((images)=> {
-                  setImages(images)
-                  setImagesResults(images.results)
-              })
-              .catch((error) => console.error(error));
+            
             
             fetchLineLogin(profile)
               .then((data)=> setToken(data))
@@ -102,10 +97,31 @@ function Index() {
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
+  const handleOptionChange = async (item) => {
+    switch (item.title) {
+      case 'Renders':
+        fetchUserImages(currentProfile.userId)
+          .then((images)=> {
+              setImages(images)
+              setImagesResults(images.results)
+          })
+          .catch((error) => console.error(error));
+        break;
+      case 'Storage':
+        fetchUserImages(currentProfile.userId)
+          .then((images)=> {
+              setImages(images)
+              setImagesResults(images.results)
+          })
+          .catch((error) => console.error(error));
+        break;
+      default:
+        break;
+    }
+  };
   const renderComponent = () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} />;
@@ -173,6 +189,7 @@ function Index() {
                     className='hover:bg-[#555] p-2 text-sm rounded-lg'
                     onClick={()=>{
                       setCurrentDropDownItem(item)
+                      handleOptionChange(item)
                       toggleDropdown()
                     }}
                   >{item.title}</div>
