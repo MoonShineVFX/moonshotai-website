@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import liff from '@line/liff';
 function Login() {
   const [profile, setProfile] = useState(null);
+  const [token, setToken] = useState(null);
   const initializeLineLogin = async () => {
     try {
       await liff.init({ liffId: "1660658719-0BvpAjkG" })
@@ -9,6 +10,7 @@ function Login() {
         const profile = await liff.getProfile();
         console.log(profile)
         setProfile(profile);
+        fetchlinelogin(profile)
       } else {
         liff.login();
       } 
@@ -16,6 +18,26 @@ function Login() {
       console.log(error)
     }
   };
+  const fetchlinelogin = ()=>{
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${process.env.REACT_APP_MOONSHOT_LINELOGIN_APIKEY}`
+      },
+      body: JSON.stringify({ 
+        uid:  profile.userId,
+        name: profile.displayName ,
+        profile_image: profile.pictureUrl ,
+      })
+    };
+    fetch('https://api.moonshot.today/line_login', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      setToken(data)
+      });
+  }
   const handleClick = () => {
     initializeLineLogin()
   };
