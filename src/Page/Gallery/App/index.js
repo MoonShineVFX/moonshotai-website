@@ -4,7 +4,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart,FiDownload } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { TestImageModal } from '../helpers/testComponents';
-import Header from '../header'
+import Header from '../Components/header'
 import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
@@ -112,7 +112,7 @@ function App() {
         profile_image: profile.pictureUrl
       })
     };
-    fetch('https://api-dev.moonshot.today/line_login', requestOptions)
+    fetch('https://api.moonshot.today/line_login', requestOptions)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -246,7 +246,7 @@ function App() {
       </div>
         <AnimatePresence>
           {selectedImage && (
-            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-zinc-800 h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex z-50 bg-zinc-800 h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className=" p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative my-5">
                 <div className="flex  justify-center items-center ">
                   <div className='w-full h-full'>
@@ -278,7 +278,7 @@ function App() {
 
                   
                 </div>
-                <div className='flex -left-40 gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full bg-zinc-800'>
+                <div className='flex -left-40 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
                   <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
