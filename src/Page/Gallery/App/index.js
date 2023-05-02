@@ -120,7 +120,18 @@ function App() {
       });
   }
   const fetchUserStorageImage = (image) =>{
-
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    fetch('https://api-dev.moonshot.today/images'+image.id+'storage', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      });
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -193,7 +204,7 @@ function App() {
         </div>
 
         <div className='my-10 m-4'>
-          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{currentDropDownItem.title} {images && images.count } </div>
+          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {currentDropDownItem.title}  </div>
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
@@ -218,7 +229,7 @@ function App() {
                     <div className=' opacity-0'>
                       Image Title
                     </div>
-                    <div className='ml-auto flex items-center gap-3'>
+                    <div className='ml-auto flex items-center gap-3' onClick={()=>fetchUserStorageImage(image)}>
                       <FiHeart />
                     </div>
                   </div>
