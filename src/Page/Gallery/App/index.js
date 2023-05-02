@@ -3,7 +3,7 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart,FiDownload } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
-
+import { TestImageModal } from '../helpers/testComponents';
 import Header from '../header'
 import liff from '@line/liff';
 
@@ -136,9 +136,10 @@ function App() {
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
+  
 
   useEffect(() => {
-    initializeLineLogin()
+    // initializeLineLogin()
   }, []);
   return (
     <div >
@@ -245,9 +246,9 @@ function App() {
       </div>
         <AnimatePresence>
           {selectedImage && (
-            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-black h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="bg-zinc-800 p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative my-5">
-                <div className="flex   justify-center items-center ">
+            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-zinc-800 h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <div className=" p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative my-5">
+                <div className="flex  justify-center items-center ">
                   <div className='w-full h-full'>
                     <img 
                       src={selectedImage.urls.regular} 
@@ -255,7 +256,7 @@ function App() {
                       className="max-h-full  rounded-md" />
                   </div>
                 </div>
-                <div className='flex flex-col justify-end py-10 relative'>
+                <div className='flex flex-col justify-end  relative pt-5 pb-20'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
                   
                   <div className='text-white font-bold my-3 flex gap-2 items-center'>
@@ -277,7 +278,7 @@ function App() {
 
                   
                 </div>
-                <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full bg-black'>
+                <div className='flex -left-40 gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full bg-zinc-800'>
                   <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
