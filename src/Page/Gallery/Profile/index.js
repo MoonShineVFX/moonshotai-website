@@ -28,6 +28,7 @@ function Index() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
+  const [currentAuthor,setCurrentAuthor] = useState(null)
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [token, setToken] = useRecoilState(loginState)
   const [ isCopied , setIsCopied ] = useState(false);
@@ -74,6 +75,7 @@ function Index() {
               .then((images)=> {
                   setImages(images)
                   setImagesResults(images.results)
+                  setCurrentAuthor(images.results[0].author)
               })
               .catch((error) => console.error(error));
             
@@ -113,7 +115,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Storage':
-        fetchUserStorages(currentProfile.userId,token)
+        fetchUserStorages(currentAuthor.id,token)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results)
@@ -121,7 +123,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Collection':
-        fetchUserCollections(currentProfile.userId,token)
+        fetchUserCollections(currentAuthor.id,token)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results)
@@ -136,8 +138,7 @@ function Index() {
           })
           .catch((error) => console.error(error));
         break;
-      default:
-        break;
+      default: return null;
     }
   };
   const renderComponent = async () => {
@@ -156,7 +157,7 @@ function Index() {
   
 
   useEffect(() => {
-    initializeLineLogin()
+    // initializeLineLogin()
   }, []);
   return (
     <div >
