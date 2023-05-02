@@ -136,6 +136,10 @@ function App() {
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
+  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
+    const text = model+prompt+negative_prompt;
+    // 将文本复制到剪贴板中
+    navigator.clipboard.writeText(text);
   
 
   useEffect(() => {
@@ -279,7 +283,10 @@ function App() {
                   
                 </div>
                 <div className='flex -left-40 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
-                  <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
+                  <button 
+                    className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
+                    onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
+                    >Copy Prompt</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
                 </div>
