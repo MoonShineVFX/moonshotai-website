@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import Header from './Components/header'
+import Header from '../header'
 function Index() {
-
-
 
   return (
     <div className='w-full'>

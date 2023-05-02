@@ -1,4 +1,5 @@
-export const UserStorageAImage = (image) =>{
+/**
+ * export const UserStorageAImage = (image) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
@@ -67,3 +68,4 @@ export const fetchUserCollections = (userid,token) =>{
 
   }
 }
+**/

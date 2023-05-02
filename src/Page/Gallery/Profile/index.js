@@ -3,8 +3,7 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart,FiDownload } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { TestImageModal } from '../helpers/testComponents';
-import Header from '../Components/header'
+import Header from '../header'
 import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
@@ -15,7 +14,9 @@ const dropDownManuItem = [
   {title:"Collection", display:false},
   {title:"Following",display:false},
 ]
-function App() {
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+function Index() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [images, setImages] = useState([]);
   const [imagesResults, setImagesResults] = useState([]);
@@ -43,7 +44,7 @@ function App() {
       },
     },
   };
-  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+  
   const fetchUserImages = (profile)=>{
     const requestOptions = {
       method: 'GET',
@@ -138,8 +139,8 @@ function App() {
   };
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = model+prompt+negative_prompt;
-    // 将文本复制到剪贴板中
     navigator.clipboard.writeText(text);
+  }
   
 
   useEffect(() => {
@@ -299,5 +300,4 @@ function App() {
     </div>
   )
 }
-
-export default App
+export default Index
