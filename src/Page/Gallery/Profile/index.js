@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin } from '../helpers/fetchHelper';
+import { fetchLineLogin,fetchUserImages } from '../helpers/fetchHelper';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:false},
@@ -45,27 +45,6 @@ function Index() {
       },
     },
   };
-  
-  const fetchUserImages = (profile)=>{
-    const requestOptions = {
-      method: 'GET',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    };
-    if(profile){
-      fetch('https://api.moonshot.today/users/'+profile.userId+'/images' ,requestOptions)
-      .then(res => res.json())
-      .then(images => {
-        setImages(images)
-        setImagesResults(images.results)
-      });
-    } else{
-
-    }
-
-  }
   const handleImageClick = image => {
     setSelectedImage(image);
   };
@@ -86,7 +65,12 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
-            // fetchUserImages(profile)
+            fetchUserImages(profile.userId)
+              .then((images)=> {
+                  setImages(images)
+                  setImagesResults(images.results)
+              })
+              .catch((error) => console.error(error));
             fetchLineLogin(profile)
               .then((data)=> setToken(data))
               .catch((error) => console.error(error));
