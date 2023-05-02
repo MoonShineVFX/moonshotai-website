@@ -57,7 +57,7 @@ function App() {
       .then(res => res.json())
       .then(images => {
         setImages(images)
-        setImagesResults(images.result)
+        setImagesResults(images.results)
       });
     } else{
 
