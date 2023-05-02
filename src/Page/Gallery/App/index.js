@@ -215,7 +215,7 @@ function App() {
             >
             <Masonry gutter={20}>
             {imagesResults.map((image,index) => {
-              const {id, urls, created_at, display_home, filename   } = image
+              const {id, urls, created_at, display_home, filename,created_at   } = image
               return (
                 <motion.div key={id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -226,9 +226,9 @@ function App() {
                     className='w-full h-auto object-cover cursor-pointer'
                     onClick={() => handleImageClick(image)} 
                   />
-                  <div className=' backdrop-blur-md bg-black/30 flex flex-col gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                    <div className=' opacity-0'>
-                      Image Title
+                  <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                    <div className=''>
+                      {created_at.substr(0,10)}
                     </div>
                     <div className='ml-auto flex items-center gap-3' onClick={()=>fetchUserStorageImage(image)}>
                       <FiHeart />
