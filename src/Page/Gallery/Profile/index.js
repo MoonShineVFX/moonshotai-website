@@ -70,6 +70,12 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
+            fetchUserImages(currentProfile.userId)
+              .then((images)=> {
+                  setImages(images)
+                  setImagesResults(images.results)
+              })
+              .catch((error) => console.error(error));
             
             fetchLineLogin(profile)
               .then((data)=> setToken(data))
@@ -99,12 +105,7 @@ function Index() {
   const renderComponent = () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.userId)
-          .then((images)=> {
-              setImages(images)
-              setImagesResults(images.results)
-          })
-          .catch((error) => console.error(error));
+        
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} />;
