@@ -97,8 +97,8 @@ function App() {
       },
       body: JSON.stringify({ 
         uid:  profile.userId,
-        name: profile.displayName ,
-        profile_image: profile.pictureUrl ,
+        name: profile.displayName,
+        profile_image: profile.pictureUrl
       })
     };
     fetch('https://api.moonshot.today/line_login', requestOptions)
