@@ -127,7 +127,7 @@ function App() {
         'Authorization': `Bearer ${token}`
       }
     };
-    fetch('https://api-dev.moonshot.today/images'+image.id+'storage', requestOptions)
+    fetch('https://api.moonshot.today/images/'+image.id+'/storage', requestOptions)
     .then(response => response.json())
     .then(data => {
       console.log(data)
