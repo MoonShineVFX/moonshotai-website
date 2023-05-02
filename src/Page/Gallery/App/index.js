@@ -73,6 +73,7 @@ function App() {
             console.log(profile)
             setCurrentProfile(profile)
             fetchUserImages(profile)
+            fetchlinelogin(profile)
           }).catch(err => console.log(err))
         }
 
@@ -85,6 +86,26 @@ function App() {
     }).catch(function(error) {
       console.log(error);
     });
+  }
+  const fetchlinelogin = ()=>{
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${process.env.REACT_APP_MOONSHOT_LINELOGIN_APIKEY}`
+      },
+      body: JSON.stringify({ 
+        uid:  profile.userId,
+        name: profile.displayName ,
+        profile_image: profile.pictureUrl ,
+      })
+    };
+    fetch('https://api.moonshot.today/line_login', requestOptions)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      setToken(data)
+      });
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
