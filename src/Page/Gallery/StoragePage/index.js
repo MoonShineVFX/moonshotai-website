@@ -23,7 +23,7 @@ function Index({title,images,imagesResults,handleLike}) {
   }
 
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = model+' '+prompt+' '+negative_prompt;
+    const text = model+' '+prompt+' --'+negative_prompt;
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }

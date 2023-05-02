@@ -25,6 +25,10 @@ function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
+  const [storages, setStorages] = useState({});
+  const [storagesResults, setStoragesResults] = useState([]);
+  const [collections, setCollections] = useState({});
+  const [collectionsResults, setCollectionsResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
@@ -81,7 +85,7 @@ function Index() {
               .catch((error) => console.error(error));
             
             fetchLineLogin(profile)
-              .then((data)=> setToken(data))
+              .then((data)=> setToken(data.token))
               .catch((error) => console.error(error));
               
           }).catch(err => console.log(err))
@@ -119,16 +123,16 @@ function Index() {
       case 'Storage':
         fetchUserStorages(currentAuthor.id,token)
           .then((images)=> {
-              setImages(images)
-              setImagesResults(images.results)
+              setStorages(images)
+              setStoragesResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
       case 'Collection':
         fetchUserCollections(currentAuthor.id,token)
           .then((images)=> {
-              setImages(images)
-              setImagesResults(images.results)
+              setCollections(images)
+              setCollectionsResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
