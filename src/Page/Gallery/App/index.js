@@ -244,7 +244,7 @@ function App() {
                       className="max-h-full  rounded-md" />
                   </div>
                 </div>
-                <div className='flex flex-col justify-end py-10'>
+                <div className='flex flex-col justify-end py-10 relative'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
                   
                   <div className='text-white font-bold my-3 flex gap-2'>
@@ -262,7 +262,7 @@ function App() {
                     {selectedImage.negative_prompt}
                   </div>
 
-                  <div className='flex gap-2 justify-center items-center mt-10'>
+                  <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full'>
                     <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
                     <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
