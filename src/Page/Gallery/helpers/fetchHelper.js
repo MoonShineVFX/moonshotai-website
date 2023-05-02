@@ -22,7 +22,7 @@ export const fetchLineLogin = async (profile) =>{
 
 
 }
-export const UserStorageAImage =async (image,token) =>{
+export const userStorageAImage =async (image,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 

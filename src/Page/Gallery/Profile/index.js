@@ -232,10 +232,6 @@ function Index() {
                   <div className='bg-zinc-700 p-3 rounded-md'>
                     {selectedImage.negative_prompt}
                   </div>
-
-
-
-                  
                 </div>
                 <div className='flex left-0 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
                   <button 
