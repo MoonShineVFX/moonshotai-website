@@ -72,7 +72,7 @@ function Index() {
             console.log(profile)
             setCurrentProfile(profile)
 
-            fetchUserImages(currentProfile.userId)
+            fetchUserImages(profile.userId)
               .then((images)=> {
                   setImages(images)
                   setImagesResults(images.results)
@@ -143,7 +143,7 @@ function Index() {
       default: return null;
     }
   };
-  const renderComponent = async () => {
+  const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
@@ -226,7 +226,7 @@ function Index() {
         </div>
 
         <div className='my-10 m-4'>
-          {renderComponent}
+          {renderComponent()}
        
         </div> 
       </div>
