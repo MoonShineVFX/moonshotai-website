@@ -13,6 +13,7 @@ function Index({title,images,imagesResults,handleLike}) {
   };
   const handleImageClick = image => {
     setSelectedImage(image);
+    setIsCopied(false)
   };
   const handleModalClose = () => {
     setSelectedImage(null);
