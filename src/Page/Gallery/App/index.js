@@ -119,6 +119,9 @@ function App() {
       setToken(data)
       });
   }
+  const fetchUserStorageImage = (image) =>{
+
+  }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
@@ -241,7 +244,7 @@ function App() {
                       className="max-h-full  rounded-md" />
                   </div>
                 </div>
-                <div className='max-h-[50vh] flex flex-col justify-end py-10'>
+                <div className='flex flex-col justify-end py-10'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
                   
                   <div className='text-white font-bold my-3 flex gap-2'>
