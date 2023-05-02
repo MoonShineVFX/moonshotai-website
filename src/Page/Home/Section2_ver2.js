@@ -41,10 +41,10 @@ function Section2_ver2() {
   return (
     <div className='bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-black-600 '>
 
-    <div className='py-28 w-11/12 mx-auto  flex flex-col md:flex-row items-center justify-center gap-20 '>
+    <div className='py-5 lg:py-28 w-11/12 mx-auto  flex flex-col md:flex-row items-center justify-center gap-20 '>
       <motion.div 
       className='mb-2 text-white break-all  whitespace-pre-wrap w-full flex flex-col justify-center items-center block md:hidden'>
-        <div className='text-5xl md:text-5xl text-center font-bold mb-3 text-white'>
+        <div className='text-4xl md:text-5xl text-center font-bold mb-3 text-white'>
           Let 
           <span className='font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-500'> Moonshot </span>
           <div className=' md:indent-32'>

@@ -59,12 +59,12 @@ function Header() {
             delay: 0.5,
           }}
         >
-          <div className='flex flex-row items-center mx-auto w-[400px] my-20 md:my-36 '>
-            <div className='w-[100px] mr-5 hover:translate-y-[1px] cursor-pointer '>
+          <div className='flex flex-row items-center mx-auto w-[400px] my-20 md:my-36 justify-center '>
+            <div className='w-20 lg:w-[100px] mr-5 hover:translate-y-[1px] cursor-pointer '>
               <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='min-w-[80px] rounded-full aspect-square'/>
             </div>
-            <div className='w-4/5 text-justify flex flex-col '>
-              <div className='text-5xl font-black mb-3'>
+            <div className='w-3/5 text-justify flex flex-col '>
+              <div className='text-4xl font-black mb-3'>
                 <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
               </div>
               <div className=' text-white text-justify w-full tracking-[0.2rem]'>讓機器人幫你畫出你的想像</div>
