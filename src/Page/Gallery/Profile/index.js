@@ -70,7 +70,7 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
-            fetchUserImages(currentProfile.userId)
+            fetchUserImages(profile.userId)
               .then((images)=> {
                   setImages(images)
                   setImagesResults(images.results)
