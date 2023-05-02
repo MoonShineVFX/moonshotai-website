@@ -7,7 +7,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
 
-import { loginState, userState } from '../atoms/modalAtom';
+import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 const dropDownManuItem = [
   {title:"Renders", display:true},
