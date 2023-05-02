@@ -266,7 +266,7 @@ function App() {
 
                   
                 </div>
-                <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full'>
+                <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full bg-black'>
                   <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
