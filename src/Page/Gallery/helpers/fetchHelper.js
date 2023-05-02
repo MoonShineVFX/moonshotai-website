@@ -32,7 +32,7 @@ export const userStorageAImage =async (image,token) =>{
     }
   };
   const response =await fetch('https://api.moonshot.today/images/'+image.id+'/storage', requestOptions)
-  const data =await response.json()
+  const data =await response.status
   return data
 }
 export const fetchUserImages =async (uuid,token)=>{

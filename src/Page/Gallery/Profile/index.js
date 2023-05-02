@@ -15,7 +15,7 @@ import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
 const dropDownManuItem = [
   {title:"Renders", display:true},
-  {title:"Storage", display:false},
+  {title:"Storage", display:true},
   {title:"Collection", display:false},
   {title:"Following",display:false},
 ]
@@ -211,6 +211,7 @@ function Index() {
             
             >
               {dropDownManuItem.map((item,index)=>{
+                if(!item.display) return
                 return(
                   <div 
                     key={item.title} 
