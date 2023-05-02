@@ -157,7 +157,7 @@ function App() {
         </div>
 
         <div className='my-10 m-4'>
-          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>Renders {images && images.count } </div>
+          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{currentDropDownItem.title} {images && images.count } </div>
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
