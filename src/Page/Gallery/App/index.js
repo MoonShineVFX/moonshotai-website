@@ -235,7 +235,7 @@ function App() {
         <AnimatePresence>
           {selectedImage && (
             <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-black h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="bg-zinc-800 p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative">
+              <div className="bg-zinc-800 p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative my-5">
                 <div className="flex   justify-center items-center ">
                   <div className='w-full h-full'>
                     <img 
