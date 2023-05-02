@@ -235,7 +235,7 @@ function App() {
         <AnimatePresence>
           {selectedImage && (
             <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-black h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="bg-zinc-800 rounded-md p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 ">
+              <div className="bg-zinc-800 p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative">
                 <div className="flex   justify-center items-center ">
                   <div className='w-full h-full'>
                     <img 
@@ -262,13 +262,14 @@ function App() {
                     {selectedImage.negative_prompt}
                   </div>
 
-                  <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full'>
-                    <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
-                    <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
-                  </div>
 
                   
+                </div>
+                <div className='flex gap-2 justify-center items-center mt-10 absolute bottom-0 z-50 w-full'>
+                  <button className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '>Copy Prompt</button>
+                  <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
+
                 </div>
                 
               </div>
