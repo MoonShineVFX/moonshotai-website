@@ -20,6 +20,7 @@ function App() {
   const [currentProfile, setCurrentProfile] = useState(null);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+  const [token, setToken] = useState(null)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -66,7 +67,7 @@ function App() {
       if (liff.isLoggedIn()) {
         const accessToken = liff.getAccessToken();
         setIsLoggedIn(true)
-        console.log("getAccessToken", accessToken);
+        // console.log("getAccessToken", accessToken);
         if(accessToken){
 
           liff.getProfile().then(profile=>{
@@ -87,7 +88,7 @@ function App() {
       console.log(error);
     });
   }
-  const fetchlinelogin = ()=>{
+  const fetchlinelogin = (profile)=>{
     const requestOptions = {
       method: 'POST',
       headers: { 
