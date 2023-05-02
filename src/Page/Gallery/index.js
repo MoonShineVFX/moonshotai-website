@@ -11,7 +11,7 @@ function Index() {
       <div className='w-10/12 mx-auto my-10'>
        
         <div className='text-white'>
-          Here is Gallery HomePage, nothing yet. You can <Link to='/app' className='text-blue-400 hover:text-blue-300'>Login with Line Account</Link> 
+          Here is Gallery HomePage, nothing yet. You can <Link to='/profile' className='text-blue-400 hover:text-blue-300'>Login with Line Account</Link> 
         </div>
        
       </div>
