@@ -56,7 +56,7 @@ function Login() {
 
   useEffect(() => {
 
-    // initializeLineLogin();
+    initializeLineLogin();
   }, []);
 
   return (
