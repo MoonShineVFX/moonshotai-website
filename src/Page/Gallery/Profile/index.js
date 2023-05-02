@@ -117,7 +117,6 @@ function Index() {
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results)
-              renderComponent()
           })
           .catch((error) => console.error(error));
         break;
@@ -126,7 +125,6 @@ function Index() {
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results)
-              renderComponent()
           })
           .catch((error) => console.error(error));
         break;
@@ -135,7 +133,6 @@ function Index() {
           .then((images)=> {
               setCollections(images)
               setCollectionsResults(images.results)
-              renderComponent()
           })
           .catch((error) => console.error(error));
         break;
@@ -144,7 +141,6 @@ function Index() {
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results)
-              renderComponent()
           })
           .catch((error) => console.error(error));
         break;
@@ -234,7 +230,7 @@ function Index() {
         </div>
 
         <div className='my-10 m-4'>
-          {renderComponent}
+          {renderComponent()}
        
         </div> 
       </div>
