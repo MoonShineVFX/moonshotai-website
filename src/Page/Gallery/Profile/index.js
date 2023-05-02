@@ -1,13 +1,14 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart,FiDownload } from "react-icons/fi";
+import { FiHeart } from "react-icons/fi";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { fetchLineLogin } from '../helpers/fetchHelper';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:false},
@@ -85,12 +86,12 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
-            fetchUserImages(profile)
-            fetchlinelogin(profile)
+            // fetchUserImages(profile)
+            fetchLineLogin(profile)
+              .then((data)=> setToken(data))
+              .catch((error) => console.error(error));
           }).catch(err => console.log(err))
         }
-
-
       } else {
         liff.login();
       }
@@ -100,26 +101,26 @@ function Index() {
       console.log(error);
     });
   }
-  const fetchlinelogin = (profile)=>{
-    const requestOptions = {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Token ${process.env.REACT_APP_MOONSHOT_LINELOGIN_APIKEY}`
-      },
-      body: JSON.stringify({ 
-        uid:  profile.userId,
-        name: profile.displayName,
-        profile_image: profile.pictureUrl
-      })
-    };
-    fetch('https://api.moonshot.today/line_login', requestOptions)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      setToken(data)
-      });
-  }
+  // const fetchlinelogin = (profile)=>{
+  //   const requestOptions = {
+  //     method: 'POST',
+  //     headers: { 
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Token ${process.env.REACT_APP_MOONSHOT_LINELOGIN_APIKEY}`
+  //     },
+  //     body: JSON.stringify({ 
+  //       uid:  profile.userId,
+  //       name: profile.displayName,
+  //       profile_image: profile.pictureUrl
+  //     })
+  //   };
+  //   fetch('https://api.moonshot.today/line_login', requestOptions)
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log(data)
+  //     setToken(data)
+  //     });
+  // }
   const fetchUserStorageImage = (image) =>{
     const requestOptions = {
       method: 'POST',
