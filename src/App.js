@@ -20,7 +20,7 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/app" element={<AppHome />} />
+        <Route path="/profile" element={<AppHome />} />
 
       </Routes>
     </BrowserRouter>

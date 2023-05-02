@@ -30,14 +30,14 @@ function Index({isLoggedIn}) {
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
-          <Link to='/app' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Home </Link>
+          <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Home </Link>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
             <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
             :
-            <Link to='/app' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
+            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
           }
  
         </div>
@@ -68,7 +68,7 @@ function Index({isLoggedIn}) {
               isLoggedIn ?
               <div className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={handleLogout}>Log Out</div>
               :
-              <Link to='/app' className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+              <Link to='/profile' className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
             }
           </div>
 

@@ -8,8 +8,8 @@ import Header from '../header'
 import liff from '@line/liff';
 const dropDownManuItem = [
   {title:"Renders", display:true},
+  {title:"Storage", display:false},
   {title:"Collection", display:false},
-  {title:"Loved", display:false},
   {title:"Following",display:false},
 ]
 function App() {
