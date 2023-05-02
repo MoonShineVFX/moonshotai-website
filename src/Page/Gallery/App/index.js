@@ -63,14 +63,14 @@ function App() {
     });
   }
   useEffect(() => {
-    initializeLineLogin()
+    // initializeLineLogin()
   }, []);
   return (
     <div>
       <Header isLoggedIn={isLoggedIn}/>
-      <div className='w-10/12 mx-auto my-10'>
+      <div className='lg:w-10/12 mx-auto lg:my-10'>
 
-        <div className='px-6 py-10 bg-gradient-to-b from-zinc-600 to-zinc-900 rounded-lg min-h-20 text-white'>
+        <div className='px-6 py-10 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
           {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
