@@ -30,7 +30,7 @@ export const userStorageAImage =async (image,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch('https://api.moonshot.today/images/'+image.id+'/storage', requestOptions)
+  const response =await fetch('https://api.moonshot.today/images/'+image.id+'/storages', requestOptions)
   const data =await response.json()
   return data
 }

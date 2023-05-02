@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, userStorageAImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -70,7 +70,12 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
-            
+            fetchUserImages(currentProfile.userId)
+              .then((images)=> {
+                  setImages(images)
+                  setImagesResults(images.results)
+              })
+              .catch((error) => console.error(error));
             
             fetchLineLogin(profile)
               .then((data)=> setToken(data))
@@ -108,7 +113,23 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Storage':
-        fetchUserImages(currentProfile.userId)
+        fetchUserStorages(currentProfile.userId,token)
+          .then((images)=> {
+              setImages(images)
+              setImagesResults(images.results)
+          })
+          .catch((error) => console.error(error));
+        break;
+      case 'Collection':
+        fetchUserCollections(currentProfile.userId,token)
+          .then((images)=> {
+              setImages(images)
+              setImagesResults(images.results)
+          })
+          .catch((error) => console.error(error));
+        break;
+      case 'Following':
+        fetchUserImages(currentProfile.userId,token)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results)
@@ -119,7 +140,7 @@ function Index() {
         break;
     }
   };
-  const renderComponent = () => {
+  const renderComponent = async () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
