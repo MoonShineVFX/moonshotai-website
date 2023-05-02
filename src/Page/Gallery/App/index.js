@@ -207,7 +207,7 @@ function App() {
                   className=' rounded-lg overflow-hidden relative'
                 >
                   <img  
-                    src={image.imgurl} alt={image?.description} 
+                    src={urls.thumb} alt={image?.description} 
                     className='w-full h-auto object-cover cursor-pointer'
                     onClick={() => handleImageClick(image)} 
                   />
@@ -236,20 +236,27 @@ function App() {
                 <div className="flex   justify-center items-center ">
                   <div className='w-full h-full'>
                     <img 
-                      src={selectedImage.imgurl} 
-                      alt={selectedImage.description && selectedImage.description  } 
+                      src={selectedImage.urls.regular} 
+                      alt={selectedImage.id} 
                       className="max-h-full  rounded-md" />
                   </div>
                 </div>
                 <div className='max-h-[50vh] flex flex-col justify-end py-10'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
+                  
+                  <div className='text-white font-bold my-3 flex gap-2'>
+                    Model
+                    <div className='bg-zinc-700 p-3 rounded-md'>
+                    {selectedImage.model}
+                    </div> 
+                  </div>
                   <div className='text-white font-bold my-3'>Prompt</div>
                   <div className='bg-zinc-700 p-3 rounded-md'>
-                    1girl, (hanfu), sidelighting, wallpaper,
+                    {selectedImage.prompt}
                   </div>
                   <div className='text-white font-bold my-3'>Negative prompt</div>
                   <div className='bg-zinc-700 p-3 rounded-md'>
-                    (worst quality:2, low quality:2), (zombie, sketch, interlocked fingers, comic),
+                    {selectedImage.negative_prompt}
                   </div>
 
                   <div className='flex gap-2 justify-center items-center mt-10'>
