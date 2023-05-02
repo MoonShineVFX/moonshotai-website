@@ -233,7 +233,7 @@ function Index() {
                     {selectedImage.negative_prompt}
                   </div>
                 </div>
-                <div className='flex left-0 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
+                <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
                   <button 
                     className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
                     onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
