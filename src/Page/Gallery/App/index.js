@@ -45,12 +45,19 @@ function App() {
   };
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const fetchUserImages = (profile)=>{
+    const requestOptions = {
+      method: 'GET',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    };
     if(profile){
-      fetch('https://linebot.moonshot.today/api/gallery?id='+profile.userId)
+      fetch('https://api.moonshot.today/users/'+profile.userId+'/images' ,requestOptions)
       .then(res => res.json())
       .then(images => {
         setImages(images)
-        setImagesResults(images)
+        setImagesResults(images.result)
       });
     } else{
 

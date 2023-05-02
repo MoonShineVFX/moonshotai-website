@@ -4,7 +4,10 @@ import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+import {userState} from '../atoms/galleryAtom'
 function Index({isLoggedIn}) {
+  const currentUser = useRecoilValue(userState)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async()=>{
