@@ -19,9 +19,9 @@ function Index({isLoggedIn}) {
       }
   }
   return (
-    <div className='text-white border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
+    <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
    justify-between '>
-      <div className='flex items-center  text-white mr-6 gap-2 '>
+      <div className='  items-center  text-white mr-6 gap-2 hidden lg:flex'>
           <div className='text-3xl font-black w-20 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
           </div>
@@ -74,7 +74,7 @@ function Index({isLoggedIn}) {
 
 
       </div>
-      <div className="block lg:hidden">
+      <div className="block lg:hidden ml-auto">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
