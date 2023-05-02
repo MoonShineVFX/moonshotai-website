@@ -215,7 +215,7 @@ function App() {
             >
             <Masonry gutter={20}>
             {imagesResults.map((image,index) => {
-              const {id, urls, created_at, display_home, filename,created_at   } = image
+              const {id, urls, created_at, display_home, filename   } = image
               return (
                 <motion.div key={id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
