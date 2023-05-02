@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin,fetchUserImages } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, userStorageAImage } from '../helpers/fetchHelper';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:false},
@@ -79,45 +79,14 @@ function Index() {
       } else {
         liff.login();
       }
-
-    
     }).catch(function(error) {
       console.log(error);
     });
   }
-  // const fetchlinelogin = (profile)=>{
-  //   const requestOptions = {
-  //     method: 'POST',
-  //     headers: { 
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Token ${process.env.REACT_APP_MOONSHOT_LINELOGIN_APIKEY}`
-  //     },
-  //     body: JSON.stringify({ 
-  //       uid:  profile.userId,
-  //       name: profile.displayName,
-  //       profile_image: profile.pictureUrl
-  //     })
-  //   };
-  //   fetch('https://api.moonshot.today/line_login', requestOptions)
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log(data)
-  //     setToken(data)
-  //     });
-  // }
-  const fetchUserStorageImage = (image) =>{
-    const requestOptions = {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    };
-    fetch('https://api.moonshot.today/images/'+image.id+'/storage', requestOptions)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data)
-      });
+  const handleLike = (image) =>{
+    userStorageAImage(image,token)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -220,7 +189,7 @@ function Index() {
                     <div className=''>
                       {created_at.substr(0,10)}
                     </div>
-                    <div className='ml-auto flex items-center gap-3' onClick={()=>fetchUserStorageImage(image)}>
+                    <div className='ml-auto flex items-center gap-3' onClick={()=>handleLike(image)}>
                       <FiHeart />
                     </div>
                   </div>
@@ -268,7 +237,7 @@ function Index() {
 
                   
                 </div>
-                <div className='flex -left-40 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
+                <div className='flex left-0 gap-2 justify-center items-center fixed bottom-0 z-50 w-full bg-zinc-800'>
                   <button 
                     className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
                     onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}

@@ -1,9 +1,8 @@
 
 import liff from '@line/liff';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
-export const initializeLineLogin = async()=>{
+export const initializeLineLogin = async()=>{} 
 
-} 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {
     method: 'POST',
