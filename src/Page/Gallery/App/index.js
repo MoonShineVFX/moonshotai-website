@@ -234,7 +234,7 @@ function App() {
       </div>
         <AnimatePresence>
           {selectedImage && (
-            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-black h-screen" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex items-center justify-center z-50 bg-black h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="bg-zinc-800 rounded-md p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 ">
                 <div className="flex   justify-center items-center ">
                   <div className='w-full h-full'>
@@ -247,9 +247,9 @@ function App() {
                 <div className='flex flex-col justify-end py-10 relative'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
                   
-                  <div className='text-white font-bold my-3 flex gap-2'>
+                  <div className='text-white font-bold my-3 flex gap-2 items-center'>
                     Model
-                    <div className='bg-zinc-700 p-3 rounded-md'>
+                    <div className='bg-zinc-700  px-3  py-1 rounded-md'>
                     {selectedImage.model}
                     </div> 
                   </div>
