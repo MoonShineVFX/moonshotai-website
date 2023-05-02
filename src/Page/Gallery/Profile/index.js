@@ -26,6 +26,7 @@ function Index() {
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [token, setToken] = useRecoilState(loginState)
+  const [ isCopied , setIsCopied ] = useState(false);
 
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -94,6 +95,7 @@ function Index() {
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = model+prompt+negative_prompt;
     navigator.clipboard.writeText(text);
+    setIsCopied(true)
   }
   
 
@@ -237,7 +239,7 @@ function Index() {
                   <button 
                     className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
                     onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
-                    >Copy Prompt</button>
+                    >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
 
                 </div>
