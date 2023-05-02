@@ -91,7 +91,7 @@ function App() {
   };
 
   useEffect(() => {
-    // initializeLineLogin()
+    initializeLineLogin()
   }, []);
   return (
     <div >
@@ -156,8 +156,8 @@ function App() {
 
         </div>
 
-        <div className='my-10'>
-          <div className='text-white text-xl text-center md:text-left md:text-3xl '>Renders {images && images.count} images</div>
+        <div className='my-10 m-4'>
+          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>Renders {images && images.count } </div>
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
@@ -209,9 +209,6 @@ function App() {
                 </div>
                 <div className='border border-zinc-500 rounded-md p-3 w-1/2'>
                   <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
-                  <div className='text-white font-bold mb-3'>Description</div>
-                  {selectedImage?.description && <p className="">{selectedImage?.description}</p>}
-
                   <div className='text-white font-bold my-3'>Prompt</div>
                   <div className='bg-zinc-700 p-3 rounded-md'>
                     1girl, (hanfu), sidelighting, wallpaper,
