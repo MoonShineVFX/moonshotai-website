@@ -9,11 +9,13 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery';
 import AppHome from './Page/Gallery/App';
+import { RecoilRoot } from 'recoil';
 function App() {
   useEffect(() => {
     AOS.init();
   }, [])
   return (
+    <RecoilRoot>
     <BrowserRouter>
       <Routes> 
         <Route path="/" element={<Home />} />
@@ -24,6 +26,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </RecoilRoot>
   );
 }
 

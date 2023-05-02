@@ -6,6 +6,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 
 import Header from '../header'
 import liff from '@line/liff';
+
+import { loginState, userState } from '../atoms/modalAtom';
+import {  useRecoilValue ,useRecoilState } from 'recoil';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:false},
@@ -17,10 +20,11 @@ function App() {
   const [images, setImages] = useState([]);
   const [imagesResults, setImagesResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [currentProfile, setCurrentProfile] = useState(null);
+  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useRecoilState(loginState)
+
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -101,7 +105,7 @@ function App() {
         profile_image: profile.pictureUrl
       })
     };
-    fetch('https://api.moonshot.today/line_login', requestOptions)
+    fetch('https://api-dev.moonshot.today/line_login', requestOptions)
     .then(response => response.json())
     .then(data => {
       console.log(data)
