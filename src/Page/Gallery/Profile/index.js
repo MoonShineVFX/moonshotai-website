@@ -152,11 +152,11 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} />;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike}/>;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} />;
+        return <CollectionPage title={currentDropDownItem.title}images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
       case 'Following':
-        return <RenderPage title={currentDropDownItem.title}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike}/>;
       default: return null;
     }
   }
