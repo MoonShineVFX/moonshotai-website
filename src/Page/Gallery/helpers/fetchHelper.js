@@ -23,6 +23,7 @@ export const fetchLineLogin = async (profile) =>{
 
 }
 export const userStorageAImage =async (image,token) =>{
+  console.log(image,token)
   const requestOptions = {
     method: 'POST',
     headers: { 

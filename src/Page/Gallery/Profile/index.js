@@ -154,7 +154,7 @@ function Index() {
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike}/>;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title}images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
+        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
       case 'Following':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike}/>;
       default: return null;
