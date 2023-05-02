@@ -2,9 +2,6 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-
-import { fetchLineLogin, fetchUserImages, userStorageAImage } from '../helpers/fetchHelper';
-
 function Index({title,images,imagesResults,handleLike}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -32,8 +29,6 @@ function Index({title,images,imagesResults,handleLike}) {
   }
   
 
-  useEffect(() => {
-  }, []);
   return (
     <div >
           <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {title}  </div>

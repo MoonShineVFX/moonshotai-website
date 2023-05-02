@@ -2,9 +2,6 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-
-import { fetchLineLogin, fetchUserImages, userStorageAImage } from '../helpers/fetchHelper';
-
 function Index({title,images,imagesResults,handleLike}) {
 
   const [selectedImage, setSelectedImage] = useState(null);

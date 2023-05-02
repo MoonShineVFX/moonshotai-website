@@ -58,7 +58,7 @@ function Index({isLoggedIn}) {
           </div>
           <div className='my-7 flex flex-col text-white/90 justify-between'>
             <Link 
-              to='/app' 
+              to='/profile' 
               className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                 <MdAssignmentInd color="#88ad48"/> Profile 
             </Link>

@@ -60,14 +60,11 @@ export const fetchUserStorages =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  if(userid){
-    const response =await fetch('https://api.moonshot.today/users/'+userid+'/storages' ,requestOptions)
-    const data =await response.json()
-    return data
+  const response =await fetch('https://api.moonshot.today/users/'+userid+'/storages' ,requestOptions)
+  const data =await response.json()
+  return data
     
-  } else{
 
-  }
 }
 export const fetchUserCollections = async (userid,token) =>{
   const requestOptions = {
@@ -77,11 +74,9 @@ export const fetchUserCollections = async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  if(userid){
-    const response = await fetch('https://api.moonshot.today/users/'+userid+'/collections' ,requestOptions)
-    const data = await response.json()
-    return data
-  } else{
 
-  }
+  const response = await fetch('https://api.moonshot.today/users/'+userid+'/collections' ,requestOptions)
+  const data = await response.json()
+  return data
+
 }

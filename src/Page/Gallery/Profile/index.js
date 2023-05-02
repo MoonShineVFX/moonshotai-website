@@ -23,12 +23,12 @@ const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
-  const [currentAuthor,setCurrentAuthor] = useState(null)
+  const [currentAuthor,setCurrentAuthor] = useState({})
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [token, setToken] = useRecoilState(loginState)
   const [ isCopied , setIsCopied ] = useState(false);
@@ -71,6 +71,7 @@ function Index() {
           liff.getProfile().then(profile=>{
             console.log(profile)
             setCurrentProfile(profile)
+
             fetchUserImages(currentProfile.userId)
               .then((images)=> {
                   setImages(images)
@@ -82,6 +83,7 @@ function Index() {
             fetchLineLogin(profile)
               .then((data)=> setToken(data))
               .catch((error) => console.error(error));
+              
           }).catch(err => console.log(err))
         }
       } else {
@@ -148,7 +150,7 @@ function Index() {
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} />;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title}/>;
+        return <CollectionPage title={currentDropDownItem.title} />;
       case 'Following':
         return <RenderPage title={currentDropDownItem.title}/>;
       default: return null;
@@ -157,7 +159,7 @@ function Index() {
   
 
   useEffect(() => {
-    // initializeLineLogin()
+    initializeLineLogin()
   }, []);
   return (
     <div >
@@ -224,7 +226,7 @@ function Index() {
         </div>
 
         <div className='my-10 m-4'>
-          {renderComponent()}
+          {renderComponent}
        
         </div> 
       </div>
