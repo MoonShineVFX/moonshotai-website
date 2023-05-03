@@ -3,6 +3,7 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
 import { MdBookmark } from "react-icons/md";
+import {getWordFromLetter} from '../helpers/fetchHelper'
 function Index({title,images,imagesResults,handleLike}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -90,7 +91,7 @@ function Index({title,images,imagesResults,handleLike}) {
                   <div className='text-white font-bold my-3 flex gap-2 items-center'>
                     Model
                     <div className='bg-zinc-700  px-3  py-1 rounded-md'>
-                    {selectedImage.model}
+                    {getWordFromLetter(selectedImage.model)}
                     </div> 
                   </div>
                   <div className='text-white font-bold my-3'>Prompt</div>

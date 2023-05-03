@@ -80,3 +80,18 @@ export const fetchUserCollections = async (userid,token) =>{
   return data
 
 }
+
+export const getWordFromLetter=(letter)=>{
+  switch (letter.toLowerCase()) {
+    case 'sd':
+      return 'PR';
+    case 'mj':
+      return 'CT';
+    case 'nv':
+      return 'CM';
+    case 'av':
+      return 'PC';
+    default:
+      return letter;
+  }
+}
