@@ -105,7 +105,7 @@ function Index() {
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
   }
-  const handlePrev = ()=>{
+  const handlePrev = (title)=>{
     setCurrentPage(currentPage-1)
     console.log(currentPage)
     handleOptionChange(title)
