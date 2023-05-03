@@ -45,7 +45,7 @@ function Index() {
   const dropdownVariants = {
     open: {
       opacity: 1,
-      height:auto,
+      height:'auto',
       transition: {
         duration: 0.2,
       },
