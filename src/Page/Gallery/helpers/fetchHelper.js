@@ -43,7 +43,7 @@ export const fetchUserImages =async (uuid,token)=>{
     }
   };
   if(uuid){
-    const response =await fetch('https://api.moonshot.today/users/'+uuid+'/images' ,requestOptions)
+    const response =await fetch('https://api.moonshot.today/users/'+uuid+'/images?page_size=50' ,requestOptions)
     const data =await response.json()
     return data
     
