@@ -36,7 +36,8 @@ function Index() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [token, setToken] = useRecoilState(loginState)
   const [ isCopied , setIsCopied ] = useState(false);
-
+  const [currentPage, setCurrentPage]= useState(1)
+  const [pageSize, setPageSize] = useState(30)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -76,7 +77,7 @@ function Index() {
             console.log(profile)
             setCurrentProfile(profile)
 
-            fetchUserImages(profile.userId)
+            fetchUserImages(profile.userId , currentPage, pageSize)
               .then((images)=> {
                   setImages(images)
                   setImagesResults(images.results.reverse())
@@ -101,6 +102,14 @@ function Index() {
     userStorageAImage(image,token)
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
+  }
+  const handlePrev = ()=>{
+    setCurrentPage(currentPage-1)
+    console.log(currentPage)
+  }
+  const handleNext = ()=>{
+    setCurrentPage(currentPage+1)
+    console.log(currentPage)
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -150,7 +159,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev}/>;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike}/>;
       case 'Collection':

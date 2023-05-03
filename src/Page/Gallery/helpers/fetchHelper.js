@@ -34,16 +34,15 @@ export const userStorageAImage =async (image,token) =>{
   const data =await response.status
   return data
 }
-export const fetchUserImages =async (uuid,token)=>{
+export const fetchUserImages =async (uuid,page,pageSize)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Content-Type': 'application/json'
     }
   };
   if(uuid){
-    const response =await fetch('https://api.moonshot.today/users/'+uuid+'/images?page_size=50' ,requestOptions)
+    const response =await fetch('https://api.moonshot.today/users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
     const data =await response.json()
     return data
     
