@@ -108,12 +108,16 @@ function Index() {
   const handlePrev = (title)=>{
     setCurrentPage(currentPage-1)
     console.log(currentPage)
-    handleOptionChange(title)
+    handleOptionChange({
+      title:title
+    })
   }
   const handleNext = (title)=>{
     setCurrentPage(currentPage+1)
     console.log(currentPage)
-    handleOptionChange(title)
+    handleOptionChange({
+      title:title
+    })
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
