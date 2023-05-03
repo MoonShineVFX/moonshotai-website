@@ -79,7 +79,7 @@ function Index() {
             fetchUserImages(profile.userId)
               .then((images)=> {
                   setImages(images)
-                  setImagesResults(images.results)
+                  setImagesResults(images.results.reverse())
                   setCurrentAuthor(images.results[0].author)
               })
               .catch((error) => console.error(error));
@@ -116,7 +116,7 @@ function Index() {
         fetchUserImages(currentProfile.userId)
           .then((images)=> {
               setImages(images)
-              setImagesResults(images.results)
+              setImagesResults(images.results.reverse())
           })
           .catch((error) => console.error(error));
         break;
@@ -124,7 +124,7 @@ function Index() {
         fetchUserStorages(currentAuthor.id,token)
           .then((images)=> {
               setStorages(images)
-              setStoragesResults(images.results)
+              setStoragesResults(images.results.reverse())
           })
           .catch((error) => console.error(error));
         break;
@@ -132,7 +132,7 @@ function Index() {
         fetchUserCollections(currentAuthor.id,token)
           .then((images)=> {
               setCollections(images)
-              setCollectionsResults(images.results)
+              setCollectionsResults(images.results.reverse())
           })
           .catch((error) => console.error(error));
         break;
@@ -140,7 +140,7 @@ function Index() {
         fetchUserImages(currentProfile.userId,token)
           .then((images)=> {
               setImages(images)
-              setImagesResults(images.results)
+              setImagesResults(images.results.reverse())
           })
           .catch((error) => console.error(error));
         break;
