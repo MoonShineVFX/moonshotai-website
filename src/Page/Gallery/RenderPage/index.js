@@ -5,7 +5,7 @@ import { FiHeart } from "react-icons/fi";
 import { MdBookmark } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
-function Index({title,images,imagesResults,handleLike}) {
+function Index({title,images,imagesResults,handleLike,handleNext,handlePrev}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -26,10 +26,10 @@ function Index({title,images,imagesResults,handleLike}) {
     handleLike(image)
   }
   const onHandlePrev = (image) =>{
-    console.log('prev')
+    handlePrev('prev')
   }
   const onHandleNext = (image) =>{
-    console.log('next')
+    handleNext('next')
   }
 
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
