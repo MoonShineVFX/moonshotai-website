@@ -43,19 +43,20 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev}) {
   }, []);
   return (
     <div >
-      <div className='flex gap-10 items-center my-5 text-white/70 justify-end'>
+      
+      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {title}  </div>
+      <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm'>
         <div className='py-1 px-2 rounded-full'>{images.previous ? 
-          <div onClick={onHandlePrev}>previous</div>  
+          <div onClick={onHandlePrev}>Previous</div>  
           : 
-          <span className="text-white/30">no Prev page</span> }
+          <span className="text-white/10 cursor-not-allowed">Previous</span> }
         </div>
         <div className='py-1 px-2 rounded-full'>{images.next ?     
           <div onClick={onHandleNext}>Next</div>      
           : 
-          <span className="text-white/30">no Next page</span>}
+          <span className="text-white/10 cursor-not-allowed">Next</span>}
         </div>
       </div>
-      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {title}  </div>
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
