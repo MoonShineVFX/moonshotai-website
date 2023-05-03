@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
+import { MdBookmark } from "react-icons/md";
 function Index({title,images,imagesResults,handleLike}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -60,7 +61,7 @@ function Index({title,images,imagesResults,handleLike}) {
                       {created_at.substr(0,10)}
                     </div>
                     <div className='ml-auto flex items-center gap-3' onClick={()=>onHandleLike(image)}>
-                      <FiHeart />
+                      <MdBookmark />
                     </div>
                   </div>
                 </motion.div>
