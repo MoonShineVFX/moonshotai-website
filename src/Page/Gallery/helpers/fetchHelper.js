@@ -92,6 +92,6 @@ export const getWordFromLetter=(letter)=>{
     case 'av':
       return 'PC';
     default:
-      return letter;
+      return letter.toUpperCase();
   }
 }
