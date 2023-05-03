@@ -108,10 +108,12 @@ function Index() {
   const handlePrev = ()=>{
     setCurrentPage(currentPage-1)
     console.log(currentPage)
+    handleOptionChange(title)
   }
-  const handleNext = ()=>{
+  const handleNext = (title)=>{
     setCurrentPage(currentPage+1)
     console.log(currentPage)
+    handleOptionChange(title)
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -124,7 +126,7 @@ function Index() {
   const handleOptionChange = async (item) => {
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.userId)
+        fetchUserImages(currentProfile.userId,currentPage,pageSize)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())

@@ -26,10 +26,10 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev}) {
     handleLike(image)
   }
   const onHandlePrev = (image) =>{
-    handlePrev('prev')
+    handlePrev(title)
   }
   const onHandleNext = (image) =>{
-    handleNext('next')
+    handleNext(title)
   }
 
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
