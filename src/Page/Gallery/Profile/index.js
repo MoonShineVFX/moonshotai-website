@@ -106,14 +106,14 @@ function Index() {
       .catch((error) => console.error(error));
   }
   const handlePrev = (title)=>{
-    setCurrentPage(currentPage-1)
+    setCurrentPage(prevPage => prevPage-1)
     console.log(currentPage)
     handleOptionChange({
       title:title
     })
   }
   const handleNext = (title)=>{
-    setCurrentPage(currentPage+1)
+    setCurrentPage(prevPage => prevPage+1)
     console.log(currentPage)
     handleOptionChange({
       title:title
