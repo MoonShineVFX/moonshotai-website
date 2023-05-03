@@ -107,18 +107,13 @@ function Index() {
   }
   const handlePrev = (title)=>{
     setCurrentPage(prevPage => prevPage-1)
-    console.log(currentPage)
-    handleOptionChange({
-      title:title
-    })
   }
   const handleNext = (title)=>{
     setCurrentPage(prevPage => prevPage+1)
-    console.log(currentPage)
-    handleOptionChange({
-      title:title
-    })
   }
+  useEffect(() => {
+    handleOptionChange(currentDropDownItem);
+  }, [currentPage]);
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
