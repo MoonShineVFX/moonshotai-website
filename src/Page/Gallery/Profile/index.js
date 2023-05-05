@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, patchUserProfile,delUserStorageImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -90,7 +90,7 @@ function Index() {
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
-                fetchUserProfile(data.user_id, data.token)
+                fetchUser(data.user_id, data.token)
                 .then((data)=> {
                   console.log(data)
                   setCurrentProfile(data)})
@@ -107,6 +107,7 @@ function Index() {
       console.log(error);
     });
   }
+  const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const devLogin = ()=>{
     const profile ={
       displayName:"WuWood_dev",
@@ -116,12 +117,20 @@ function Index() {
     }
     setIsLoggedIn(true)
     // setCurrentProfile(profile)
-
+  
     fetchUserImages(profile.userId , currentPage, pageSize)
       .then((images)=> {
           setImages(images)
           setImagesResults(images.results.reverse())
           setCurrentAuthor(images.results[0].author)
+          const result = images.results.reverse()
+          // 將取得的陣列轉換成物件
+          const newData = {};
+          result.forEach((item) => {
+            newData[item.id] = item;
+          });
+          setObjectData(newData);
+          // console.log(objectData)
       })
       .catch((error) => console.error(error));
     
@@ -129,7 +138,7 @@ function Index() {
       .then((data)=> {
         setToken(data.token)
 
-        fetchUserProfile(data.user_id, data.token)
+        fetchUser(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
             setCurrentProfile(data)})
@@ -169,6 +178,12 @@ function Index() {
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
   }
+  const handleUpdate = (id, newData) => {
+    // 找到要更新的資料並進行更新
+    const updatedData = Object.assign({}, objectData, { [id]: newData });
+    setObjectData(updatedData);
+  };
+
   useEffect(() => {
     handleOptionChange(currentDropDownItem);
   }, [currentPage]);
@@ -182,6 +197,13 @@ function Index() {
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())
+              const result = images.results.reverse()
+              // 將取得的陣列轉換成物件
+              const newData = {};
+              result.forEach((item) => {
+                newData[item.id] = item;
+              });
+              setObjectData(newData);
           })
           .catch((error) => console.error(error));
         break;
@@ -215,7 +237,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate}/>;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
       case 'Collection':

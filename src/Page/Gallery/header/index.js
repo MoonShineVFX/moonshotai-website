@@ -21,7 +21,6 @@ function Index({isLoggedIn,banner}) {
         console.log('登出失敗');
       }
   }
-  console.log(banner)
   return (
     <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
    justify-between '>

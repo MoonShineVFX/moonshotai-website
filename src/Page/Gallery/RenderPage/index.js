@@ -5,8 +5,8 @@ import { FiHeart } from "react-icons/fi";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
-function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar}) {
-
+function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar,handleUpdate}) {
+  console.log(imagesResults)
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
@@ -47,6 +47,9 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
   };
   const onHandleLike = (image) =>{
     handleLike(image)
+    if(image.is_storage === true) return
+    const newData = { ...image, is_storage: !image.is_storage  }; 
+    handleUpdate(image.id,newData)
   }
   const onHandlePrev = (image) =>{
     handlePrev(title)
