@@ -178,7 +178,7 @@ function Index() {
   const handleOptionChange = async (item) => {
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.id,currentPage,pageSize)
+        fetchUserImages(currentProfile.uid,currentPage,pageSize)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())
@@ -186,7 +186,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Storage':
-        fetchUserStorages(currentAuthor.id,token)
+        fetchUserStorages(currentProfile.id,token)
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results.reverse())
@@ -194,7 +194,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Collection':
-        fetchUserCollections(currentAuthor.id,token)
+        fetchUserCollections(currentProfile.id,token)
           .then((images)=> {
               setCollections(images)
               setCollectionsResults(images.results.reverse())
@@ -202,7 +202,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Following':
-        fetchUserImages(currentProfile.id,token)
+        fetchUserImages(currentProfile.uid,token)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())
