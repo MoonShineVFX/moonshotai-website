@@ -54,6 +54,7 @@ function Index({title,images,imagesResults,handleLike}) {
                 >
                   <img  
                     src={urls.thumb} alt={image?.description} 
+                    data-id={id}
                     className='w-full h-auto object-cover cursor-pointer'
                     onClick={() => handleImageClick(image)} 
                   />
