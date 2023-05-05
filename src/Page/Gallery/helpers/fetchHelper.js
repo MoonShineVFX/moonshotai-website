@@ -34,6 +34,18 @@ export const userStorageAImage =async (image,token) =>{
   const data =await response.status
   return data
 }
+export const delUserStorageImage = async (id,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch('https://api.moonshot.today/images/'+id+'/storage', requestOptions)
+  const data =await response.status
+  return data
+}
 export const fetchUserImages =async (uuid,page,pageSize)=>{
   const requestOptions = {
     method: 'GET',

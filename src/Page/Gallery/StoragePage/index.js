@@ -2,9 +2,9 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdBookmark } from "react-icons/md";
+import { MdBookmark,MdBookmarkRemove } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
-function Index({title,images,imagesResults,handleLike}) {
+function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -23,6 +23,9 @@ function Index({title,images,imagesResults,handleLike}) {
   
   const onHandleLike = (image) =>{
     handleLike(image)
+  }
+  const onHandleRemoveStorage = (id)=>{
+    handleRemoveStorage(id)
   }
 
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
@@ -60,8 +63,8 @@ function Index({title,images,imagesResults,handleLike}) {
                     <div className=''>
                       {created_at.substr(0,10)}
                     </div>
-                    <div className='ml-auto flex items-center gap-3' onClick={()=>onHandleLike(image)}>
-                      <MdBookmark />
+                    <div className='ml-auto flex items-center gap-1  text-sm' onClick={()=>onHandleRemoveStorage(id)}>
+                      <MdBookmarkRemove />Remove
                     </div>
                   </div>
                 </motion.div>

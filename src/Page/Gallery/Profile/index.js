@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, patchUserProfile } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, patchUserProfile,delUserStorageImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -164,6 +164,11 @@ function Index() {
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
   }
+  const handleRemoveStorage = (id)=>{
+    delUserStorageImage(id,token)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
+  }
   useEffect(() => {
     handleOptionChange(currentDropDownItem);
   }, [currentPage]);
@@ -212,7 +217,7 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike}/>;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
       case 'Collection':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
       case 'Following':
@@ -255,10 +260,18 @@ function Index() {
 
         </div>
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'>Renders</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30' >Collections</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30'>Loved</div>
-          <div className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-not-allowed md:w-auto opacity-30'>Following</div>
+          {dropDownManuItem.map((item,index)=>{
+            if(!item.display) return
+            return(
+              <div 
+                key={item.title} 
+                className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
+                onClick={()=>{
+                  handleOptionChange(item)
+                }}
+              >{item.title}</div>
+            )
+          })}
         </div>
         <div className=' relative p-4 block lg:hidden'>
           <div 

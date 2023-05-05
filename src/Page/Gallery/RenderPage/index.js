@@ -111,7 +111,7 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
                   onClick={() => handleImageClick(image)} 
                 />
 
-                <div className=' absolute top-0 left-0 text-white w-full'> 
+                <div className=' absolute top-0 left-0 text-white w-full hidden'> 
                   <div className='pt-3 pl-2' onClick={()=>{
                     handleClick(id)
                   }}><MdMoreVert size={20} /></div>
