@@ -94,3 +94,47 @@ export const getWordFromLetter=(letter)=>{
       return letter.toUpperCase();
   }
 }
+export const fetchUsersList = ()=>{
+
+}
+
+export const fetchUser = async (userid) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json'}
+  };
+
+  const response = await fetch('https://api.moonshot.today/users/'+userid ,requestOptions)
+  const data = await response.json()
+  return data
+}
+
+export const fetchUserProfile = async (userid,token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  const response = await fetch('https://api.moonshot.today/user_profile/'+userid ,requestOptions)
+  const data = await response.json()
+  return data
+}
+
+export const patchUserProfile = async (userid,token,items) =>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch('https://api.moonshot.today/user_profile'+userid, requestOptions)
+  const data = await response.json()
+  return data
+
+
+}

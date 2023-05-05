@@ -100,6 +100,28 @@ function Index() {
       console.log(error);
     });
   }
+  const devLogin = ()=>{
+    const profile ={
+      displayName:"WuWood_dev",
+      pictureUrl: "https://profile.line-scdn.net/0hohWm3_nEMEd6FCWoI2NOOApEMy1ZZWlVBXIrcUlHOyJHcScTAiJ6KR1Bb3dFdiBEBHIvJxxBPnR2B0chZELMc30kbnBAJXAVX3R_qQ",
+      statusMessage:"123",
+      userId:"U895f7908fef7f32b717db91a8240ddc2"
+    }
+    setIsLoggedIn(true)
+    setCurrentProfile(profile)
+
+    fetchUserImages(profile.userId , currentPage, pageSize)
+      .then((images)=> {
+          setImages(images)
+          setImagesResults(images.results.reverse())
+          setCurrentAuthor(images.results[0].author)
+      })
+      .catch((error) => console.error(error));
+    
+    fetchLineLogin(profile)
+      .then((data)=> setToken(data.token))
+      .catch((error) => console.error(error));
+  }
   const handleLike = (image) =>{
     userStorageAImage(image,token)
       .then((data)=> console.log(data))
@@ -175,8 +197,12 @@ function Index() {
   
 
   useEffect(() => {
-    initializeLineLogin()
-  }, []);
+    if (process.env.NODE_ENV === 'production') {
+      initializeLineLogin()
+    }else{
+      devLogin()
+    }
+  }, [process.env.NODE_ENV]);
   return (
     <div >
       <div className=" absolute -z-10 w-full h-[200px] bg-gradient-to-b from-[#49531F]"></div>
