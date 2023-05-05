@@ -6,7 +6,7 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState} from '../atoms/galleryAtom'
-function Index({isLoggedIn}) {
+function Index({isLoggedIn,banner}) {
   const currentUser = useRecoilValue(userState)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
@@ -21,9 +21,11 @@ function Index({isLoggedIn}) {
         console.log('登出失敗');
       }
   }
+  console.log(banner)
   return (
     <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
    justify-between '>
+      <div className=' absolute top-0 z-50'>{banner && banner.length > 0 ?  <img src={banner} alt="" /> : ''  }</div>
       <div className='  items-center  text-white mr-6 gap-2 hidden lg:flex'>
           <div className='text-3xl font-black w-20 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>

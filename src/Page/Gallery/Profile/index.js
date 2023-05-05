@@ -2,13 +2,13 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, patchUserProfile } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -108,7 +108,7 @@ function Index() {
       userId:"U895f7908fef7f32b717db91a8240ddc2"
     }
     setIsLoggedIn(true)
-    setCurrentProfile(profile)
+    // setCurrentProfile(profile)
 
     fetchUserImages(profile.userId , currentPage, pageSize)
       .then((images)=> {
@@ -119,7 +119,15 @@ function Index() {
       .catch((error) => console.error(error));
     
     fetchLineLogin(profile)
-      .then((data)=> setToken(data.token))
+      .then((data)=> {
+        setToken(data.token)
+
+        fetchUserProfile(data.user_id, data.token)
+          .then((data)=> {
+            console.log(data)
+            setCurrentProfile(data)})
+          .catch((error) => console.error(error));
+      })
       .catch((error) => console.error(error));
   }
   const handleLike = (image) =>{
@@ -133,21 +141,32 @@ function Index() {
   const handleNext = (title)=>{
     setCurrentPage(prevPage => prevPage+1)
   }
+  const handleSetBanner = (id)=>{
+    const items={
+      profile_banner_id:id
+    }
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
+  }
+  const handleSetAvatar = (id)=>{
+    const items={
+      profile_image_id:id
+    }
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
+  }
   useEffect(() => {
     handleOptionChange(currentDropDownItem);
   }, [currentPage]);
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = model+' '+prompt+' '+negative_prompt;
-    navigator.clipboard.writeText(text);
-    setIsCopied(true)
-  }
   const handleOptionChange = async (item) => {
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.userId,currentPage,pageSize)
+        fetchUserImages(currentProfile.id,currentPage,pageSize)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())
@@ -171,7 +190,7 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Following':
-        fetchUserImages(currentProfile.userId,token)
+        fetchUserImages(currentProfile.id,token)
           .then((images)=> {
               setImages(images)
               setImagesResults(images.results.reverse())
@@ -184,7 +203,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike}/>;
       case 'Collection':
@@ -206,7 +225,7 @@ function Index() {
   return (
     <div >
       <div className=" absolute -z-10 w-full h-[200px] bg-gradient-to-b from-[#49531F]"></div>
-      <Header isLoggedIn={isLoggedIn}/>
+      <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
         <div className='px-6 py-10 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
@@ -214,9 +233,14 @@ function Index() {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
               <div className='w-[64px] h-[64px] rounded-full overflow-hidden'>
-                <img src={currentProfile && currentProfile.pictureUrl} alt="" className='max-w-full' />
+                <img src={currentProfile && currentProfile.profile_image} alt="" className='max-w-full' />
               </div>
-              <div className=' font-bold text-xl '>{currentProfile && currentProfile.displayName}</div>
+              <div className=' flex flex-col justify-end gap-2'>
+                <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
+              </div>
+              <div className=' text-xs flex items-center ml-auto hidden '> edit<MdMoreVert size={20} /> </div>
+              
             </div>
             :
             <div className=' font-bold text-xl '>用戶未登入</div>
