@@ -132,7 +132,7 @@ export const patchUserProfile = async (userid,token,items) =>{
     },
     body: JSON.stringify(items)
   };
-  const response = await fetch('https://api.moonshot.today/user_profile'+userid, requestOptions)
+  const response = await fetch('https://api.moonshot.today/user_profile/'+userid, requestOptions)
   const data = await response.json()
   return data
 
