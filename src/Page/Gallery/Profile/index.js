@@ -76,8 +76,8 @@ function Index() {
         if(accessToken){
 
           liff.getProfile().then(profile=>{
-            console.log(profile)
-            setCurrentProfile(profile)
+            // console.log(profile)
+            // setCurrentProfile(profile)
 
             fetchUserImages(profile.userId , currentPage, pageSize)
               .then((images)=> {
@@ -88,7 +88,14 @@ function Index() {
               .catch((error) => console.error(error));
             
             fetchLineLogin(profile)
-              .then((data)=> setToken(data.token))
+              .then((data)=> {
+                setToken(data.token)
+                fetchUserProfile(data.user_id, data.token)
+                .then((data)=> {
+                  console.log(data)
+                  setCurrentProfile(data)})
+                .catch((error) => console.error(error));
+              })
               .catch((error) => console.error(error));
               
           }).catch(err => console.log(err))
