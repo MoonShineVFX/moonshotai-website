@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdBookmark,MdMoreVert } from "react-icons/md";
+import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
 function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar}) {
@@ -76,7 +76,7 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
   return (
     <div >
       
-      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {title}  </div>
+      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
       <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm'>
         <div className='py-1 px-2 rounded-full'>{images.previous ? 
           <div onClick={onHandlePrev}>Previous</div>  
@@ -98,7 +98,7 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
         >
           <Masonry gutter={20}>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename   } = image
+            const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
               <motion.div key={id} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -146,9 +146,17 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
                   <div className=''>
                     {created_at.substr(0,10)}
                   </div>
-                  <div className='ml-auto flex items-center gap-3' onClick={()=>onHandleLike(image)}>
-                    <MdBookmark />
-                  </div>
+                  {
+                    is_storage ? 
+                    <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleLike(image)}>
+                      <MdBookmark />
+                    </div>
+                    :
+                    <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleLike(image)}>
+                      <MdBookmarkBorder />
+                    </div>
+                  }
+
                 </div>
               </motion.div>
 

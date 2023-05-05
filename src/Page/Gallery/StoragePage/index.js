@@ -37,7 +37,7 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
 
   return (
     <div >
-          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{images && images.count } {title}  </div>
+          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
@@ -63,7 +63,7 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
                     <div className=''>
                       {created_at.substr(0,10)}
                     </div>
-                    <div className='ml-auto flex items-center gap-1  text-sm' onClick={()=>onHandleRemoveStorage(id)}>
+                    <div className='ml-auto flex items-center gap-1  text-sm hidden' onClick={()=>onHandleRemoveStorage(id)}>
                       <MdBookmarkRemove />Remove
                     </div>
                   </div>
