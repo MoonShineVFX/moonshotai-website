@@ -79,18 +79,18 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
 
         <AnimatePresence>
           {selectedImage && (
-            <motion.div className="fixed top-0 left-0 lg:right-0 lg:bottom-0 flex z-50 bg-zinc-800 h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className=" p-4 max-w-screen-lg mx-auto  gap-3 text-white/80 relative my-5">
-                <div className="flex  justify-center items-center ">
+             <motion.div className=" fixed w-full top-0 left-0 lg:right-0 lg:bottom-0 flex z-50 bg-zinc-800   h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <div className="w-full p-4  text-white/80 relative">
+                <div className="flex  justify-center items-center w-full">
                   <div className='w-full h-full'>
                     <img 
                       src={selectedImage.urls.regular} 
                       alt={selectedImage.id} 
-                      className="max-h-full  rounded-md" />
+                      className="max-w-full   rounded-md" />
                   </div>
                 </div>
-                <div className='flex flex-col justify-end  relative pt-5 pb-20'>
-                  <div className='text-xs mb-3 text-white/30'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
+                <div className='flex flex-col justify-end  relative pb-20 pt-2'>
+                  <div className='text-xs mb-3 text-white/40'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
                   
                   <div className='text-white font-bold my-3 flex gap-2 items-center'>
                     Model
@@ -98,8 +98,8 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
                     {getWordFromLetter(selectedImage.model)}
                     </div> 
                   </div>
-                  <div className='text-white font-bold my-3'>Prompt</div>
-                  <div className='bg-zinc-700 p-3 rounded-md'>
+                  <div className='text-white font-bold my-3 '>Prompt</div>
+                  <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
                     {selectedImage.prompt}
                   </div>
                   <div className='text-white font-bold my-3'>Negative prompt</div>
@@ -113,7 +113,7 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
                     onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
                     >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
                   <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
-
+  
                 </div>
                 
               </div>
