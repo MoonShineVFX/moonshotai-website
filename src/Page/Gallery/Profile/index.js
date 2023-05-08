@@ -213,7 +213,7 @@ function Index() {
               results.forEach((item) => {
                 newData[item.id] = item;
               });
-              setObjectData(Object.values(newData).reverse());
+              setObjectData(Object.values(newData));
           })
           .catch((error) => console.error(error));
         break;
@@ -221,7 +221,7 @@ function Index() {
         fetchUserStorages(currentProfile.id,token)
           .then((images)=> {
               setStorages(images)
-              setStoragesResults(images.results.reverse())
+              setStoragesResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
@@ -229,7 +229,7 @@ function Index() {
         fetchUserCollections(currentProfile.id,token)
           .then((images)=> {
               setCollections(images)
-              setCollectionsResults(images.results.reverse())
+              setCollectionsResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
@@ -237,7 +237,7 @@ function Index() {
         fetchUserImages(currentProfile.uid,token)
           .then((images)=> {
               setImages(images)
-              setImagesResults(images.results.reverse())
+              setImagesResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
