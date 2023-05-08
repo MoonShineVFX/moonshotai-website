@@ -37,6 +37,7 @@ function Index() {
   const [token, setToken] = useRecoilState(loginState)
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
+  const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const imageVariants = {
@@ -247,7 +248,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
       case 'Collection':
@@ -283,7 +284,7 @@ function Index() {
                 <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
               </div>
-              <div className=' text-xs flex items-center ml-auto hidden '> edit<MdMoreVert size={20} /> </div>
+              <div className=' text-xs flex items-center ml-auto  '> edit<MdMoreVert size={20} /> </div>
               
             </div>
             :
