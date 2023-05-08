@@ -24,7 +24,12 @@ function Index({isLoggedIn,banner}) {
   return (
     <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
    justify-between '>
-      <div className=' absolute top-0 z-50'>{banner && banner.length > 0 ?  <img src={banner} alt="" /> : ''  }</div>
+      <div 
+        style={{backgroundImage: `url(${banner})`}}
+        className=' absolute top-0 left-0 -z-20 w-full h-[22vh] bg-cover bg-center bg-no-repeat brightness-75'>
+        <div className=' bg-black absolute top-0 left-0 h-32 z-50'></div>
+
+      </div>
       <div className='  items-center  text-white mr-6 gap-2 hidden lg:flex'>
           <div className='text-3xl font-black w-20 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>

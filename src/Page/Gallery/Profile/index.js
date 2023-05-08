@@ -269,7 +269,7 @@ function Index() {
   }, [process.env.NODE_ENV]);
   return (
     <div >
-      <div className=" absolute -z-10 w-full h-[200px] bg-gradient-to-b from-[#49531F]"></div>
+      <div className=" absolute -z-10 w-full "></div>
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 

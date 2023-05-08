@@ -1,6 +1,7 @@
 
 import liff from '@line/liff';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
 export const initializeLineLogin = async()=>{} 
 
 export const fetchLineLogin = async (profile) =>{
