@@ -85,7 +85,7 @@ function Index() {
               .then((images)=> {
                   const results = images.results
                   setImages(images)
-                  setImagesResults(results.reverse())
+                  setImagesResults(results)
                   setCurrentAuthor(images.results[0].author)
 
                   // 將取得的陣列轉換成物件
@@ -93,7 +93,7 @@ function Index() {
                   results.forEach((item) => {
                     newData[item.id] = item;
                   });
-                  setObjectData(Object.values(newData).reverse());
+                  setObjectData(Object.values(newData));
               })
               .catch((error) => console.error(error));
             
@@ -132,7 +132,7 @@ function Index() {
       .then((images)=> {
           const results = images.results
           setImages(images)
-          setImagesResults(results.reverse())
+          setImagesResults(results)
           setCurrentAuthor(images.results[0].author)
           
           // 將取得的陣列轉換成物件
@@ -140,7 +140,7 @@ function Index() {
           results.forEach((item) => {
             newData[item.id] = item;
           });
-          setObjectData(Object.values(newData).reverse());
+          setObjectData(Object.values(newData));
       })
       .catch((error) => console.error(error));
     
@@ -207,8 +207,8 @@ function Index() {
           .then((images)=> {
               const results = images.results
               setImages(images)
-              setImagesResults(results.reverse())
-              const result = images.results.reverse()
+              setImagesResults(results)
+              const result = images.results
               // 將取得的陣列轉換成物件
               const newData = {};
               results.forEach((item) => {

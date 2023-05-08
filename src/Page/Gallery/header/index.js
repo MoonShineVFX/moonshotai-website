@@ -26,8 +26,8 @@ function Index({isLoggedIn,banner}) {
    justify-between '>
       <div 
         style={{backgroundImage: `url(${banner})`}}
-        className=' absolute top-0 left-0 -z-20 w-full h-[22vh] bg-cover bg-center bg-no-repeat brightness-75'>
-        <div className=' bg-black absolute top-0 left-0 h-32 z-50'></div>
+        className=' absolute top-0 left-0 -z-10  w-full h-[22vh] bg-cover bg-center bg-no-repeat brightness-100'>
+        <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
 
       </div>
       <div className='  items-center  text-white mr-6 gap-2 hidden lg:flex'>
