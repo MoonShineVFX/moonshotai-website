@@ -25,8 +25,8 @@ function Index({isLoggedIn,banner}) {
     <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
    justify-between '>
       <div 
-        style={{backgroundImage: `url(${banner})`}}
-        className=' absolute top-0 left-0 -z-10  w-full h-[25vh] bg-cover bg-center bg-no-repeat brightness-100'>
+        style={{backgroundImage:banner && banner.length > 0 ?  `url(${banner})` : 'none'}}
+        className=' absolute top-0 left-0 -z-10  w-full h-[25vh] bg-cover bg-center bg-no-repeat brightness-75'>
         <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
 
       </div>

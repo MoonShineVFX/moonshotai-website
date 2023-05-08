@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
 
@@ -40,6 +40,8 @@ function Index() {
   const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
+  const [isEdit , setIsEdit] = useState(false)
+  const [name,setName]= useState('')
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -211,6 +213,29 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleSetName = ()=>{
+    const items={
+      name:name
+    }
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleChange = event => {
+    setName(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
   const handleRemoveStorage = (id)=>{
     delUserStorageImage(id,token)
       .then((data)=> console.log(data))
@@ -309,10 +334,34 @@ function Index() {
                 <img src={currentProfile && currentProfile.profile_image} alt="" className='max-w-full' />
               </div>
               <div className=' flex flex-col justify-end gap-2'>
-                <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                {
+                  isEdit ? 
+                  <div className=' text-lg leading-4'>
+                    <input type="text" className='bg-zinc-700 rounded-full p-2 text-sm' 
+                    onChange={handleChange}
+                    defaultValue={currentProfile && currentProfile.name}/>
+                    
+                  </div>
+                  :
+                  <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                }
+                
                 <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
               </div>
-              <div className=' text-xs flex items-center ml-auto  '> edit<MdMoreVert size={20} /> </div>
+              {
+                isEdit ?
+                <div className=' text-normal flex items-center ml-auto gap-5  '>
+                  <div onClick={handleSetName}><MdDone /></div>
+                  <div onClick={()=>setIsEdit(false)}><MdClear /></div>
+
+                </div>
+                :
+                <div 
+                  className=' text-xs flex items-center ml-auto  '
+                  onClick={()=>setIsEdit(true)}
+                > edit<MdMoreVert size={20} /> </div>
+              }
+             
               
             </div>
             :
