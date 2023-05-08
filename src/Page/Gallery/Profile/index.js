@@ -38,6 +38,7 @@ function Index() {
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
+  const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -81,9 +82,17 @@ function Index() {
 
             fetchUserImages(profile.userId , currentPage, pageSize)
               .then((images)=> {
+                  const results = images.results
                   setImages(images)
-                  setImagesResults(images.results.reverse())
+                  setImagesResults(results.reverse())
                   setCurrentAuthor(images.results[0].author)
+
+                  // 將取得的陣列轉換成物件
+                  const newData = {};
+                  results.forEach((item) => {
+                    newData[item.id] = item;
+                  });
+                  setObjectData(Object.values(newData).reverse());
               })
               .catch((error) => console.error(error));
             
@@ -107,7 +116,7 @@ function Index() {
       console.log(error);
     });
   }
-  const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
+ 
   const devLogin = ()=>{
     const profile ={
       displayName:"WuWood_dev",
@@ -120,17 +129,17 @@ function Index() {
   
     fetchUserImages(profile.userId , currentPage, pageSize)
       .then((images)=> {
+          const results = images.results
           setImages(images)
-          setImagesResults(images.results.reverse())
+          setImagesResults(results.reverse())
           setCurrentAuthor(images.results[0].author)
-          const result = images.results.reverse()
+          
           // 將取得的陣列轉換成物件
           const newData = {};
-          result.forEach((item) => {
+          results.forEach((item) => {
             newData[item.id] = item;
           });
-          setObjectData(newData);
-          // console.log(objectData)
+          setObjectData(Object.values(newData).reverse());
       })
       .catch((error) => console.error(error));
     
@@ -195,15 +204,16 @@ function Index() {
       case 'Renders':
         fetchUserImages(currentProfile.uid,currentPage,pageSize)
           .then((images)=> {
+              const results = images.results
               setImages(images)
-              setImagesResults(images.results.reverse())
+              setImagesResults(results.reverse())
               const result = images.results.reverse()
               // 將取得的陣列轉換成物件
               const newData = {};
-              result.forEach((item) => {
+              results.forEach((item) => {
                 newData[item.id] = item;
               });
-              setObjectData(newData);
+              setObjectData(Object.values(newData).reverse());
           })
           .catch((error) => console.error(error));
         break;

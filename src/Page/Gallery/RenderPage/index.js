@@ -6,7 +6,6 @@ import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
 function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar,handleUpdate}) {
-  console.log(imagesResults)
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
