@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "web-moonshot"
-  }
+    "default": "web-moonshot",
+    "dev": "dev-web-moonshot"
+  },
+  "targets": {},
+  "etags": {}
 }
