@@ -5,7 +5,7 @@ import { FiHeart } from "react-icons/fi";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
-function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar,handleUpdate}) {
+function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar,handleUpdate,handleCollection}) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
@@ -50,6 +50,13 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
     const newData = { ...image, is_storage: !image.is_storage  }; 
     handleUpdate(image.id,newData)
   }
+  const onHandleCollection = (image) =>{
+    handleCollection(image)
+    // if(image.is_storage === true) return
+    // const newData = { ...image, is_storage: !image.is_storage  }; 
+    // handleUpdate(image.id,newData)
+  }
+
   const onHandlePrev = (image) =>{
     handlePrev(title)
   }
@@ -158,6 +165,11 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
                       <MdBookmarkBorder />
                     </div>
                   }
+                  <div 
+                    className='ml-auto flex items-center gap-3 text-white' 
+                    onClick={() =>onHandleCollection(image)}>
+                      Collection
+                  </div>
 
                 </div>
               </motion.div>

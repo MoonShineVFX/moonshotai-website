@@ -35,6 +35,18 @@ export const userStorageAImage =async (image,token) =>{
   const data =await response.status
   return data
 }
+export const userCollectionAImage =async (image,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/collections', requestOptions)
+  const data =await response.status
+  return data
+}
 export const delUserStorageImage = async (id,token)=>{
   const requestOptions = {
     method: 'DELETE',

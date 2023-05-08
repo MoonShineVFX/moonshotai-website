@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -162,6 +162,11 @@ function Index() {
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
   }
+  const handleCollection = (image) =>{
+    userCollectionAImage(image,token)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
+  }
   const handlePrev = (title)=>{
     setCurrentPage(prevPage => prevPage-1)
   }
@@ -271,7 +276,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
       case 'Collection':
