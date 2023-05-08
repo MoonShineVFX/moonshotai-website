@@ -146,7 +146,7 @@ export const patchUserProfile = async (userid,token,items) =>{
     body: JSON.stringify(items)
   };
   const response = await fetch(apiUrl+'user_profile/'+userid, requestOptions)
-  const data = await response.json()
+  const data = await response
   return data
 
 

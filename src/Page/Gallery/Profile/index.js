@@ -100,7 +100,7 @@ function Index() {
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
-                fetchUser(data.user_id, data.token)
+                fetchUserProfile(data.user_id, data.token)
                 .then((data)=> {
                   console.log(data)
                   setCurrentProfile(data)})
@@ -140,7 +140,8 @@ function Index() {
           results.forEach((item) => {
             newData[item.id] = item;
           });
-          setObjectData(Object.values(newData));
+          setObjectData(newData);
+          console.log(results)
       })
       .catch((error) => console.error(error));
     
@@ -148,7 +149,7 @@ function Index() {
       .then((data)=> {
         setToken(data.token)
 
-        fetchUser(data.user_id, data.token)
+        fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
             setCurrentProfile(data)})
@@ -172,15 +173,37 @@ function Index() {
       profile_banner_id:id
     }
     patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
+
+
   }
   const handleSetAvatar = (id)=>{
     const items={
       profile_image_id:id
     }
     patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
   }
   const handleRemoveStorage = (id)=>{
@@ -214,7 +237,7 @@ function Index() {
               results.forEach((item) => {
                 newData[item.id] = item;
               });
-              setObjectData(Object.values(newData));
+              setObjectData(newData);
           })
           .catch((error) => console.error(error));
         break;
