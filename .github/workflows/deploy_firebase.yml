@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: false
-      REACT_APP_MOONSHOT_API_KEY: ${{ secrets.MOONSHOT_API_KEY }}
       REACT_APP_LIFF_LOGIN_ID: ${{ secrets.LIFF_LOGIN_ID }}
       REACT_APP_MOONSHOT_LINELOGIN_APIKEY: ${{secrets.MOONSHOT_LINELOGIN_APIKEY}}
     steps:
