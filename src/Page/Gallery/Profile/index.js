@@ -83,30 +83,24 @@ function Index() {
             // console.log(profile)
             // setCurrentProfile(profile)
 
-            fetchUserImages(profile.userId , currentPage, pageSize)
-              .then((images)=> {
-                  const results = images.results
-                  setImages(images)
-                  setImagesResults(results)
-                  setCurrentAuthor(images.results[0].author)
-
-                  // 將取得的陣列轉換成物件
-                  const newData = {};
-                  results.forEach((item) => {
-                    newData[item.id] = item;
-                  });
-                  setObjectData(Object.values(newData));
-              })
-              .catch((error) => console.error(error));
-            
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
+
                 fetchUserProfile(data.user_id, data.token)
-                .then((data)=> {
-                  console.log(data)
-                  setCurrentProfile(data)})
-                .catch((error) => console.error(error));
+                  .then((data)=> {
+                    console.log(data)
+                    setCurrentProfile(data)})
+                  .catch((error) => console.error(error));
+
+                fetchUserImages(profile.userId , currentPage, pageSize,data.token)
+                  .then((images)=> {
+                      const results = images.results
+                      setImages(images)
+                      setImagesResults(results)
+                      setCurrentAuthor(images.results[0].author)
+                  })
+                  .catch((error) => console.error(error));
               })
               .catch((error) => console.error(error));
               
