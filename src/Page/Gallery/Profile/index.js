@@ -16,7 +16,7 @@ import CollectionPage from '../CollectionPage'
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
-  {title:"Collection", display:true},
+  {title:"Collection", display:false},
   {title:"Following",display:false},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
@@ -329,9 +329,10 @@ function Index() {
           {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
-              <div className='w-[64px] h-[64px] rounded-full overflow-hidden'>
-                <img src={currentProfile && currentProfile.profile_image} alt="" className='max-w-full' />
-              </div>
+              <div 
+                className='w-[64px] h-[64px] rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black'
+                style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
+              ></div>
               <div className=' flex flex-col justify-end gap-2'>
                 {
                   isEdit ? 
