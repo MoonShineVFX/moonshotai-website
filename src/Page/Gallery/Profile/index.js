@@ -16,7 +16,7 @@ import CollectionPage from '../CollectionPage'
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
-  {title:"Collection", display:false},
+  {title:"Collection", display:true},
   {title:"Following",display:false},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
@@ -129,37 +129,29 @@ function Index() {
     }
     setIsLoggedIn(true)
     // setCurrentProfile(profile)
-  
-    fetchUserImages(profile.userId , currentPage, pageSize)
-      .then((images)=> {
-          const results = images.results
-          setImages(images)
-          setImagesResults(results)
-          setCurrentAuthor(images.results[0].author)
-          
-          // 將取得的陣列轉換成物件
-          const newData = {};
-          results.forEach((item) => {
-            newData[item.id] = item;
-          });
-          setObjectData(newData);
-          console.log(results)
-      })
-      .catch((error) => console.error(error));
-    
+
     fetchLineLogin(profile)
       .then((data)=> {
         setToken(data.token)
-
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
-            setCurrentProfile(data)})
+            setCurrentProfile(data)
+          })
           .catch((error) => console.error(error));
+        fetchUserImages(profile.userId , currentPage, pageSize,data.token)
+          .then((images)=> {
+              const results = images.results
+              setImages(images)
+              setImagesResults(results)
+              setCurrentAuthor(images.results[0].author)
+          })
+          .catch((error) => console.error(error));
+
       })
       .catch((error) => console.error(error));
   }
-  const handleLike = (image) =>{
+  const handleStorage = (image) =>{
     userStorageAImage(image,token)
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
@@ -225,6 +217,7 @@ function Index() {
               .then((data)=> {
                 console.log(data)
                 setCurrentProfile(data)})
+                setIsEdit(false)
               .catch((error) => console.error(error));
           },1000)
         }
@@ -238,14 +231,34 @@ function Index() {
   };
   const handleRemoveStorage = (id)=>{
     delUserStorageImage(id,token)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200 || data.status === 204){
+          setTimeout(()=>{
+            fetchUserStorages(currentProfile.id,token)
+            .then((images)=> {
+                setStorages(images)
+                setStoragesResults(images.results)
+            })
+            .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
   }
   const handleUpdate = (id, newData) => {
     // 找到要更新的資料並進行更新
-    const updatedData = Object.assign({}, objectData, { [id]: newData });
-    setObjectData(updatedData);
+    setImagesResults(prevData => {
+      const index = prevData.findIndex(item => item.id === id);
+      if (index === -1) {
+        // 如果没有找到对应的元素，直接返回原来的状态
+        return prevData;
+      }
+      const updatedData = [...prevData];
+      updatedData[index] = {...updatedData[index], ...newData};
+      return updatedData;
+    });
   };
+  
 
   useEffect(() => {
     handleOptionChange(currentDropDownItem);
@@ -256,18 +269,11 @@ function Index() {
   const handleOptionChange = async (item) => {
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.uid,currentPage,pageSize)
+        fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
           .then((images)=> {
               const results = images.results
               setImages(images)
               setImagesResults(results)
-              const result = images.results
-              // 將取得的陣列轉換成物件
-              const newData = {};
-              results.forEach((item) => {
-                newData[item.id] = item;
-              });
-              setObjectData(newData);
           })
           .catch((error) => console.error(error));
         break;
@@ -301,13 +307,13 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
+        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
       case 'Following':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage}/>;
       default: return null;
     }
   }
@@ -322,7 +328,6 @@ function Index() {
   }, [process.env.NODE_ENV]);
   return (
     <div >
-      <div className=" absolute -z-10 w-full "></div>
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
@@ -385,7 +390,7 @@ function Index() {
         </div>
         <div className=' relative p-4 block lg:hidden'>
           <div 
-            className='text-white rounded-full bg-[#444] px-3 py-1 w-1/2 flex justify-between items-center'
+            className='text-white rounded-full bg-[#444] px-3 py-1 w-2/3 flex justify-between items-center'
             onClick={toggleDropdown}
           >{currentDropDownItem.title} <MdKeyboardArrowDown /></div>
             <motion.div

@@ -26,11 +26,11 @@ function Index({isLoggedIn,banner}) {
    justify-between '>
       <div 
         style={{backgroundImage:banner && banner.length > 0 ?  `url(${banner})` : 'none'}}
-        className=' absolute top-0 left-0 -z-10  w-full h-[25vh] bg-cover bg-center bg-no-repeat brightness-75'>
+        className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
         <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
 
       </div>
-      <div className='  items-center  text-white mr-6 gap-2 hidden lg:flex'>
+      <div className=' items-center  text-white mr-6 gap-2 hidden lg:flex'>
           <div className='text-3xl font-black w-20 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
           </div>

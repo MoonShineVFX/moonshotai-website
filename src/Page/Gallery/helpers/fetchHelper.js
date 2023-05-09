@@ -43,8 +43,8 @@ export const userCollectionAImage =async (image,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'images/'+image.id+'/collections', requestOptions)
-  const data =await response.status
+  const response =await fetch(apiUrl+'images/'+image.id+'/collection', requestOptions)
+  const data =await response
   return data
 }
 export const delUserStorageImage = async (id,token)=>{
@@ -56,14 +56,15 @@ export const delUserStorageImage = async (id,token)=>{
     }
   };
   const response =await fetch(apiUrl+'images/'+id+'/storage', requestOptions)
-  const data =await response.status
+  const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,page,pageSize)=>{
+export const fetchUserImages =async (uuid,page,pageSize,token)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
   };
   if(uuid){
