@@ -67,17 +67,14 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
-          <ResponsiveMasonry
-            className=''
-            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-            >
-            <Masonry gutter={20}>
+
+            <div className='grid grid-cols-2 gap-2 '>
             {imagesResults.map((image,index) => {
               const {id, urls, created_at, display_home, filename   } = image
               return (
                 <motion.div key={id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                  className=' rounded-lg overflow-hidden relative'
+                  className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
                   <img  
                     src={urls.thumb} alt={image?.description} 
@@ -117,11 +114,11 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
                     </motion.div>
                   </div>
                   <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                    <div className=''>
+                    <div className='text-sm'>
                       {created_at.substr(0,10)}
                     </div>
                     <div className='flex gap-4'>
-                      <div className='ml-auto flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(id)}>
+                      <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(id)}>
                         <MdBookmarkRemove />Remove
                       </div>
 
@@ -134,8 +131,8 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
               )
 
             })}
-            </Masonry>
-          </ResponsiveMasonry>
+            </div>
+
         }
     
 

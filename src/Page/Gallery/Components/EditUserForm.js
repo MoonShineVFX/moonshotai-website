@@ -19,8 +19,6 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
       display_nsfw:data.isNsfw||false,
       portfolio_url:data.portfolioUrl||null,
       bio:data.bio||null,
-      location:data.location||null,
-
     }
     handleSetUserProfile(items)
   };
@@ -47,18 +45,6 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <input {...field} type="text" placeholder="Name" className='bg-zinc-600 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            </div>
-            <div className='flex flex-col'>
-              <label htmlFor="location" className='text-white/50 font-normal my-2'>Location</label>
-              <Controller
-                name="location"
-                control={control}
-                defaultValue={userData && userData.location}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="Location" className='bg-zinc-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
