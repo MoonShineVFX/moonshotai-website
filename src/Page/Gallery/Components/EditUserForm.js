@@ -18,7 +18,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
       twitter_id:data.twitterId||null,
       display_nsfw:data.isNsfw||false,
       portfolio_url:data.portfolioUrl||null,
-      bio:data.bio||null
+      bio:data.bio||null,
     }
     handleSetUserProfile(items)
   };
