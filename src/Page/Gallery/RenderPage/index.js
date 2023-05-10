@@ -107,7 +107,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' aspect-square rounded-lg overflow-hidden relative'
+                className=' rounded-lg overflow-hidden relative'
               >
                 <img  
                   src={urls.thumb} alt={image?.description} 
