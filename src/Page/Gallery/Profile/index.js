@@ -212,7 +212,6 @@ function Index() {
               .then((data)=> {
                 console.log(data)
                 setCurrentProfile(data)})
-                setIsEdit(false)
               .catch((error) => console.error(error));
           },1000)
         }
@@ -228,8 +227,9 @@ function Index() {
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
                 console.log(data)
-                setCurrentProfile(data)})
-                // setIsEdit(false)
+                setCurrentProfile(data)
+                setTimeout(()=>{setIsEdit(false)},500)
+              })
               .catch((error) => console.error(error));
           },1000)
         }

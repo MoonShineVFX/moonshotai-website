@@ -9,15 +9,18 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
   const onSubmit = (data) => {
     console.log(data);
     const items ={
-      name:data.name? data.name : '',
-      facebook_username:data.facebookId ?data.facebookId :"",
-      instagram_username:data.instagramId?data.instagramId:"",
-      linkdin_username:data.linkedinId?data.linkedinId:"",
-      display_nsfw:data.isNsfw?data.isNsfw:false,
-      // portfolio_url:data.portfolioUrl?data.portfolioUrl:"",
-      // bio:data.bio?data.bio:"",
+      name:data.name ||'',
+      email:data.email ||null,
+      facebook_id:data.facebookId || null,
+      instagram_id:data.instagramId||null,
+      linkedin_id:data.linkedinId||null,
+      discord_id:data.discordId||null,
+      twitter_id:data.twitterId||null,
+      display_nsfw:data.isNsfw||false,
+      portfolio_url:data.portfolioUrl||null,
+      bio:data.bio||null,
+      location:data.location||null,
 
-      // location:data.location?data.location:"",
     }
     handleSetUserProfile(items)
   };
@@ -31,63 +34,145 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
       variants={modalVariants}
       className=' fixed z-50 top-0 left-0 w-full'>
       <div className='bg-black/50 w-full h-screen' onClick={handleEdit}></div>
-      <div className=' bg-zinc-600 rounded-lg p-6 text-white absolute top-32 left-1/2 -translate-x-1/2 w-2/3'>
+      <div className=' bg-zinc-600 rounded-lg p-4 box-border text-white fixed top-20 left-1/2 -translate-x-1/2 w-4/5'>
         <div className='text-center font-bold'>Your Profile</div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='flex flex-col'>
-            <label htmlFor="name" className='text-white/50 font-normal my-2'>Name</label>
-            <Controller
-              name="name"
-              control={control}
-              defaultValue={userData && userData.name}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <input {...field} type="text" placeholder="Name" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
-              )}
-            />
+          <div className='grid grid-cols-2 gap-2'>
+            <div className='flex flex-col'>
+              <label htmlFor="name" className='text-white/50 font-normal my-2'>Name</label>
+              <Controller
+                name="name"
+                control={control}
+                defaultValue={userData && userData.name}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="Name" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
+            <div className='flex flex-col'>
+              <label htmlFor="location" className='text-white/50 font-normal my-2'>Location</label>
+              <Controller
+                name="location"
+                control={control}
+                defaultValue={userData && userData.location}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="Location" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
           </div>
-          <div className='flex flex-col'>
-            <label htmlFor="facebook-id" className='text-white/50 font-normal my-2'>Facebook account</label>
+
+          <div className='flex flex-col  '>
+            <label htmlFor="email" className='text-white/50 font-normal my-2'>Email</label>
             <Controller
-              name="facebookId"
+              name="email"
               control={control}
-              defaultValue={userData && userData.facebook_username}
+              defaultValue={userData && userData.email}
               rules={{ required: false }}
               render={({ field }) => (
-                <input {...field} type="text" placeholder="facebookId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                <input {...field} type="text" placeholder="email" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
               )}
             />
           </div>
-          <div className='flex flex-col'>
-            <label htmlFor="instagram-id" className='text-white/50 font-normal my-2'>Instagram account</label>
+          <div className='flex flex-col  '>
+            <label htmlFor="bio" className='text-white/50 font-normal my-2'>Bio</label>
             <Controller
-              name="instagramId"
+              name="bio"
               control={control}
-              defaultValue={userData && userData.instagram_username}
+              defaultValue={userData && userData.bio}
               rules={{ required: false }}
               render={({ field }) => (
-                <input {...field} type="text" placeholder="facebookId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                <input {...field} type="text" placeholder="Short bio about 20-50 characters" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
               )}
             />
-           
           </div>
-          <div className='flex flex-col' >
-            <label htmlFor="linkedin-id" className='text-white/50 font-normal my-2'>LinkedIn account</label>
-            <Controller
-              name="linkedinId"
-              control={control}
-              defaultValue={userData && userData.linkdin_username}
-              rules={{ required: false }}
-              render={({ field }) => (
-                <input {...field} type="text" placeholder="facebookId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
-              )}
-            />
-           
+          <div className='text-center mt-8 text-white/60'>-- Social Media --</div>
+          <div className='grid grid-cols-2 gap-2'>
+            <div className='flex flex-col  '>
+              <label htmlFor="portfolioUrl" className='text-white/50 font-normal my-2'>Website</label>
+              <Controller
+                name="portfolioUrl"
+                control={control}
+                defaultValue={userData && userData.portfolio_url}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="portfolio url" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
+            <div className='flex flex-col  '>
+              <label htmlFor="facebookId" className='text-white/50 font-normal my-2'>Facebook</label>
+              <Controller
+                name="facebookId"
+                control={control}
+                defaultValue={userData && userData.facebook_id}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="facebookId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
+            <div className='flex flex-col '>
+              <label htmlFor="instagramId" className='text-white/50 font-normal my-2'>Instagram</label>
+              <Controller
+                name="instagramId"
+                control={control}
+                defaultValue={userData && userData.instagram_id}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="instagramId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            
+            </div>
+            <div className='flex flex-col' >
+              <label htmlFor="linkedinId" className='text-white/50 font-normal my-2'>LinkedIn</label>
+              <Controller
+                name="linkedinId"
+                control={control}
+                defaultValue={userData && userData.linkedin_id}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="linkedinId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            
+            </div>
+            <div className='flex flex-col' >
+              <label htmlFor="discordId" className='text-white/50 font-normal my-2'>Discord</label>
+              <Controller
+                name="discordId"
+                control={control}
+                defaultValue={userData && userData.discord_id}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="discordId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            
+            </div>
+            <div className='flex flex-col' >
+              <label htmlFor="twitterId" className='text-white/50 font-normal my-2'>Twitter</label>
+              <Controller
+                name="twitterId"
+                control={control}
+                defaultValue={userData && userData.twitter_id}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="twitterId" className='bg-zinc-500 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            
+            </div>
           </div>
+
+          
           <Controller
             name="isNsfw"
             control={control}
-            defaultValue={enabled}
+            defaultValue={userData && userData.display_nsfw}
             render={({ field }) => (
               <div className="flex mt-4">
                 <label className="inline-flex relative items-center mr-5 cursor-pointer">
@@ -105,7 +190,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                     } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                   ></div>
                   <span className="ml-2 text-sm font-medium text-white/80">
-                    NSFW
+                    toggle NSFW content
                   </span>
                 </label>
               </div>
