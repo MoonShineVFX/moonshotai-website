@@ -13,6 +13,7 @@ import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollection
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
+import EditUserForm from '../Components/EditUserForm';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
@@ -218,6 +219,23 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleSetUserProfile = (items)=>{
+
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+                // setIsEdit(false)
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
   const handleChange = event => {
     setName(event.target.value);
 
@@ -335,32 +353,17 @@ function Index() {
               ></div>
               <div className=' flex flex-col justify-end gap-2'>
                 {
-                  isEdit ? 
-                  <div className=' text-lg leading-4'>
-                    <input type="text" className='bg-zinc-700 rounded-full p-2 text-sm' 
-                    onChange={handleChange}
-                    defaultValue={currentProfile && currentProfile.name}/>
-                    
-                  </div>
-                  :
-                  <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                  isEdit && <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
                 }
-                
+                <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
               </div>
-              {
-                isEdit ?
-                <div className=' text-normal flex items-center ml-auto gap-5  '>
-                  <div onClick={handleSetName}><MdDone /></div>
-                  <div onClick={()=>setIsEdit(false)}><MdClear /></div>
-
-                </div>
-                :
-                <div 
-                  className=' text-xs flex items-center ml-auto  '
-                  onClick={()=>setIsEdit(true)}
-                > edit<MdMoreVert size={20} /> </div>
-              }
+ 
+              <div 
+                className=' text-xs flex items-center ml-auto  '
+                onClick={()=>setIsEdit(true)}
+              > edit<MdMoreVert size={20} /> </div>
+         
              
               
             </div>
@@ -369,6 +372,7 @@ function Index() {
           }
 
         </div>
+        
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
