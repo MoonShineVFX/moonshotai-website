@@ -1,6 +1,7 @@
 
 import liff from '@line/liff';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
 export const initializeLineLogin = async()=>{} 
 
 export const fetchLineLogin = async (profile) =>{
@@ -16,7 +17,7 @@ export const fetchLineLogin = async (profile) =>{
       profile_image: profile.pictureUrl
     })
   };
-  const response = await fetch('https://api.moonshot.today/line_login', requestOptions)
+  const response = await fetch(apiUrl+'line_login', requestOptions)
   const data = await response.json()
   return data
 
@@ -30,8 +31,20 @@ export const userStorageAImage =async (image,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch('https://api.moonshot.today/images/'+image.id+'/storage', requestOptions)
+  const response =await fetch(apiUrl+'images/'+image.id+'/storage', requestOptions)
   const data =await response.status
+  return data
+}
+export const userCollectionAImage =async (image,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/collection', requestOptions)
+  const data =await response
   return data
 }
 export const delUserStorageImage = async (id,token)=>{
@@ -42,19 +55,20 @@ export const delUserStorageImage = async (id,token)=>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch('https://api.moonshot.today/images/'+id+'/storage', requestOptions)
-  const data =await response.status
+  const response =await fetch(apiUrl+'images/'+id+'/storage', requestOptions)
+  const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,page,pageSize)=>{
+export const fetchUserImages =async (uuid,page,pageSize,token)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     }
   };
   if(uuid){
-    const response =await fetch('https://api.moonshot.today/users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
     const data =await response.json()
     return data
     
@@ -71,7 +85,7 @@ export const fetchUserStorages =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch('https://api.moonshot.today/users/'+userid+'/storages' ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/storages' ,requestOptions)
   const data =await response.json()
   return data
     
@@ -86,7 +100,7 @@ export const fetchUserCollections = async (userid,token) =>{
     }
   };
 
-  const response = await fetch('https://api.moonshot.today/users/'+userid+'/collections' ,requestOptions)
+  const response = await fetch(apiUrl+'users/'+userid+'/collections' ,requestOptions)
   const data = await response.json()
   return data
 
@@ -116,7 +130,7 @@ export const fetchUser = async (userid) =>{
     headers: { 'Content-Type': 'application/json'}
   };
 
-  const response = await fetch('https://api.moonshot.today/users/'+userid ,requestOptions)
+  const response = await fetch(apiUrl+'users/'+userid ,requestOptions)
   const data = await response.json()
   return data
 }
@@ -130,7 +144,7 @@ export const fetchUserProfile = async (userid,token) =>{
     }
   };
 
-  const response = await fetch('https://api.moonshot.today/user_profile/'+userid ,requestOptions)
+  const response = await fetch(apiUrl+'user_profile/'+userid ,requestOptions)
   const data = await response.json()
   return data
 }
@@ -144,8 +158,8 @@ export const patchUserProfile = async (userid,token,items) =>{
     },
     body: JSON.stringify(items)
   };
-  const response = await fetch('https://api.moonshot.today/user_profile/'+userid, requestOptions)
-  const data = await response.json()
+  const response = await fetch(apiUrl+'user_profile/'+userid, requestOptions)
+  const data = await response
   return data
 
 

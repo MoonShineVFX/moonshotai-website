@@ -5,7 +5,7 @@ import { FiHeart } from "react-icons/fi";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 
-function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,handleSetBanner,handleSetAvatar,handleUpdate}) {
+function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,handleCollection,handleStorage,handleRemoveStorage}) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
@@ -44,23 +44,31 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
       setOpenItems([...openItems, id]);
     }
   };
-  const onHandleLike = (image) =>{
-    handleLike(image)
-    if(image.is_storage === true) return
-    const newData = { ...image, is_storage: !image.is_storage  }; 
-    handleUpdate(image.id,newData)
+  const onHandleStorage = (image) =>{
+    
+    if(image.is_storage === true) {
+      const newData = { ...image, is_storage: !image.is_storage  }; 
+      handleUpdate(image.id,newData)
+      handleRemoveStorage(image.id)
+    }else {
+      const newData = { ...image, is_storage: !image.is_storage  }; 
+      handleUpdate(image.id,newData)
+      handleStorage(image)
+    }
+
   }
+  const onHandleCollection = (image) =>{
+    handleCollection(image)
+    // if(image.is_storage === true) return
+    // const newData = { ...image, is_storage: !image.is_storage  }; 
+    // handleUpdate(image.id,newData)
+  }
+
   const onHandlePrev = (image) =>{
     handlePrev(title)
   }
   const onHandleNext = (image) =>{
     handleNext(title)
-  }
-  const onHandleSetBanner = (id)=>{
-    handleSetBanner(id)
-  }
-  const onHandleSetAvatar = (id)=>{
-    handleSetAvatar(id)
   }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
@@ -77,7 +85,6 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
   }, []);
   return (
     <div >
-      
       <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
       <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm'>
         <div className='py-1 px-2 rounded-full'>{images.previous ? 
@@ -94,15 +101,11 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <ResponsiveMasonry
-          className=''
-          columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-        >
-          <Masonry gutter={20}>
+          <div className='grid grid-cols-2 gap-2'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
-              <motion.div key={id} 
+              <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                 className=' rounded-lg overflow-hidden relative'
               >
@@ -112,52 +115,24 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
                   className='w-full h-auto object-cover cursor-pointer'
                   onClick={() => handleImageClick(image)} 
                 />
-
-                <div className=' absolute top-0 left-0 text-white w-full '> 
-                  <div className='pt-3 pl-2' onClick={()=>{
-                    handleClick(id)
-                  }}><MdMoreVert size={20} /></div>
-                  <motion.div
-                    className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
-          
-                    onClick={()=>{
-                      handleClick(id)
-                    }}
-                  ></motion.div>
-                  <motion.div 
-                    className={`text-white  absolute  w-auto  rounded-lg bg-[#444] p-2 mt-2  border-white/20 z-30` }
-                    variants={dropdownVariants}
-                    initial="closed"
-                    animate={openItems.includes(id) ? 'open' : 'closed'}
-                  >
-                    <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
-                      onClick={()=>{
-                        handleClick(id)
-                        onHandleSetBanner(id)
-                      }}
-                    >Set as Banner</div>      
-                    <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
-                      onClick={()=>{
-                        handleClick(id)
-                        onHandleSetAvatar(id)
-                      }}
-                    >Set as Avatar</div>                
-                  </motion.div>
-                </div>
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                  <div className=''>
-                    {created_at.substr(0,10)}
+                  <div className='text-sm'>
+                     #{id} {created_at.substr(0,10)}
                   </div>
-                  {
-                    is_storage ? 
-                    <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleLike(image)}>
-                      <MdBookmark />
-                    </div>
-                    :
-                    <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleLike(image)}>
-                      <MdBookmarkBorder />
-                    </div>
-                  }
+                  <div className='flex gap-4'>
+                    {
+                      is_storage ? 
+                      <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleStorage(image)}>
+                        <MdBookmark />
+                      </div>
+                      :
+                      <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleStorage(image)}>
+                        <MdBookmarkBorder />
+                      </div>
+                    }
+                    
+                  </div>
+
 
                 </div>
               </motion.div>
@@ -165,8 +140,7 @@ function Index({title,images,imagesResults,handleLike,handleNext,handlePrev,hand
             )
 
           })}
-          </Masonry>
-        </ResponsiveMasonry>
+          </div>
       }
     
 

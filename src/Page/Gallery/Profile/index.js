@@ -2,17 +2,18 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
+import EditUserForm from '../Components/EditUserForm';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
@@ -40,6 +41,8 @@ function Index() {
   const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
+  const [isEdit , setIsEdit] = useState(false)
+  const [name,setName]= useState('')
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -81,30 +84,24 @@ function Index() {
             // console.log(profile)
             // setCurrentProfile(profile)
 
-            fetchUserImages(profile.userId , currentPage, pageSize)
-              .then((images)=> {
-                  const results = images.results
-                  setImages(images)
-                  setImagesResults(results.reverse())
-                  setCurrentAuthor(images.results[0].author)
-
-                  // 將取得的陣列轉換成物件
-                  const newData = {};
-                  results.forEach((item) => {
-                    newData[item.id] = item;
-                  });
-                  setObjectData(Object.values(newData).reverse());
-              })
-              .catch((error) => console.error(error));
-            
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
-                fetchUser(data.user_id, data.token)
-                .then((data)=> {
-                  console.log(data)
-                  setCurrentProfile(data)})
-                .catch((error) => console.error(error));
+
+                fetchUserProfile(data.user_id, data.token)
+                  .then((data)=> {
+                    console.log(data)
+                    setCurrentProfile(data)})
+                  .catch((error) => console.error(error));
+
+                fetchUserImages(profile.userId , currentPage, pageSize,data.token)
+                  .then((images)=> {
+                      const results = images.results
+                      setImages(images)
+                      setImagesResults(results)
+                      setCurrentAuthor(images.results[0].author)
+                  })
+                  .catch((error) => console.error(error));
               })
               .catch((error) => console.error(error));
               
@@ -127,37 +124,35 @@ function Index() {
     }
     setIsLoggedIn(true)
     // setCurrentProfile(profile)
-  
-    fetchUserImages(profile.userId , currentPage, pageSize)
-      .then((images)=> {
-          const results = images.results
-          setImages(images)
-          setImagesResults(results.reverse())
-          setCurrentAuthor(images.results[0].author)
-          
-          // 將取得的陣列轉換成物件
-          const newData = {};
-          results.forEach((item) => {
-            newData[item.id] = item;
-          });
-          setObjectData(Object.values(newData).reverse());
-      })
-      .catch((error) => console.error(error));
-    
+
     fetchLineLogin(profile)
       .then((data)=> {
         setToken(data.token)
-
-        fetchUser(data.user_id, data.token)
+        fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
-            setCurrentProfile(data)})
+            setCurrentProfile(data)
+          })
           .catch((error) => console.error(error));
+        fetchUserImages(profile.userId , currentPage, pageSize,data.token)
+          .then((images)=> {
+              const results = images.results
+              setImages(images)
+              setImagesResults(results)
+              setCurrentAuthor(images.results[0].author)
+          })
+          .catch((error) => console.error(error));
+
       })
       .catch((error) => console.error(error));
   }
-  const handleLike = (image) =>{
+  const handleStorage = (image) =>{
     userStorageAImage(image,token)
+      .then((data)=> console.log(data))
+      .catch((error) => console.error(error));
+  }
+  const handleCollection = (image) =>{
+    userCollectionAImage(image,token)
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
   }
@@ -172,27 +167,110 @@ function Index() {
       profile_banner_id:id
     }
     patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
+
+
   }
   const handleSetAvatar = (id)=>{
     const items={
       profile_image_id:id
     }
     patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
   }
+  const handleSetName = ()=>{
+    const items={
+      name:name
+    }
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)})
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleSetUserProfile = (items)=>{
+
+    patchUserProfile(currentProfile.id,token,items)
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentProfile.id, token)
+              .then((data)=> {
+                console.log(data)
+                setCurrentProfile(data)
+                setTimeout(()=>{setIsEdit(false)},500)
+              })
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleChange = event => {
+    setName(event.target.value);
+
+    console.log('value is:', event.target.value);
+  };
   const handleRemoveStorage = (id)=>{
     delUserStorageImage(id,token)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        if(data.status === 200 || data.status === 204){
+          setTimeout(()=>{
+            fetchUserStorages(currentProfile.id,token)
+            .then((images)=> {
+                setStorages(images)
+                setStoragesResults(images.results)
+            })
+            .catch((error) => console.error(error));
+          },1000)
+        }
+      })
       .catch((error) => console.error(error));
   }
   const handleUpdate = (id, newData) => {
     // 找到要更新的資料並進行更新
-    const updatedData = Object.assign({}, objectData, { [id]: newData });
-    setObjectData(updatedData);
+    setImagesResults(prevData => {
+      const index = prevData.findIndex(item => item.id === id);
+      if (index === -1) {
+        // 如果没有找到对应的元素，直接返回原来的状态
+        return prevData;
+      }
+      const updatedData = [...prevData];
+      updatedData[index] = {...updatedData[index], ...newData};
+      return updatedData;
+    });
   };
+  
 
   useEffect(() => {
     handleOptionChange(currentDropDownItem);
@@ -203,18 +281,11 @@ function Index() {
   const handleOptionChange = async (item) => {
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.uid,currentPage,pageSize)
+        fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
           .then((images)=> {
               const results = images.results
               setImages(images)
-              setImagesResults(results.reverse())
-              const result = images.results.reverse()
-              // 將取得的陣列轉換成物件
-              const newData = {};
-              results.forEach((item) => {
-                newData[item.id] = item;
-              });
-              setObjectData(Object.values(newData));
+              setImagesResults(results)
           })
           .catch((error) => console.error(error));
         break;
@@ -248,13 +319,13 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={Object.values(objectData)} handleLike={handleLike} handleNext={handleNext} handlePrev={handlePrev} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleLike={handleLike} handleRemoveStorage={handleRemoveStorage}/>;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleLike={handleLike} />;
+        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
       case 'Following':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleLike={handleLike}/>;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage}/>;
       default: return null;
     }
   }
@@ -269,7 +340,6 @@ function Index() {
   }, [process.env.NODE_ENV]);
   return (
     <div >
-      <div className=" absolute -z-10 w-full h-[200px] bg-gradient-to-b from-[#49531F]"></div>
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
@@ -277,14 +347,25 @@ function Index() {
           {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
-              <div className='w-[64px] h-[64px] rounded-full overflow-hidden'>
-                <img src={currentProfile && currentProfile.profile_image} alt="" className='max-w-full' />
-              </div>
+              <div 
+                className='w-[70px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
+                style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
+              ></div>
               <div className=' flex flex-col justify-end gap-2'>
+                {
+                  isEdit && <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
+                }
                 <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
               </div>
-              <div className=' text-xs flex items-center ml-auto  '> edit<MdMoreVert size={20} /> </div>
+ 
+              <div 
+                className=' text-xs flex items-center ml-auto  '
+                onClick={()=>setIsEdit(true)}
+              > edit<MdMoreVert size={20} /> </div>
+         
+             
               
             </div>
             :
@@ -292,6 +373,7 @@ function Index() {
           }
 
         </div>
+        
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
@@ -308,7 +390,7 @@ function Index() {
         </div>
         <div className=' relative p-4 block lg:hidden'>
           <div 
-            className='text-white rounded-full bg-[#444] px-3 py-1 w-1/2 flex justify-between items-center'
+            className='text-white rounded-full bg-[#444] px-3 py-1 w-2/3 flex justify-between items-center'
             onClick={toggleDropdown}
           >{currentDropDownItem.title} <MdKeyboardArrowDown /></div>
             <motion.div

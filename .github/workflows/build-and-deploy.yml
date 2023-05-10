@@ -16,7 +16,7 @@ jobs:
       CI: false
       REACT_APP_LIFF_LOGIN_ID: ${{ secrets.LIFF_LOGIN_ID }}
       REACT_APP_MOONSHOT_LINELOGIN_APIKEY: ${{secrets.MOONSHOT_LINELOGIN_APIKEY}}
-
+      REACT_APP_MOONSHOT_API_URL: ${{ secrets.MOONSHOT_API_URL }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

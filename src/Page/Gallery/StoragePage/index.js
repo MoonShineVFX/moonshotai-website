@@ -2,16 +2,34 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdBookmark,MdBookmarkRemove } from "react-icons/md";
+import { FaRegHeart,FaHeart } from "react-icons/fa";
+import { MdBookmark,MdBookmarkRemove,MdMoreVert } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
-function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
+function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
-
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
+  const [openItems, setOpenItems] = useState([]);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  const dropdownVariants = {
+    open: {
+      opacity: 1,
+      display:'block',
+      transition: {
+        duration: 0.2,
+      },
+    },
+    closed: {
+      opacity: 0,
+      display:'none',
+      transition: {
+        duration: 0.2,
+      },
+    },
   };
   const handleImageClick = image => {
     setSelectedImage(image);
@@ -20,18 +38,26 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
   const handleModalClose = () => {
     setSelectedImage(null);
   };
-  
-  const onHandleLike = (image) =>{
-    handleLike(image)
-  }
   const onHandleRemoveStorage = (id)=>{
     handleRemoveStorage(id)
   }
-
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
     setIsCopied(true)
+  }
+  const handleClick = (id) => {
+    if (openItems.includes(id)) {
+      setOpenItems(openItems.filter((item) => item !== id));
+    } else {
+      setOpenItems([...openItems, id]);
+    }
+  };
+  const onHandleSetBanner = (id)=>{
+    handleSetBanner(id)
+  }
+  const onHandleSetAvatar = (id)=>{
+    handleSetAvatar(id)
   }
   
 
@@ -44,14 +70,14 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
           <ResponsiveMasonry
             className=''
             columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-            >
+          >
             <Masonry gutter={20}>
             {imagesResults.map((image,index) => {
               const {id, urls, created_at, display_home, filename   } = image
               return (
                 <motion.div key={id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                  className=' rounded-lg overflow-hidden relative'
+                  className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
                   <img  
                     src={urls.thumb} alt={image?.description} 
@@ -59,13 +85,49 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
                     className='w-full h-auto object-cover cursor-pointer'
                     onClick={() => handleImageClick(image)} 
                   />
+                  <div className=' absolute top-0 left-0 text-white w-full '> 
+                    <div className='pt-3 pl-2' onClick={()=>{
+                      handleClick(id)
+                    }}><MdMoreVert size={20} /></div>
+                    <motion.div
+                      className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
+            
+                      onClick={()=>{
+                        handleClick(id)
+                      }}
+                    ></motion.div>
+                    <motion.div 
+                      className={`text-white  absolute  w-auto  rounded-lg bg-[#444] p-2 mt-2  border-white/20 z-30` }
+                      variants={dropdownVariants}
+                      initial="closed"
+                      animate={openItems.includes(id) ? 'open' : 'closed'}
+                    >
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                        onClick={()=>{
+                          handleClick(id)
+                          onHandleSetBanner(id)
+                        }}
+                      >Set as Banner</div>      
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                        onClick={()=>{
+                          handleClick(id)
+                          onHandleSetAvatar(id)
+                        }}
+                      >Set as Avatar</div>                
+                    </motion.div>
+                  </div>
                   <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                    <div className=''>
+                    <div className='text-sm'>
                       {created_at.substr(0,10)}
                     </div>
-                    <div className='ml-auto flex items-center gap-1  text-sm hidden' onClick={()=>onHandleRemoveStorage(id)}>
-                      <MdBookmarkRemove />Remove
+                    <div className='flex gap-4'>
+                      <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(id)}>
+                        <MdBookmarkRemove />Remove
+                      </div>
+
+
                     </div>
+
                   </div>
                 </motion.div>
 
@@ -74,6 +136,7 @@ function Index({title,images,imagesResults,handleLike,handleRemoveStorage}) {
             })}
             </Masonry>
           </ResponsiveMasonry>
+
         }
     
 
