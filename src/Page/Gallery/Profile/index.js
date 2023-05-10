@@ -348,7 +348,7 @@ function Index() {
             isLoggedIn ?
             <div className='flex items-center gap-5'>
               <div 
-                className='w-[64px] h-[64px] rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black'
+                className='w-[70px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
               ></div>
               <div className=' flex flex-col justify-end gap-2'>
@@ -356,6 +356,7 @@ function Index() {
                   isEdit && <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
                 }
                 <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
               </div>
  
