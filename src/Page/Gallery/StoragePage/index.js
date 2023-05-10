@@ -82,7 +82,7 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
                   <img  
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
-                    className='w-full h-auto object-cover cursor-pointer'
+                    className='w-full h-auto object-cover cursor-pointer aspect-square'
                     onClick={() => handleImageClick(image)} 
                   />
                   <div className=' absolute top-0 left-0 text-white w-full '> 
