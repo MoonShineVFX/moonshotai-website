@@ -50,7 +50,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
             </div>
           </div>
 
-          <div className='flex flex-col  '>
+          <div className='flex flex-col   '>
             <label htmlFor="email" className='text-white/50 font-normal my-2'>Email</label>
             <Controller
               name="email"
@@ -62,7 +62,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
               )}
             />
           </div>
-          <div className='flex flex-col  '>
+          <div className='flex flex-col  hidden'>
             <label htmlFor="bio" className='text-white/50 font-normal my-2'>Bio</label>
             <Controller
               name="bio"
@@ -74,8 +74,8 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
               )}
             />
           </div>
-          <div className='text-center mt-8 text-white/60'>-- Social Media --</div>
-          <div className='grid grid-cols-2 gap-2'>
+          <div className='text-center mt-8 text-white/60 hidden'>-- Social Media --</div>
+          <div className='grid grid-cols-2 gap-2 hidden'>
             <div className='flex flex-col  '>
               <label htmlFor="portfolioUrl" className='text-white/50 font-normal my-2'>Website</label>
               <Controller
@@ -160,7 +160,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
             control={control}
             defaultValue={userData && userData.display_nsfw}
             render={({ field }) => (
-              <div className="flex mt-4">
+              <div className="flex mt-4 hidden">
                 <label className="inline-flex relative items-center mr-5 cursor-pointer">
                   <input
                     type="checkbox"

@@ -101,11 +101,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <ResponsiveMasonry
-          className=''
-          columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-        >
-          <Masonry gutter={20}>
+          <div className='grid grid-cols-2 gap-2'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
@@ -120,7 +116,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
                   onClick={() => handleImageClick(image)} 
                 />
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                  <div className=''>
+                  <div className='text-sm'>
                      #{id} {created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
@@ -144,8 +140,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
             )
 
           })}
-          </Masonry>
-        </ResponsiveMasonry>
+          </div>
       }
     
 

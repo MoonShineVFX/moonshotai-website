@@ -67,8 +67,11 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
-
-            <div className='grid grid-cols-2 gap-2 '>
+          <ResponsiveMasonry
+            className=''
+            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
+          >
+            <Masonry gutter={20}>
             {imagesResults.map((image,index) => {
               const {id, urls, created_at, display_home, filename   } = image
               return (
@@ -131,7 +134,8 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
               )
 
             })}
-            </div>
+            </Masonry>
+          </ResponsiveMasonry>
 
         }
     
