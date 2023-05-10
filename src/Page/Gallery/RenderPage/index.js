@@ -107,12 +107,12 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' rounded-lg overflow-hidden relative'
+                className=' aspect-square rounded-lg overflow-hidden relative'
               >
                 <img  
                   src={urls.thumb} alt={image?.description} 
                   data-id={id}
-                  className='w-full h-auto object-cover cursor-pointer'
+                  className='w-full h-auto object-cover cursor-pointer aspect-square '
                   onClick={() => handleImageClick(image)} 
                 />
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
