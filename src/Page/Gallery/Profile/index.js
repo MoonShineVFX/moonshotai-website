@@ -343,37 +343,55 @@ function Index() {
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
-        <div className='px-6 py-10 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
+        <div className='px-6 py-5 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
           {
             isLoggedIn ?
-            <div className='flex items-center gap-5'>
+            <div className='flex flex-col items-center gap-5'>
+
               <div 
-                className='w-[70px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
+                className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
               ></div>
-              <div className=' flex flex-col justify-end gap-2'>
-                {
-                  isEdit && <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
-                }
-                <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
-                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
-                <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
-              </div>
- 
               <div 
-                className=' text-xs flex items-center ml-auto  '
+                className=' text-xs flex items-center ml-auto absolute top-32 right-5  '
                 onClick={()=>setIsEdit(true)}
-              > edit<MdMoreVert size={20} /> </div>
+              > 
+                edit<MdMoreVert size={20} /> 
+              </div>
+              <div className=' flex flex-col justify-center items-center gap-2'>
+                <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
+              </div>
+
+
+              <div className='grid grid-cols-3  divide-x'>
+                <div className=' text-xs px-8'>
+                  <div>{currentProfile && currentProfile.total_photos} </div>
+                  <div>renders</div> 
+                </div>
+                <div className=' text-xs px-8'>
+                  <div>{currentProfile && currentProfile.total_collections}</div> 
+                  <div>collections</div> 
+                </div>
+                <div className=' text-xs px-8'>
+                  <div>{currentProfile && currentProfile.total_follows}</div> 
+                  <div>follows</div> 
+                </div>
+              </div>
          
              
               
-            </div>
+              </div>
             :
             <div className=' font-bold text-xl '>用戶未登入</div>
           }
 
         </div>
-        
+        <AnimatePresence>
+          {isEdit && (
+              <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
+            )}
+        </AnimatePresence>
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
