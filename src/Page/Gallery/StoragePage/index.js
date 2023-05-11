@@ -100,7 +100,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
         >
           <div className='flex flex-col items-center gap-3'>
             <div><MdErrorOutline size={26} /></div>
-            This image is is assigned a banner or avatar.
+            This image is assigned a banner or avatar.
             <button className='  py-1 px-2 rounded-md bg-[#4c5a13]' onClick={handleClose}>OK</button>
           </div>
 
