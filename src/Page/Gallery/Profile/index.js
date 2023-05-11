@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -236,9 +236,15 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleDisplayHome = (id,items)=>{
+    userPatchDisplayHome(id,token,items)
+      .then((data)=>{
+        console.log('display home update')
+      })
+      .catch((error) => console.error(error));
+  }
   const handleChange = event => {
     setName(event.target.value);
-
     console.log('value is:', event.target.value);
   };
   const handleRemoveStorage = (id)=>{
@@ -270,6 +276,18 @@ function Index() {
       return updatedData;
     });
   };
+  const handleStorageUpdate = (id,newData)=>{
+    setStoragesResults(prevData => {
+      const index = prevData.findIndex(item => item.id === id);
+      if (index === -1) {
+        // 如果没有找到对应的元素，直接返回原来的状态
+        return prevData;
+      }
+      const updatedData = [...prevData];
+      updatedData[index] = {...updatedData[index], ...newData};
+      return updatedData;
+    });
+  }
   
 
   useEffect(() => {
@@ -321,7 +339,7 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
       case 'Collection':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
       case 'Following':

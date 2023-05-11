@@ -3,9 +3,9 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
 import { FaRegHeart,FaHeart } from "react-icons/fa";
-import { MdBookmark,MdBookmarkRemove,MdMoreVert } from "react-icons/md";
+import { MdBookmark,MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
-function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar}) {
+function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -53,6 +53,21 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
       setOpenItems([...openItems, id]);
     }
   };
+  const onHandleDisplayHome = (image)=>{
+    const items = {
+      display_home:!image.display_home
+    }
+    if(image.display_home === true){
+      const newData = { ...image, display_home: !image.display_home  }; 
+      handleStorageUpdate(image.id,newData)
+      handleDisplayHome(image.id,items)
+
+    }else{
+      const newData = { ...image, display_home: !image.display_home  }; 
+      handleStorageUpdate(image.id,newData)
+      handleDisplayHome(image.id,items)
+    }
+  }
   const onHandleSetBanner = (id)=>{
     handleSetBanner(id)
   }
@@ -85,10 +100,22 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
                     className='w-full h-auto object-cover cursor-pointer aspect-square'
                     onClick={() => handleImageClick(image)} 
                   />
+                  
                   <div className=' absolute top-0 left-0 text-white w-full '> 
                     <div className='pt-3 pl-2' onClick={()=>{
                       handleClick(id)
                     }}><MdMoreVert size={20} /></div>
+                    <div className=' absolute top-0 right-0 text-white'>
+                      { display_home ? 
+                        <div className='pt-3 pr-2' onClick={()=>{
+                          onHandleDisplayHome(image)
+                        }}><MdVisibility size={20}/></div>
+                        :
+                        <div className='pt-3 pr-2' onClick={()=>{
+                          onHandleDisplayHome(image)
+                        }}> <MdVisibilityOff size={20}/></div>
+                      }
+                    </div>
                     <motion.div
                       className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
             

@@ -161,6 +161,37 @@ export const patchUserProfile = async (userid,token,items) =>{
   const response = await fetch(apiUrl+'user_profile/'+userid, requestOptions)
   const data = await response
   return data
+}
 
-
+/**
+ * 
+ * Images API
+ */
+//修改保留區圖片資料 (需攜帶JWT 作者本人才能存取)
+export const userPatchAStorageImage = async(imgid,token,items)=>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch(apiUrl+'storage_images/'+imgid, requestOptions)
+  const data = await response
+  return data
+}
+//修改保留區圖片是否顯示於藝廊 (需攜帶JWT 作者本人才能存取)
+export const userPatchDisplayHome = async(imgid,token,items)=>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch(apiUrl+'storage_images/'+imgid+'/display_home', requestOptions)
+  const data = await response.json
+  return data
 }

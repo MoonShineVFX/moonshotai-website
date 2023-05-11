@@ -115,6 +115,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
                   className='w-full h-auto object-cover cursor-pointer aspect-square '
                   onClick={() => handleImageClick(image)} 
                 />
+
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                   <div className='text-sm'>
                      #{id} {created_at.substr(0,10)}
