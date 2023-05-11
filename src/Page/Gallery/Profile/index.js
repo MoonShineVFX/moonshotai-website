@@ -339,7 +339,7 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
       case 'Collection':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
       case 'Following':

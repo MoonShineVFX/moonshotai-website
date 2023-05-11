@@ -3,9 +3,9 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
 import { FaRegHeart,FaHeart } from "react-icons/fa";
-import { MdBookmark,MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff } from "react-icons/md";
+import { MdBookmark,MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
-function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -38,8 +38,18 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
   const handleModalClose = () => {
     setSelectedImage(null);
   };
-  const onHandleRemoveStorage = (id)=>{
-    handleRemoveStorage(id)
+  const onHandleRemoveStorage = (image)=>{
+    console.log(image)
+    if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)
+    {
+      console.log('yes')
+      setShow(true)
+    }else{   
+      console.log('no')
+      handleRemoveStorage(image.id)
+    }
+
+    // 
   }
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
@@ -74,11 +84,36 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
   const onHandleSetAvatar = (id)=>{
     handleSetAvatar(id)
   }
+  const [show , setShow]=useState(false)
+  const ConfirmCancelMsg = ({setShow})=>{
+    const handleClose = ()=>{
+      setShow(false)
+    }
+    return (
+      <div className=' fixed z-50 top-0 left-0 w-full'>
+        <div className='bg-black/50 w-full h-screen' onClick={handleClose}></div>
+        <motion.div 
+          initial={{ opacity: 0, y: -20 ,x:'-50%'}}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-32 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[25vh]'
+        >
+          <div className='flex flex-col items-center gap-3'>
+            <div><MdErrorOutline size={26} /></div>
+            This image is is assigned a banner or avatar.
+            <button className='  py-1 px-2 rounded-md bg-[#4c5a13]' onClick={handleClose}>OK</button>
+          </div>
+
+        </motion.div>
+      </div>
+    )
+  }
   
 
   return (
     <div >
           <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
+          {show && <ConfirmCancelMsg setShow={setShow} />  }
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
@@ -148,7 +183,7 @@ function Index({title,images,imagesResults,handleStorage,handleRemoveStorage,han
                       {created_at.substr(0,10)}
                     </div>
                     <div className='flex gap-4'>
-                      <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(id)}>
+                      <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdBookmarkRemove />Remove
                       </div>
 
