@@ -45,6 +45,7 @@ function Index() {
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
+  const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const isShowModal = useRecoilValue(imageFormModalState)
   const isShowImageModal = useRecoilValue(imageModalState)
   const imageVariants = {
@@ -240,12 +241,16 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  /**
+   * Storage API 
+   * start
+   * */ 
   const handleSetStorageImage = (image,items) =>{
     userPatchAStorageImage(image.id,token,items)
       .then((data)=>{
-        console.log('display home update')
         const newData = { ...image, ...items  }; 
         handleStorageUpdate(image.id,newData)
+        setIsShowFormModal(false)
       })
       .catch((error) => console.error(error));
   }
@@ -256,10 +261,6 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
-  const handleChange = event => {
-    setName(event.target.value);
-    console.log('value is:', event.target.value);
-  };
   const handleRemoveStorage = (id)=>{
     delUserStorageImage(id,token)
       .then((data)=> {
@@ -276,6 +277,22 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleStorageUpdate = (id,newData)=>{
+    setStoragesResults(prevData => {
+      const index = prevData.findIndex(item => item.id === id);
+      if (index === -1) {
+        // 如果没有找到对应的元素，直接返回原来的状态
+        return prevData;
+      }
+      const updatedData = [...prevData];
+      updatedData[index] = {...updatedData[index], ...newData};
+      return updatedData;
+    });
+  }
+  /**
+   * Storage API 
+   * End
+   * */ 
   const handleUpdate = (id, newData) => {
     // 找到要更新的資料並進行更新
     setImagesResults(prevData => {
@@ -289,18 +306,7 @@ function Index() {
       return updatedData;
     });
   };
-  const handleStorageUpdate = (id,newData)=>{
-    setStoragesResults(prevData => {
-      const index = prevData.findIndex(item => item.id === id);
-      if (index === -1) {
-        // 如果没有找到对应的元素，直接返回原来的状态
-        return prevData;
-      }
-      const updatedData = [...prevData];
-      updatedData[index] = {...updatedData[index], ...newData};
-      return updatedData;
-    });
-  }
+
   
 
   useEffect(() => {
