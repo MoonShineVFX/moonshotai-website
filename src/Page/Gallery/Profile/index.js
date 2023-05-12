@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { loginState, userState, imageFormModalState,imageModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome,userPatchAStorageImage } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -240,6 +240,15 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleSetStorageImage = (image,items) =>{
+    userPatchAStorageImage(image.id,token,items)
+      .then((data)=>{
+        console.log('display home update')
+        const newData = { ...image, ...items  }; 
+        handleStorageUpdate(image.id,newData)
+      })
+      .catch((error) => console.error(error));
+  }
   const handleDisplayHome = (id,items)=>{
     userPatchDisplayHome(id,token,items)
       .then((data)=>{
@@ -365,7 +374,7 @@ function Index() {
       <AnimatePresence>
         {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
           )}
-        {isShowModal && (<EditImageForm/>
+        {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>
           )}
         {isShowImageModal && (<ImageSingleModal/>
           )}

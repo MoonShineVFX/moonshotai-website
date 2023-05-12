@@ -3,7 +3,7 @@ import { useForm,Controller } from 'react-hook-form';
 import {motion,AnimatePresence} from 'framer-motion'
 import { imageFormModalState, imageDataState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
+function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage}) {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const image = useRecoilValue(imageDataState)
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -15,7 +15,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
       title:data.title ||'',
       description:data.description ||null,
     }
-    handleSetUserProfile(items)
+    handleSetStorageImage(image,items)
   };
   const modalVariants = {
     close: { opacity: 0, },
@@ -49,7 +49,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
                 name="title"
                 control={control}
                 defaultValue={image?.title}
-                rules={{ required: true }}
+                rules={{ required: false }}
                 render={({ field }) => (
                   <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' />
                 )}
