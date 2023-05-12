@@ -432,11 +432,13 @@ function Index() {
             )
           })}
         </div>
-        <div className=' relative p-4 block lg:hidden'>
+        <div className=' relative p-4  w-2/3 mx-auto block lg:hidden'>
           <div 
-            className='text-white rounded-full bg-[#444] px-3 py-1 w-2/3 flex justify-between items-center'
+            className='text-white rounded-full bg-[#444] px-3 py-2 flex justify-between items-center'
             onClick={toggleDropdown}
-          >{currentDropDownItem.title} <MdKeyboardArrowDown /></div>
+          >
+            {currentDropDownItem.title} <MdKeyboardArrowDown />
+          </div>
             <motion.div
               className={`fixed w-full h-screen top-0 left-0 bg-black/60 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
               variants={dropdownVariants}
@@ -445,7 +447,7 @@ function Index() {
               onClick={toggleDropdown}
             ></motion.div>
             <motion.div 
-              className={`text-white  absolute rounded-lg bg-[#444] p-2 mt-2 w-1/3  border-white/20 z-30` }
+              className={`text-white  absolute rounded-lg bg-[#444] my-2 w-2/3  border-white/20 z-30` }
               variants={dropdownVariants}
               initial="closed"
               animate={isDropDownOpen ? 'open' : 'closed'}
@@ -456,7 +458,7 @@ function Index() {
                 return(
                   <div 
                     key={item.title} 
-                    className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                    className='hover:bg-[#555] px-4 py-4 text-sm rounded-lg'
                     onClick={()=>{
                       setCurrentDropDownItem(item)
                       handleOptionChange(item)

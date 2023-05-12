@@ -34,9 +34,9 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='text-center font-bold'>Image detail</div>
-        <div className='text-sm my-3 flex flex-col justify-center items-center'>
-          <div>#{image.id}</div>
-          <div>#{image.id}</div>
+        <div className='text-xs my-3 flex flex-col justify-center items-center text-white/70'>
+          <div>#{image?.id}</div>
+          <div>Created at {image?.created_at.substr(0,10)}</div>
           <div className='w-1/2  mt-3'> <img src={image.urls.regular} alt="" className='max-w-full' /></div>
         </div>
 
@@ -48,7 +48,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
               <Controller
                 name="title"
                 control={control}
-                defaultValue={image && image.title}
+                defaultValue={image?.title}
                 rules={{ required: true }}
                 render={({ field }) => (
                   <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' />
@@ -61,7 +61,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile}) {
             <Controller
               name="description"
               control={control}
-              defaultValue={image && image.description}
+              defaultValue={image?.description}
               rules={{ required: false }}
               render={({ field }) => (
                 <textarea {...field} cols="20" rows="5" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' placeholder="Description,Notes"></textarea>
