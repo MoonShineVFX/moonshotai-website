@@ -33,6 +33,14 @@ function ImageSingleModal() {
           <div className='text-xs text-white/40 text-center'>#{image.created_at && image.id}</div>
           <div className='text-xs mb-3 text-white/40 text-center'>Created at {image.created_at && image.created_at.substr(0,10)}</div>
           
+          <div className='text-white font-bold my-3 '>Prompt</div>
+          <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
+            {image.prompt}
+          </div>
+          <div className='text-white font-bold my-3'>Negative prompt</div>
+          <div className='bg-zinc-700 p-3 rounded-md'>
+            {image.negative_prompt}
+          </div>
           <div className='grid grid-cols-2 gap-2'>
             <div>
               <div className='text-white font-bold my-3 '>Model</div>
@@ -58,14 +66,6 @@ function ImageSingleModal() {
                 {image.cfg_scale}
               </div>
             </div>
-          </div>
-          <div className='text-white font-bold my-3 '>Prompt</div>
-          <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-            {image.prompt}
-          </div>
-          <div className='text-white font-bold my-3'>Negative prompt</div>
-          <div className='bg-zinc-700 p-3 rounded-md'>
-            {image.negative_prompt}
           </div>
         </div>
         <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
