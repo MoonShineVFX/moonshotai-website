@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "rea
 import Header from '../header'
 import liff from '@line/liff';
 
-import { loginState, userState } from '../atoms/galleryAtom';
+import { loginState, userState, imageFormModalState,imageModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome } from '../helpers/fetchHelper';
 
@@ -14,6 +14,8 @@ import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
 import EditUserForm from '../Components/EditUserForm';
+import EditImageForm from '../Components/EditImageForm';
+import ImageSingleModal from '../Components/ImageSingleModal';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
@@ -43,6 +45,8 @@ function Index() {
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
+  const isShowModal = useRecoilValue(imageFormModalState)
+  const isShowImageModal = useRecoilValue(imageModalState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -358,6 +362,15 @@ function Index() {
   }, [process.env.NODE_ENV]);
   return (
     <div >
+      <AnimatePresence>
+        {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
+          )}
+        {isShowModal && (<EditImageForm/>
+          )}
+        {isShowImageModal && (<ImageSingleModal/>
+          )}
+      </AnimatePresence>
+
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
@@ -405,11 +418,6 @@ function Index() {
           }
 
         </div>
-        <AnimatePresence>
-          {isEdit && (
-              <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
-            )}
-        </AnimatePresence>
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return

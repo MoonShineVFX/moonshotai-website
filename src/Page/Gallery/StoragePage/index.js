@@ -1,16 +1,15 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart } from "react-icons/fi";
-import { FaRegHeart,FaHeart } from "react-icons/fa";
-import { MdBookmark,MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
-import {getWordFromLetter} from '../helpers/fetchHelper'
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
-
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
+  const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
+  const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
+  const [imageData, setImageData] = useRecoilState(imageDataState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -31,13 +30,6 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       },
     },
   };
-  const handleImageClick = image => {
-    setSelectedImage(image);
-    setIsCopied(false)
-  };
-  const handleModalClose = () => {
-    setSelectedImage(null);
-  };
   const onHandleRemoveStorage = (image)=>{
     console.log(image)
     if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)
@@ -50,11 +42,6 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     }
 
     // 
-  }
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
-    navigator.clipboard.writeText(text);
-    setIsCopied(true)
   }
   const handleClick = (id) => {
     if (openItems.includes(id)) {
@@ -83,6 +70,9 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
   }
   const onHandleSetAvatar = (id)=>{
     handleSetAvatar(id)
+  }
+  const onHandleEditImageDetail = (image)=>{
+    console.log(image)
   }
   const [show , setShow]=useState(false)
   const ConfirmCancelMsg = ({setShow})=>{
@@ -133,14 +123,17 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
                     className='w-full h-auto object-cover cursor-pointer aspect-square'
-                    onClick={() => handleImageClick(image)} 
+                    onClick={() => {
+                      setImageData(image)
+                      setIsShowImageModal(true)
+                    }} 
                   />
                   
-                  <div className=' absolute top-0 left-0 text-white w-full '> 
+                  <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center p-1 '> 
                     <div className='pt-3 pl-2' onClick={()=>{
                       handleClick(id)
                     }}><MdMoreVert size={20} /></div>
-                    <div className=' absolute top-0 right-0 text-white'>
+                    <div className='text-white'>
                       { display_home ? 
                         <div className='pt-3 pr-2' onClick={()=>{
                           onHandleDisplayHome(image)
@@ -159,7 +152,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       }}
                     ></motion.div>
                     <motion.div 
-                      className={`text-white  absolute  w-auto  rounded-lg bg-[#444] p-2 mt-2  border-white/20 z-30` }
+                      className={`text-white  absolute top-10  w-auto  rounded-lg bg-[#444] p-2 mt-2  border-white/20 z-30` }
                       variants={dropdownVariants}
                       initial="closed"
                       animate={openItems.includes(id) ? 'open' : 'closed'}
@@ -175,8 +168,17 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                           handleClick(id)
                           onHandleSetAvatar(id)
                         }}
-                      >Set as Avatar</div>                
+                      >Set as Avatar</div>       
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                        onClick={()=>{
+                          handleClick(id)
+                          setIsShowFormModal(true)
+                          setImageData(image)
+                          onHandleEditImageDetail(image)
+                        }}
+                      >Edit detail</div>              
                     </motion.div>
+                    
                   </div>
                   <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                     <div className='text-sm'>
@@ -200,52 +202,6 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           </ResponsiveMasonry>
 
         }
-    
-
-        <AnimatePresence>
-          {selectedImage && (
-             <motion.div className=" fixed w-full top-0 left-0 lg:right-0 lg:bottom-0 flex z-50 bg-zinc-800   h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="w-full p-4  text-white/80 relative">
-                <div className="flex  justify-center items-center w-full">
-                  <div className='w-full h-full'>
-                    <img 
-                      src={selectedImage.urls.regular} 
-                      alt={selectedImage.id} 
-                      className="max-w-full   rounded-md" />
-                  </div>
-                </div>
-                <div className='flex flex-col justify-end  relative pb-20 pt-2'>
-                  <div className='text-xs mb-3 text-white/40'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
-                  
-                  <div className='text-white font-bold my-3 flex gap-2 items-center'>
-                    Model
-                    <div className='bg-zinc-700  px-3  py-1 rounded-md'>
-                    {getWordFromLetter(selectedImage.model)}
-                    </div> 
-                  </div>
-                  <div className='text-white font-bold my-3 '>Prompt</div>
-                  <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                    {selectedImage.prompt}
-                  </div>
-                  <div className='text-white font-bold my-3'>Negative prompt</div>
-                  <div className='bg-zinc-700 p-3 rounded-md'>
-                    {selectedImage.negative_prompt}
-                  </div>
-                </div>
-                <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
-                  <button 
-                    className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-                    onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
-                    >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
-                  <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
-  
-                </div>
-                
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
     </div>
   )
 }

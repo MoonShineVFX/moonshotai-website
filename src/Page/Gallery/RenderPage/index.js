@@ -4,12 +4,14 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
-
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
 function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,handleCollection,handleStorage,handleRemoveStorage}) {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [ isCopied , setIsCopied ] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
+  const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
+  const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
+  const [imageData, setImageData] = useRecoilState(imageDataState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -30,13 +32,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
       },
     },
   };
-  const handleImageClick = image => {
-    setSelectedImage(image);
-    setIsCopied(false)
-  };
-  const handleModalClose = () => {
-    setSelectedImage(null);
-  };
+
   const handleClick = (id) => {
     if (openItems.includes(id)) {
       setOpenItems(openItems.filter((item) => item !== id));
@@ -74,11 +70,6 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
     setIsDropDownOpen(!isDropDownOpen);
   };
 
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
-    navigator.clipboard.writeText(text);
-    setIsCopied(true)
-  }
   
 
   useEffect(() => {
@@ -113,7 +104,10 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
                   src={urls.thumb} alt={image?.description} 
                   data-id={id}
                   className='w-full h-auto object-cover cursor-pointer aspect-square '
-                  onClick={() => handleImageClick(image)} 
+                  onClick={() => {
+                    setImageData(image)
+                    setIsShowImageModal(true)
+                  }} 
                 />
 
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
@@ -144,50 +138,6 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
           </div>
       }
     
-
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div className=" fixed w-full top-0 left-0 lg:right-0 lg:bottom-0 flex z-50 bg-zinc-800   h-screen overflow-y-auto" key={selectedImage.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="w-full p-4  text-white/80 relative">
-              <div className="flex  justify-center items-center w-full">
-                <div className='w-full h-full'>
-                  <img 
-                    src={selectedImage.urls.regular} 
-                    alt={selectedImage.id} 
-                    className="max-w-full   rounded-md" />
-                </div>
-              </div>
-              <div className='flex flex-col justify-end  relative pb-20 pt-2'>
-                <div className='text-xs mb-3 text-white/40'>Created at {selectedImage.created_at && selectedImage.created_at.substr(0,10)}</div>
-                
-                <div className='text-white font-bold my-3 flex gap-2 items-center'>
-                  Model
-                  <div className='bg-zinc-700  px-3  py-1 rounded-md'>
-                  {getWordFromLetter(selectedImage.model)}
-                  </div> 
-                </div>
-                <div className='text-white font-bold my-3 '>Prompt</div>
-                <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                  {selectedImage.prompt}
-                </div>
-                <div className='text-white font-bold my-3'>Negative prompt</div>
-                <div className='bg-zinc-700 p-3 rounded-md'>
-                  {selectedImage.negative_prompt}
-                </div>
-              </div>
-              <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
-                <button 
-                  className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-                  onClick={()=>handleCopyPrompt(selectedImage.model,selectedImage.prompt,selectedImage.negative_prompt)}
-                  >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
-                <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={handleModalClose}>Close</button>
-
-              </div>
-              
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   )
