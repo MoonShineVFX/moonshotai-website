@@ -49,6 +49,7 @@ function Index() {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const isShowModal = useRecoilValue(imageFormModalState)
   const isShowImageModal = useRecoilValue(imageModalState)
+  const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -247,12 +248,17 @@ function Index() {
    * Storage API 
    * start
    * */ 
-  const handleSetStorageImage = (image,items) =>{
+  const handleSetStorageImage = (image,items,status) =>{
+
     userPatchAStorageImage(image.id,token,items)
       .then((data)=>{
         const newData = { ...image, ...items  }; 
         handleStorageUpdate(image.id,newData)
-        setIsShowFormModal(false)
+        if(status === 'before'){
+          setIsShowDisplayFormModal(false)
+        }else{
+          setIsShowFormModal(false)
+        }
       })
       .catch((error) => console.error(error));
   }

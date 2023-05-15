@@ -1,8 +1,60 @@
 
 import liff from '@line/liff';
+import { loginState,isLoginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
-export const initializeLineLogin = async()=>{} 
+
+
+/**
+ * Login
+ */
+//liff login api
+export const initializeLineLogin = async ()=>{
+  liff.init({liffId: liffID})
+    .then(function(){
+      if(liff.isLoggedIn()){
+        const accessToken = liff.getAccessToken();
+        if(accessToken){
+          const profile = liff.getProfile()
+          return profile
+        }
+      }
+    })
+} 
+export const useDevUserLogin = () =>{
+  const [token, setToken] = useRecoilState(loginState)
+  const [isLogin, setIsLogin] = useRecoilState(isLoginState)
+  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
+  
+  const devLogin = ()=>{
+    const profile ={
+      displayName:"WuWood_dev",
+      pictureUrl: "https://profile.line-scdn.net/0hohWm3_nEMEd6FCWoI2NOOApEMy1ZZWlVBXIrcUlHOyJHcScTAiJ6KR1Bb3dFdiBEBHIvJxxBPnR2B0chZELMc30kbnBAJXAVX3R_qQ",
+      statusMessage:"123",
+      userId:"U895f7908fef7f32b717db91a8240ddc2"
+    }
+    setIsLogin(true)
+    fetchLineLogin(profile)
+      .then((data)=> {
+        setToken(data.token)
+        fetchUserProfile(data.user_id, data.token)
+          .then((data)=> {
+            console.log(data)
+            setCurrentProfile(data)
+          })
+          .catch((error) => console.error(error));
+
+      })
+      .catch((error) => console.error(error));
+  }
+
+  return [devLogin,isLogin,token]
+
+
+
+}
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {
@@ -194,4 +246,23 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
   const response = await fetch(apiUrl+'storage_images/'+imgid+'/display_home', requestOptions)
   const data = await response.json
   return data
+}
+
+/**
+ * 
+ * Galleries API
+ */
+export const fetchGalleries = async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+
+  const response = await fetch(apiUrl+'/galleries' ,requestOptions)
+  const data = await response.json()
+  return data
+
 }

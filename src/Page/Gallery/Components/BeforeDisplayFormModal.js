@@ -15,9 +15,11 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     const items ={
       title:data.title ||'',
       description:data.description ||null,
+      is_nsfw:data.is_nsfw ||false,
+      display_home:true
 
     }
-    handleSetStorageImage(image,items)
+    handleSetStorageImage(image,items,'before')
   };
   const modalVariants = {
     close: { opacity: 0, },
@@ -35,7 +37,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         exit={{ opacity: 0, y: -20 }}
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
-        <div className='text-center font-bold'>Image detail</div>
+        <div className='text-center font-bold'>Check detail before public</div>
         <div className='text-xs my-3 flex flex-col justify-center items-center text-white/70'>
           <div>#{image?.id}</div>
           <div>Created at {image?.created_at.substr(0,10)}</div>
@@ -73,9 +75,9 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           </div>
           <div className='flex flex-col  mt-4 '>
             <Controller
-              name="isNsfw"
+              name="is_nsfw"
               control={control}
-              defaultValue={image?.display_nsfw}
+              defaultValue={image?.is_nsfw}
               render={({ field }) => (
                 <div className="flex mt-4 ">
                   <label className="inline-flex relative items-center mr-5 cursor-pointer">
@@ -93,7 +95,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
                     <span className="ml-2 text-sm font-medium text-white/80">
-                      toggle NSFW content
+                      toggle NSFW image tag
                     </span>
                   </label>
                 </div>
@@ -102,7 +104,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           </div>
           
           <div className='mt-6 flex gap-3 justify-center text-md'>
-            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Save</button>
+            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Public to Gallery</button>
             <button type="button" className='text-white/80' onClick={()=>{
               setIsShowDisplayFormModal(false)
             }}>Cancel</button>

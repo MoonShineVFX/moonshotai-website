@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import Header from '../header'
-function Index() {
+import {initializeLineLogin,useDevUserLogin,fetchGalleries} from '../helpers/fetchHelper'
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { loginState} from '../atoms/galleryAtom';
 
+function Index() {
+  const [devLogin,isLogin,token] = useDevUserLogin();
+
+
+  useEffect(()=>{
+    
+  })
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      // initializeLineLogin()
+    }else{
+      // devLogin()
+    }
+  }, [process.env.NODE_ENV]);
   return (
     <div className='w-full'>
       <Header />

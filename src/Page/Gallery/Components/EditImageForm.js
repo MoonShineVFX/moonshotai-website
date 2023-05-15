@@ -14,6 +14,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
     const items ={
       title:data.title ||'',
       description:data.description ||null,
+      is_nsfw:data.is_nsfw ||false,
     }
     handleSetStorageImage(image,items)
   };
@@ -69,6 +70,35 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
             />
 
            
+          </div>
+          <div className='flex flex-col  mt-4 '>
+            <Controller
+              name="is_nsfw"
+              control={control}
+              defaultValue={image?.is_nsfw}
+              render={({ field }) => (
+                <div className="flex mt-4 ">
+                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                    <div
+                      className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
+                        field.value
+                          ? 'peer-checked:after:translate-x-full peer-checked:bg-green-600'
+                          : ''
+                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
+                    ></div>
+                    <span className="ml-2 text-sm font-medium text-white/80">
+                      toggle NSFW image tag
+                    </span>
+                  </label>
+                </div>
+              )}
+            />
           </div>
           
           <div className='mt-6 flex gap-3 justify-center text-md'>

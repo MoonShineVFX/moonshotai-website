@@ -4,6 +4,10 @@ export const loginState = atom({
   key: 'loginState',
   default: null,
 });
+export const isLoginState = atom({
+  key: 'isLoginState',
+  default: null,
+});
 
 export const userState = atom({
   key: 'userState',
