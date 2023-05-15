@@ -3,11 +3,12 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
+  const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const imageVariants = {
@@ -51,6 +52,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     }
   };
   const onHandleDisplayHome = (image)=>{
+   
     const items = {
       display_home:!image.display_home
     }
@@ -60,9 +62,11 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       handleDisplayHome(image.id,items)
 
     }else{
-      const newData = { ...image, display_home: !image.display_home  }; 
-      handleStorageUpdate(image.id,newData)
-      handleDisplayHome(image.id,items)
+      setIsShowDisplayFormModal(true)
+      setImageData(image)
+      // const newData = { ...image, display_home: !image.display_home  }; 
+      // handleStorageUpdate(image.id,newData)
+      // handleDisplayHome(image.id,items)
     }
   }
   const onHandleSetBanner = (id)=>{

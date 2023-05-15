@@ -14,6 +14,10 @@ export const imageFormModalState = atom({
   key: 'imageFormModalState',
   default: false,
 });
+export const beforeDisplayModalState = atom({
+  key: 'beforeDisplayModalState',
+  default: false,
+});
 
 export const imageModalState = atom({
   key: 'imageModalState',

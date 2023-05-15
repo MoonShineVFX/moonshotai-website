@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "rea
 import Header from '../header'
 import liff from '@line/liff';
 
-import { loginState, userState, imageFormModalState,imageModalState } from '../atoms/galleryAtom';
+import { loginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome,userPatchAStorageImage } from '../helpers/fetchHelper';
 
@@ -16,6 +16,7 @@ import CollectionPage from '../CollectionPage'
 import EditUserForm from '../Components/EditUserForm';
 import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
+import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
@@ -48,6 +49,7 @@ function Index() {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const isShowModal = useRecoilValue(imageFormModalState)
   const isShowImageModal = useRecoilValue(imageModalState)
+  const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -380,10 +382,10 @@ function Index() {
       <AnimatePresence>
         {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
           )}
-        {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>
-          )}
-        {isShowImageModal && (<ImageSingleModal/>
-          )}
+        {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
+        {isShowImageModal && (<ImageSingleModal/>)}
+        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage}/>)}
+
       </AnimatePresence>
 
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
