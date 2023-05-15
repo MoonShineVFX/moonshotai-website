@@ -14,7 +14,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
     const items ={
       title:data.title ||'',
       description:data.description ||null,
-      is_nsfw:data.is_nsfw ||false,
+      is_user_nsfw:data.is_user_nsfw ||false,
     }
     handleSetStorageImage(image,items)
   };
@@ -75,7 +75,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
             <Controller
               name="is_nsfw"
               control={control}
-              defaultValue={image?.is_nsfw}
+              defaultValue={image?.is_user_nsfw}
               render={({ field }) => (
                 <div className="flex mt-4 ">
                   <label className="inline-flex relative items-center mr-5 cursor-pointer">
