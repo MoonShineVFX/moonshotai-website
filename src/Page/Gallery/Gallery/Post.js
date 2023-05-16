@@ -65,6 +65,15 @@ function Post() {
       :
       <>
         <div className="w-full p-4  text-white/80 relative">
+          <div className='text-2xl text-white font-bold '>{imageData.title}</div>
+          <div className=' flex items-center  gap-3 my-6'>
+            <div className='text-white font-bold my-3'>Author</div> 
+            <div 
+              className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
+              style={{backgroundImage: `url(${imageData?.author.profile_image})`}}
+            ></div>
+            <div className=''>{imageData?.author?.name}</div>
+          </div>
           <div className="flex  justify-center items-center w-full">
             <div className='w-2/3 aspect-[2/1]'>
               <img 
