@@ -3,7 +3,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries} from '../helpers/fetchHelper'
-import { MdKeyboardArrowLeft } from "react-icons/md";
+import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
 
 function Post() {
   const { id } = useParams();
@@ -57,9 +57,15 @@ function Post() {
 
   return (
     <div>
-      <button onClick={handleBackClick} className='text-white p-3'>
-        <MdKeyboardArrowLeft size={42} />
-      </button>
+      <div className='flex items-center '>
+        <button onClick={handleBackClick} className='text-white p-3'>
+          <MdKeyboardArrowLeft size={42} />
+        </button>
+        <button className='text-white p-3'>
+          <MdOutlineShare size={22} />
+        </button>
+      </div>
+
       {!imageData ?
       <div className='text-white'>Loading</div> 
       :
