@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
+
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {initializeLineLogin,useDevUserLogin,fetchGalleries} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { loginState} from '../atoms/galleryAtom';
-
+import { loginState, imageDataState,imageModalState} from '../atoms/galleryAtom';
 function Index() {
   const [devLogin,isLogin,token] = useDevUserLogin();
   const [data, setData] = useState(null)
+  const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
+  const [imageData, setImageData] = useRecoilState(imageDataState)
   const [headers, setHeaders] = useState({'Content-Type': 'application/json'})
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -28,37 +30,35 @@ function Index() {
           {!data ? 
           <div className='text-white'>Loading</div> 
           :
-          <ResponsiveMasonry
-            className=''
-            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-          >
-          <Masonry gutter={10}>
+          <div className='grid grid-cols-2 gap-4'>
             {data.map((image,index)=>{
               const {id, urls, created_at, display_home, filename,is_storage,title,author   } = image
               return (
-                <motion.div key={'render-'+index} 
+                <motion.div key={'gallery-'+index} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                  className=' rounded-lg overflow-hidden relative'
+                  className='  overflow-hidden relative'
                 >
-                  <img  
-                    src={urls.thumb} alt={image?.description} 
-                    data-id={id}
-                    className='w-full  cursor-pointer  '
-                  />
-                  <div className=' absolute bottom-16 right-4'>
+                  <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} >
+                    <img  
+                      src={urls.thumb} alt={image?.description} 
+                      data-id={id}
+                      className='w-full h-auto object-cover cursor-pointer aspect-square   rounded-md'
+                      onClick={() => {setImageData(image)}} 
+                    />
+                  </Link>
+
+
+
+                  <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
                     <div 
-                      className='w-[65px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border-2 border-zinc-200 '
+                      className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border-0 border-zinc-200 '
                       style={{backgroundImage: `url(${author?.profile_image})`}}
                     ></div>
-                  </div>
+                    <div className='flex flex-col'>
+                      <div className='text-lg font-bold'>{title} </div>
+                      <div className='text-sm text-white/50'>{author?.name}</div>
+                    </div>
 
-                  <div className='text-sm backdrop-blur-md bg-black/30 flex flex-col justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                    <div className=''>
-                      {title} 
-                    </div>
-                    <div className='flex gap-4'>
-                      <div>收藏</div>
-                    </div>
 
 
                   </div>
@@ -66,9 +66,8 @@ function Index() {
 
               )
               })}
-            </Masonry>
-            </ResponsiveMasonry>
-          
+
+          </div>
 
           }
 

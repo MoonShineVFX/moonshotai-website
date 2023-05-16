@@ -1,5 +1,5 @@
-import { atom } from 'recoil';
-
+import { atom,selector,useSetRecoilState } from 'recoil';
+import {fetchGalleries} from '../helpers/fetchHelper'
 export const loginState = atom({
   key: 'loginState',
   default: null,
@@ -30,4 +30,28 @@ export const imageModalState = atom({
 export const imageDataState = atom({
   key: 'imageDataState',
   default: null,
+});
+
+export const imageByIdSelector = selector({
+  key: 'imageByIdSelector',
+  get: async ({ get }, imageId) => {
+    const imageData = get(imageDataState);
+
+    if (imageData && imageData.id === imageId) {
+      return imageData;
+    }
+    const headers = {'Content-Type': 'application/json'}
+    fetchGalleries(headers)
+      .then(data => {
+        const newImageData = data.results.find((item)=>{
+          return item.id === imageId
+        })
+        const setImageData = useSetRecoilState(imageDataState);
+        setImageData(newImageData);
+
+        return newImageData;
+      })
+
+
+  },
 });

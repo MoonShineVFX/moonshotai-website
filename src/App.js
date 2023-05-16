@@ -9,6 +9,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
 import Profile from './Page/Gallery/Profile';
+import Post from './Page/Gallery/Gallery/Post';
 import { RecoilRoot } from 'recoil';
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/post/:id" element={<Post />} />
         <Route path="/profile" element={<Profile />} />
         {/* <Route path="/storages" element={<Storages />} /> */}
 
