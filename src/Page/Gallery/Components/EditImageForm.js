@@ -12,7 +12,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
   const onSubmit = (data) => {
     console.log(data);
     const items ={
-      title:data.title ||'',
+      title:data.title ||null,
       description:data.description ||null,
       is_user_nsfw:data.is_user_nsfw ||false,
     }
@@ -73,7 +73,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
           </div>
           <div className='flex flex-col  mt-4 '>
             <Controller
-              name="is_nsfw"
+              name="is_user_nsfw"
               control={control}
               defaultValue={image?.is_user_nsfw}
               render={({ field }) => (

@@ -75,7 +75,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           </div>
           <div className='flex flex-col  mt-4 '>
             <Controller
-              name="is_nsfw"
+              name="is_user_nsfw"
               control={control}
               defaultValue={image?.is_user_nsfw}
               render={({ field }) => (

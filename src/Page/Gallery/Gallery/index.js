@@ -7,27 +7,25 @@ import { loginState} from '../atoms/galleryAtom';
 
 function Index() {
   const [devLogin,isLogin,token] = useDevUserLogin();
-
+  const [data, setData] = useState(null)
 
   useEffect(()=>{
-    
-  })
+    fetchGalleries().then(data=>setData(data.results))
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      // initializeLineLogin()
-    }else{
-      // devLogin()
-    }
-  }, [process.env.NODE_ENV]);
+  },[])
+  console.log(data)
   return (
     <div className='w-full'>
       <Header />
       <div className='w-10/12 mx-auto my-10'>
        
-        <div className='text-white'>
-          Here is Gallery HomePage, nothing yet. You can <Link to='/profile' className='text-blue-400 hover:text-blue-300'>Login with Line Account</Link> 
-        </div>
+        {data &&
+
+          (
+            
+            <div>1</div>
+          )
+        }
        
       </div>
 
