@@ -63,8 +63,8 @@ function Index() {
                       style={{backgroundImage: `url(${author?.profile_image})`}}
                     ></div>
                     <div className='flex flex-col'>
-                      <div className='text-lg font-bold'>{title} </div>
-                      <div className='text-sm text-white/50'>{author?.name}</div>
+                      <div className='text-base font-bold'>{title} </div>
+                      <div className='text-xs text-white/50'>{author?.name}</div>
                     </div>
 
 

@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import {userState} from '../atoms/galleryAtom'
-function Index({isLoggedIn,banner}) {
+import {userState,isLoginState} from '../atoms/galleryAtom'
+function Index({banner}) {
   const currentUser = useRecoilValue(userState)
+  const isLogin = useRecoilValue(isLoginState)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async()=>{
@@ -22,19 +23,23 @@ function Index({isLoggedIn,banner}) {
       }
   }
   return (
-    <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
+    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-5 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>
-      <div 
-        style={{backgroundImage:banner && banner.length > 0 ?  `url(${banner})` : 'none'}}
-        className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
-        <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
-
-      </div>
-      <div className=' items-center  text-white mr-6 gap-2 hidden lg:flex'>
-          <div className='text-3xl font-black w-20 lg:w-32'>
+      <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
+          <div className='font-black w-24 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
           </div>
           <div className='lg:text-xl'>Gallery</div>
+      </div>
+      <div className="block lg:hidden ml-auto">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
+          >
+            <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
+            <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
+            
+          </button>
       </div>
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
         
@@ -43,7 +48,7 @@ function Index({isLoggedIn,banner}) {
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
-            isLoggedIn ?
+            isLogin ?
             <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
             :
             <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
@@ -74,7 +79,7 @@ function Index({isLoggedIn,banner}) {
                 <MdDashboard color="#88ad48"/> Gallery
             </Link>
             {
-              isLoggedIn ?
+              isLogin ?
               <div className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={handleLogout}>Log Out</div>
               :
               <Link to='/profile' className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
@@ -83,16 +88,7 @@ function Index({isLoggedIn,banner}) {
 
 
       </div>
-      <div className="block lg:hidden ml-auto">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
-          >
-            <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
-            <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
-            
-          </button>
-      </div>
+
       
 
     </div>

@@ -396,13 +396,19 @@ function Index() {
       </AnimatePresence>
 
       <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
+
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
         <div className='px-6 py-5 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
           {
             isLoggedIn ?
             <div className='flex flex-col items-center gap-5'>
+              <div 
+                style={{backgroundImage:`url(${currentProfile?.profile_banner})`}}
+                className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
+                <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
 
+              </div>
               <div 
                 className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
