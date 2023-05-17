@@ -54,6 +54,9 @@ function User() {
                   <div>follows</div> 
                 </div>
               </div>
+              <div>
+                <button className='bg-lime-500 px-5 py-2 rounded-md'>Follow</button>
+              </div>
          
              
               
