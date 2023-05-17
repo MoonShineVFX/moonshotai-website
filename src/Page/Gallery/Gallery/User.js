@@ -30,7 +30,7 @@ function User() {
 
               </div>
               <div 
-                className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
+                className='w-[85px] mt-40  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:`url(${userData.profile_image})` }}
               ></div>
 
