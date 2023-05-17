@@ -3,6 +3,7 @@ import { useParams,useNavigate } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
 import {getWordFromLetter,fetchUser} from '../helpers/fetchHelper'
+import Header from '../header'
 function User() {
   const { id } = useParams();
   const [userData, setUserData] = useState(null)
@@ -19,6 +20,7 @@ function User() {
   },[])
   return (
     <div>
+      <Header />
       {
         !userData  ? 
         <div className='text-white'>Loading</div> 

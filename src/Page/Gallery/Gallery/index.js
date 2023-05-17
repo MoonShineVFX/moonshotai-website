@@ -43,12 +43,15 @@ function Index() {
                   className='  overflow-hidden relative'
                 >
                   <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
-                    <img  
-                      src={urls.thumb} alt={image?.description} 
-                      data-id={id}
-                      className='w-full h-auto object-cover cursor-pointer aspect-square   rounded-md'
-                      onClick={() => {setImageData(image)}} 
-                    />
+                    <div className='pt-[100%] relative'>
+                      <img  
+                        src={urls.thumb} alt={image?.description} 
+                        data-id={id}
+                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full'
+                        onClick={() => {setImageData(image)}} 
+                      />
+                    </div>
+
                     <div className='text-orange-500 absolute top-0 p-1 flex gap-1'>
                       {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
                       {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
@@ -58,10 +61,12 @@ function Index() {
 
 
                   <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
-                    <div 
-                      className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border-0 border-zinc-200 '
-                      style={{backgroundImage: `url(${author?.profile_image})`}}
-                    ></div>
+                    <div className='w-9'>
+                      <div className='pt-[100%] relative'>
+                        <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                      </div>
+                    </div>
+
                     <div className='flex flex-col'>
                       <div className='text-base font-bold'>{title} </div>
                       <div className='text-xs text-white/50'>{author?.name}</div>
@@ -75,9 +80,12 @@ function Index() {
               )
               })}
 
-          </div>
+
+            </div>
 
           }
+         
+
 
  
        

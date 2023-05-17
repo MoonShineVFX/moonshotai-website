@@ -80,10 +80,11 @@ function Post() {
           </div>
           <div className=' flex items-center  gap-3 my-2'>
             <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
-              <div 
-                className='w-[30px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
-                style={{backgroundImage: `url(${imageData?.author.profile_image})`}}
-              ></div>
+              <div className='w-8'>
+                <div className='pt-[100%] relative'>
+                  <img src={imageData?.author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                </div>
+              </div>
               <div className=''>{imageData?.author?.name}</div>
             </Link>
 
