@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
+import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
 
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {initializeLineLogin,useDevUserLogin,fetchGalleries} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { loginState, imageDataState,imageModalState} from '../atoms/galleryAtom';
+import { isLoginState,loginState, imageDataState,imageModalState} from '../atoms/galleryAtom';
 function Index() {
-  const [devLogin,isLogin,token] = useDevUserLogin();
+  const currentLoginData = useRecoilValue(loginState)
+  const isCurrentLogin = useRecoilValue(isLoginState)
   const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
-  const [headers, setHeaders] = useState({'Content-Type': 'application/json'})
+  const [headers, setHeaders] = useState(
+    isCurrentLogin ? 
+    {'Content-Type': 'application/json' ,'Authorization': `Bearer ${currentLoginData}` }
+    : 
+    {'Content-Type': 'application/json'} 
+    )
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -32,19 +39,23 @@ function Index() {
           :
           <div className='grid grid-cols-2 gap-4'>
             {data.map((image,index)=>{
-              const {id, urls, created_at, display_home, filename,is_storage,title,author   } = image
+              const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
               return (
                 <motion.div key={'gallery-'+index} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className='  overflow-hidden relative'
                 >
-                  <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} >
+                  <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
                     <img  
                       src={urls.thumb} alt={image?.description} 
                       data-id={id}
                       className='w-full h-auto object-cover cursor-pointer aspect-square   rounded-md'
                       onClick={() => {setImageData(image)}} 
                     />
+                    <div className='text-orange-500 absolute top-0 p-1 flex gap-1'>
+                      {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
+                      {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
+                    </div>
                   </Link>
 
 

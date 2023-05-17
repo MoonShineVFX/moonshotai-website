@@ -1,15 +1,23 @@
 import React,{useState,useEffect} from 'react'
 import { useParams,useNavigate } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { imageDataState,imageByIdSelector } from '../atoms/galleryAtom';
+import { imageDataState,imageByIdSelector,loginState,isLoginState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
-
+import { FaHeart } from "react-icons/fa";
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const currentLoginData = useRecoilValue(loginState)
+  const isCurrentLogin = useRecoilValue(isLoginState)
+  console.log(isCurrentLogin,currentLoginData)
   const [ isCopied , setIsCopied ] = useState(false);
-  const [headers, setHeaders] = useState({'Content-Type': 'application/json'})
+  const [headers, setHeaders] = useState(
+    isCurrentLogin ? 
+    {'Content-Type': 'application/json' ,'Authorization': `Bearer ${currentLoginData}` }
+    : 
+    {'Content-Type': 'application/json'} 
+    )
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -80,18 +88,29 @@ function Post() {
             ></div>
             <div className=''>{imageData?.author?.name}</div>
           </div>
-          <div className="flex  justify-center items-center w-full">
+          <div className="flex flex-col  justify-center items-center w-full">
             <div className='w-2/3 aspect-[2/1]'>
               <img 
                 src={imageData.urls.regular} 
                 alt={imageData.id} 
                 className="max-w-full   rounded-md" />
             </div>
+            <div className='my-2'>
+              <div className='text-xs text-white/40 text-center'>#{imageData.created_at && imageData.id}</div>
+              
+            </div>
+            
           </div>
           <div className='flex flex-col justify-end  relative pb-20 pt-2'>
-            <div className='text-xs text-white/40 text-center'>#{imageData.created_at && imageData.id}</div>
-            <div className='text-xs mb-3 text-white/40 text-center'>Created at {imageData.created_at && imageData.created_at.substr(0,10)}</div>
             
+            
+            <div>
+              <div className='flex items-center gap-2'>
+                <FaHeart /> {imageData.likes}
+              </div>
+              <div className='mt-3 text-white/60'>Created at {imageData.created_at && imageData.created_at.substr(0,10)}  Model: {getWordFromLetter(imageData.model)}   </div> 
+             
+            </div>
             <div className='text-white font-bold my-3 '>Prompt</div>
             <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
               {imageData.prompt}

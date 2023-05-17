@@ -6,7 +6,7 @@ export const loginState = atom({
 });
 export const isLoginState = atom({
   key: 'isLoginState',
-  default: null,
+  default: false ,
 });
 
 export const userState = atom({

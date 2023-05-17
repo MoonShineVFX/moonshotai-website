@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "rea
 import Header from '../header'
 import liff from '@line/liff';
 
-import { loginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { isLoginState,loginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome,userPatchAStorageImage } from '../helpers/fetchHelper';
 
@@ -26,7 +26,6 @@ const dropDownManuItem = [
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
   const [storages, setStorages] = useState({});
@@ -34,11 +33,10 @@ function Index() {
   const [collections, setCollections] = useState({});
   const [collectionsResults, setCollectionsResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [currentAuthor,setCurrentAuthor] = useState({})
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
-  const [token, setToken] = useRecoilState(loginState)
+
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
@@ -46,6 +44,9 @@ function Index() {
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
+  const [token, setToken] = useRecoilState(loginState)
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const isShowModal = useRecoilValue(imageFormModalState)
   const isShowImageModal = useRecoilValue(imageModalState)

@@ -253,6 +253,7 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * Galleries API
  */
 export const fetchGalleries = async (headers) =>{
+  console.log(headers)
   const requestOptions = {
     method: 'GET',
     headers:headers
