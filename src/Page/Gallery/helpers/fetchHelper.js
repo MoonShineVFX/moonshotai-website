@@ -52,9 +52,23 @@ export const useDevUserLogin = () =>{
 
   return [devLogin,isLogin,token]
 
-
-
 }
+export const checkUserLiffLoginStatus = async () => {
+  // localStorage.setItem('isLoggedIn', 'true');
+  await liff.init({liffId: liffID})
+  try {
+    const isLoggedIn = await liff.isLoggedIn();
+    if (isLoggedIn) {
+      // 用户已登录
+      return('User is logged in.');
+    } else {
+      // 用户未登录
+      return('User is not logged in.');
+    }
+  } catch (error) {
+    return('Failed to check user login status: ');
+  }
+};
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {

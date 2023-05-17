@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {initializeLineLogin,useDevUserLogin,fetchGalleries} from '../helpers/fetchHelper'
+import {initializeLineLogin,useDevUserLogin,fetchGalleries,checkUserLiffLoginStatus} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState} from '../atoms/galleryAtom';
 function Index() {
@@ -24,8 +24,9 @@ function Index() {
   };
   useEffect(()=>{
     fetchGalleries(headers).then(data=>setData(data.results))
-
+    checkUserLiffLoginStatus().then(data=>console.log(data))
   },[])
+
   return (
     <div className='w-full'>
       <Header />
@@ -47,7 +48,7 @@ function Index() {
                       <img  
                         src={urls.thumb} alt={image?.description} 
                         data-id={id}
-                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full'
+                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                         onClick={() => {setImageData(image)}} 
                       />
                     </div>
