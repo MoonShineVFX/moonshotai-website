@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries} from '../helpers/fetchHelper'
@@ -82,11 +82,14 @@ function Post() {
           <div className='text-2xl text-white font-bold '>{imageData.title}</div>
           <div className=' flex items-center  gap-3 my-6'>
             <div className='text-white font-bold my-3'>Author</div> 
-            <div 
-              className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
-              style={{backgroundImage: `url(${imageData?.author.profile_image})`}}
-            ></div>
-            <div className=''>{imageData?.author?.name}</div>
+            <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
+              <div 
+                className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
+                style={{backgroundImage: `url(${imageData?.author.profile_image})`}}
+              ></div>
+              <div className=''>{imageData?.author?.name}</div>
+            </Link>
+
           </div>
           <div className="flex flex-col  justify-center items-center w-full">
             <div className='w-2/3 aspect-[2/1]'>

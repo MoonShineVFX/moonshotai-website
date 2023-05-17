@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
-
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {initializeLineLogin,useDevUserLogin,fetchGalleries} from '../helpers/fetchHelper'
@@ -28,7 +26,6 @@ function Index() {
     fetchGalleries(headers).then(data=>setData(data.results))
 
   },[])
-  console.log(data)
   return (
     <div className='w-full'>
       <Header />
