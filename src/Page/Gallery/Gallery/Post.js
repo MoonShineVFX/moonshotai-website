@@ -3,8 +3,9 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries} from '../helpers/fetchHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
+import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
+import Header from '../header'
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useRecoilState(imageDataState)
@@ -65,26 +66,22 @@ function Post() {
 
   return (
     <div>
-      <div className='flex items-center '>
-        <button onClick={handleBackClick} className='text-white p-3'>
-          <MdKeyboardArrowLeft size={42} />
-        </button>
-        <button className='text-white p-3'>
-          <MdOutlineShare size={22} />
-        </button>
-      </div>
+      <Header />
+
 
       {!imageData ?
       <div className='text-white'>Loading</div> 
       :
       <>
         <div className="w-full p-4  text-white/80 relative">
-          <div className='text-2xl text-white font-bold '>{imageData.title}</div>
-          <div className=' flex items-center  gap-3 my-6'>
-            <div className='text-white font-bold my-3'>Author</div> 
+          <div className=' '> 
+            <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
+            <div className='text-xl text-white font-semibold'>{imageData.title}</div> 
+          </div>
+          <div className=' flex items-center  gap-3 my-2'>
             <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
               <div 
-                className='w-[40px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
+                className='w-[30px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black border border-zinc-400 '
                 style={{backgroundImage: `url(${imageData?.author.profile_image})`}}
               ></div>
               <div className=''>{imageData?.author?.name}</div>
@@ -92,61 +89,44 @@ function Post() {
 
           </div>
           <div className="flex flex-col  justify-center items-center w-full">
-            <div className='w-2/3 aspect-[2/1]'>
+            <div className='w-full my-5'>
               <img 
                 src={imageData.urls.regular} 
                 alt={imageData.id} 
-                className="max-w-full   rounded-md" />
+                className="w-full" />
             </div>
-            <div className='my-2'>
-              <div className='text-xs text-white/40 text-center'>#{imageData.created_at && imageData.id}</div>
-              
-            </div>
-            
           </div>
           <div className='flex flex-col justify-end  relative pb-20 pt-2'>
             
             
-            <div>
-              <div className='flex items-center gap-2'>
-                <FaHeart /> {imageData.likes}
-              </div>
-              <div className='mt-3 text-white/60'>Created at {imageData.created_at && imageData.created_at.substr(0,10)}  Model: {getWordFromLetter(imageData.model)}   </div> 
-             
+            <div className='flex items-center gap-2 text-white '>
+              <button className='flex items-center gap-2 p-2'>
+                <FaHeart size={20}/> {imageData.likes}
+              </button>
+              <button className='p-2'>
+                <MdModeComment size={20} />
+              </button>
+              <button className='p-2'>
+                <MdOutlineShare size={20} />
+              </button>
+
             </div>
+            <div className='mt-3 text-white/60 text-sm'>{imageData.created_at && imageData.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData.model)}   </div> 
             <div className='text-white font-bold my-3 '>Prompt</div>
-            <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-              {imageData.prompt}
+            <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+              <div className='p-3'>{imageData.prompt}</div>
+              <div className='  absolute h-4 bottom-0 z-10 w-full bg-gradient-to-t from-[#1e1e1e] via-black/0 '></div>
             </div>
             <div className='text-white font-bold my-3'>Negative prompt</div>
-            <div className='bg-zinc-700 p-3 rounded-md'>
-              {imageData.negative_prompt}
+            <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+            <div className='p-3'>{imageData.negative_prompt}</div>
+              <div className='  absolute h-4 bottom-0 z-10 w-full bg-gradient-to-t from-[#1e1e1e] via-black/0 '></div>
             </div>
-            <div className='grid grid-cols-2 gap-2'>
-              <div>
-                <div className='text-white font-bold my-3 '>Model</div>
-                <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                  {getWordFromLetter(imageData.model)}
-                </div>
-              </div>
-              <div>
-                <div className='text-white font-bold my-3 '>steps</div>
-                <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                  {imageData.steps}
-                </div>
-              </div>
-              <div>
-                <div className='text-white font-bold my-3 '>sampler_index</div>
-                <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                  {imageData.sampler_index}
-                </div>
-              </div>
-              <div>
-                <div className='text-white font-bold my-3 '>cfg_scale</div>
-                <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
-                  {imageData.cfg_scale}
-                </div>
-              </div>
+            <div className='mt-4'>
+                <div className='text-white font-bold my-1 '>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData.model)}</span> </div>
+                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData.steps}</span></div>
+                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData.sampler_index}</span></div>
+                <div className='text-white font-bold my-1 '>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData.cfg_scale}</span></div>
             </div>
           </div>
           <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>

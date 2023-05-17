@@ -46,12 +46,12 @@ function User() {
                   <div>renders</div> 
                 </div>
                 <div className=' text-xs px-8'>
-                  <div>{userData?.total_collections}</div> 
-                  <div>collections</div> 
+                  <div>{userData?.total_collected}</div> 
+                  <div>collected</div> 
                 </div>
                 <div className=' text-xs px-8'>
-                  <div>{userData?.total_follows}</div> 
-                  <div>follows</div> 
+                  <div>{userData?.total_follower}</div> 
+                  <div>follower</div> 
                 </div>
               </div>
               <div>
