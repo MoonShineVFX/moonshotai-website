@@ -5,10 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import {userState,isLoginState} from '../atoms/galleryAtom'
+import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 function Index({banner}) {
   const currentUser = useRecoilValue(userState)
   const isLogin = useRecoilValue(isLoginState)
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async()=>{
@@ -17,6 +20,9 @@ function Index({banner}) {
         if (liff.isLoggedIn()) {
           await liff.logout();
         }
+        setIsLoggedIn(false)
+        setLineProfile(null)
+        setToken(null)
         navigate('/');
       } catch (err) {
         console.log('登出失敗');

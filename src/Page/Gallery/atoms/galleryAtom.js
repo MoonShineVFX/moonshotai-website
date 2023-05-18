@@ -1,13 +1,21 @@
 import { atom,selector,useSetRecoilState } from 'recoil';
 import {fetchGalleries} from '../helpers/fetchHelper'
-export const loginState = atom({
-  key: 'loginState',
-  default: null,
-});
+
+// linelogined -> lineUserProfile -> api login -> api use profile
 export const isLoginState = atom({
   key: 'isLoginState',
   default: false ,
 });
+
+export const lineProfileState = atom({
+  key: 'lineProfileState',
+  default: null,
+});
+export const loginState = atom({
+  key: 'loginState',
+  default: null,
+});
+
 
 export const userState = atom({
   key: 'userState',

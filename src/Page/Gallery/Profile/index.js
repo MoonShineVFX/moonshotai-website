@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "rea
 import Header from '../header'
 import liff from '@line/liff';
 
-import { isLoginState,loginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome,userPatchAStorageImage } from '../helpers/fetchHelper';
 
@@ -36,7 +36,6 @@ function Index() {
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [currentAuthor,setCurrentAuthor] = useState({})
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
-
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
@@ -44,9 +43,12 @@ function Index() {
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
+
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
+  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
+
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const isShowModal = useRecoilValue(imageFormModalState)
   const isShowImageModal = useRecoilValue(imageModalState)
@@ -91,8 +93,7 @@ function Index() {
 
           liff.getProfile().then(profile=>{
             // console.log(profile)
-            // setCurrentProfile(profile)
-
+            setLineProfile(profile)
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
@@ -132,6 +133,7 @@ function Index() {
       userId:"U895f7908fef7f32b717db91a8240ddc2"
     }
     setIsLoggedIn(true)
+    setLineProfile(profile)
     // setCurrentProfile(profile)
 
     fetchLineLogin(profile)
