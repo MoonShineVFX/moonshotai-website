@@ -18,6 +18,7 @@ export const initializeLineLogin = async ()=>{
         const accessToken = liff.getAccessToken();
         if(accessToken){
           const profile = liff.getProfile()
+          localStorage.setItem('profile',profile);
           return profile
         }
       }
