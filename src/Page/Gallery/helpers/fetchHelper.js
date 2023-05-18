@@ -18,7 +18,7 @@ export const initializeLineLogin = async ()=>{
         const accessToken = liff.getAccessToken();
         if(accessToken){
           const profile = liff.getProfile()
-          localStorage.setItem('profile',profile);
+          localStorage.setItem('lineProfile',profile);
           return profile
         }
       }
@@ -70,6 +70,22 @@ export const checkUserLiffLoginStatus = async () => {
     return('Failed to check user login status: ');
   }
 };
+export const getStoredLocalData = async ()=>{
+  const storedIsLogin = localStorage.getItem('isLogin');
+  const storedLoginTokenData = localStorage.getItem('loginTokenData');
+  const storedLineProfile = localStorage.getItem('lineProfile');
+  const storedCurrentUser = localStorage.getItem('currentUser');
+
+  return{
+    isLogin: JSON.parse(storedIsLogin),
+    loginToken: JSON.parse(storedLoginTokenData)?.token,
+    loginUserId: JSON.parse(storedLoginTokenData)?.user_id,
+    lineProfile: JSON.parse(storedLineProfile),
+    currentUser: JSON.parse(storedCurrentUser)
+  }
+    
+  
+}
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {

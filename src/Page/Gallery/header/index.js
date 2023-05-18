@@ -6,10 +6,9 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-function Index({banner}) {
-  const currentUser = useRecoilValue(userState)
+function Index({currentUser,isLoggedIn}) {
   const isLogin = useRecoilValue(isLoginState)
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
@@ -20,9 +19,12 @@ function Index({banner}) {
         if (liff.isLoggedIn()) {
           await liff.logout();
         }
-        setIsLoggedIn(false)
+        // setIsLoggedIn(false)
         setLineProfile(null)
         setToken(null)
+        localStorage.removeItem('isLogin');
+        localStorage.removeItem('loginTokenData');
+        localStorage.removeItem('lineProfile');
         navigate('/');
       } catch (err) {
         console.log('登出失敗');
@@ -54,8 +56,16 @@ function Index({banner}) {
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
-            isLogin ?
-            <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
+            isLoggedIn ?
+            <div>
+              <div className='w-8'>
+                <div className='pt-[100%] relative'>
+                  <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                </div>
+              </div>
+              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
+            </div>
+            
             :
             <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
           }
@@ -74,22 +84,41 @@ function Index({banner}) {
               <div className='lg:text-xl'>Gallery</div>
           </div>
           <div className='my-7 flex flex-col text-white/90 justify-between'>
-            <Link 
-              to='/profile' 
-              className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                <MdAssignmentInd color="#88ad48"/> Profile 
-            </Link>
-            <Link 
-              to='/gallery' 
-              className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                <MdDashboard color="#88ad48"/> Gallery
-            </Link>
-            {
-              isLogin ?
-              <div className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={handleLogout}>Log Out</div>
+            { 
+              isLoggedIn ?
+              <div className='border-b border-white/20'>
+                <div className='flex items-center gap-2'>
+                  <div className='w-8'>
+                    <div className='pt-[100%] relative'>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                    </div>
+                  </div>
+                  <div>{currentUser?.name}</div>
+                </div>
+
+                <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
+                  <button className='my-4 py-1  border rounded-md w-full'> Log Out</button>
+                </div>
+              </div>
               :
-              <Link to='/profile' className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+              <div className='border-b border-white/20 py-4'>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+              </div>
             }
+            <div className='my-3'>
+              <Link 
+                to='/profile' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAssignmentInd color="#88ad48"/> Profile 
+              </Link>
+              <Link 
+                to='/gallery' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdDashboard color="#88ad48"/> Gallery
+              </Link>
+            </div>
+
+
           </div>
 
 

@@ -3,33 +3,40 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {initializeLineLogin,useDevUserLogin,fetchGalleries,checkUserLiffLoginStatus} from '../helpers/fetchHelper'
+import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { isLoginState,loginState, imageDataState,imageModalState} from '../atoms/galleryAtom';
+import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 function Index() {
-  const currentLoginData = useRecoilValue(loginState)
-  const isCurrentLogin = useRecoilValue(isLoginState)
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+
   const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
-  const [headers, setHeaders] = useState(
-    isCurrentLogin ? 
-    {'Content-Type': 'application/json' ,'Authorization': `Bearer ${currentLoginData}` }
-    : 
-    {'Content-Type': 'application/json'} 
-    )
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+
   useEffect(()=>{
-    fetchGalleries(headers).then(data=>setData(data.results))
-    checkUserLiffLoginStatus().then(data=>console.log(data))
-  },[])
+    getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        const headers = data.isLogin ? 
+        {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.loginToken}` }
+        :
+        {'Content-Type': 'application/json'} 
+        fetchGalleries(headers).then(data=>setData(data.results))
+      })
+  },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
   return (
     <div className='w-full'>
-      <Header />
+      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <div className='w-11/12 mx-auto my-10'>
 
           {!data ? 

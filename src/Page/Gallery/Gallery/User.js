@@ -1,12 +1,28 @@
 import React,{useState,useEffect} from 'react'
 import { useParams,useNavigate } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import { loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
+
 import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
-import {getWordFromLetter,fetchUser} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData} from '../helpers/fetchHelper'
 import Header from '../header'
 function User() {
   const { id } = useParams();
   const [userData, setUserData] = useState(null)
+
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+
+  useEffect(()=>{
+    getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+      })
+  },[setIsLoggedIn,setLineLoginData,setLineProfile])
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
@@ -20,7 +36,7 @@ function User() {
   },[])
   return (
     <div>
-      <Header />
+      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       {
         !userData  ? 
         <div className='text-white'>Loading</div> 

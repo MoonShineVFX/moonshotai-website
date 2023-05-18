@@ -88,20 +88,25 @@ function Index() {
       if (liff.isLoggedIn()) {
         const accessToken = liff.getAccessToken();
         setIsLoggedIn(true)
+        localStorage.setItem('isLogin', true);
         // console.log("getAccessToken", accessToken);
         if(accessToken){
 
           liff.getProfile().then(profile=>{
             // console.log(profile)
             setLineProfile(profile)
+            localStorage.setItem('lineProfile', JSON.stringify(profile));
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
-
+                localStorage.setItem('loginTokenData', JSON.stringify(data));
                 fetchUserProfile(data.user_id, data.token)
                   .then((data)=> {
                     console.log(data)
-                    setCurrentProfile(data)})
+                    setCurrentProfile(data)
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                  })
+                    
                   .catch((error) => console.error(error));
 
                 fetchUserImages(profile.userId , currentPage, pageSize,data.token)
@@ -134,15 +139,19 @@ function Index() {
     }
     setIsLoggedIn(true)
     setLineProfile(profile)
+    localStorage.setItem('isLogin', true);
+    localStorage.setItem('lineProfile', JSON.stringify(profile));
     // setCurrentProfile(profile)
 
     fetchLineLogin(profile)
       .then((data)=> {
         setToken(data.token)
+        localStorage.setItem('loginTokenData', JSON.stringify(data));
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
             setCurrentProfile(data)
+            localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
         fetchUserImages(profile.userId , currentPage, pageSize,data.token)
@@ -397,7 +406,7 @@ function Index() {
 
       </AnimatePresence>
 
-      <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
+      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
 
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 

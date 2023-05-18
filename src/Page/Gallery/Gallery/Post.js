@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { imageDataState,imageByIdSelector,loginState,isLoginState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries} from '../helpers/fetchHelper'
+import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
+import {getWordFromLetter,fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
@@ -11,14 +11,14 @@ function Post() {
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const currentLoginData = useRecoilValue(loginState)
   const isCurrentLogin = useRecoilValue(isLoginState)
-  console.log(isCurrentLogin,currentLoginData)
+
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+
   const [ isCopied , setIsCopied ] = useState(false);
-  const [headers, setHeaders] = useState(
-    isCurrentLogin ? 
-    {'Content-Type': 'application/json' ,'Authorization': `Bearer ${currentLoginData}` }
-    : 
-    {'Content-Type': 'application/json'} 
-    )
+
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -29,23 +29,29 @@ function Post() {
       navigate('/gallery'); // 导航到指定页面
     }
   };
-  
-
   useEffect(()=>{
-    fetchGalleries(headers)
-      .then(data => {
-        console.log(data)
-        console.log(id)
-        const newImageData = data.results.find((item)=>{
-          return item.id === parseInt(id)
+    getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        const headers = data.isLogin ? 
+        {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.loginToken}` }
+        :
+        {'Content-Type': 'application/json'} 
+        fetchGalleries(headers).then(data=>{
+          const newImageData = data.results.find((item)=>{
+            return item.id === parseInt(id)
+          })
+          console.log(newImageData)
+          setImageData(newImageData);
+    
+          return newImageData;
         })
-        console.log(newImageData)
-        setImageData(newImageData);
-  
-        return newImageData;
       })
+  },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
-  },[])
+
 
 
 
@@ -66,7 +72,7 @@ function Post() {
 
   return (
     <div>
-      <Header />
+      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
 
 
       {!imageData ?
