@@ -11,11 +11,23 @@ import Gallery from './Page/Gallery/Gallery';
 import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
+
+import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
 function App() {
   useEffect(() => {
     AOS.init();
   }, [])
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // 在页面关闭之前执行的逻辑
+      removeLocalStorageItem().then(data=>console.log(data))
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
   return (
     <RecoilRoot>
     <BrowserRouter>

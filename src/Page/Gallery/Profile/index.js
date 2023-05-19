@@ -8,11 +8,12 @@ import liff from '@line/liff';
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage,userPatchDisplayHome,userPatchAStorageImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollow } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
+import FollowPage from '../FollowPage'
 import EditUserForm from '../Components/EditUserForm';
 import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
@@ -20,8 +21,8 @@ import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
-  {title:"Collection", display:false},
-  {title:"Following",display:false},
+  {title:"Collection", display:true},
+  {title:"Following",display:true},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
@@ -32,6 +33,8 @@ function Index() {
   const [storagesResults, setStoragesResults] = useState([]);
   const [collections, setCollections] = useState({});
   const [collectionsResults, setCollectionsResults] = useState([]);
+  const [follows, setFollows] = useState({});
+  const [followsResults, setFollowsResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [currentAuthor,setCurrentAuthor] = useState({})
@@ -282,7 +285,7 @@ function Index() {
       .catch((error) => console.error(error));
   }
   const handleRemoveStorage = (id)=>{
-    delUserStorageImage(id,token)
+    userDelAStorageImage(id,token)
       .then((data)=> {
         if(data.status === 200 || data.status === 204){
           setTimeout(()=>{
@@ -290,6 +293,23 @@ function Index() {
             .then((images)=> {
                 setStorages(images)
                 setStoragesResults(images.results)
+            })
+            .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleRemoveCollection = (id)=>{
+    userDelACollectionImage(id,token)
+      .then((data)=> {
+        if(data.status === 200 || data.status === 204){
+          console.log('200')
+          setTimeout(()=>{
+            fetchUserCollections(currentProfile.id,token)
+            .then((images)=> {
+                setCollections(images)
+                setCollectionsResults(images.results)
             })
             .catch((error) => console.error(error));
           },1000)
@@ -363,10 +383,10 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Following':
-        fetchUserImages(currentProfile.uid,token)
+        fetchUserFollow(currentProfile.uid,token)
           .then((images)=> {
-              setImages(images)
-              setImagesResults(images.results)
+              setFollows(images)
+              setFollowsResults(images.results)
           })
           .catch((error) => console.error(error));
         break;
@@ -380,9 +400,9 @@ function Index() {
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
+        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage}/>;
+        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleRemoveFollow={''}/>;
       default: return null;
     }
   }
@@ -436,16 +456,20 @@ function Index() {
               </div>
 
 
-              <div className='grid grid-cols-3  divide-x'>
-                <div className=' text-xs px-8'>
+              <div className='grid grid-cols-4  divide-x'>
+                <div className=' text-xs px-4'>
                   <div>{currentProfile && currentProfile.total_photos} </div>
                   <div>renders</div> 
                 </div>
-                <div className=' text-xs px-8'>
+                <div className=' text-xs px-4'>
+                  <div>{currentProfile && currentProfile.total_storages}</div> 
+                  <div>Storages</div> 
+                </div>
+                <div className=' text-xs px-4'>
                   <div>{currentProfile && currentProfile.total_collections}</div> 
                   <div>collections</div> 
                 </div>
-                <div className=' text-xs px-8'>
+                <div className=' text-xs px-4'>
                   <div>{currentProfile && currentProfile.total_follows}</div> 
                   <div>follows</div> 
                 </div>

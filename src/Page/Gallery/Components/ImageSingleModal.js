@@ -26,7 +26,7 @@ function ImageSingleModal() {
             <img 
               src={image.urls.regular} 
               alt={image.id} 
-              className="max-w-full   rounded-md" />
+              className="max-w-full rounded-md" />
           </div>
         </div>
         <div className='flex flex-col justify-end  relative pb-20 pt-2'>

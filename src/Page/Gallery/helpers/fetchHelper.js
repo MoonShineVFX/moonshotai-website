@@ -86,6 +86,14 @@ export const getStoredLocalData = async ()=>{
     
   
 }
+export const removeLocalStorageItem = async ()=>{
+  localStorage.setItem('isLogin',false);
+  localStorage.removeItem('loginTokenData');
+  localStorage.removeItem('lineProfile');
+  localStorage.removeItem('currentUser');
+
+  return 'finish'
+}
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {
@@ -103,8 +111,44 @@ export const fetchLineLogin = async (profile) =>{
   const response = await fetch(apiUrl+'line_login', requestOptions)
   const data = await response.json()
   return data
+}
+export const fetchUserFollow =async (userid,token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'users/'+userid+'/follows' ,requestOptions)
+  const data =await response.json()
+  return data
+    
 
-
+}
+export const userFollowAUser =async (user,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'users/'+user.id+'/follow', requestOptions)
+  const data =await response
+  return data
+}
+export const userUnFollowAUser =async (user,token) =>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'users/'+user.id+'/follow', requestOptions)
+  const data =await response
+  return data
 }
 export const userStorageAImage =async (image,token) =>{
   const requestOptions = {
@@ -115,7 +159,7 @@ export const userStorageAImage =async (image,token) =>{
     }
   };
   const response =await fetch(apiUrl+'images/'+image.id+'/storage', requestOptions)
-  const data =await response.status
+  const data =await response
   return data
 }
 export const userCollectionAImage =async (image,token) =>{
@@ -130,7 +174,7 @@ export const userCollectionAImage =async (image,token) =>{
   const data =await response
   return data
 }
-export const delUserStorageImage = async (id,token)=>{
+export const userDelAStorageImage = async (id,token)=>{
   const requestOptions = {
     method: 'DELETE',
     headers: { 
@@ -142,12 +186,41 @@ export const delUserStorageImage = async (id,token)=>{
   const data =await response
   return data
 }
+export const userDelACollectionImage = async (id,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+id+'/collection', requestOptions)
+  const data =await response
+  return data
+}
 export const fetchUserImages =async (uuid,page,pageSize,token)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
+    }
+  };
+  if(uuid){
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+    const data =await response.json()
+    return data
+    
+  } else{
+
+  }
+
+}
+export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json'
     }
   };
   if(uuid){

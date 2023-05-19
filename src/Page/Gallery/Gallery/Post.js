@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from 'react'
+import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage} from '../helpers/fetchHelper'
+import {SharePostModal ,CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
@@ -19,6 +21,9 @@ function Post() {
 
   const [ isCopied , setIsCopied ] = useState(false);
 
+  const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
+  const [ isLoginForComment , setIsLoginForComment] = useState(false)
+  const [ isShareModel , setIsShareModal] = useState(false)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -52,9 +57,39 @@ function Post() {
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
 
+  const handleCollection = ()=>{
+    console.log('click')
+    if(!isLoggedIn){
+     console.log(isLoggedIn)
+     setIsLoginForCollection(true)
+    }else{
+      console.log(imageData)
+      userCollectionAImage(imageData,linLoginData)
+        .then((data)=> console.log(data))
+        .catch((error) => console.error(error));
 
-
-
+      setIsLoginForCollection(false)
+    }
+  }
+  const handleComment = ()=>{
+    console.log('click')
+    if(!isLoggedIn){
+      console.log(isLoggedIn)
+      setIsLoginForComment(true)
+     }else{
+      setIsLoginForComment(false)
+     }
+  }
+  const handleShare = ()=>{
+    console.log('click')
+    if(!isLoggedIn){
+      console.log(isLoggedIn)
+      setIsShareModal(true)
+     }else{
+      setIsShareModal(false)
+     }
+  }
+  
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
@@ -73,6 +108,11 @@ function Post() {
   return (
     <div>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      <AnimatePresence>
+      {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
+      {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
+      {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
+      </AnimatePresence>
 
 
       {!imageData ?
@@ -107,13 +147,13 @@ function Post() {
             
             
             <div className='flex items-center gap-2 text-white '>
-              <button className='flex items-center gap-2 p-2'>
+              <button className='flex items-center gap-2 p-2' onClick={handleCollection}>
                 <FaHeart size={20}/> {imageData.likes}
               </button>
-              <button className='p-2'>
+              <button className='p-2' onClick={handleComment}>
                 <MdModeComment size={20} />
               </button>
-              <button className='p-2'>
+              <button className='p-2' onClick={handleShare}>
                 <MdOutlineShare size={20} />
               </button>
 

@@ -123,15 +123,17 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
-                  <img  
-                    src={urls.thumb} alt={image?.description} 
-                    data-id={id}
-                    className='w-full h-auto object-cover cursor-pointer aspect-square'
-                    onClick={() => {
-                      setImageData(image)
-                      setIsShowImageModal(true)
-                    }} 
-                  />
+                  <div className='pt-[100%] relative'>
+                    <img  
+                      src={urls.thumb} alt={image?.description} 
+                      data-id={id}
+                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                      onClick={() => {
+                        setImageData(image)
+                        setIsShowImageModal(true)
+                      }} 
+                    />
+                  </div>
                   
                   <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center p-1 '> 
                     <div className='pt-3 pl-2' onClick={()=>{

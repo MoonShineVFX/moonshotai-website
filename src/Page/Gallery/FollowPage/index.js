@@ -6,7 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 
-function Index({title,images,imagesResults,currentProfile,handleRemoveCollection}) {
+function Index({title,follows,followssResults,currentProfile,handleRemoveCollection}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -43,16 +43,12 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
   return (
     <div >
       <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
-      {!imagesResults ?
+      {!followssResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <ResponsiveMasonry
-          className=''
-          columnsCountBreakPoints={{350: 2, 750: 2, 900: 4,1700:5}}
-        >
-          <Masonry gutter={20}>
-          {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,title   } = image
+        <div>
+          {followssResults.map((user,index) => {
+            const {id, urls, created_at, title   } = user
             return (
               <motion.div key={id} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -60,11 +56,11 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
               >
                 <div className='pt-[100%] relative'>
                   <img  
-                    src={urls.thumb} alt={image?.description} 
+                    src={urls.thumb} alt={user?.description} 
                     data-id={id}
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                     onClick={() => {
-                      setImageData(image)
+                      setImageData(user)
                       setIsShowImageModal(true)
                     }} 
                   />
@@ -75,7 +71,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
                     {title ?title : created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
-                    <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveCollection(image)}>
+                    <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveCollection(user)}>
                       <FaHeart />Remove
                     </div>
 
@@ -88,8 +84,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
             )
 
           })}
-          </Masonry>
-        </ResponsiveMasonry>
+        </div>
 
       }
     </div>
