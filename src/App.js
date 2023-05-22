@@ -14,15 +14,15 @@ import User from './Page/Gallery/Gallery/User';
 
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
+
 function App() {
   useEffect(() => {
     AOS.init();
   }, [])
   useEffect(() => {
     const handleBeforeUnload = () => {
-      // 在页面关闭之前执行的逻辑
       if (performance.navigation.type !== 1) {
-      removeLocalStorageItem().then(data=>console.log(data))
+        // removeLocalStorageItem().then(data=>console.log(data))
       }
     };
     window.addEventListener('beforeunload', handleBeforeUnload);

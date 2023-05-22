@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -24,6 +24,7 @@ function Post() {
   const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
   const [ isLoginForComment , setIsLoginForComment] = useState(false)
   const [ isShareModel , setIsShareModal] = useState(false)
+  const [isCollected ,setIsCollected] = useState(false)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -35,24 +36,50 @@ function Post() {
     }
   };
   useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        const headers = data.isLogin ? 
-        {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.loginToken}` }
-        :
-        {'Content-Type': 'application/json'} 
-        fetchGalleries(headers).then(data=>{
-          const newImageData = data.results.find((item)=>{
-            return item.id === parseInt(id)
+    getStoredLocalData().then(localData=>{
+        setIsLoggedIn(localData.isLogin)
+        
+        setLineProfile(localData.lineProfile)
+        setCurrentUser(localData.currentUser)
+        let currentUser = localData.currentUser
+        let headers = {'Content-Type': 'application/json'} 
+        if(localData.isLogin){
+          // const refreshTokenResult = refreshToken()
+          refreshToken().then(tData =>{
+            setLineLoginData(tData.token)
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${tData.token}` }
+            fetchGalleries(headers).then(gData=>{
+              const newImageData = gData.results.find((item)=>{
+                return item.id === parseInt(id)
+              })
+              console.log(newImageData)
+              setImageData(newImageData);
+        
+              return newImageData;
+            })
+            fetchUserCollections(currentUser.id,tData.token).then(collections=>{
+              const findCollectionId = collections.results.some((item)=>{
+                return item.id === parseInt(id)
+              })
+              if(findCollectionId){
+                setIsCollected(true)
+              }else{
+                setIsCollected(false)
+              }
+            })
           })
-          console.log(newImageData)
-          setImageData(newImageData);
-    
-          return newImageData;
-        })
+        }else{
+          fetchGalleries(headers).then(data=>{
+            const newImageData = data.results.find((item)=>{
+              return item.id === parseInt(id)
+            })
+            console.log(newImageData)
+            setImageData(newImageData);
+      
+            return newImageData;
+          })
+        }
+
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
@@ -64,12 +91,26 @@ function Post() {
      setIsLoginForCollection(true)
     }else{
       console.log(imageData)
-      userCollectionAImage(imageData,linLoginData)
-        .then((data)=> console.log(data))
-        .catch((error) => console.error(error));
-
+      if(isCollected){
+        userDelACollectionImage(imageData.id,linLoginData)
+          .then((data)=> {
+            if(data.status===204){
+              setIsCollected(false)
+            }
+          })
+          .catch((error) => console.error(error));
+      }else{
+        userCollectionAImage(imageData,linLoginData)
+          .then((data)=> {
+            if(data.status===200){
+              setIsCollected(true)
+            }
+          })
+          .catch((error) => console.error(error));
+      }
       setIsLoginForCollection(false)
     }
+    
   }
   const handleComment = ()=>{
     console.log('click')
@@ -81,13 +122,8 @@ function Post() {
      }
   }
   const handleShare = ()=>{
-    console.log('click')
-    if(!isLoggedIn){
-      console.log(isLoggedIn)
-      setIsShareModal(true)
-     }else{
-      setIsShareModal(false)
-     }
+    setIsShareModal(true)
+     
   }
   
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
@@ -147,8 +183,8 @@ function Post() {
             
             
             <div className='flex items-center gap-2 text-white '>
-              <button className='flex items-center gap-2 p-2' onClick={handleCollection}>
-                <FaHeart size={20}/> {imageData.likes}
+              <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
+                <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
               </button>
               <button className='p-2' onClick={handleComment}>
                 <MdModeComment size={20} />

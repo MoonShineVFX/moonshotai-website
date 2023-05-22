@@ -3,7 +3,8 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData} from '../helpers/fetchHelper'
+import {LoadingCircle} from '../helpers/componentsHelper'
+import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 function Index() {
@@ -26,11 +27,19 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
-        const headers = data.isLogin ? 
-        {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.loginToken}` }
-        :
-        {'Content-Type': 'application/json'} 
-        fetchGalleries(headers).then(data=>setData(data.results))
+        let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
+          // const refreshTokenResult = refreshToken()
+          refreshToken().then(data =>{
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            fetchGalleries(headers).then(galleryData => {
+              setData(galleryData.results);
+            });
+          })
+        }else{
+            fetchGalleries(headers).then(data=>setData(data.results))
+        }
+        
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
@@ -38,9 +47,11 @@ function Index() {
     <div className='w-full'>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <div className='w-11/12 mx-auto my-10'>
-
+          <div className='text-white text-lg  mb-2 font-bold'>Newest</div>
           {!data ? 
-          <div className='text-white'>Loading</div> 
+          <div className='text-white'>
+            <LoadingCircle />
+          </div> 
           :
           <div className='grid grid-cols-2 gap-4'>
             {data.map((image,index)=>{

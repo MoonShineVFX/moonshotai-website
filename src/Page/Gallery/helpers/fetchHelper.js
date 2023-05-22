@@ -54,6 +54,27 @@ export const useDevUserLogin = () =>{
   return [devLogin,isLogin,token]
 
 }
+export const refreshToken = async () =>{
+  const storedLineProfile = localStorage.getItem('lineProfile');
+  const data = await fetchLineLogin(JSON.parse(storedLineProfile))
+  return data
+}
+export const Logout = async ()=>{
+  removeLocalStorageItem().then(data=>{
+    console.log(data)
+    if(data === 'finish'){
+      return 'logoutuccess'
+    }
+  })
+}
+export const removeLocalStorageItem = async ()=>{
+  localStorage.setItem('isLogin',false);
+  localStorage.removeItem('loginTokenData');
+  localStorage.removeItem('lineProfile');
+  localStorage.removeItem('currentUser');
+
+  return 'finish'
+}
 export const checkUserLiffLoginStatus = async () => {
   // localStorage.setItem('isLoggedIn', 'true');
   await liff.init({liffId: liffID})
@@ -86,14 +107,7 @@ export const getStoredLocalData = async ()=>{
     
   
 }
-export const removeLocalStorageItem = async ()=>{
-  localStorage.setItem('isLogin',false);
-  localStorage.removeItem('loginTokenData');
-  localStorage.removeItem('lineProfile');
-  localStorage.removeItem('currentUser');
 
-  return 'finish'
-}
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {
@@ -112,7 +126,7 @@ export const fetchLineLogin = async (profile) =>{
   const data = await response.json()
   return data
 }
-export const fetchUserFollow =async (userid,token) =>{
+export const fetchUserFollowings =async (userid,token) =>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -120,7 +134,21 @@ export const fetchUserFollow =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'users/'+userid+'/follows' ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/followings' ,requestOptions)
+  const data =await response.json()
+  return data
+    
+
+}
+export const fetchUserFollowers =async (userid,token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'users/'+userid+'/followers' ,requestOptions)
   const data =await response.json()
   return data
     

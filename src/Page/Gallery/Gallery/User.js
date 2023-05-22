@@ -5,7 +5,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases } from "react-icons/md";
-import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
 import {CallToLoginModal} from '../helpers/componentsHelper'
 
 import Header from '../header'
@@ -23,6 +23,7 @@ function User() {
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
+  const [isFollowed ,setIsFollowed] = useState(false)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -33,19 +34,50 @@ function User() {
      console.log(isLoggedIn)
      setIsLoginForFollow(true)
     }else{
-      userFollowAUser(userData,linLoginData)
-        .then((data)=> console.log(data))
+      if(isFollowed){
+        userUnFollowAUser(userData,linLoginData)
+          .then((data)=> {
+            if(data.status===204){
+              setIsFollowed(false)
+            }
+          })
         .catch((error) => console.error(error));
+        
 
-        setIsLoginForFollow(false)
+      }else{
+        userFollowAUser(userData,linLoginData)
+          .then((data)=> {
+            if(data.status===200){
+              setIsFollowed(true)
+            }
+          })
+          .catch((error) => console.error(error));
+      }
+
+      setIsLoginForFollow(false)
+    
     }
+    
   }
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        refreshToken().then(tData =>{
+          setLineLoginData(tData.token)
+          fetchUserFollowings(currentUser.id,tData.token).then(followings =>{
+            console.log(followings)
+            const findFollowId = followings.some(item=>{
+              return item.id === parseInt(id)
+            })
+            if(findFollowId){
+              setIsFollowed(true)
+            }else{
+              setIsFollowed(false)
+            }
+          })
+        })
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   useEffect(()=>{
@@ -105,7 +137,13 @@ function User() {
                 </div>
               </div>
               <div className='' onClick={handleFollow}>
-                <button className='bg-lime-500 px-5 py-2 rounded-md'>Follow</button>
+                {
+                  isFollowed ? 
+                  <button className='bg-lime-600 px-5 py-2 rounded-md'>Following</button>
+                  : 
+                  <button className='bg-lime-700 px-5 py-2 rounded-md'>Follow</button>
+                }
+                
               </div>
          
              

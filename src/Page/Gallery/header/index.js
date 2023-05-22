@@ -6,6 +6,7 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
+import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
 function Index({currentUser,isLoggedIn}) {
   const isLogin = useRecoilValue(isLoginState)
   // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -19,13 +20,20 @@ function Index({currentUser,isLoggedIn}) {
         if (liff.isLoggedIn()) {
           await liff.logout();
         }
-        // setIsLoggedIn(false)
-        setLineProfile(null)
-        setToken(null)
-        localStorage.removeItem('isLogin');
-        localStorage.removeItem('loginTokenData');
-        localStorage.removeItem('lineProfile');
-        navigate('/');
+        // setIsLoggedIn(false);
+        setLineProfile(null);
+        setToken(null);
+        console.log('logouting')
+        removeLocalStorageItem().then(data=>{
+          console.log(data)
+          if(data === 'finish'){
+            if (window.location.pathname === '/gallery') {
+              window.location.reload();
+            } else {
+              navigate('/gallery');
+            }
+          }
+        })
       } catch (err) {
         console.log('登出失敗');
       }

@@ -8,7 +8,7 @@ import liff from '@line/liff';
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollow } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -317,6 +317,21 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleUnfollow = (user)=>{
+    userUnFollowAUser(user,token)
+      .then(data=>{
+        if( data.status === 204){
+          setTimeout(()=>{
+            fetchUserFollowings(currentProfile.id,token)
+              .then((folloings)=> {
+                  setFollows(folloings)
+                  setFollowsResults(folloings)
+              })
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+  }
   const handleStorageUpdate = (id,newData)=>{
     setStoragesResults(prevData => {
       const index = prevData.findIndex(item => item.id === id);
@@ -383,10 +398,10 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Following':
-        fetchUserFollow(currentProfile.uid,token)
-          .then((images)=> {
-              setFollows(images)
-              setFollowsResults(images.results)
+        fetchUserFollowings(currentProfile.id,token)
+          .then((folloings)=> {
+              setFollows(folloings)
+              setFollowsResults(folloings)
           })
           .catch((error) => console.error(error));
         break;
@@ -402,7 +417,7 @@ function Index() {
       case 'Collection':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleRemoveFollow={''}/>;
+        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
