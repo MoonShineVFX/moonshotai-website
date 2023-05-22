@@ -21,7 +21,9 @@ function App() {
   useEffect(() => {
     const handleBeforeUnload = () => {
       // 在页面关闭之前执行的逻辑
+      if (performance.navigation.type !== 1) {
       removeLocalStorageItem().then(data=>console.log(data))
+      }
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
