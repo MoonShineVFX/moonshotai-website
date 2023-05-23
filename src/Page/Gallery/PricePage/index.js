@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
-import {LoadingCircle} from '../helpers/componentsHelper'
+import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData,refreshToken} from '../helpers/fetchHelper'
@@ -56,35 +56,12 @@ function Index() {
               </div>
             </div>
             <div>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='flex flex-col gap-2'>
-                  <div className='flex flex-col'>
-                    <Controller
-                      name="name"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field }) => (
-                        <input {...field} type="text" placeholder="邀請碼" className='bg-zinc-700 rounded-xl py-3 px-2 text-sm' />
-                      )}
-                    />
-                  </div>
-                  <button type="submit"  className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-3 px-4 text-center text-white text-xl">
-                    輸入邀請碼
-                    <MdOutlineTrendingFlat className='ml-2'/>
-                  </button>
-                </div>
-
-              </form>
+              {/* form start */}
+              <DisableInputInvite />
 
             </div>
-            or
-            <div className=' flex '>
-              <button type="submit"  className="w-full flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-3 px-4 text-center text-white text-xl">
-                <div>
-                產生邀請碼<div className='text-white/70 text-sm'>邀請一位朋友即可獲得5日免費！</div>
-                </div>
-              </button>
-            </div>
+            
+
 
           </div>
           
@@ -100,10 +77,7 @@ function Index() {
               </div>
             </div>
 
-            <a href="#/" className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-6 px-4 text-center text-white text-xl">
-              訂購
-              <MdOutlineTrendingFlat className='ml-2'/>
-            </a>
+            <DisableBuyButton />
           </div>
           
           <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
@@ -117,10 +91,7 @@ function Index() {
                 </div>
               </div>
             </div>
-            <a href="#/" className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-5 px-4 text-center text-white text-xl">
-              訂購
-              <MdOutlineTrendingFlat className='ml-2'/>
-            </a>
+            <DisableBuyButton />
           </div>
           
         </div>

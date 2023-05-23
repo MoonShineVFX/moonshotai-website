@@ -2,7 +2,8 @@ import { useState } from 'react';
 import {motion} from 'framer-motion'
 import { MdContentCopy } from "react-icons/md";
 import { Link } from "react-router-dom";
-
+import { useForm,Controller } from 'react-hook-form';
+import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
 export const SharePostModal = ({closeModal})=>{
   const [ isCopied , setIsCopied ] = useState(false);
   const handleClose = ()=>{
@@ -120,3 +121,84 @@ export const LoadingCircle = () =>{
     </svg>
   )
 }
+export const DisableInputInvite = () =>{
+
+  return (
+
+      <form>
+        <div className='flex flex-col gap-2'>
+          <div className='flex flex-col'>
+            <input  type="text" placeholder="即將上線" className='bg-zinc-700 rounded-xl py-3 px-2 text-sm' disabled/>
+          </div>
+          <button type="submit" disabled   className="disabled flex justify-center items-center bg-zinc-700 text-white/30 rounded-xl py-3 px-4 text-center  text-xl">
+            輸入邀請碼(即將上線)
+            <MdOutlineTrendingFlat className='ml-2'/>
+          </button>
+        </div>
+
+      </form>
+
+
+  )
+}
+export const InputInvite = () =>{
+  const { control,register, handleSubmit, formState: { errors } } = useForm({
+    name:''
+  });
+  const onSubmit = (data) => {
+    console.log(data)
+  }
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='flex flex-col gap-2'>
+          <div className='flex flex-col'>
+            <Controller
+              name="name"
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <input {...field} type="text" placeholder="邀請碼" className='bg-zinc-700 rounded-xl py-3 px-2 text-sm' />
+              )}
+            />
+          </div>
+          <button type="submit"  className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-3 px-4 text-center text-white text-xl">
+            輸入邀請碼
+            <MdOutlineTrendingFlat className='ml-2'/>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  )
+}
+export const GenerateInvite = () =>{
+  return (
+    <div className=' flex '>
+      <button type="submit"  className="w-full flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-3 px-4 text-center text-white text-xl">
+        <div>
+        產生邀請碼<div className='text-white/70 text-sm'>邀請一位朋友即可獲得5日免費！</div>
+        </div>
+      </button>
+    </div>
+  )
+}
+export const BuyButton = () =>{
+  return (
+    <button className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-5 px-4 text-center text-white text-xl">
+      訂購
+      <MdOutlineTrendingFlat className='ml-2'/>
+    </button>
+  )
+}
+export const DisableBuyButton = () =>{
+  return (
+    <button disabled className="w-full flex justify-center items-center bg-zinc-700 text-white/30 rounded-xl py-6 px-4 text-center  text-xl">
+      即將開賣
+      <MdOutlineTrendingFlat className='ml-2'/>
+    </button>
+  )
+}
+
+
