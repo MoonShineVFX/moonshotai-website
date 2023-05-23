@@ -7,6 +7,7 @@ import { isLoginState,loginState,lineProfileState,userState} from '../atoms/gall
 import {getStoredLocalData,refreshToken} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
+import Footer from '../../Home/Footer';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -123,6 +124,7 @@ function Index() {
 
         </div>
       </div>
+      <Footer />
     </div>
   )
 }
