@@ -76,7 +76,7 @@ function Index() {
                 </div>
               </div>
             </div>
-
+            {/* buy button */}
             <DisableBuyButton />
           </div>
           
@@ -91,6 +91,7 @@ function Index() {
                 </div>
               </div>
             </div>
+            {/* buy button */}
             <DisableBuyButton />
           </div>
           
