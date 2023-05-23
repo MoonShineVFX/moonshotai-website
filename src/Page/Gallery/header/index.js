@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
+import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
@@ -62,6 +62,7 @@ function Index({currentUser,isLoggedIn}) {
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
           <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Profile </Link>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
+          <Link to='/price' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Price</Link>
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
@@ -123,6 +124,11 @@ function Index({currentUser,isLoggedIn}) {
                 to='/gallery' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdDashboard color="#88ad48"/> Gallery
+              </Link>
+              <Link 
+                to='/price' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdStar color="#88ad48"/> Price
               </Link>
             </div>
 
