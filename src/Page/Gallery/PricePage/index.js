@@ -31,7 +31,7 @@ function Index() {
   return (
     <div>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
-      <main className="max-w-6xl mx-auto pt-10 pb-36 px-8">
+      <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
   
         <div className="max-w-md mx-auto mb-14 text-center">
           <h1 className="text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">恣意想、任意玩</h1>
@@ -126,6 +126,31 @@ function Index() {
         </div>
         
       </main>
+      <div className='max-w-md mx-auto mb-14 px-10'>
+        <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">訂購說明(製作中)</h1>
+        <div className='my-6 flex flex-col gap-8'>
+          <div className='text-white'>
+            <div className='text-2xl my-3'>進階功能有哪些?</div>
+            <div>
+              <ul>
+                <li>修改 (I) 能夠使用遮罩畫出想要重繪的部分。</li>
+                <li>固定 (O) 能夠使用遮罩來畫出不想被重繪的部分。</li>
+                <li>骨架 (P) 能夠抓取參考圖中的人物骨架生成圖片。</li>
+                <li>放大 (ext) 能將圖片放大兩倍。</li>
+              </ul>
+            </div>
+          </div> 
+          <div className='text-white'>
+            <div className='text-2xl my-3'>不購買可以使用進階功能嗎? </div>
+            <div>
+            不購買也可以使用進階功能，每人每天會有 5次 使用的機會。並無特別限制這5次只能用於那些功能，可隨意使用。
+            </div>
+          </div>                 
+
+
+
+        </div>
+      </div>
     </div>
   )
 }
