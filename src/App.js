@@ -11,6 +11,7 @@ import Gallery from './Page/Gallery/Gallery';
 import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
+import Price from './Page/Gallery/PricePage'
 
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/post/:id" element={<Post />} />
         <Route path="/user/:id" element={<User />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/price" element={<Price />} />
         {/* <Route path="/storages" element={<Storages />} /> */}
 
       </Routes>
