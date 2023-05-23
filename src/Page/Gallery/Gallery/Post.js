@@ -155,45 +155,44 @@ function Post() {
       <div className='text-white'>Loading</div> 
       :
       <>
-        <div className="w-full p-4  text-white/80 relative">
-          <div className=' '> 
+        <div className="w-full md:w-10/12 gap-0 md:gap-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row">
+          <div className='w-full md:w-1/2 '> 
             <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
             <div className='text-xl text-white font-semibold'>{imageData.title}</div> 
-          </div>
-          <div className=' flex items-center  gap-3 my-2'>
-            <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
-              <div className='w-8'>
-                <div className='pt-[100%] relative'>
-                  <img src={imageData?.author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+            <div className=' flex items-center  gap-3 my-2'>
+              <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
+                <div className='w-8'>
+                  <div className='pt-[100%] relative'>
+                    <img src={imageData?.author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                  </div>
                 </div>
+                <div className='text-white/80'>{imageData?.author?.name}</div>
+              </Link>
+
+            </div>
+            <div className="flex flex-col  justify-center items-center w-full">
+              <div className='w-full my-5'>
+                <img 
+                  src={imageData.urls.regular} 
+                  alt={imageData.id} 
+                  className="w-full" />
               </div>
-              <div className=''>{imageData?.author?.name}</div>
-            </Link>
-
-          </div>
-          <div className="flex flex-col  justify-center items-center w-full">
-            <div className='w-full my-5'>
-              <img 
-                src={imageData.urls.regular} 
-                alt={imageData.id} 
-                className="w-full" />
+            </div>
+            <div className=' flex flex-col justify-end  relative pt-2'>
+              <div className='flex items-center gap-2 text-white '>
+                <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
+                  <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
+                </button>
+                <button className='p-2' onClick={handleComment}>
+                  <MdModeComment size={20} />
+                </button>
+                <button className='p-2' onClick={handleShare}>
+                  <MdOutlineShare size={20} />
+                </button>
+              </div>
             </div>
           </div>
-          <div className='flex flex-col justify-end  relative pb-20 pt-2'>
-            
-            
-            <div className='flex items-center gap-2 text-white '>
-              <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
-                <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
-              </button>
-              <button className='p-2' onClick={handleComment}>
-                <MdModeComment size={20} />
-              </button>
-              <button className='p-2' onClick={handleShare}>
-                <MdOutlineShare size={20} />
-              </button>
-
-            </div>
+          <div className='w-full md:w-1/2 flex flex-col justify-end  relative pb-20 pt-2'>
             <div className='mt-3 text-white/60 text-sm'>{imageData.created_at && imageData.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData.model)}   </div> 
             <div className='text-white font-bold my-3 '>Prompt</div>
             <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>

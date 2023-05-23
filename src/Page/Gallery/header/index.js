@@ -66,7 +66,7 @@ function Index({currentUser,isLoggedIn}) {
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
-            <div>
+            <div className='flex items-center flex-col md:flex-row'>
               <div className='w-8'>
                 <div className='pt-[100%] relative'>
                   <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>

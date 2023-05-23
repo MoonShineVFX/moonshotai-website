@@ -100,7 +100,7 @@ function Index() {
         
       </main>
       <div className='max-w-md mx-auto mb-14 px-10'>
-        <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">訂購說明(製作中)</h1>
+        <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">常見問答(持續新增..)</h1>
         <div className='my-6 flex flex-col gap-8'>
           <div className='text-white'>
             <div className='text-2xl my-3'>進階功能有哪些?</div>

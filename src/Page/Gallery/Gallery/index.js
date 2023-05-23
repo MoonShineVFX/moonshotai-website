@@ -44,16 +44,16 @@ function Index() {
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
   return (
-    <div className='w-full'>
+    <div className='w-full '>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
-      <div className='w-11/12 mx-auto my-10'>
+      <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-lg  mb-2 font-bold'>Newest</div>
           {!data ? 
           <div className='text-white'>
             <LoadingCircle />
           </div> 
           :
-          <div className='grid grid-cols-2 gap-4'>
+          <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
             {data.map((image,index)=>{
               const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
               return (

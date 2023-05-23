@@ -155,7 +155,7 @@ function User() {
       {!publicImageResults ? 
         <div className='text-white'>Loading</div> 
         :
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
           {publicImageResults.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
             return (

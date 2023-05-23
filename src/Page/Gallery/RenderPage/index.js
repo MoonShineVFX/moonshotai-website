@@ -92,7 +92,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-          <div className='grid grid-cols-2 gap-2'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (

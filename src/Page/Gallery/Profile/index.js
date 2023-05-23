@@ -445,7 +445,7 @@ function Index() {
 
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
-        <div className='px-6 py-5 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
+        <div className='px-6 py-5   min-h-20 text-white'>
           {
             isLoggedIn ?
             <div className='flex flex-col items-center gap-5'>
@@ -506,6 +506,7 @@ function Index() {
                 key={item.title} 
                 className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
                 onClick={()=>{
+                  setCurrentDropDownItem(item)
                   handleOptionChange(item)
                 }}
               >{item.title}</div>
