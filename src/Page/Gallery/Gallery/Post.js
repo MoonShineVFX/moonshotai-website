@@ -210,6 +210,15 @@ function Post() {
                 <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData.sampler_index}</span></div>
                 <div className='text-white font-bold my-1 '>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData.cfg_scale}</span></div>
             </div>
+            {imageData.description && 
+              <div className='my-2'>
+                <div className='text-white font-bold my-1 '>Description:</div>
+                <div className='relative whitespace-normal break-words '>
+                  <div className=''>{imageData.description}</div>
+                </div>
+              </div>
+            }
+
           </div>
           <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
             <button 
