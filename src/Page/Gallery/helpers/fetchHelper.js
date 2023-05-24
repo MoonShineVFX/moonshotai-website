@@ -396,3 +396,58 @@ export const fetchGalleries = async (headers) =>{
   return data
 
 }
+
+/**
+ * Comment API
+ * **/ 
+export const fetchComments = async (image)=>{
+  const requestOptions = {
+    method: 'GET',
+    headers:{ 'Content-Type': 'application/json'}
+  };
+  const response = await fetch(apiUrl+'/images/'+image.id+'/comments' ,requestOptions)
+  const data = await response.json()
+  return data
+}
+export const userPostCommentToImage = async (image,msgData,token)=>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      text:  msgData.text,
+    })
+  };
+  const response = await fetch(apiUrl+'/images/'+image.id+'/comments' ,requestOptions)
+  const data = await response.json()
+  return data
+}
+export const userPatchCommentToImage = async (commentId,msgData,token)=>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      text:  msgData.text,
+    })
+  };
+  const response = await fetch(apiUrl+'/comments/'+commentId ,requestOptions)
+  const data = await response.json()
+  return data
+}
+export const userDelCommentToImage = async (commentId,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response = await fetch(apiUrl+'/comments/'+commentId ,requestOptions)
+  const data = await response.json()
+  return data
+}

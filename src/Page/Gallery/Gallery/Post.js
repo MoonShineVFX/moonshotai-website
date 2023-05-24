@@ -3,14 +3,17 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
+import EditCommentForm from '../Components/EditCommentForm';
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [comments, setComments] = useState([])
+  const [commentsResults, setCommentsResults] = useState([])
   const currentLoginData = useRecoilValue(loginState)
   const isCurrentLogin = useRecoilValue(isLoginState)
 
@@ -24,7 +27,8 @@ function Post() {
   const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
   const [ isLoginForComment , setIsLoginForComment] = useState(false)
   const [ isShareModel , setIsShareModal] = useState(false)
-  const [isCollected ,setIsCollected] = useState(false)
+  const [ isCollected ,setIsCollected] = useState(false)
+  const [ isCommentModal, setIsCommentModal]= useState(false)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -54,6 +58,12 @@ function Post() {
               })
               console.log(newImageData)
               setImageData(newImageData);
+
+              // 
+              fetchComments(newImageData).then(data=>{
+                  setComments(data)
+                  setCommentsResults(data.results)
+                })
         
               return newImageData;
             })
@@ -67,6 +77,7 @@ function Post() {
                 setIsCollected(false)
               }
             })
+
           })
         }else{
           fetchGalleries(headers).then(data=>{
@@ -118,6 +129,7 @@ function Post() {
       console.log(isLoggedIn)
       setIsLoginForComment(true)
      }else{
+      setIsCommentModal(true)
       setIsLoginForComment(false)
      }
   }
@@ -148,6 +160,7 @@ function Post() {
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
       {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
+      {isCommentModal&& <EditCommentForm  closeModal={()=>setIsCommentModal(false)}/>}
       </AnimatePresence>
 
 
@@ -163,7 +176,7 @@ function Post() {
             <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
             <div className='text-xl text-white font-semibold'>{imageData.title}</div> 
             <div className=' flex items-center  gap-3 my-2'>
-              <Link Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
+              <Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
                 <div className='w-8'>
                   <div className='pt-[100%] relative'>
                     <img src={imageData?.author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -221,8 +234,40 @@ function Post() {
                 </div>
               </div>
             }
+            <div className='mt-6'>
+              <div className='text-white font-bold my-1 mb-4 '>Discussion</div>
+              {
+                commentsResults &&
+           
+                  commentsResults.map((item,index)=>{
+                    const {author,text,created_at} = item
+                    return(
+                      <div className=' rounded-md bg-zinc-600 px-4 py-6'>
+                        <div>
+                          <div className='flex items-center gap-2'>
+                            <div className='w-8'>
+                              <div className='pt-[100%] relative'>
+                                <img src={author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                              </div>
+                            </div>
+                            <div className='text-white'>{author?.name}</div>
+                            <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
+                            <div>Edit</div>
+                          </div>
+                        </div>
+                        <div className='mt-4'>
+                          {text}
+                        </div>
+                      </div>
+                    )
+                  })
+
+      
+              }
+            </div>
 
           </div>
+
           <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
@@ -235,6 +280,7 @@ function Post() {
         </div>
       </>
       }
+
       
     </div>
   )
