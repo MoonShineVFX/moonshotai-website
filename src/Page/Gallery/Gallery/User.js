@@ -4,10 +4,12 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases } from "react-icons/md";
+
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
 import {CallToLoginModal} from '../helpers/componentsHelper'
-
+import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
+import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
+import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 function User() {
   const { id } = useParams();
@@ -24,9 +26,18 @@ function User() {
   const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(30)
   const [isFollowed ,setIsFollowed] = useState(false)
+  const navigate = useNavigate();
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  const handleBackClick = () => {
+    const hasPreviousPage = navigate.length > 1;
+    if (hasPreviousPage) {
+      navigate(-1); // 返回上一页
+    } else {
+      navigate('/gallery'); // 导航到指定页面
+    }
   };
   const handleFollow = ()=>{
     console.log('click')
@@ -105,50 +116,41 @@ function User() {
         !userData  ? 
         <div className='text-white'>Loading</div> 
         :
-        <div className='flex flex-col items-center gap-5 relative text-white'>
-              <div
-              style={{backgroundImage:`url(${userData.profile_banner})`}}
-              className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
-
-              </div>
-              <div 
-                className='w-[85px] mt-40  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
-                style={{backgroundImage:`url(${userData.profile_image})` }}
-              ></div>
-
-              <div className=' flex flex-col justify-center items-center gap-2'>
-                <div className=' text-xl leading-4'>{userData?.name} </div>
-                <div className=' text-xs'>{userData?.bio}  </div>
-              </div>
-
-
-              <div className='grid grid-cols-3  divide-x'>
-                <div className=' text-xs px-8'>
-                  <div>{userData?.total_photos} </div>
-                  <div>renders</div> 
-                </div>
-                <div className=' text-xs px-8'>
-                  <div>{userData?.total_collected}</div> 
-                  <div>collected</div> 
-                </div>
-                <div className=' text-xs px-8'>
-                  <div>{userData?.total_follower}</div> 
-                  <div>follower</div> 
+        <div className='flex flex-col  gap-5 relative text-white mx-5 mt-10'>
+            <div className='flex items-center gap-3'>
+              <div className='w-10'>
+                <div className='pt-[100%] relative'>
+                  <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                 </div>
               </div>
-              <div className='' onClick={handleFollow}>
+
+              <div className='ml-auto' onClick={handleFollow}>
                 {
                   isFollowed ? 
                   <button className='bg-lime-600 px-5 py-2 rounded-md'>Following</button>
                   : 
-                  <button className='bg-lime-700 px-5 py-2 rounded-md'>Follow</button>
+                  <button className='bg-lime-400 text-black/90 px-5 py-2 rounded-md'>Follow</button>
                 }
-                
               </div>
-         
-             
-              
             </div>
+            <div className='flex items-center  gap-2'>
+              <div className='text-white'>{userData?.name} </div>
+              {userData?.portfolio_url && <Link to={userData?.portfolio_url}> <HiGlobeAlt /> </Link> }
+              {userData?.facebook_id && <Link to={userData?.facebook_id} >    <FaFacebook /> </Link> }
+              {userData?.instagram_id && <Link to={userData?.instagram_id} >  <FaInstagram  /></Link> }
+              {userData?.linkedin_id && <Link to={userData?.linkedin_id} >    <FaLinkedinIn  /></Link> }
+              {userData?.twitter_id && <Link to={userData?.twitter_id} >      <FaTwitter color='#359bf0' /></Link> }
+              {userData?.discord_id && <Link to={userData?.discord_id} >      <FaDiscord  /></Link> }
+            </div>
+            <div className='flex text-xs gap-3 '>
+              <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
+              <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
+              <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
+            </div>
+            <div className=' text-xs'>
+              {userData?.bio}  
+            </div>
+          </div>
       }
       <div className='w-11/12 mx-auto my-10'>
 

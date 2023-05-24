@@ -157,6 +157,9 @@ function Post() {
       <>
         <div className="w-full md:w-10/12 gap-0 md:gap-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row">
           <div className='w-full md:w-1/2 '> 
+            <button onClick={handleBackClick} className='text-white'>
+              <MdKeyboardArrowLeft size={42} />
+            </button>
             <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
             <div className='text-xl text-white font-semibold'>{imageData.title}</div> 
             <div className=' flex items-center  gap-3 my-2'>
