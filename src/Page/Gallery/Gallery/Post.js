@@ -139,7 +139,7 @@ function Post() {
   }
   
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = model.toUpperCase() +' '+prompt+(negative_prompt && ' --'+negative_prompt);
+    const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
