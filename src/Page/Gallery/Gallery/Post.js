@@ -96,6 +96,15 @@ function Post() {
               return item.id === parseInt(id)
             })
             setImageData(newImageData);
+            fetchComments(newImageData).then(data=>{
+              console.log(data)
+              setComments(data)
+              setCommentsResults(data.results)
+              const isUserid = data.results.some((item,index)=>{
+                return item.author.id === currentUser.id
+              })
+              setIsHaveUserComment(isUserid)
+            })
       
             return newImageData;
           })
@@ -180,11 +189,36 @@ function Post() {
   }
   const handleSendComment= (data)=>{
     console.log(data)
+    userPostCommentToImage(imageData,data,linLoginData)
+      .then(data=>{
+        setIsCommentModal(false)
+        fetchComments(imageData).then(data=>{
+          console.log(data)
+          setComments(data)
+          setCommentsResults(data.results)
+          const isUserid = data.results.some((item,index)=>{
+            return item.author.id === currentUser.id
+          })
+          setIsHaveUserComment(isUserid)
+        })
+      })
+      .catch((error) => console.error(error));
   }
   const handleSaveEditComment = (id,data)=>{
     console.log(id,data)
     userPatchCommentToImage(id,data,linLoginData)
-      .then(data=>console.log(data))
+      .then(data=>{
+        setIsCommentModal(false)
+        fetchComments(imageData).then(data=>{
+          console.log(data)
+          setComments(data)
+          setCommentsResults(data.results)
+          const isUserid = data.results.some((item,index)=>{
+            return item.author.id === currentUser.id
+          })
+          setIsHaveUserComment(isUserid)
+        })
+      })
       .catch((error) => console.error(error));
   }
   const handleSelectStorageImage = ()=>{
@@ -299,7 +333,7 @@ function Post() {
             <div className='mt-6'>
               <div className='text-white font-bold my-1 mb-4 '>Discussion</div>
               {
-                commentsResults &&
+                commentsResults.length > 0 ?
            
                   commentsResults.map((item,index)=>{
                     const {author,text,created_at} = item
@@ -327,6 +361,8 @@ function Post() {
                       </div>
                     )
                   })
+                :
+                <div className='text-white/50 '>No one has commented here yet. </div>
 
       
               }
