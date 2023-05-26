@@ -15,7 +15,10 @@ export const loginState = atom({
   key: 'loginState',
   default: null,
 });
-
+export const formStatusState = atom({
+  key: 'formStatusState',
+  default: null,
+});
 
 export const userState = atom({
   key: 'userState',
@@ -62,4 +65,8 @@ export const imageByIdSelector = selector({
 
 
   },
+});
+export const commentDataState = atom({
+  key: 'commentDataState',
+  default: null,
 });

@@ -417,7 +417,7 @@ export const userPostCommentToImage = async (image,msgData,token)=>{
       'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify({ 
-      text:  msgData.text,
+      text:  msgData,
     })
   };
   const response = await fetch(apiUrl+'/images/'+image.id+'/comments' ,requestOptions)
@@ -425,6 +425,7 @@ export const userPostCommentToImage = async (image,msgData,token)=>{
   return data
 }
 export const userPatchCommentToImage = async (commentId,msgData,token)=>{
+  console.log(msgData)
   const requestOptions = {
     method: 'PATCH',
     headers: { 
@@ -432,7 +433,7 @@ export const userPatchCommentToImage = async (commentId,msgData,token)=>{
       'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify({ 
-      text:  msgData.text,
+      text:  msgData,
     })
   };
   const response = await fetch(apiUrl+'/comments/'+commentId ,requestOptions)

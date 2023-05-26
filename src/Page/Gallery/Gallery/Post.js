@@ -1,10 +1,12 @@
 import React,{useState,useEffect} from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal} from '../helpers/componentsHelper'
+import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages} from '../helpers/fetchHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
@@ -14,6 +16,8 @@ function Post() {
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const [comments, setComments] = useState([])
   const [commentsResults, setCommentsResults] = useState([])
+  const [storages, setStorages] = useState({});
+  const [storagesResults, setStoragesResults] = useState([]);
   const currentLoginData = useRecoilValue(loginState)
   const isCurrentLogin = useRecoilValue(isLoginState)
 
@@ -21,7 +25,8 @@ function Post() {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
-
+  const [formStatus, setFormStatus] = useRecoilState(formStatusState);
+  const [currentComment, setCurrentComment] = useRecoilState(commentDataState);
   const [ isCopied , setIsCopied ] = useState(false);
 
   const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
@@ -29,6 +34,7 @@ function Post() {
   const [ isShareModel , setIsShareModal] = useState(false)
   const [ isCollected ,setIsCollected] = useState(false)
   const [ isCommentModal, setIsCommentModal]= useState(false)
+  const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -61,8 +67,13 @@ function Post() {
 
               // 
               fetchComments(newImageData).then(data=>{
+                  console.log(data)
                   setComments(data)
                   setCommentsResults(data.results)
+                  const isUserid = data.results.some((item,index)=>{
+                    return item.author.id === currentUser.id
+                  })
+                  setIsHaveUserComment(isUserid)
                 })
         
               return newImageData;
@@ -84,7 +95,6 @@ function Post() {
             const newImageData = data.results.find((item)=>{
               return item.id === parseInt(id)
             })
-            console.log(newImageData)
             setImageData(newImageData);
       
             return newImageData;
@@ -123,16 +133,70 @@ function Post() {
     }
     
   }
-  const handleComment = ()=>{
+  const handleComment = (item)=>{
     console.log('click')
+    console.log(isHaveUserComment)
     if(!isLoggedIn){
       console.log(isLoggedIn)
       setIsLoginForComment(true)
      }else{
-      setIsCommentModal(true)
-      setIsLoginForComment(false)
+      if(isHaveUserComment){
+        toast('You have already commented on this image. Please edit it.', {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+      }else{
+        setFormStatus('ADD')
+        setCurrentComment(null)
+        setIsCommentModal(true)
+        setIsLoginForComment(false)
+        fetchUserStorages(currentUser.id,linLoginData)
+          .then((images)=> {
+              setStorages(images)
+              setStoragesResults(images.results)
+              console.log(images)
+          })
+          .catch((error) => console.error(error));
+      }
+
      }
   }
+  const handleEditComment = ()=>{
+    setIsCommentModal(true)
+    setIsLoginForComment(false)
+    fetchUserStorages(currentUser.id,linLoginData)
+      .then((images)=> {
+          setStorages(images)
+          setStoragesResults(images.results)
+          console.log(images)
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleSendComment= (data)=>{
+    console.log(data)
+  }
+  const handleSaveEditComment = (id,data)=>{
+    console.log(id,data)
+    userPatchCommentToImage(id,data,linLoginData)
+      .then(data=>console.log(data))
+      .catch((error) => console.error(error));
+  }
+  const handleSelectStorageImage = ()=>{
+    fetchUserStorages(currentUser.id,linLoginData)
+        .then((images)=> {
+            setStorages(images)
+            setStoragesResults(images.results)
+            console.log(images)
+        })
+        .catch((error) => console.error(error));
+  }
+
   const handleShare = ()=>{
     setIsShareModal(true)
      
@@ -160,9 +224,9 @@ function Post() {
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
       {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
-      {isCommentModal&& <EditCommentForm  closeModal={()=>setIsCommentModal(false)}/>}
+      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={storagesResults} handleSelectStorageImage={handleSelectStorageImage}/>}
       </AnimatePresence>
-
+      <ToastContainer />
 
       {!imageData ?
       <div className='text-white'>Loading</div> 
@@ -213,12 +277,10 @@ function Post() {
             <div className='text-white font-bold my-3 '>Prompt</div>
             <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
               <div className='p-3'>{imageData.prompt}</div>
-              <div className='  absolute h-4 bottom-0 z-10 w-full bg-gradient-to-t from-[#1e1e1e] via-black/0 '></div>
             </div>
             <div className='text-white font-bold my-3'>Negative prompt</div>
             <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
             <div className='p-3'>{imageData.negative_prompt}</div>
-              <div className='  absolute h-4 bottom-0 z-10 w-full bg-gradient-to-t from-[#1e1e1e] via-black/0 '></div>
             </div>
             <div className='mt-4'>
                 <div className='text-white font-bold my-1 '>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData.model)}</span> </div>
@@ -252,11 +314,15 @@ function Post() {
                             </div>
                             <div className='text-white'>{author?.name}</div>
                             <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
-                            <div>Edit</div>
+                            <div onClick={()=>{
+                              setFormStatus('EDIT')
+                              setCurrentComment(item)
+                              handleEditComment(item)
+                            }}>Edit</div>
                           </div>
                         </div>
                         <div className='mt-4'>
-                          {text}
+                        <CommentDataFormat  data={text}/>
                         </div>
                       </div>
                     )

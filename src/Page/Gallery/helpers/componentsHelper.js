@@ -206,7 +206,7 @@ export const DisableBuyButton = () =>{
 export const UserPageProfile = ({userData,handleFollow,isFollowed})=>{
   return(
       <>
-            {
+        {
         !userData  ? 
         <div className='text-white'>Loading</div> 
         :
@@ -258,5 +258,60 @@ export const UserPageProfile = ({userData,handleFollow,isFollowed})=>{
       
       
       </>
+  )
+}
+
+export const CommentDataFormat = ({data})=>{
+  const {text,img} = JSON.parse(data) 
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = (index) => {
+    setSelectedImage(img[index].url);
+  };
+
+  const handleModalClose = () => {
+    setSelectedImage(null);
+  };
+  return(
+    <>
+      <div>{text}</div>
+      {img.length > 0  && (
+        <div className='flex gap-2 mt-4'>
+          {img.map((item,index)=>(
+            <div className='w-12' key={'c'+index}>
+              <div className='pt-[100%] relative'>
+                <img 
+                  src={item.url} 
+                  alt="" 
+                  className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls  border border-zinc-400'
+                  onClick={() => handleImageClick(index)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {selectedImage && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className='fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-75'>
+          <div className='max-w-3xl max-h-3xl'>
+            <motion.img 
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.3 }}
+              src={selectedImage} alt='' className='object-contain h-full w-full' />
+            <button
+              onClick={handleModalClose}
+              className='absolute top-2 right-2 text-white font-bold bg-lime-500 rounded p-2'
+            >
+              Close
+            </button>
+          </div>
+        </motion.div>
+      )}
+    </>
   )
 }
