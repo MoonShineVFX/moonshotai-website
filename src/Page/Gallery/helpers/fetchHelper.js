@@ -261,7 +261,7 @@ export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
   }
 
 }
-export const fetchUserStorages =async (userid,token) =>{
+export const fetchUserStorages =async (userid,page,pageSize,token) =>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -269,7 +269,7 @@ export const fetchUserStorages =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'users/'+userid+'/storages' ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/storages?'+'page='+page+'&page_size='+pageSize ,requestOptions)
   const data =await response.json()
   return data
     
