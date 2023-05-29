@@ -452,3 +452,26 @@ export const userDelCommentToImage = async (commentId,token)=>{
   const data = await response.json()
   return data
 }
+
+
+/**
+ * Line Pay SDK
+ * */ 
+
+const payURL = process.env.REACT_APP_LINEPAY_SANDBOX_URL
+const payID = process.env.REACT_APP_LINEPAY_SANDBOX_ID
+const payKEY = process.env.REACT_APP_LINEPAY_SANDBOX_KEY
+export const fetchLinePayRequest = async(order)=>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'X-LINE-ChannelId': payID,
+      'X-LINE-ChannelSecret':payKEY
+    },
+    body: JSON.stringify(order)
+  };
+  const response = await fetch(payURL+'/v3/payments/request' ,requestOptions)
+  const data = await response.json()
+  return data
+}

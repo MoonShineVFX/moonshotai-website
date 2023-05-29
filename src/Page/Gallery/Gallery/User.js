@@ -135,12 +135,12 @@ function User() {
             </div>
             <div className='flex items-center  gap-2'>
               <div className='text-white'>{userData?.name} </div>
-              {userData?.portfolio_url && <Link to={userData?.portfolio_url}> <HiGlobeAlt /> </Link> }
-              {userData?.facebook_id && <Link to={userData?.facebook_id} >    <FaFacebook /> </Link> }
-              {userData?.instagram_id && <Link to={userData?.instagram_id} >  <FaInstagram  /></Link> }
-              {userData?.linkedin_id && <Link to={userData?.linkedin_id} >    <FaLinkedinIn  /></Link> }
-              {userData?.twitter_id && <Link to={userData?.twitter_id} >      <FaTwitter color='#359bf0' /></Link> }
-              {userData?.discord_id && <Link to={userData?.discord_id} >      <FaDiscord  /></Link> }
+              {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
+              {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
+              {userData?.instagram_id && <a href={userData?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
+              {userData?.linkedin_id && <a href={userData?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
+              {userData?.twitter_id && <a href={userData?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter color='#359bf0' /></a> }
+              {userData?.discord_id && <a href={userData?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
             </div>
             <div className='flex text-xs gap-3 '>
               <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>

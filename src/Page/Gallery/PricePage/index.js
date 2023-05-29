@@ -4,10 +4,12 @@ import Header from '../header'
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
+import { HmacSHA256 } from 'crypto-js';
+import { Base64 } from 'js-base64';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -16,9 +18,57 @@ function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
+  const [ order , setOrder] = useState({
+      amount : 500,
+      currency : 'TWD',
+      orderId : 'order20210921003',
+      packages : [
+        {
+          id : "20210921003",
+          amount : 90,
+          products : [
+            {
+              name : "MSai90",
+              quantity : 1,
+              price : 90
+            }
+          ]
+        }
+      ],
+      redirectUrls : {
+        confirmUrl: "http://127.0.0.1:3000/confitmUrl",
+        cancelUrl : "http://127.0.0.1:3000/cancelUrl"
+      }
+    })
   const onSubmit = (data) => {
     console.log(data)
   }
+  let payURL = process.env.REACT_APP_LINEPAY_SANDBOX_URL
+  let payID = process.env.REACT_APP_LINEPAY_SANDBOX_ID
+  let payKEY = process.env.REACT_APP_LINEPAY_SANDBOX_KEY
+  let requestUri = '/v3/payments/request'
+  let nonce = Date.now() 
+  const handlePayment = () => {
+    console.log('click')
+    let headers = {
+      'Content-Type': 'application/json',
+      'X-LINE-ChannelId': payID,
+      'X-LINE-Authorization-Nonce': nonce,
+      'X-LINE-Authorization': encryptHmacSHA256Base64()
+    }
+    console.log(headers)
+
+    // fetchLinePayRequest(headers,order)
+  }
+
+  const encryptHmacSHA256Base64 = ()=>{
+    //Signature = Base64(HMAC-SHA256(Your ChannelSecret, (Your ChannelSecret + URI + RequestBody + nonce)))
+    let encrtpt = HmacSHA256(payKEY,(payKEY+requestUri+JSON.stringify(order)+nonce))
+    const hmacBase64 = Base64.encode(encrtpt)
+    return hmacBase64
+
+  }
+
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
@@ -79,6 +129,12 @@ function Index() {
             </div>
             {/* buy button */}
             <DisableBuyButton />
+            {/* <button 
+              onClick={handlePayment}
+              className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-5 px-4 text-center text-white text-xl">
+              訂購(test)
+              <MdOutlineTrendingFlat className='ml-2'/>
+            </button> */}
           </div>
           
           <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
