@@ -384,14 +384,14 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * 
  * Galleries API
  */
-export const fetchGalleries = async (headers) =>{
+export const fetchGalleries = async (headers,page,pageSize) =>{
   console.log(headers)
   const requestOptions = {
     method: 'GET',
     headers:headers
   };
 
-  const response = await fetch(apiUrl+'/galleries' ,requestOptions)
+  const response = await fetch(apiUrl+'/galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
   const data = await response.json()
   return data
 
