@@ -39,8 +39,8 @@ function Index() {
           })
         }else{
             fetchGalleries(headers).then(data=>{
-              // setData(galleryData.results);
-              console.log(galleryData.results)
+              // setData(data.results);
+              console.log(data.results)
             })
         }
         
