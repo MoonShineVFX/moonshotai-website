@@ -9,6 +9,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
+  console.log(image)
   const onSubmit = (data) => {
     console.log(data);
     const items ={
@@ -71,18 +72,43 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
 
            
           </div>
+          {image?.is_nsfw ?
+            <div className="flex mt-4 ">
+              <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  checked={true}
+                />
+                <div
+                  className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
+                    true
+                      ? 'peer-checked:after:translate-x-full peer-checked:bg-green-600'
+                      : ''
+                  } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
+                ></div>
+                <span className="ml-2 text-sm font-medium text-white/80">
+                  toggle NSFW image tag
+
+                  
+                </span>
+
+              </label>
+
+            </div>
+          :
           <div className='flex flex-col  mt-4 '>
             <Controller
               name="is_user_nsfw"
               control={control}
-              defaultValue={image?.is_user_nsfw}
+              defaultValue={image?.is_nsfw ? true :  image?.is_user_nsfw}
               render={({ field }) => (
                 <div className="flex mt-4 ">
                   <label className="inline-flex relative items-center mr-5 cursor-pointer">
                     <input
                       type="checkbox"
                       className="sr-only peer"
-                      checked={field.value}
+                      checked={image?.is_nsfw ? true :field.value}
                       onChange={(e) => field.onChange(e.target.checked)}
                     />
                     <div
@@ -95,11 +121,17 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
                     <span className="ml-2 text-sm font-medium text-white/80">
                       toggle NSFW image tag
                     </span>
+
                   </label>
+
                 </div>
               )}
             />
-          </div>
+            </div>
+          }
+
+            {image?.is_nsfw ?  <div className='text-sm text-red-400 mt-3'>*System detected as adult content,Please contact us if you have any questions. </div> : <div className='text-sm text-red-400 mt-3'></div>  }
+          
           
           <div className='mt-6 flex gap-3 justify-center text-md'>
             <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Save</button>

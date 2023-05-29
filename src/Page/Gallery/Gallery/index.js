@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdNotInterested,MdOutlineNewReleases } from "react-icons/md";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {LoadingCircle} from '../helpers/componentsHelper'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken} from '../helpers/fetchHelper'
+import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 function Index() {
@@ -35,6 +36,18 @@ function Index() {
             fetchGalleries(headers).then(galleryData => {
               setData(galleryData.results);
               // console.log(galleryData.results)
+              Promise.all(
+                galleryData.results.map((item,index)=>{
+                  return fetchComments(item).then(data=>{
+                    const updatedItem = { ...item, comments: data.results.length };
+                    return updatedItem
+                  })
+                })
+              ).then(dataWithComments=>{
+                console.log(dataWithComments)
+                setData(dataWithComments);
+              })
+
             });
           })
         }else{
@@ -59,7 +72,7 @@ function Index() {
           :
           <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
             {data.map((image,index)=>{
-              const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
+              const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
               return (
                 <motion.div key={'gallery-'+index} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -75,9 +88,20 @@ function Index() {
                       />
                     </div>
 
-                    <div className='text-orange-500 absolute top-0 p-1 flex gap-1'>
-                      {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
-                      {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
+                    <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
+                      <div className='flex items-center gap-2'>
+                        <div className='flex items-center  gap-2'><FaHeart /> {likes}</div>
+                        <div className='flex items-center  gap-2'><MdModeComment /> {likes}</div>
+                      </div>
+
+                      <div className='text-red-300'>
+                        {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
+                      </div>
+
+
+                    </div>
+                    <div>
+                      
                     </div>
                   </Link>
 
