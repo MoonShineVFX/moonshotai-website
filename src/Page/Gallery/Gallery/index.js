@@ -34,10 +34,14 @@ function Index() {
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             fetchGalleries(headers).then(galleryData => {
               // setData(galleryData.results);
+              console.log(galleryData.results)
             });
           })
         }else{
-            fetchGalleries(headers).then(data=>setData(data.results))
+            fetchGalleries(headers).then(data=>{
+              // setData(galleryData.results);
+              console.log(galleryData.results)
+            })
         }
         
       })
