@@ -6,36 +6,39 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "rea
 import Header from '../header'
 import liff from '@line/liff';
 
-import { loginState, userState } from '../atoms/galleryAtom';
+import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,delUserStorageImage,userCollectionAImage } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
+import FollowPage from '../FollowPage'
 import EditUserForm from '../Components/EditUserForm';
+import EditImageForm from '../Components/EditImageForm';
+import ImageSingleModal from '../Components/ImageSingleModal';
+import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 const dropDownManuItem = [
   {title:"Renders", display:true},
   {title:"Storage", display:true},
-  {title:"Collection", display:false},
-  {title:"Following",display:false},
+  {title:"Collection", display:true},
+  {title:"Following",display:true},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
   const [storages, setStorages] = useState({});
   const [storagesResults, setStoragesResults] = useState([]);
   const [collections, setCollections] = useState({});
   const [collectionsResults, setCollectionsResults] = useState([]);
+  const [follows, setFollows] = useState({});
+  const [followsResults, setFollowsResults] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
   const [currentDropDownItem, setCurrentDropDownItem] = useState(dropDownManuItem[0])
   const [currentAuthor,setCurrentAuthor] = useState({})
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
-  const [token, setToken] = useRecoilState(loginState)
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
@@ -43,6 +46,17 @@ function Index() {
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
+
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [token, setToken] = useRecoilState(loginState)
+  const [currentProfile, setCurrentProfile] = useRecoilState(userState);
+
+  const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
+  const isShowModal = useRecoilValue(imageFormModalState)
+  const isShowImageModal = useRecoilValue(imageModalState)
+  const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
+  const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -77,21 +91,25 @@ function Index() {
       if (liff.isLoggedIn()) {
         const accessToken = liff.getAccessToken();
         setIsLoggedIn(true)
+        localStorage.setItem('isLogin', true);
         // console.log("getAccessToken", accessToken);
         if(accessToken){
 
           liff.getProfile().then(profile=>{
             // console.log(profile)
-            // setCurrentProfile(profile)
-
+            setLineProfile(profile)
+            localStorage.setItem('lineProfile', JSON.stringify(profile));
             fetchLineLogin(profile)
               .then((data)=> {
                 setToken(data.token)
-
+                localStorage.setItem('loginTokenData', JSON.stringify(data));
                 fetchUserProfile(data.user_id, data.token)
                   .then((data)=> {
                     console.log(data)
-                    setCurrentProfile(data)})
+                    setCurrentProfile(data)
+                    localStorage.setItem('currentUser', JSON.stringify(data));
+                  })
+                    
                   .catch((error) => console.error(error));
 
                 fetchUserImages(profile.userId , currentPage, pageSize,data.token)
@@ -123,15 +141,20 @@ function Index() {
       userId:"U895f7908fef7f32b717db91a8240ddc2"
     }
     setIsLoggedIn(true)
+    setLineProfile(profile)
+    localStorage.setItem('isLogin', true);
+    localStorage.setItem('lineProfile', JSON.stringify(profile));
     // setCurrentProfile(profile)
 
     fetchLineLogin(profile)
       .then((data)=> {
         setToken(data.token)
+        localStorage.setItem('loginTokenData', JSON.stringify(data));
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
             console.log(data)
             setCurrentProfile(data)
+            localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
         fetchUserImages(profile.userId , currentPage, pageSize,data.token)
@@ -236,13 +259,33 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
-  const handleChange = event => {
-    setName(event.target.value);
+  /**
+   * Storage API 
+   * start
+   * */ 
+  const handleSetStorageImage = (image,items,status) =>{
 
-    console.log('value is:', event.target.value);
-  };
+    userPatchAStorageImage(image.id,token,items)
+      .then((data)=>{
+        const newData = { ...image, ...items  }; 
+        handleStorageUpdate(image.id,newData)
+        if(status === 'before'){
+          setIsShowDisplayFormModal(false)
+        }else{
+          setIsShowFormModal(false)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleDisplayHome = (id,items)=>{
+    userPatchDisplayHome(id,token,items)
+      .then((data)=>{
+        console.log('display home update')
+      })
+      .catch((error) => console.error(error));
+  }
   const handleRemoveStorage = (id)=>{
-    delUserStorageImage(id,token)
+    userDelAStorageImage(id,token)
       .then((data)=> {
         if(data.status === 200 || data.status === 204){
           setTimeout(()=>{
@@ -257,6 +300,54 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const handleRemoveCollection = (id)=>{
+    userDelACollectionImage(id,token)
+      .then((data)=> {
+        if(data.status === 200 || data.status === 204){
+          console.log('200')
+          setTimeout(()=>{
+            fetchUserCollections(currentProfile.id,token)
+            .then((images)=> {
+                setCollections(images)
+                setCollectionsResults(images.results)
+            })
+            .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+  }
+  const handleUnfollow = (user)=>{
+    userUnFollowAUser(user,token)
+      .then(data=>{
+        if( data.status === 204){
+          setTimeout(()=>{
+            fetchUserFollowings(currentProfile.id,token)
+              .then((folloings)=> {
+                  setFollows(folloings)
+                  setFollowsResults(folloings)
+              })
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+  }
+  const handleStorageUpdate = (id,newData)=>{
+    setStoragesResults(prevData => {
+      const index = prevData.findIndex(item => item.id === id);
+      if (index === -1) {
+        // 如果没有找到对应的元素，直接返回原来的状态
+        return prevData;
+      }
+      const updatedData = [...prevData];
+      updatedData[index] = {...updatedData[index], ...newData};
+      return updatedData;
+    });
+  }
+  /**
+   * Storage API 
+   * End
+   * */ 
   const handleUpdate = (id, newData) => {
     // 找到要更新的資料並進行更新
     setImagesResults(prevData => {
@@ -270,6 +361,7 @@ function Index() {
       return updatedData;
     });
   };
+
   
 
   useEffect(() => {
@@ -306,10 +398,10 @@ function Index() {
           .catch((error) => console.error(error));
         break;
       case 'Following':
-        fetchUserImages(currentProfile.uid,token)
-          .then((images)=> {
-              setImages(images)
-              setImagesResults(images.results)
+        fetchUserFollowings(currentProfile.id,token)
+          .then((folloings)=> {
+              setFollows(folloings)
+              setFollowsResults(folloings)
           })
           .catch((error) => console.error(error));
         break;
@@ -321,11 +413,11 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar}/>;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
       case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleStorage={handleStorage} />;
+        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage}/>;
+        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
@@ -340,30 +432,63 @@ function Index() {
   }, [process.env.NODE_ENV]);
   return (
     <div >
-      <Header isLoggedIn={isLoggedIn} banner={currentProfile &&currentProfile.profile_banner}/>
+      <AnimatePresence>
+        {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
+          )}
+        {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
+        {isShowImageModal && (<ImageSingleModal/>)}
+        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage}/>)}
+
+      </AnimatePresence>
+
+      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
+
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
-        <div className='px-6 py-10 lg:bg-gradient-to-b from-zinc-600 to-zinc-900 lg:rounded-lg min-h-20 text-white'>
+        <div className='px-6 py-5   min-h-20 text-white'>
           {
             isLoggedIn ?
-            <div className='flex items-center gap-5'>
+            <div className='flex flex-col items-center gap-5'>
               <div 
-                className='w-[70px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
+                style={{backgroundImage:`url(${currentProfile?.profile_banner})`}}
+                className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
+                <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
+
+              </div>
+              <div 
+                className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
               ></div>
-              <div className=' flex flex-col justify-end gap-2'>
-                {
-                  isEdit && <EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
-                }
-                <div className=' text-lg leading-4'>{currentProfile && currentProfile.name} </div>
-                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
-                <div className=' text-xs'>{currentProfile && currentProfile.total_photos} photos </div>
-              </div>
- 
               <div 
-                className=' text-xs flex items-center ml-auto  '
+                className=' text-xs flex items-center ml-auto absolute top-32 right-5  '
                 onClick={()=>setIsEdit(true)}
-              > edit<MdMoreVert size={20} /> </div>
+              > 
+                edit<MdMoreVert size={20} /> 
+              </div>
+              <div className=' flex flex-col justify-center items-center gap-2'>
+                <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
+              </div>
+
+
+              <div className='grid grid-cols-4  divide-x'>
+                <div className=' text-xs px-4'>
+                  <div>{currentProfile && currentProfile.total_photos} </div>
+                  <div>renders</div> 
+                </div>
+                <div className=' text-xs px-4'>
+                  <div>{currentProfile && currentProfile.total_storages}</div> 
+                  <div>Storages</div> 
+                </div>
+                <div className=' text-xs px-4'>
+                  <div>{currentProfile && currentProfile.total_collections}</div> 
+                  <div>collections</div> 
+                </div>
+                <div className=' text-xs px-4'>
+                  <div>{currentProfile && currentProfile.total_follows}</div> 
+                  <div>follows</div> 
+                </div>
+              </div>
          
              
               
@@ -373,7 +498,6 @@ function Index() {
           }
 
         </div>
-        
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
@@ -382,17 +506,20 @@ function Index() {
                 key={item.title} 
                 className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
                 onClick={()=>{
+                  setCurrentDropDownItem(item)
                   handleOptionChange(item)
                 }}
               >{item.title}</div>
             )
           })}
         </div>
-        <div className=' relative p-4 block lg:hidden'>
+        <div className=' relative p-4  w-2/3 mx-auto block lg:hidden'>
           <div 
-            className='text-white rounded-full bg-[#444] px-3 py-1 w-2/3 flex justify-between items-center'
+            className='text-white rounded-full bg-[#444] px-3 py-2 flex justify-between items-center'
             onClick={toggleDropdown}
-          >{currentDropDownItem.title} <MdKeyboardArrowDown /></div>
+          >
+            {currentDropDownItem.title} <MdKeyboardArrowDown />
+          </div>
             <motion.div
               className={`fixed w-full h-screen top-0 left-0 bg-black/60 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
               variants={dropdownVariants}
@@ -401,7 +528,7 @@ function Index() {
               onClick={toggleDropdown}
             ></motion.div>
             <motion.div 
-              className={`text-white  absolute rounded-lg bg-[#444] p-2 mt-2 w-1/3  border-white/20 z-30` }
+              className={`text-white  absolute rounded-lg bg-[#444] my-2 w-2/3  border-white/20 z-30` }
               variants={dropdownVariants}
               initial="closed"
               animate={isDropDownOpen ? 'open' : 'closed'}
@@ -412,7 +539,7 @@ function Index() {
                 return(
                   <div 
                     key={item.title} 
-                    className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                    className='hover:bg-[#555] px-4 py-4 text-sm rounded-lg'
                     onClick={()=>{
                       setCurrentDropDownItem(item)
                       handleOptionChange(item)

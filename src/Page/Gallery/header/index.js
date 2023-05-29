@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd } from "react-icons/md";
+import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import {userState} from '../atoms/galleryAtom'
-function Index({isLoggedIn,banner}) {
-  const currentUser = useRecoilValue(userState)
+import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
+import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
+function Index({currentUser,isLoggedIn}) {
+  const isLogin = useRecoilValue(isLoginState)
+  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const handleLogout = async()=>{
@@ -16,35 +20,61 @@ function Index({isLoggedIn,banner}) {
         if (liff.isLoggedIn()) {
           await liff.logout();
         }
-        navigate('/');
+        // setIsLoggedIn(false);
+        setLineProfile(null);
+        setToken(null);
+        console.log('logouting')
+        removeLocalStorageItem().then(data=>{
+          console.log(data)
+          if(data === 'finish'){
+            if (window.location.pathname === '/gallery') {
+              window.location.reload();
+            } else {
+              navigate('/gallery');
+            }
+          }
+        })
       } catch (err) {
         console.log('登出失敗');
       }
   }
   return (
-    <div className='text-white lg:border-b border-[#3c4756] p-5 w-full  bg-black/0 z-50 flex flex-row flex-wrap 
+    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-5 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>
-      <div 
-        style={{backgroundImage:banner && banner.length > 0 ?  `url(${banner})` : 'none'}}
-        className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
-        <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
-
-      </div>
-      <div className=' items-center  text-white mr-6 gap-2 hidden lg:flex'>
-          <div className='text-3xl font-black w-20 lg:w-32'>
+      <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
+          <div className='font-black w-24 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
           </div>
           <div className='lg:text-xl'>Gallery</div>
+      </div>
+      <div className="block lg:hidden ml-auto">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
+          >
+            <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
+            <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
+            
+          </button>
       </div>
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
           <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Profile </Link>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
+          <Link to='/price' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Price</Link>
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
-            <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
+            <div className='flex items-center flex-col md:flex-row'>
+              <div className='w-8'>
+                <div className='pt-[100%] relative'>
+                  <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                </div>
+              </div>
+              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
+            </div>
+            
             :
             <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
           }
@@ -63,36 +93,51 @@ function Index({isLoggedIn,banner}) {
               <div className='lg:text-xl'>Gallery</div>
           </div>
           <div className='my-7 flex flex-col text-white/90 justify-between'>
-            <Link 
-              to='/profile' 
-              className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                <MdAssignmentInd color="#88ad48"/> Profile 
-            </Link>
-            <Link 
-              to='/gallery' 
-              className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                <MdDashboard color="#88ad48"/> Gallery
-            </Link>
-            {
+            { 
               isLoggedIn ?
-              <div className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={handleLogout}>Log Out</div>
+              <div className='border-b border-white/20'>
+                <div className='flex items-center gap-2'>
+                  <div className='w-8'>
+                    <div className='pt-[100%] relative'>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                    </div>
+                  </div>
+                  <div>{currentUser?.name}</div>
+                </div>
+
+                <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
+                  <button className='my-4 py-1  border rounded-md w-full'> Log Out</button>
+                </div>
+              </div>
               :
-              <Link to='/profile' className='mt-72 p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+              <div className='border-b border-white/20 py-4'>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+              </div>
             }
+            <div className='my-3'>
+              <Link 
+                to='/profile' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAssignmentInd color="#88ad48"/> Profile 
+              </Link>
+              <Link 
+                to='/gallery' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdDashboard color="#88ad48"/> Gallery
+              </Link>
+              <Link 
+                to='/price' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdStar color="#88ad48"/> Price
+              </Link>
+            </div>
+
+
           </div>
 
 
       </div>
-      <div className="block lg:hidden ml-auto">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
-          >
-            <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
-            <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
-            
-          </button>
-      </div>
+
       
 
     </div>

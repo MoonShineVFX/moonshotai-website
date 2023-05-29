@@ -6,7 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 
-function Index({title,images,imagesResults,currentProfile,handleRemoveCollection}) {
+function Index({title,follows,followsResults,currentProfile,handleUnfollow}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -32,51 +32,49 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
       },
     },
   };
-  const onHandleRemoveCollection = (image)=>{
-    console.log(image)
-    handleRemoveCollection(image.id)
+  const onHandlUnfollow = (user)=>{
+    console.log(user)
+    handleUnfollow(user)
 
 
     // 
   }
+  console.log(followsResults)
 
   return (
     <div >
       <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
-      {!imagesResults ?
+      {!followsResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <ResponsiveMasonry
-          className=''
-          columnsCountBreakPoints={{350: 2, 750: 2, 900: 4,1700:5}}
-        >
-          <Masonry gutter={20}>
-          {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,title   } = image
+        <div>
+          {followsResults.map((user,index) => {
+            const {id, name, profile_image   } = user
             return (
               <motion.div key={id} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
+                className='relative w-full  flex items-center '
               >
-                <div className='pt-[100%] relative'>
-                  <img  
-                    src={urls.thumb} alt={image?.description} 
-                    data-id={id}
-                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
-                    onClick={() => {
-                      setImageData(image)
-                      setIsShowImageModal(true)
-                    }} 
-                  />
+                <div className='w-14'>
+                  <div className='pt-[100%] relative'>
+                    <img  
+                      src={profile_image} alt={profile_image} 
+                      data-id={id}
+                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-full'
+                      onClick={() => {
+                        // setImageData(user)
+                        // setIsShowImageModal(true)
+                      }} 
+                    />
+                  </div>
                 </div>
-                
-                <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                <div className=' flex justify-between  gap-0 p-2 w-full  bottom-0 text-white'>
                   <div className='text-sm'>
-                    {title ?title : created_at.substr(0,10)}
+                    {name }
                   </div>
                   <div className='flex gap-4'>
-                    <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveCollection(image)}>
-                      <FaHeart />Remove
+                    <div className=' flex items-center gap-1  text-sm bg-lime-600 py-1 px-3 ' onClick={()=>onHandlUnfollow(user)}>
+                      <FaHeart />Unfollow
                     </div>
 
 
@@ -88,8 +86,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
             )
 
           })}
-          </Masonry>
-        </ResponsiveMasonry>
+        </div>
 
       }
     </div>
