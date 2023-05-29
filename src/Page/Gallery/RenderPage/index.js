@@ -6,7 +6,7 @@ import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,handleCollection,handleStorage,handleRemoveStorage}) {
+function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -70,7 +70,22 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
     setIsDropDownOpen(!isDropDownOpen);
   };
 
-  
+  useEffect(() => {
+    const handleScroll = () => {
+      // 獲取頁面滾動相關信息
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      // 檢查是否滾動到頁面底部
+      if (scrollTop + clientHeight >= scrollHeight) {
+        fetchMoreImages(); // 加載更多圖片
+      }
+    };
+    // 監聽滾動事件
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      // 在組件卸載時移除滾動事件監聽器
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
   useEffect(() => {
   }, []);
@@ -78,7 +93,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
     <div >
       <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
       <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm'>
-        <div className='py-1 px-2 rounded-full'>{images.previous ? 
+        {/* <div className='py-1 px-2 rounded-full'>{images.previous ? 
           <div onClick={onHandlePrev}>Previous</div>  
           : 
           <span className="text-white/10 cursor-not-allowed">Previous</span> }
@@ -87,7 +102,7 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
           <div onClick={onHandleNext}>Next</div>      
           : 
           <span className="text-white/10 cursor-not-allowed">Next</span>}
-        </div>
+        </div> */}
       </div>
       {!imagesResults ?
         <div className='text-white'>Loading</div> 

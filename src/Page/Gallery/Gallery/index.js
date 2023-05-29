@@ -13,10 +13,13 @@ function Index() {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
-
+  const [totalPage, setTotalPage]= useState(0)
+  const [currentPage, setCurrentPage]= useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [currentHeaders , setCurrentHeaders] = useState({})
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -33,7 +36,10 @@ function Index() {
           // const refreshTokenResult = refreshToken()
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            fetchGalleries(headers).then(galleryData => {
+            setCurrentHeaders(headers)
+            fetchGalleries(headers,currentPage, pageSize).then(galleryData => {
+              console.log(galleryData)
+              setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
               setData(galleryData.results);
               // console.log(galleryData.results)
               Promise.all(
@@ -51,7 +57,9 @@ function Index() {
             });
           })
         }else{
-            fetchGalleries(headers).then(data=>{
+            setCurrentHeaders(headers)
+            fetchGalleries(headers,currentPage, pageSize).then(data=>{
+              setTotalPage(parseInt((data.count + pageSize - 1) / pageSize))
               setData(data.results);
               // console.log(data.results)
             })
@@ -59,6 +67,49 @@ function Index() {
         
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  const fetchMoreImages = () => {
+    if(currentPage >= totalPage) {
+      console.log('stop')
+      return
+    } 
+    console.log('go')
+    const nextPage = currentPage + 1;
+    setCurrentPage(prevPage => prevPage + 1)
+    fetchGalleries(currentHeaders,currentPage, pageSize).then(galleryData => {
+      console.log(galleryData)
+      setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
+      setData(galleryData.results);
+      // console.log(galleryData.results)
+      Promise.all(
+        galleryData.results.map((item,index)=>{
+          return fetchComments(item).then(data=>{
+            const updatedItem = { ...item, comments: data.results.length };
+            return updatedItem
+          })
+        })
+      ).then(dataWithComments=>{
+        console.log(dataWithComments)
+        setData(dataWithComments);
+      })
+
+    });
+  }
+  useEffect(() => {
+    const handleScroll = () => {
+      // 獲取頁面滾動相關信息
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      // 檢查是否滾動到頁面底部
+      if (scrollTop + clientHeight >= scrollHeight) {
+        fetchMoreImages(); // 加載更多圖片
+      }
+    };
+    // 監聽滾動事件
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      // 在組件卸載時移除滾動事件監聽器
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
   return (
     <div className='w-full '>

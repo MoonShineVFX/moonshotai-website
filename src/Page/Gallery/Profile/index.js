@@ -41,8 +41,8 @@ function Index() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
-  const [totalPage, setTotalPage]= useState(1)
-  const [pageSize, setPageSize] = useState(30)
+  const [totalPage, setTotalPage]= useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
@@ -115,6 +115,7 @@ function Index() {
                 fetchUserImages(profile.userId , currentPage, pageSize,data.token)
                   .then((images)=> {
                       const results = images.results
+                      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
                       setImages(images)
                       setImagesResults(results)
                       setCurrentAuthor(images.results[0].author)
@@ -160,6 +161,7 @@ function Index() {
         fetchUserImages(profile.userId , currentPage, pageSize,data.token)
           .then((images)=> {
               const results = images.results
+              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
               setImages(images)
               setImagesResults(results)
               setCurrentAuthor(images.results[0].author)
@@ -364,9 +366,9 @@ function Index() {
 
   
 
-  useEffect(() => {
-    handleOptionChange(currentDropDownItem);
-  }, [currentPage]);
+  // useEffect(() => {
+  //   handleOptionChange(currentDropDownItem);
+  // }, [currentPage]);
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
@@ -411,7 +413,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} currentPage={currentPage} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
       case 'Collection':
@@ -422,7 +424,19 @@ function Index() {
     }
   }
   
+  const fetchMoreImages = () => {
 
+    if(currentPage >= totalPage) {
+      return
+    } 
+    const nextPage = currentPage + 1;
+    setCurrentPage(prevPage => prevPage + 1)
+    fetchUserImages(currentProfile.uid,nextPage,pageSize,token)
+      .then(data=>{
+        setImagesResults(prevImages => [...prevImages, ...data.results]);
+        setCurrentPage(nextPage);
+      })
+  }
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
       initializeLineLogin()
@@ -430,6 +444,7 @@ function Index() {
       devLogin()
     }
   }, [process.env.NODE_ENV]);
+
   return (
     <div >
       <AnimatePresence>

@@ -137,7 +137,7 @@ function Index() {
             </button> */}
           </div>
           
-          <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
+          {/* <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
             <div className="mb-7 pb-7 flex justify-between items-center border-b border-gray-300">
               <img src={process.env.PUBLIC_URL+'/images/price/03.jpg'}  alt="" className="rounded-3xl w-20 h-20" />
               <div className="-5">
@@ -148,9 +148,9 @@ function Index() {
                 </div>
               </div>
             </div>
-            {/* buy button */}
+            buy button 
             <DisableBuyButton />
-          </div>
+          </div> */}
           
         </div>
         
