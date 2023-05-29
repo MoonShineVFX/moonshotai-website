@@ -33,7 +33,7 @@ function Index() {
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             fetchGalleries(headers).then(galleryData => {
-              setData(galleryData.results);
+              // setData(galleryData.results);
             });
           })
         }else{
