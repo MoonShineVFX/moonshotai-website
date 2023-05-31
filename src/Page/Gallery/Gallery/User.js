@@ -117,7 +117,7 @@ function User() {
         <div className='text-white'>Loading</div> 
         :
         <div className='flex flex-col  gap-5 relative text-white mx-5 mt-10'>
-            <div className='flex items-center gap-3'>
+            <div className='flex items-center justify-between'>
               <div className='w-10'>
                 <div className='pt-[100%] relative'>
                   <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -133,7 +133,7 @@ function User() {
                 }
               </div>
             </div>
-            <div className='flex items-center  gap-2'>
+            <div className='flex items-center  space-x-2 '>
               <div className='text-white'>{userData?.name} </div>
               {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
               {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
@@ -142,7 +142,7 @@ function User() {
               {userData?.twitter_id && <a href={userData?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter color='#359bf0' /></a> }
               {userData?.discord_id && <a href={userData?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
             </div>
-            <div className='flex text-xs gap-3 '>
+            <div className='flex text-xs  space-x-3 '>
               <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
               <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
               <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
