@@ -6,7 +6,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingCircle} from '../helpers/componentsHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
@@ -234,11 +234,7 @@ function Post() {
 
   if (!imageData) {
     return (
-      <div className='w-full md:w-10/12 gap-0 md:gap-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row'>
-        <div className='text-white flex items-center'>
-          <LoadingCircle />  Image Loading.. 
-        </div> 
-      </div>
+        <LoadingLogoFly />  
     );
   }
 

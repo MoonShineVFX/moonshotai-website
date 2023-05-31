@@ -4,7 +4,7 @@ import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {LoadingCircle} from '../helpers/componentsHelper'
+import {LoadingLogoFly} from '../helpers/componentsHelper'
 import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
@@ -117,9 +117,7 @@ function Index() {
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-lg  mb-2 font-bold'>Newest</div>
           {!data ? 
-          <div className='text-white'>
-            <LoadingCircle />
-          </div> 
+            <LoadingLogoFly />
           :
           <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
             {data.map((image,index)=>{

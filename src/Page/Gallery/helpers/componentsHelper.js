@@ -121,6 +121,23 @@ export const LoadingCircle = () =>{
     </svg>
   )
 }
+export const LoadingLogoFly = ()=>{
+  return (
+    <div className='text-white h-screen/70 flex justify-center items-center'>
+      <div id="load" className='text-lime-600'>
+        <div>T</div>
+        <div>O</div>
+        <div>H</div>
+        <div>S</div>
+        <div>N</div>
+        <div>O</div>
+        <div>O</div>
+        <div>M</div>
+      </div>
+    </div>
+
+  )
+} 
 export const DisableInputInvite = () =>{
 
   return (
