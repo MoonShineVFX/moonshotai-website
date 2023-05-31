@@ -140,9 +140,9 @@ function Index() {
                     </div>
 
                     <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
-                      <div className='flex items-center gap-2'>
-                        <div className='flex items-center  gap-2'><FaHeart /> {likes}</div>
-                        <div className='flex items-center  gap-2'><MdModeComment /> {likes}</div>
+                      <div className='flex items-center space-x-2'>
+                        <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
+                        <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
                       </div>
 
                       <div className='text-red-300'>
@@ -158,7 +158,7 @@ function Index() {
 
 
 
-                  <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
+                  <div className='text-sm  flex items-start mt-3  space-x-3 w-full   text-white'>
                     <div className='w-9'>
                       <div className='pt-[100%] relative'>
                         <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
