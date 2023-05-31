@@ -138,6 +138,22 @@ export const LoadingLogoFly = ()=>{
 
   )
 } 
+export const LoadingLogoSpin = ()=>{
+  return (
+    <div className='text-white h-[50vh] flex justify-center items-center relative'>
+      <div id="logospin01" className='text-lime-600  w-20 brightness-75'>
+        <div className='pt-[100%] relative  '>
+          <img  
+            src={process.env.PUBLIC_URL+'/images/logo.png'}
+            className='rounded-full absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full'
+
+          />
+        </div>
+      </div>
+    </div>
+
+  )
+}  
 export const DisableInputInvite = () =>{
 
   return (

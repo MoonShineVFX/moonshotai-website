@@ -4,7 +4,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
 import {CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
@@ -109,7 +109,7 @@ function User() {
 
   if (!userData) {
     return (
-        <LoadingLogoFly />  
+        <LoadingLogoSpin />  
     );
   }
   return (

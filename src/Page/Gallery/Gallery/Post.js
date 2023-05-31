@@ -6,7 +6,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly} from '../helpers/componentsHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
@@ -234,7 +234,7 @@ function Post() {
 
   if (!imageData) {
     return (
-        <LoadingLogoFly />  
+        <LoadingLogoSpin />  
     );
   }
 
