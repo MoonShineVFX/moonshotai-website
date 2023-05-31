@@ -116,7 +116,7 @@ function User() {
         !userData  ? 
         <div className='text-white'>Loading</div> 
         :
-        <div className='flex flex-col  gap-5 relative text-white mx-5 mt-10'>
+        <div className='flex flex-col relative text-white mx-5 mt-10'>
             <div className='flex items-center justify-between'>
               <div className='w-10'>
                 <div className='pt-[100%] relative'>
@@ -133,7 +133,7 @@ function User() {
                 }
               </div>
             </div>
-            <div className='flex items-center  space-x-2 '>
+            <div className='flex items-center  space-x-2 mt-3'>
               <div className='text-white'>{userData?.name} </div>
               {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
               {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
@@ -165,13 +165,13 @@ function User() {
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                 className='  overflow-hidden relative'
               >
-                <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
+                <Link to={`/post/${id}`} className=' relative' >
                   <div className='pt-[100%] relative'>
                     <img  
                       src={urls.thumb} alt={image?.description} 
                       data-id={id}
                       className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
-                      onClick={() => {setImageData(image)}} 
+                
                     />
                   </div>
 
