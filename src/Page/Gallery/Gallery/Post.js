@@ -257,15 +257,15 @@ function Post() {
       <div className='text-white'>Loading</div> 
       :
       <>
-        <div className="w-full md:w-10/12 gap-0 md:gap-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row">
+        <div className="w-full md:w-10/12  space-x-0  md:space-x-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row">
           <div className='w-full md:w-1/2 '> 
             <button onClick={handleBackClick} className='text-white'>
               <MdKeyboardArrowLeft size={42} />
             </button>
             <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
             <div className='text-xl text-white font-semibold'>{imageData?.title}</div> 
-            <div className=' flex items-center  gap-3 my-2'>
-              <Link to={`/user/${imageData?.author?.id}`} className='flex items-center gap-2'>
+            <div className=' flex items-center space-x-3 my-2'>
+              <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
                 <div className='w-8'>
                   <div className='pt-[100%] relative'>
                     <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -284,7 +284,7 @@ function Post() {
               </div>
             </div>
             <div className=' flex flex-col justify-end  relative pt-2'>
-              <div className='flex items-center gap-2 text-white '>
+              <div className='flex items-center space-x-2 text-white '>
                 {/* <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
                   <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
                 </button>
@@ -362,7 +362,7 @@ function Post() {
 
           </div>
 
-          <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
+          <div className='flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
               onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}

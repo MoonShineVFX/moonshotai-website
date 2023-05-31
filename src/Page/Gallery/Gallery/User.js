@@ -157,7 +157,7 @@ function User() {
       {!publicImageResults ? 
         <div className='text-white'>Loading</div> 
         :
-        <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+        <div className='grid grid-cols-2 md:grid-cols-5  space-x-4'>
           {publicImageResults.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
             return (
@@ -175,13 +175,13 @@ function User() {
                     />
                   </div>
 
-                  <div className='text-orange-500 absolute top-0 p-1 flex gap-1'>
+                  <div className='text-orange-500 absolute top-0 p-1 flex  space-x-1'>
                     {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
                     {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
                   </div>
                 </Link>
 
-                <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
+                <div className='text-sm  flex items-start mt-3  space-x-3  w-full   text-white'>
 
 
                   <div className='flex flex-col'>
