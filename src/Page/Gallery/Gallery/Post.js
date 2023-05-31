@@ -5,15 +5,15 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat} from '../helpers/componentsHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail} from '../helpers/fetchHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingCircle} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
 import EditCommentForm from '../Components/EditCommentForm';
 function Post() {
   const { id } = useParams();
-  const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [imageData, setImageData] = useState(null)
   const [comments, setComments] = useState([])
   const [commentsResults, setCommentsResults] = useState([])
   const [storages, setStorages] = useState({});
@@ -58,15 +58,11 @@ function Post() {
           refreshToken().then(tData =>{
             setLineLoginData(tData.token)
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${tData.token}` }
-            fetchGalleries(headers).then(gData=>{
-              const newImageData = gData.results.find((item)=>{
-                return item.id === parseInt(id)
-              })
-              console.log(newImageData)
-              setImageData(newImageData);
-
+            fetchGalleriesDetail(headers,id).then(gData=>{
+              console.log(gData)
+              setImageData(gData);
               // 
-              fetchComments(newImageData).then(data=>{
+              fetchComments(gData).then(data=>{
                   console.log(data)
                   setComments(data)
                   setCommentsResults(data.results)
@@ -75,8 +71,6 @@ function Post() {
                   })
                   setIsHaveUserComment(isUserid)
                 })
-        
-              return newImageData;
             })
             fetchUserCollections(currentUser.id,tData.token).then(collections=>{
               const findCollectionId = collections.results.some((item)=>{
@@ -91,12 +85,10 @@ function Post() {
 
           })
         }else{
-          fetchGalleries(headers).then(data=>{
-            const newImageData = data.results.find((item)=>{
-              return item.id === parseInt(id)
-            })
-            setImageData(newImageData);
-            fetchComments(newImageData).then(data=>{
+          fetchGalleriesDetail(headers,id).then(gdata=>{
+
+            setImageData(gdata);
+            fetchComments(gdata).then(data=>{
               console.log(data)
               setComments(data)
               setCommentsResults(data.results)
@@ -105,8 +97,6 @@ function Post() {
               })
               setIsHaveUserComment(isUserid)
             })
-      
-            return newImageData;
           })
         }
 
@@ -244,9 +234,10 @@ function Post() {
 
   if (!imageData) {
     return (
-      <div>
-        <h2>Post ID: {id}</h2>
-        <div>No image found.</div>
+      <div className='w-full md:w-10/12 gap-0 md:gap-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row'>
+        <div className='text-white flex items-center'>
+          <LoadingCircle />  Image Loading.. 
+        </div> 
       </div>
     );
   }
@@ -272,12 +263,12 @@ function Post() {
               <MdKeyboardArrowLeft size={42} />
             </button>
             <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
-            <div className='text-xl text-white font-semibold'>{imageData.title}</div> 
+            <div className='text-xl text-white font-semibold'>{imageData?.title}</div> 
             <div className=' flex items-center  gap-3 my-2'>
-              <Link to={`/user/${imageData.author.id}`} className='flex items-center gap-2'>
+              <Link to={`/user/${imageData?.author?.id}`} className='flex items-center gap-2'>
                 <div className='w-8'>
                   <div className='pt-[100%] relative'>
-                    <img src={imageData?.author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                    <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                   </div>
                 </div>
                 <div className='text-white/80'>{imageData?.author?.name}</div>
@@ -287,8 +278,8 @@ function Post() {
             <div className="flex flex-col  justify-center items-center w-full">
               <div className='w-full my-5'>
                 <img 
-                  src={imageData.urls.regular} 
-                  alt={imageData.id} 
+                  src={imageData?.urls?.regular} 
+                  alt={imageData?.id} 
                   className="w-full" />
               </div>
             </div>
@@ -307,26 +298,26 @@ function Post() {
             </div>
           </div>
           <div className='w-full md:w-1/2 flex flex-col justify-end  relative pb-20 pt-2'>
-            <div className='mt-3 text-white/60 text-sm'>{imageData.created_at && imageData.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData.model)}   </div> 
+            <div className='mt-3 text-white/60 text-sm'>{imageData?.created_at && imageData?.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData?.model)}   </div> 
             <div className='text-white font-bold my-3 '>Prompt</div>
             <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-              <div className='p-3'>{imageData.prompt}</div>
+              <div className='p-3'>{imageData?.prompt}</div>
             </div>
             <div className='text-white font-bold my-3'>Negative prompt</div>
             <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-            <div className='p-3'>{imageData.negative_prompt}</div>
+            <div className='p-3'>{imageData?.negative_prompt}</div>
             </div>
             <div className='mt-4'>
-                <div className='text-white font-bold my-1 '>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData.model)}</span> </div>
-                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData.steps}</span></div>
-                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData.sampler_index}</span></div>
-                <div className='text-white font-bold my-1 '>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData.cfg_scale}</span></div>
+                <div className='text-white font-bold my-1 '>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData?.model)}</span> </div>
+                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData?.steps}</span></div>
+                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData?.sampler_index}</span></div>
+                <div className='text-white font-bold my-1 '>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData?.cfg_scale}</span></div>
             </div>
-            {imageData.description && 
+            {imageData?.description && 
               <div className='my-2'>
                 <div className='text-white font-bold my-1 '>Description:</div>
                 <div className='relative whitespace-normal break-words '>
-                  <div className=''>{imageData.description}</div>
+                  <div className=''>{imageData?.description}</div>
                 </div>
               </div>
             }

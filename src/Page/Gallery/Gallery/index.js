@@ -129,13 +129,13 @@ function Index() {
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className='  overflow-hidden relative'
                 >
-                  <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
+                  <Link to={`/post/${id}`} className=' relative' >
                     <div className='pt-[100%] relative'>
                       <img  
                         src={urls.thumb} alt={image?.description} 
                         data-id={id}
                         className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
-                        onClick={() => {setImageData(image)}} 
+ 
                       />
                     </div>
 

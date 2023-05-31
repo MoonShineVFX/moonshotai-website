@@ -397,6 +397,16 @@ export const fetchGalleries = async (headers,page,pageSize) =>{
 
 }
 
+export const fetchGalleriesDetail = async (headers,id) => {
+  const requestOptions = {
+    method: 'GET',
+    headers:headers
+  };
+  const response = await fetch(apiUrl+'/galleries/'+id ,requestOptions)
+  const data = await response.json()
+  return data
+}
+
 /**
  * Comment API
  * **/ 

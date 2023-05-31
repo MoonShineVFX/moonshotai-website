@@ -509,7 +509,7 @@ function Index() {
                 </div>
                 <div className=' text-xs px-4'>
                   <div>{currentProfile && currentProfile.total_follows}</div> 
-                  <div>follows</div> 
+                  <div>following</div> 
                 </div>
               </div>
          
