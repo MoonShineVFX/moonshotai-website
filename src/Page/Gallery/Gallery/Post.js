@@ -281,12 +281,12 @@ function Post() {
             </div>
             <div className=' flex flex-col justify-end  relative pt-2'>
               <div className='flex items-center space-x-2 text-white '>
-                {/* <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
+                <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
                   <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
                 </button>
                 <button className='p-2' onClick={handleComment}>
                   <MdModeComment size={20} />
-                </button> */}
+                </button>
                 <button className='p-2' onClick={handleShare}>
                   <MdOutlineShare size={20} />
                 </button>
@@ -318,7 +318,7 @@ function Post() {
               </div>
             }
             {/* Comment area */}
-            {/* <div className='mt-6'>
+            <div className='mt-6'>
               <div className='text-white font-bold my-1 mb-4 '>Discussion</div>
               {
                 commentsResults.length > 0 ?
@@ -354,7 +354,7 @@ function Post() {
 
       
               }
-            </div> */}
+            </div>
 
           </div>
 
