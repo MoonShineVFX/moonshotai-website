@@ -57,9 +57,9 @@ export const CallToLoginModal = ({closeModal})=>{
       >
         <div className='flex flex-col justify-center items-center'>
           <div className=' font-bold'>Message</div>
-          <div className='text-white/70'>Please log in to use this feature</div>
+          <div className='text-white/70'>Please sign in to use this feature</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <Link to='/profile' className=' bg-lime-700/50 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in right now</Link>
+            <Link to='/profile' className=' bg-lime-700/50 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in right now</Link>
             <button type="button" className='text-white/80' onClick={handleClose}>Maybe next time</button>
           </div>
         </div>

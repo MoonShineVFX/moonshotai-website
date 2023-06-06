@@ -72,11 +72,11 @@ function Index({currentUser,isLoggedIn}) {
                   <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                 </div>
               </div>
-              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Log Out</div>
+              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Sign Out</div>
             </div>
             
             :
-            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in</Link>
+            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
  
         </div>
@@ -106,12 +106,12 @@ function Index({currentUser,isLoggedIn}) {
                 </div>
 
                 <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
-                  <button className='my-4 py-1  border rounded-md w-full'> Log Out</button>
+                  <button className='my-4 py-1  border rounded-md w-full'> Sign Out</button>
                 </div>
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Log in</Link>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
               </div>
             }
             <div className='my-3'>

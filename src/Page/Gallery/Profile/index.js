@@ -19,10 +19,10 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 const dropDownManuItem = [
-  {title:"Renders", display:true},
-  {title:"Storage", display:true},
-  {title:"Collection", display:true},
-  {title:"Following",display:true},
+  {title:"Renders", display:true,data_name:"total_photos"},
+  {title:"Storage", display:true,data_name:"total_storages"},
+  {title:"Collections", display:true,data_name:"total_collections"},
+  {title:"Following",display:true,data_name:"total_follows"},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
@@ -495,22 +495,22 @@ function Index() {
 
 
               <div className='grid grid-cols-4  divide-x'>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_photos} </div>
-                  <div>renders</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_storages}</div> 
-                  <div>Storages</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_collections}</div> 
-                  <div>collections</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_follows}</div> 
-                  <div>following</div> 
-                </div>
+                {dropDownManuItem.map((item,index)=>{
+                if(!item.display) return
+                return(
+                  <div 
+                    key={item.title} 
+                    className='text-xs px-4 cursor-pointer'
+                    onClick={()=>{
+                      setCurrentDropDownItem(item)
+                      handleOptionChange(item)
+                    }}
+                  >
+                    <div>{currentProfile && currentProfile[item.data_name]}</div> 
+                    <div>{item.title} </div>
+                  </div>
+                )
+              })}
               </div>
          
              
@@ -536,7 +536,7 @@ function Index() {
             )
           })}
         </div>
-        <div className=' relative p-4  w-2/3 mx-auto block lg:hidden'>
+        <div className=' relative p-4  w-2/3 mx-auto hidden lg:hidden'>
           <div 
             className='text-white rounded-full bg-[#444] px-3 py-2 flex justify-between items-center'
             onClick={toggleDropdown}
