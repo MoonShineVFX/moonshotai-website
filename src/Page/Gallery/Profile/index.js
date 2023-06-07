@@ -521,7 +521,7 @@ function Index() {
           }
 
         </div>
-        <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
+        <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:hidden'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
             return(
