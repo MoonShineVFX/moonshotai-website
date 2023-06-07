@@ -76,7 +76,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <Link to='/profile?' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
  
         </div>
