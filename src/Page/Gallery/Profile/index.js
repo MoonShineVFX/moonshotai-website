@@ -128,6 +128,7 @@ function Index() {
           }).catch(err => console.log(err))
         }
       } else {
+        console.log('not yet login')
         liff.login();
       }
     }).catch(function(error) {
