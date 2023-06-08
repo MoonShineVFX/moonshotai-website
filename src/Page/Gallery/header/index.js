@@ -38,9 +38,6 @@ function Index({currentUser,isLoggedIn}) {
         console.log('登出失敗');
       }
   }
-  function logIn() {
-    liff.login({ redirectUri: window.location.href })
-  }
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-5 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>
@@ -79,7 +76,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <Link  onClick={logIn} className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
  
         </div>
@@ -114,7 +111,7 @@ function Index({currentUser,isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link onClick={logIn} className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
               </div>
             }
             <div className='my-3'>
