@@ -60,7 +60,7 @@ function Index() {
   return (
     <div className=''>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
-      <div className={` font-bold  bg-white/10 backdrop-blur-lg z-30 text-white   fixed w-full ${isMenuFixed ? 'fixed top-0 left-0 w-full' : ''}`}>
+      <div className={` font-bold  bg-white/10 backdrop-blur-lg z-10 text-white   fixed w-full ${isMenuFixed ? 'fixed top-0 left-0 w-full' : ''}`}>
         <div className='flex items-center space-x-3 p-4'>
           <button 
             onClick={() => setIsOpen(!isOpen)}
