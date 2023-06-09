@@ -391,7 +391,7 @@ export const fetchGalleries = async (headers,page,pageSize) =>{
     headers:headers
   };
 
-  const response = await fetch(apiUrl+'/galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+  const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
   const data = await response.json()
   return data
 
@@ -402,7 +402,7 @@ export const fetchGalleriesDetail = async (headers,id) => {
     method: 'GET',
     headers:headers
   };
-  const response = await fetch(apiUrl+'/galleries/'+id ,requestOptions)
+  const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
   const data = await response.json()
   return data
 }
