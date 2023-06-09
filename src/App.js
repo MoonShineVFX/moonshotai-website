@@ -4,14 +4,15 @@ import { BrowserRouter , Routes, Route} from 'react-router-dom';
 
 import Home from './Page/Home'
 import Camera from './Page/Camera'
-import Docs from './Page/Docs'
+// import Docs from './Page/Docs'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
 import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
-import Price from './Page/Gallery/PricePage'
+import Price from './Page/Gallery/PricePage';
+import Docs from './Page/Gallery/Docs'
 
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';

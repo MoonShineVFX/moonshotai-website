@@ -130,6 +130,11 @@ function Index({currentUser,isLoggedIn}) {
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdStar color="#88ad48"/> Price
               </Link>
+              <Link 
+                to='/docs' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdStar color="#88ad48"/> Documents
+              </Link>
             </div>
 
 
