@@ -44,7 +44,7 @@ function App() {
         <Route path="/user/:id" element={<User />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/price" element={<Price />} />
-        <Route element={<Gallery />} />
+        <Route path="*" element={<Gallery />} replace />
         {/* <Route path="/storages" element={<Storages />} /> */}
 
       </Routes>
