@@ -18,7 +18,7 @@ function Index({currentUser,isLoggedIn}) {
       try {
         await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
         if (liff.isLoggedIn()) {
-          await liff.logout();
+          // await liff.logout();
         }
         // setIsLoggedIn(false);
         setLineProfile(null);
@@ -42,10 +42,10 @@ function Index({currentUser,isLoggedIn}) {
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-5 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>
       <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
-          <div className='font-black w-24 lg:w-32'>
+          <a href='/' className='font-black w-24 lg:w-32'>
             <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
-          </div>
-          <div className='lg:text-xl'>Gallery</div>
+          </a>
+          <div className='lg:text-xl'></div>
       </div>
       <div className="block lg:hidden ml-auto">
           <button
@@ -111,7 +111,7 @@ function Index({currentUser,isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
+                <Link to='/profile?login=true' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
               </div>
             }
             <div className='my-3'>

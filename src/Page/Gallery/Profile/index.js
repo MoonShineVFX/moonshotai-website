@@ -5,7 +5,6 @@ import { FiHeart } from "react-icons/fi";
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
-
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
