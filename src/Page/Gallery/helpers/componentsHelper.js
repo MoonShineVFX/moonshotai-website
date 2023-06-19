@@ -57,9 +57,9 @@ export const CallToLoginModal = ({closeModal})=>{
       >
         <div className='flex flex-col justify-center items-center'>
           <div className=' font-bold'>Message</div>
-          <div className='text-white/70'>Please log in to use this feature</div>
+          <div className='text-white/70'>Please sign in to use this feature</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <Link to='/profile' className=' bg-lime-700/50 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Log in right now</Link>
+            <Link to='/profile' className=' bg-lime-700/50 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in right now</Link>
             <button type="button" className='text-white/80' onClick={handleClose}>Maybe next time</button>
           </div>
         </div>
@@ -121,6 +121,39 @@ export const LoadingCircle = () =>{
     </svg>
   )
 }
+export const LoadingLogoFly = ()=>{
+  return (
+    <div className='text-white h-screen/70 flex justify-center items-center'>
+      <div id="load" className='text-lime-600'>
+        <div>T</div>
+        <div>O</div>
+        <div>H</div>
+        <div>S</div>
+        <div>N</div>
+        <div>O</div>
+        <div>O</div>
+        <div>M</div>
+      </div>
+    </div>
+
+  )
+} 
+export const LoadingLogoSpin = ()=>{
+  return (
+    <div className='text-white h-[50vh] flex justify-center items-center relative'>
+      <div id="logospin01" className='text-lime-600  w-20 brightness-75'>
+        <div className='pt-[100%] relative  '>
+          <img  
+            src={process.env.PUBLIC_URL+'/images/logo.png'}
+            className='rounded-full absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full'
+
+          />
+        </div>
+      </div>
+    </div>
+
+  )
+}  
 export const DisableInputInvite = () =>{
 
   return (

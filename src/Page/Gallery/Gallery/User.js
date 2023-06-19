@@ -4,7 +4,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-
+import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
 import {CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
@@ -106,58 +106,60 @@ function User() {
 
 
   },[])
+
+  if (!userData) {
+    return (
+        <LoadingLogoSpin />  
+    );
+  }
   return (
     <div>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
-      {
-        !userData  ? 
-        <div className='text-white'>Loading</div> 
-        :
-        <div className='flex flex-col  gap-5 relative text-white mx-5 mt-10'>
-            <div className='flex items-center gap-3'>
-              <div className='w-10'>
-                <div className='pt-[100%] relative'>
-                  <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
-                </div>
-              </div>
 
-              <div className='ml-auto' onClick={handleFollow}>
-                {
-                  isFollowed ? 
-                  <button className='bg-lime-600 px-5 py-2 rounded-md'>Following</button>
-                  : 
-                  <button className='bg-lime-400 text-black/90 px-5 py-2 rounded-md'>Follow</button>
-                }
+      <div className='flex flex-col relative text-white mx-5 mt-10'>
+          <div className='flex items-center justify-between'>
+            <div className='w-10'>
+              <div className='pt-[100%] relative'>
+                <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
-            <div className='flex items-center  gap-2'>
-              <div className='text-white'>{userData?.name} </div>
-              {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
-              {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
-              {userData?.instagram_id && <a href={userData?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
-              {userData?.linkedin_id && <a href={userData?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
-              {userData?.twitter_id && <a href={userData?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter color='#359bf0' /></a> }
-              {userData?.discord_id && <a href={userData?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
-            </div>
-            <div className='flex text-xs gap-3 '>
-              <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
-              <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
-              <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
-            </div>
-            <div className=' text-xs'>
-              {userData?.bio}  
+
+            <div className='ml-auto' onClick={handleFollow}>
+              {
+                isFollowed ? 
+                <button className='bg-lime-600 px-5 py-2 rounded-md'>Following</button>
+                : 
+                <button className='bg-lime-400 text-black/90 px-5 py-2 rounded-md'>Follow</button>
+              }
             </div>
           </div>
-      }
+          <div className='flex items-center  space-x-2 mt-3'>
+            <div className='text-white'>{userData?.name} </div>
+            {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
+            {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
+            {userData?.instagram_id && <a href={userData?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
+            {userData?.linkedin_id && <a href={userData?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
+            {userData?.twitter_id && <a href={userData?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter color='#359bf0' /></a> }
+            {userData?.discord_id && <a href={userData?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
+          </div>
+          <div className='flex text-xs  space-x-3 '>
+            <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
+            <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
+            <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
+          </div>
+          <div className=' text-xs'>
+            {userData?.bio}  
+          </div>
+      </div>
       <div className='w-11/12 mx-auto my-10'>
 
       {!publicImageResults ? 
         <div className='text-white'>Loading</div> 
         :
-        <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+        <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageResults.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
             return (
@@ -165,23 +167,23 @@ function User() {
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                 className='  overflow-hidden relative'
               >
-                <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
+                <Link to={`/post/${id}`} className=' relative' >
                   <div className='pt-[100%] relative'>
                     <img  
                       src={urls.thumb} alt={image?.description} 
                       data-id={id}
                       className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
-                      onClick={() => {setImageData(image)}} 
+                
                     />
                   </div>
 
-                  <div className='text-orange-500 absolute top-0 p-1 flex gap-1'>
+                  <div className='text-orange-500 absolute top-0 p-1 flex  space-x-1'>
                     {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
                     {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
                   </div>
                 </Link>
 
-                <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
+                <div className='text-sm  flex items-start mt-3  space-x-3  w-full   text-white'>
 
 
                   <div className='flex flex-col'>

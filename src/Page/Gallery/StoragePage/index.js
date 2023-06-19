@@ -4,7 +4,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -103,7 +103,22 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     )
   }
   
-
+  useEffect(() => {
+    const handleScroll = () => {
+      // 獲取頁面滾動相關信息
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      // 檢查是否滾動到頁面底部
+      if (scrollTop + clientHeight >= scrollHeight) {
+        fetchMoreStorageImages(); // 加載更多圖片
+      }
+    };
+    // 監聽滾動事件
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      // 在組件卸載時移除滾動事件監聽器
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
   return (
     <div >
           <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>

@@ -119,7 +119,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
                     <span className="ml-2 text-sm font-medium text-white/80">
-                      toggle NSFW image tag
+                      Add NSFW tag
                     </span>
 
                   </label>

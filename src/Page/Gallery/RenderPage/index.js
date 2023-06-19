@@ -6,7 +6,7 @@ import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage}) {
+function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -60,12 +60,6 @@ function Index({title,images,imagesResults,handleNext,handlePrev,handleUpdate,ha
     // handleUpdate(image.id,newData)
   }
 
-  const onHandlePrev = (image) =>{
-    handlePrev(title)
-  }
-  const onHandleNext = (image) =>{
-    handleNext(title)
-  }
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };

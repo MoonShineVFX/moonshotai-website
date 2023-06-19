@@ -4,7 +4,7 @@ import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {LoadingCircle} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
@@ -117,9 +117,7 @@ function Index() {
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-lg  mb-2 font-bold'>Newest</div>
           {!data ? 
-          <div className='text-white'>
-            <LoadingCircle />
-          </div> 
+            <LoadingLogoSpin />
           :
           <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
             {data.map((image,index)=>{
@@ -129,20 +127,20 @@ function Index() {
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className='  overflow-hidden relative'
                 >
-                  <Link to={`/post/${id}`} onClick={() => {setImageData(image)}} className=' relative' >
+                  <Link to={`/post/${id}`} className=' relative' >
                     <div className='pt-[100%] relative'>
                       <img  
                         src={urls.thumb} alt={image?.description} 
                         data-id={id}
                         className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
-                        onClick={() => {setImageData(image)}} 
+ 
                       />
                     </div>
 
                     <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
-                      <div className='flex items-center gap-2'>
-                        <div className='flex items-center  gap-2'><FaHeart /> {likes}</div>
-                        <div className='flex items-center  gap-2'><MdModeComment /> {likes}</div>
+                      <div className='flex items-center space-x-2'>
+                        <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
+                        <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
                       </div>
 
                       <div className='text-red-300'>
@@ -158,7 +156,7 @@ function Index() {
 
 
 
-                  <div className='text-sm  flex items-start mt-3  gap-3 w-full   text-white'>
+                  <Link to={`/user/${author?.id}`}  className='text-sm  flex items-start mt-3  space-x-3 w-full   text-white'>
                     <div className='w-9'>
                       <div className='pt-[100%] relative'>
                         <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
@@ -169,10 +167,10 @@ function Index() {
                       <div className='text-base font-bold'>{title} </div>
                       <div className='text-xs text-white/50'>{author?.name}</div>
                     </div>
+                  </Link>
 
 
 
-                  </div>
                 </motion.div>
 
               )

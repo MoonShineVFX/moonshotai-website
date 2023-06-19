@@ -261,7 +261,7 @@ export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
   }
 
 }
-export const fetchUserStorages =async (userid,token) =>{
+export const fetchUserStorages =async (userid,page,pageSize,token) =>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -269,7 +269,7 @@ export const fetchUserStorages =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'users/'+userid+'/storages' ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/storages?'+'page='+page+'&page_size='+pageSize ,requestOptions)
   const data =await response.json()
   return data
     
@@ -391,10 +391,47 @@ export const fetchGalleries = async (headers,page,pageSize) =>{
     headers:headers
   };
 
-  const response = await fetch(apiUrl+'/galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+  const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
   const data = await response.json()
   return data
 
+}
+
+export const fetchGalleriesDetail = async (headers,id) => {
+  const requestOptions = {
+    method: 'GET',
+    headers:headers
+  };
+  const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
+  const data = await response.json()
+  return data
+}
+/**
+ * copy prompt galleries/<int:id>/prompt_copy
+ */
+export const fetchImageCopyPromptTime =async (imgdata,token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'galleries/'+imgdata.id+'/prompt_copy', requestOptions)
+  const data =await response
+  return data
+}
+export const userClickCopyPrompt =async (imgdata,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'galleries/'+imgdata.id+'/prompt_copy', requestOptions)
+  const data =await response
+  return data
 }
 
 /**
@@ -455,7 +492,7 @@ export const userDelCommentToImage = async (commentId,token)=>{
 
 
 /**
- * Line Pay SDK
+ * Line Pay SDK not yet work
  * */ 
 
 const payURL = process.env.REACT_APP_LINEPAY_SANDBOX_URL
@@ -471,3 +508,4 @@ export const fetchLinePayRequest = async(headers,order)=>{
   const data = await response.json()
   return data
 }
+

@@ -21,10 +21,10 @@ function Index() {
   return (
     <div className=''>
       <Header />
-      <div className='flex justify-start items-start text-white w-8/12 mx-auto pt-20'>
-        <div className='  min-h-screen w-1/4 p-10 fixed'>
+      <div className=' justify-start items-start text-white w-10/12 md:w-8/12 mx-auto pt-20'>
+        <div className='   md:w-1/4  md:p-10 fixed bg-black w-full'>
           <div className=' font-bold '>Documentation</div>
-          <ul className=' border-l border-white/50 pl-5 mt-4 tracking-wide leading-loose text-normal text-white/50'>
+          <ul className='hidden md:block border-l border-white/50 pl-5 mt-4 tracking-wide leading-loose text-normal text-white/50'>
             {
               menuItem.map((item,index)=>{
                 return(
@@ -40,7 +40,7 @@ function Index() {
             }
           </ul>
         </div>
-        <motion.div className=" modal relative ml-[20%] min-h-screen w-10/12 md:w-3/4  px-10 mx-auto text-white flex-auto overflow-y-auto ">
+        <motion.div className=" modal relative md:ml-[20%] min-h-screen w-full md:w-3/4  md:px-10 mx-auto text-white flex-auto overflow-y-auto ">
           <motion.div 
             className=" pt-0 "
             initial={{ opacity: 0,y:0 }}
@@ -53,9 +53,7 @@ function Index() {
             }}
           >  
             <div id="section1" className='min-h-screen pt-28'>
-              <div className='text-3xl font-black w-1/4 mb-16'>
-                <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
-              </div>
+
               <div className='text-2xl font-bold  mb-4'>關於我們</div>
               <div className='mt-2 mb-8 leading-9 text-white/70'>Moonshot 是一個能夠在 Line 上輕鬆使用的 AI 繪圖工具，可輕易地通過指令切換多個 model 來達到風格轉換，使用「Stable Diffusion」作為運行的基礎，盡可能的在便利與多元使用上取得平衡。
               希望透過此服務讓更多人能夠認識並了解AI繪圖，所以同時也在 Line 上成立討論社群，鼓勵新手勇於提問老手熱心解惑的互動形式，營造良好學習成長環境。</div>

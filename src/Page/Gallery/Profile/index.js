@@ -19,10 +19,10 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 const dropDownManuItem = [
-  {title:"Renders", display:true},
-  {title:"Storage", display:true},
-  {title:"Collection", display:true},
-  {title:"Following",display:true},
+  {title:"Renders", display:true,data_name:"total_photos"},
+  {title:"Storage", display:true,data_name:"total_storages"},
+  {title:"Collections", display:true,data_name:"total_collections"},
+  {title:"Following",display:true,data_name:"total_follows"},
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
@@ -41,6 +41,7 @@ function Index() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [ isCopied , setIsCopied ] = useState(false);
   const [currentPage, setCurrentPage]= useState(1)
+  const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
@@ -127,6 +128,7 @@ function Index() {
           }).catch(err => console.log(err))
         }
       } else {
+        console.log('not yet login')
         liff.login();
       }
     }).catch(function(error) {
@@ -180,12 +182,6 @@ function Index() {
     userCollectionAImage(image,token)
       .then((data)=> console.log(data))
       .catch((error) => console.error(error));
-  }
-  const handlePrev = (title)=>{
-    setCurrentPage(prevPage => prevPage-1)
-  }
-  const handleNext = (title)=>{
-    setCurrentPage(prevPage => prevPage+1)
   }
   const handleSetBanner = (id)=>{
     const items={
@@ -378,14 +374,16 @@ function Index() {
         fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
           .then((images)=> {
               const results = images.results
+              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
               setImages(images)
               setImagesResults(results)
           })
           .catch((error) => console.error(error));
         break;
       case 'Storage':
-        fetchUserStorages(currentProfile.id,token)
+        fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
           .then((images)=> {
+              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
               setStorages(images)
               setStoragesResults(images.results)
           })
@@ -394,6 +392,7 @@ function Index() {
       case 'Collection':
         fetchUserCollections(currentProfile.id,token)
           .then((images)=> {
+              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
               setCollections(images)
               setCollectionsResults(images.results)
           })
@@ -413,9 +412,9 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection} handleNext={handleNext} handlePrev={handlePrev} handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} currentPage={currentPage} />;
+        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} />;
+        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collection':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
@@ -425,16 +424,26 @@ function Index() {
   }
   
   const fetchMoreImages = () => {
-
     if(currentPage >= totalPage) {
       return
     } 
     const nextPage = currentPage + 1;
-    setCurrentPage(prevPage => prevPage + 1)
     fetchUserImages(currentProfile.uid,nextPage,pageSize,token)
       .then(data=>{
         setImagesResults(prevImages => [...prevImages, ...data.results]);
         setCurrentPage(nextPage);
+      })
+  }
+  const fetchMoreStorageImages = () => {
+    if(currentPage >= totalPage) {
+      console.log('stop')
+      return
+    } 
+    const nextPage = currentPage + 1;
+    fetchUserStorages(currentProfile.id,nextPage,pageSize,token)
+      .then(data=>{
+        setStoragesResults(prevImages => [...prevImages, ...data.results]);
+        setCurrentStoragePage(nextPage);
       })
   }
   useEffect(() => {
@@ -487,22 +496,22 @@ function Index() {
 
 
               <div className='grid grid-cols-4  divide-x'>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_photos} </div>
-                  <div>renders</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_storages}</div> 
-                  <div>Storages</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_collections}</div> 
-                  <div>collections</div> 
-                </div>
-                <div className=' text-xs px-4'>
-                  <div>{currentProfile && currentProfile.total_follows}</div> 
-                  <div>follows</div> 
-                </div>
+                {dropDownManuItem.map((item,index)=>{
+                if(!item.display) return
+                return(
+                  <div 
+                    key={item.title} 
+                    className='text-xs px-4 cursor-pointer'
+                    onClick={()=>{
+                      setCurrentDropDownItem(item)
+                      handleOptionChange(item)
+                    }}
+                  >
+                    <div>{currentProfile && currentProfile[item.data_name]}</div> 
+                    <div>{item.title} </div>
+                  </div>
+                )
+              })}
               </div>
          
              
@@ -513,7 +522,7 @@ function Index() {
           }
 
         </div>
-        <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:grid'>
+        <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:hidden'>
           {dropDownManuItem.map((item,index)=>{
             if(!item.display) return
             return(
@@ -528,7 +537,7 @@ function Index() {
             )
           })}
         </div>
-        <div className=' relative p-4  w-2/3 mx-auto block lg:hidden'>
+        <div className=' relative p-4  w-2/3 mx-auto hidden lg:hidden'>
           <div 
             className='text-white rounded-full bg-[#444] px-3 py-2 flex justify-between items-center'
             onClick={toggleDropdown}
