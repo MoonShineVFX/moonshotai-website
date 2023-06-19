@@ -5,7 +5,6 @@ import { FiHeart } from "react-icons/fi";
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
 import Header from '../header'
 import liff from '@line/liff';
-import { useLocation } from 'react-router-dom';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
@@ -26,8 +25,7 @@ const dropDownManuItem = [
 ]
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
-  let location = useLocation();
-  console.log(location)
+
   const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
   const [storages, setStorages] = useState({});
@@ -91,6 +89,8 @@ function Index() {
     }).then(function() {
       console.log('LIFF init');
       if (liff.isLoggedIn()) {
+        console.log('isLogin?')
+        console.log(liff.isLoggedIn())
         const accessToken = liff.getAccessToken();
         setIsLoggedIn(true)
         localStorage.setItem('isLogin', true);
