@@ -1,16 +1,23 @@
 const functions = require("firebase-functions");
+const fs = require("fs");
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
+exports.host = functions.https.onRequest((request, response) => {
+  const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
+  let indexHTML = fs.readFileSync('./source/index.html').toString();
+  const path = request.path;
+
+  const customOpenGraph = `
+<title>Moonshot 位置在${path}</title>
+<meta
+  name="description"
+  content="位置在${path}的描述~> Ai art Linebot Group"
+/>
+<meta property="og:title" content="Moonshot 位置在${path}" />
+<meta property="og:description" content="針對 ${path} 處理的描述 Ai art Linebot Group" />
+<meta property="og:image" content="logo.png" />
+`;
+
+  indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
+  response.status(200).send(indexHTML);
 });
-exports.addMessage = functions.https.onRequest((req, res) => {
-  const original = req.query.text; //抓取訊息內容
-  // 使用 Firebase Admin SDK 將訊息新增到 Realtime Database
-  return admin.database().ref('/messages').push({original: original}).then((snapshot) => {
-    return res.redirect(303, snapshot.ref.toString());
-  });
-});
+

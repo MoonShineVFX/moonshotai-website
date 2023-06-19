@@ -28,9 +28,13 @@ jobs:
         run: |
           yarn install --frozen-lockfile
           yarn build
+      - name: Copy index.html
+        run: |
+          mkdir -p functions/source
+          cp build/index.html functions/source/index.html
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:master
         with:
-          args: deploy -P ${{ secrets.FIREBASE_PROJECT }} --only hosting
+          args: deploy -P ${{ secrets.FIREBASE_PROJECT }} --only hosting,functions:host
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
