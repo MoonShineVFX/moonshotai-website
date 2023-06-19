@@ -89,8 +89,6 @@ function Index() {
     }).then(function() {
       console.log('LIFF init');
       if (liff.isLoggedIn()) {
-        console.log('isLogin?')
-        console.log(liff.isLoggedIn())
         const accessToken = liff.getAccessToken();
         setIsLoggedIn(true)
         localStorage.setItem('isLogin', true);
