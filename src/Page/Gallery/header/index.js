@@ -18,7 +18,7 @@ function Index({currentUser,isLoggedIn}) {
       try {
         await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
         if (liff.isLoggedIn()) {
-          await liff.logout();
+          // await liff.logout();
         }
         // setIsLoggedIn(false);
         setLineProfile(null);
