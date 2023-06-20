@@ -19,6 +19,7 @@ exports.host = functions.https.onRequest((request, response) => {
           />
           <meta property="og:title" content=">Moonshot ${title}" />
           <meta property="og:description" content="${description} " />
+          <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
@@ -29,10 +30,11 @@ exports.host = functions.https.onRequest((request, response) => {
           <title>Moonshot info error</title>
           <meta
             name="description"
-            content="error "
+            content="${error} "
           />
           <meta property="og:title" content=">Moonshot info error" />
-          <meta property="og:description" content="error" />
+          <meta property="og:description" content="${error}" />
+          <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
