@@ -928,6 +928,14 @@
   "resolved" "https://registry.npmjs.org/is-typedarray/-/is-typedarray-1.0.0.tgz"
   "version" "1.0.0"
 
+"isomorphic-unfetch@^4.0.2":
+  "integrity" "sha512-1Yd+CF/7al18/N2BDbsLBcp6RO3tucSW+jcLq24dqdX5MNbCNTw1z4BsGsp4zNmjr/Izm2cs/cEqZPp4kvWSCA=="
+  "resolved" "https://registry.npmjs.org/isomorphic-unfetch/-/isomorphic-unfetch-4.0.2.tgz"
+  "version" "4.0.2"
+  dependencies:
+    "node-fetch" "^3.2.0"
+    "unfetch" "^5.0.0"
+
 "jose@^2.0.6":
   "integrity" "sha512-FVoPY7SflDodE4lknJmbAHSUjLCzE2H1F6MS0RYKMQ8SR+lNccpMf8R4eqkNYyyUjR5qZReOzZo5C5YiHOCjjg=="
   "resolved" "https://registry.npmjs.org/jose/-/jose-2.0.6.tgz"
@@ -1180,7 +1188,7 @@
   dependencies:
     "whatwg-url" "^5.0.0"
 
-"node-fetch@^3.3.1":
+"node-fetch@^3.2.0", "node-fetch@^3.3.1":
   "integrity" "sha512-cRVc/kyto/7E5shrWca1Wsea4y6tL9iYJE5FBCius3JQfb/4P4I295PfhgbJQBLTx6lATE4z+wK0rPM4VS2uow=="
   "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.1.tgz"
   "version" "3.3.1"
@@ -1537,6 +1545,11 @@
   "version" "3.1.5"
   dependencies:
     "is-typedarray" "^1.0.0"
+
+"unfetch@^5.0.0":
+  "integrity" "sha512-3xM2c89siXg0nHvlmYsQ2zkLASvVMBisZm5lF3gFDqfF2xonNStDJyMpvaOBe0a1Edxmqrf2E0HBdmy9QyZaeg=="
+  "resolved" "https://registry.npmjs.org/unfetch/-/unfetch-5.0.0.tgz"
+  "version" "5.0.0"
 
 "unique-string@^2.0.0":
   "integrity" "sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg=="

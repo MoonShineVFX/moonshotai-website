@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const fs = require("fs");
-const fetch = require('node-fetch');
+const fetch = require('isomorphic-unfetch');
 exports.host = functions.https.onRequest((request, response) => {
   const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
   let indexHTML = fs.readFileSync('./source/index.html').toString();
@@ -44,6 +44,7 @@ exports.host = functions.https.onRequest((request, response) => {
 });
 
 const fetchGalleriesDetail = async (id) => {
+  const fetch = require('node-fetch');
   const requestOptions = {
     method: 'GET',
     headers:{'Content-Type': 'application/json'}
