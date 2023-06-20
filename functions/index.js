@@ -1,6 +1,6 @@
 const functions = require("firebase-functions");
 const fs = require("fs");
-
+const fetch = require('node-fetch');
 exports.host = functions.https.onRequest((request, response) => {
   const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
   let indexHTML = fs.readFileSync('./source/index.html').toString();
@@ -48,7 +48,8 @@ const fetchGalleriesDetail = async (id) => {
     method: 'GET',
     headers:{'Content-Type': 'application/json'}
   };
-  const response = await fetch(apiUrl+'https://api-dev.moonshot.today/galleries/'+id ,requestOptions)
+  const apiUrl = 'https://api-dev.moonshot.today/galleries/';
+  const response = await fetch(apiUrl+id ,requestOptions)
   const data = await response.json()
   return data
 }
