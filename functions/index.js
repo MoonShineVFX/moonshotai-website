@@ -2,7 +2,7 @@ const functions = require("firebase-functions");
 const fs = require("fs");
 const http = require('http');
 const https = require('https');
-
+const axios = require('axios');
 exports.host = functions.https.onRequest((request, response) => {
   const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
   let indexHTML = fs.readFileSync('./source/index.html').toString();
@@ -19,9 +19,9 @@ exports.host = functions.https.onRequest((request, response) => {
             name="description"
             content="${description} "
           />
-          <meta property="og:title" content=">Moonshot ${title}" />
+          <meta property="og:title" content="Moonshot ${title}" />
           <meta property="og:description" content="${description} " />
-          <meta property="og:image" content="logo.png" />
+          <meta property="og:image" content="${urls.thumb}" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
@@ -47,40 +47,19 @@ exports.host = functions.https.onRequest((request, response) => {
 
 const fetchGalleriesDetail = async (id) => {
 
-  const requestOptions = {
-    method: 'GET',
-    headers:{'Content-Type': 'application/json'}
-  };
   const apiUrl = 'https://api-dev.moonshot.today/galleries/';
   const url = apiUrl + id;
   
-  return new Promise((resolve, reject) => {
-    // 根据 URL 的协议选择相应的模块
-    const httpModule = url.startsWith('https://') ? https : http;
-
-    const req = httpModule.request(url, requestOptions, (res) => {
-      let data = '';
-
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-
-      res.on('end', () => {
-        try {
-          const jsonData = JSON.parse(data);
-          resolve(jsonData);
-        } catch (error) {
-          reject(error);
-        }
-      });
+  axios.get(url,{ headers: { 'Content-Type': 'application/json' } })
+    .then((axiosResponse) => {
+      const data = axiosResponse.data;
+      response.status(200).json(data);
+    })
+    .catch((error) => {
+      console.error(error);
+      response.status(500).json({ error: 'An error occurred' });
     });
 
-    req.on('error', (error) => {
-      reject(error);
-    });
-
-    req.end();
-  });
   // const response = await fetch(apiUrl+id ,requestOptions)
   // const data = await response.json()
   // return data
