@@ -29,13 +29,13 @@ exports.host = functions.https.onRequest((request, response) => {
       })
       .catch(error=>{
         customOpenGraph = `
-          <title>Moonshot info error</title>
+          <title>Moonshot</title>
           <meta
             name="description"
-            content="${error} "
+            content="AIGC Tools"
           />
-          <meta property="og:title" content=">Moonshot info error" />
-          <meta property="og:description" content="${error}" />
+          <meta property="og:title" content=">Moonshot" />
+          <meta property="og:description" content="AIGC Tools" />
           <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
