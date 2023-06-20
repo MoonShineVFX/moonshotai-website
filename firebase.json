@@ -8,7 +8,7 @@
     ],
     "rewrites": [
       {
-        "source": "/test/**",
+        "source": "/post/**",
         "function": "host"
       },
       {
