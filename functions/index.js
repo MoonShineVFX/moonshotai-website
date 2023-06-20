@@ -19,7 +19,7 @@ exports.host = functions.https.onRequest((request, response) => {
           />
           <meta property="og:title" content=">Moonshot ${title}" />
           <meta property="og:description" content="${description} " />
-          <meta property="og:image" content=${urls.thumb} />
+          <meta property="og:image" content="${urls.thumb}" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
