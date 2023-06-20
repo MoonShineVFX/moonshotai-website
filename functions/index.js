@@ -47,18 +47,20 @@ exports.host = functions.https.onRequest((request, response) => {
 
 const fetchGalleriesDetail = async (id) => {
 
-  const apiUrl = 'https://api-dev.moonshot.today/galleries/';
-  const url = apiUrl + id;
-  
-  axios.get(url,{ headers: { 'Content-Type': 'application/json' } })
-    .then((axiosResponse) => {
-      const data = axiosResponse.data;
-      response.status(200).json(data);
-    })
-    .catch((error) => {
-      console.error(error);
-      response.status(500).json({ error: 'An error occurred' });
-    });
+  return new Promise((resolve, reject) => {
+    const apiUrl = 'https://api-dev.moonshot.today/galleries/';
+    const url = apiUrl + id;
+
+    axios.get(url, { headers: { 'Content-Type': 'application/json' } })
+      .then((axiosResponse) => {
+        const data = axiosResponse.data;
+        resolve(data);
+      })
+      .catch((error) => {
+        console.error(error);
+        reject('An error occurred');
+      });
+  });
 
   // const response = await fetch(apiUrl+id ,requestOptions)
   // const data = await response.json()
