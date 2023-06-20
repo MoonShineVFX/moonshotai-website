@@ -1,6 +1,8 @@
 const functions = require("firebase-functions");
 const fs = require("fs");
-const fetch = require('isomorphic-unfetch');
+const http = require('http');
+const https = require('https');
+
 exports.host = functions.https.onRequest((request, response) => {
   const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
   let indexHTML = fs.readFileSync('./source/index.html').toString();
@@ -44,13 +46,42 @@ exports.host = functions.https.onRequest((request, response) => {
 });
 
 const fetchGalleriesDetail = async (id) => {
-  const fetch = require('node-fetch');
+
   const requestOptions = {
     method: 'GET',
     headers:{'Content-Type': 'application/json'}
   };
   const apiUrl = 'https://api-dev.moonshot.today/galleries/';
-  const response = await fetch(apiUrl+id ,requestOptions)
-  const data = await response.json()
-  return data
+  const url = apiUrl + id;
+  
+  return new Promise((resolve, reject) => {
+    // 根据 URL 的协议选择相应的模块
+    const httpModule = url.startsWith('https://') ? https : http;
+
+    const req = httpModule.request(url, requestOptions, (res) => {
+      let data = '';
+
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+
+      res.on('end', () => {
+        try {
+          const jsonData = JSON.parse(data);
+          resolve(jsonData);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.end();
+  });
+  // const response = await fetch(apiUrl+id ,requestOptions)
+  // const data = await response.json()
+  // return data
 }
