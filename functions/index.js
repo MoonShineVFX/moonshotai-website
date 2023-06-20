@@ -14,12 +14,12 @@ exports.host = functions.https.onRequest((request, response) => {
       .then(gData=>{
         const {title, description,urls} = gData
         customOpenGraph = `
-          <title>Moonshot ${title}</title>
+          <title>Moonshot Gallery | ${title}</title>
           <meta
             name="description"
             content="${description} "
           />
-          <meta property="og:title" content="Moonshot ${title}" />
+          <meta property="og:title" content="Moonshot Gallery | ${title}" />
           <meta property="og:description" content="${description} " />
           <meta property="og:image" content="${urls.thumb}" />
         `;
