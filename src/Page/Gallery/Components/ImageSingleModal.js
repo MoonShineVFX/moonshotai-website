@@ -66,6 +66,12 @@ function ImageSingleModal() {
                 {image.cfg_scale}
               </div>
             </div>
+            <div>
+              <div className='text-white font-bold my-3 '>seed</div>
+              <div className='bg-zinc-700 p-3 rounded-md whitespace-normal break-words'>
+                {image.seed}
+              </div>
+            </div>
           </div>
         </div>
         <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
