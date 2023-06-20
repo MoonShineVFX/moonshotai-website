@@ -48,7 +48,7 @@ const fetchGalleriesDetail = async (id) => {
     method: 'GET',
     headers:{'Content-Type': 'application/json'}
   };
-  const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
+  const response = await fetch('https://api-dev.moonshot.today/galleries/'+id ,requestOptions)
   const data = await response.json()
   return data
 }
