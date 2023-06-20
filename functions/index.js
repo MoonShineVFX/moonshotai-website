@@ -5,13 +5,14 @@ exports.host = functions.https.onRequest((request, response) => {
   const META_PLACEHOLDER = /<meta name="__REPLACE_START__"\/>.*<meta name="__REPLACE_END__"\/>/;
   let indexHTML = fs.readFileSync('./source/index.html').toString();
   const path = request.path ? request.path.split('/') : request.path;
-
+  const {title, description,urls} = gData
+  const customOpenGraph=``
   if(path[1] === 'post'){
 
     fetchGalleriesDetail(path[2])
       .then(gData=>{
         const {title, description,urls} = gData
-        const customOpenGraph = `
+        customOpenGraph = `
           <title>Moonshot ${title}</title>
           <meta
             name="description"
@@ -25,7 +26,19 @@ exports.host = functions.https.onRequest((request, response) => {
         response.status(200).send(indexHTML);
 
       })
-      return
+      .catch(error=>{
+        customOpenGraph = `
+          <title>Moonshot info error</title>
+          <meta
+            name="description"
+            content="${error} "
+          />
+          <meta property="og:title" content=">Moonshot info error" />
+          <meta property="og:description" content="${error} " />
+        `;
+        indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
+        response.status(200).send(indexHTML);
+      })
   }
 
 });
