@@ -46,7 +46,7 @@ function Header() {
     <div className='flex flex-col md:flex-row'>
 
       <div className='w-full md:w-1/2 h-[70vh] md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#49531F]   to-black-600 ' ref={vantaRef}>
-        <div className='text-white font-semibold  text-lg absolute top-5 left-5 z-50 flex gap-5'>
+        <div className='text-white font-semibold  text-lg absolute top-5 left-5 z-50 flex gap-5 hidden'>
           <Link to="/gallery" class="rounded-full bg-gradient-to-r from-gray-800 to-gray-500 py-2 px-5 text-base " disabled> Gallery </Link>
           <Link to="/profile" class="rounded-full bg-gradient-to-r from-gray-800 to-gray-500 py-2 px-5 text-base" disabled> Sign In  </Link>
         </div>
