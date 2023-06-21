@@ -48,7 +48,7 @@ exports.host = functions.https.onRequest((request, response) => {
 const fetchGalleriesDetail = async (id) => {
 
   return new Promise((resolve, reject) => {
-    const apiUrl = 'https://api-dev.moonshot.today/galleries/';
+    const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL+'galleries/';
     const url = apiUrl + id;
 
     axios.get(url, { headers: { 'Content-Type': 'application/json' } })
