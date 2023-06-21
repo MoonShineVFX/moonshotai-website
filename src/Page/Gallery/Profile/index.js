@@ -286,7 +286,7 @@ function Index() {
       .then((data)=> {
         if(data.status === 200 || data.status === 204){
           setTimeout(()=>{
-            fetchUserStorages(currentProfile.id,token)
+            fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
             .then((images)=> {
                 setStorages(images)
                 setStoragesResults(images.results)

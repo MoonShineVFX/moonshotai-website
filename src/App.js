@@ -8,6 +8,7 @@ import Camera from './Page/Camera'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
+import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gv2" element={<GalleryV2 />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/user/:id" element={<User />} />
         <Route path="/profile" element={<Profile />} />

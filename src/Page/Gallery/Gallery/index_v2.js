@@ -115,11 +115,11 @@ function Index() {
     <div className='w-full '>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
-          <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
+          <div className='text-white text-xl  mb-3 font-bold'>Discover</div>
           {!data ? 
             <LoadingLogoSpin />
           :
-          <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+          <div className='grid grid-cols-3 md:grid-cols-5 gap-3'>
             {data.map((image,index)=>{
               const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
               return (
@@ -156,18 +156,7 @@ function Index() {
 
 
 
-                  <div className='text-sm  flex items-start mt-3  space-x-3 w-full   text-white'>
-                    <Link to={`/user/${author?.id}`}  className='w-8'>
-                      <div className='pt-[100%] relative'>
-                        <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
-                      </div>
-                    </Link>
 
-                    <div className='flex flex-col'>
-                      <div className='text-base font-bold'>{title} </div>
-                      <div className='text-xs text-white/50'>{author?.name}</div>
-                    </div>
-                  </div>
 
 
 
