@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit } from "react-icons/md";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle } from "react-icons/md";
 import { FaShareSquare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -208,7 +208,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     </div>
                     <div className='flex gap-4'>
                       <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdBookmarkRemove />Remove
+                        <MdRemoveCircle />移除留存
                       </div>
 
 

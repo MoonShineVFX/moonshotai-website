@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
 import liff from '@line/liff';
@@ -84,7 +84,7 @@ function Index() {
         return <MdViewModule size={15} />
         break;
       case 'Storage':
-        return <MdBookmark size={15}/>
+        return <MdImage size={15}/>
         break;
       case 'Collections':
         return <FaHeart size={13}/>

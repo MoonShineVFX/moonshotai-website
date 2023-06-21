@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
+import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
@@ -109,7 +109,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' rounded-lg overflow-hidden relative'
+                className=' overflow-hidden relative'
               >
                 <div className='pt-[100%] relative'>
                   <img  
@@ -121,27 +121,22 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
                       setIsShowImageModal(true)
                     }} 
                   />
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                      {created_at.substr(0,10)}
+                  </div>
                 </div>
 
-                <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                  <div className='text-xs'>
-                     {created_at.substr(0,10)}
-                  </div>
-                  <div className='flex gap-4'>
+                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-600' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleStorage(image)}>
-                        <MdBookmark />
+                      <div className=' flex items-center  justify-center gap-1 ' >
+                        <MdRemoveCircle /><span>移除留存</span>
                       </div>
                       :
-                      <div className='ml-auto flex items-center gap-3 text-white' onClick={()=>onHandleStorage(image)}>
-                        <MdBookmarkBorder />
+                      <div className='flex items-center  justify-center gap-1'>
+                        <MdAddCircle /> <span>加入留存</span>
                       </div>
                     }
-                    
-                  </div>
-
-
                 </div>
               </motion.div>
 
