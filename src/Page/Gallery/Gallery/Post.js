@@ -260,7 +260,7 @@ function Post() {
       :
       <>
         <div className="w-full md:w-10/12  space-x-0  md:space-x-10 mx-auto  text-white relative flex flex-col md:flex-row">
-          <div className="flex flex-col  justify-center items-center w-full">
+          <div className="flex flex-col  justify-center items-center md:justify-start md:mt-10  w-full relative">
               <div className='w-full'>
                 <img 
                   data-id= {imageData?.id}
@@ -271,27 +271,27 @@ function Post() {
               <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-zinc-700 '>
               <MdKeyboardArrowLeft size={32} />
               </button>
-            </div>
-          <div className=' flex justify-center items-center my-4 space-x-2'>
-            <button 
-              className='bg-zinc-700 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
-              onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
-              ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
-            </button>
-            <div className=' flex rounded-full bg-zinc-700 space-x-6 px-4 py-2'>
-              <button className='flex items-center space-x-2 ' onClick={handleCollection}>
-                <FaHeart size={15} className={ isCollected ? ' text-rose-400' : ' text-white'} /> <span className='text-sm'>{imageData.likes}</span>
-              </button>
-              <button className=' ' onClick={handleComment}>
-                <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
-              </button>
-              <button className='' onClick={handleShare}>
-                <MdOutlineShare size={15} />
-              </button>
-            </div>
-
+              <div className=' flex justify-center items-center my-4 space-x-2'>
+                <button 
+                  className='bg-zinc-700 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
+                  onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
+                  ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
+                </button>
+                <div className=' flex rounded-full bg-zinc-700 space-x-6 px-4 py-2'>
+                  <button className='flex items-center space-x-2 ' onClick={handleCollection}>
+                    <FaHeart size={15} className={ isCollected ? ' text-rose-400' : ' text-white'} /> <span className='text-sm'>{imageData.likes}</span>
+                  </button>
+                  <button className=' ' onClick={handleComment}>
+                    <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
+                  </button>
+                  <button className='' onClick={handleShare}>
+                    <MdOutlineShare size={15} />
+                  </button>
+                </div>
+              </div>
           </div>
-          <div className='w-full md:w-1/2 p-4 '> 
+
+          <div className='w-full md:w-full p-4 '> 
             <div className=' flex justify-between items-center'>
               <div>
                 <div className='text-xl text-white font-semibold' data-id={imageData?.id}>
@@ -320,7 +320,7 @@ function Post() {
 
 
           
-            <div className='w-full md:w-1/2 flex flex-col justify-end  relative pb-20 pt-2'>
+            <div className='w-full md:w-full flex flex-col justify-end  relative pb-20 pt-2'>
               
               <div className='text-white font-bold my-3 pt-5'>Prompt</div>
               <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
@@ -387,7 +387,7 @@ function Post() {
 
           </div>
 
-          <div className='flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
+          <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
               onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
