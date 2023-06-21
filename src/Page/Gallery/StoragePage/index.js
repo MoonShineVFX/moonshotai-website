@@ -6,7 +6,7 @@ import { FaShareSquare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -125,7 +125,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
   }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
   return (
     <div >
-          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  </div>
+          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage}</div>  </div>
           {show && <ConfirmCancelMsg setShow={setShow} />  }
           {!imagesResults ?
           <div className='text-white'>Loading</div> 

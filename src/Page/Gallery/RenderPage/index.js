@@ -6,7 +6,7 @@ import { MdBookmark,MdMoreVert,MdBookmarkBorder } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage}) {
+function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -85,7 +85,9 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   }, []);
   return (
     <div >
-      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  </div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
+        {title} <div className='text-xs text-white/50'>{totalImage}</div>  
+      </div>
       <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm hidden'>
         {/* <div className='py-1 px-2 rounded-full'>{images.previous ? 
           <div onClick={onHandlePrev}>Previous</div>  
@@ -101,7 +103,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
+          <div className='grid grid-cols-3 md:grid-cols-4 gap-3'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
@@ -122,8 +124,8 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
                 </div>
 
                 <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
-                  <div className='text-sm'>
-                     #{id} {created_at.substr(0,10)}
+                  <div className='text-xs'>
+                     {created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
                     {

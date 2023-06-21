@@ -450,13 +450,13 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
+        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
+        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile.total_follows} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
@@ -543,13 +543,13 @@ function Index() {
           return(
             <div 
               key={item.title} 
-              className={'text-xs text-white cursor-pointer pb-2 w-full flex  justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
+              className={'text-xs text-white cursor-pointer pb-2 w-full flex flex-col justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
               onClick={()=>{
                 setCurrentDropDownItem(item)
                 handleOptionChange(item)
               }}
             >
-              <div>{switchIcons(item.title)}</div> 
+              <div className='mb-1'>{switchIcons(item.title)}</div> 
 
               <div >{item.title} </div>
             </div>

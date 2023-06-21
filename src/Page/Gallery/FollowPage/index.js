@@ -6,7 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 
-function Index({title,follows,followsResults,currentProfile,handleUnfollow}) {
+function Index({title,follows,followsResults,currentProfile,handleUnfollow,totalImage}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -43,7 +43,7 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow}) {
 
   return (
     <div >
-      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  </div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  <div className='text-xs text-white/50'>{totalImage}</div> </div>
       {!followsResults ?
         <div className='text-white'>Loading</div> 
         : 
