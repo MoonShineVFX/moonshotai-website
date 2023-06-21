@@ -156,7 +156,7 @@ function Index() {
 
 
 
-                  <div className='text-sm  flex items-start mt-3  space-x-3 w-full   text-white'>
+                  <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
                     <Link to={`/user/${author?.id}`}  className='w-8'>
                       <div className='pt-[100%] relative'>
                         <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
