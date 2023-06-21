@@ -42,7 +42,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
 
   return (
     <div >
-      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage}</div>  </div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 

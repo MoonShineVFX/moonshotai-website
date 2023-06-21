@@ -125,7 +125,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
   }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
   return (
     <div >
-          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage}</div>  </div>
+          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
           {show && <ConfirmCancelMsg setShow={setShow} />  }
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
@@ -154,16 +154,17 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     />
                   </div>
                   
-                  <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center p-1 '> 
-                    <div className='pt-3 pl-2' onClick={()=>{
+                  <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
+                    <div className='p-2 ' onClick={()=>{
                       handleClick(id)
-                    }}><MdMoreVert size={20} /></div>
-                    <div className='text-white '>
-
-                        <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
-                          onHandleDisplayHome(image)
-                        }}> <MdModeEdit size={15}/></div>
-                      
+                    }}>
+                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+ 
+                    </div>
+                    <div className='text-white p-2'>
+                      <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
+                        onHandleDisplayHome(image)
+                      }}> <MdModeEdit size={15}/></div>
                     </div>
                     <motion.div
                       className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
@@ -190,7 +191,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                           onHandleSetAvatar(id)
                         }}
                       >Set as Avatar</div>       
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg hidden'
                         onClick={()=>{
                           handleClick(id)
                           setIsShowFormModal(true)

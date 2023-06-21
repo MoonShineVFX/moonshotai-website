@@ -43,7 +43,7 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(15)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
@@ -407,6 +407,8 @@ function Index() {
     setIsDropDownOpen(!isDropDownOpen);
   };
   const handleOptionChange = async (item) => {
+    setCurrentPage(1)
+    setPageSize(15)
     switch (item.title) {
       case 'Renders':
         fetchUserImages(currentProfile.uid,currentPage,pageSize,token)

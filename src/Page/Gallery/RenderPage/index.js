@@ -86,7 +86,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   return (
     <div >
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
-        {title} <div className='text-xs text-white/50'>{totalImage}</div>  
+        {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
       </div>
       <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm hidden'>
         {/* <div className='py-1 px-2 rounded-full'>{images.previous ? 
