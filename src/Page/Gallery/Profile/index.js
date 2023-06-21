@@ -388,7 +388,7 @@ function Index() {
           })
           .catch((error) => console.error(error));
         break;
-      case 'Collection':
+      case 'Collections':
         fetchUserCollections(currentProfile.id,token)
           .then((images)=> {
               setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
@@ -414,7 +414,7 @@ function Index() {
         return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
-      case 'Collection':
+      case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
         return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
