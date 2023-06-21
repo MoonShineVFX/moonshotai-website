@@ -2,7 +2,8 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 import Header from '../header'
 import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
@@ -77,6 +78,25 @@ function Index() {
       },
     },
   };
+  const switchIcons = (name)=>{
+    switch (name) {
+      case 'Renders':
+        return <MdViewModule size={15} />
+        break;
+      case 'Storage':
+        return <MdBookmark size={15}/>
+        break;
+      case 'Collections':
+        return <FaHeart size={13}/>
+        break;
+      case 'Following':
+        return <MdSupervisedUserCircle size={15}/>
+        break;
+      default:
+        return <MdBookmark />
+        break;
+    }
+  } 
   const handleImageClick = image => {
     setSelectedImage(image);
   };
@@ -513,20 +533,21 @@ function Index() {
               </div>
 
 
-              <div className='grid grid-cols-4  divide-x'>
+              <div className='grid grid-cols-4 space-x-1 w-full '>
                 {dropDownManuItem.map((item,index)=>{
                 if(!item.display) return
                 return(
                   <div 
                     key={item.title} 
-                    className='text-xs px-4 cursor-pointer'
+                    className={'text-xs cursor-pointer pb-2 w-full flex  justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
                     onClick={()=>{
                       setCurrentDropDownItem(item)
                       handleOptionChange(item)
                     }}
                   >
-                    <div>{currentProfile && currentProfile[item.data_name]}</div> 
-                    <div>{item.title} </div>
+                    <div>{switchIcons(item.title)}</div> 
+
+                    <div >{item.title} </div>
                   </div>
                 )
               })}

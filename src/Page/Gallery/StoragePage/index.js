@@ -2,6 +2,8 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
+import { FaShareSquare } from "react-icons/fa";
+
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage}) {
@@ -56,18 +58,20 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     const items = {
       display_home:!image.display_home
     }
-    if(image.display_home === true){
-      const newData = { ...image, display_home: !image.display_home  }; 
-      handleStorageUpdate(image.id,newData)
-      handleDisplayHome(image.id,items)
+    setIsShowDisplayFormModal(true)
+    setImageData(image)
+    // if(image.display_home === true){
+    //   const newData = { ...image, display_home: !image.display_home  }; 
+    //   handleStorageUpdate(image.id,newData)
+    //   handleDisplayHome(image.id,items)
 
-    }else{
-      setIsShowDisplayFormModal(true)
-      setImageData(image)
-      // const newData = { ...image, display_home: !image.display_home  }; 
-      // handleStorageUpdate(image.id,newData)
-      // handleDisplayHome(image.id,items)
-    }
+    // }else{
+    //   setIsShowDisplayFormModal(true)
+    //   setImageData(image)
+    //   // const newData = { ...image, display_home: !image.display_home  }; 
+    //   // handleStorageUpdate(image.id,newData)
+    //   // handleDisplayHome(image.id,items)
+    // }
   }
   const onHandleSetBanner = (id)=>{
     handleSetBanner(id)
@@ -154,16 +158,12 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='pt-3 pl-2' onClick={()=>{
                       handleClick(id)
                     }}><MdMoreVert size={20} /></div>
-                    <div className='text-white'>
-                      { display_home ? 
-                        <div className='pt-3 pr-2' onClick={()=>{
+                    <div className='text-white '>
+
+                        <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
                           onHandleDisplayHome(image)
-                        }}><MdVisibility size={20}/></div>
-                        :
-                        <div className='pt-3 pr-2' onClick={()=>{
-                          onHandleDisplayHome(image)
-                        }}> <MdVisibilityOff size={20}/></div>
-                      }
+                        }}> <FaShareSquare size={15}/></div>
+                      
                     </div>
                     <motion.div
                       className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }

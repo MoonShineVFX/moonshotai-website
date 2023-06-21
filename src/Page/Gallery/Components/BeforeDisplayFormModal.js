@@ -16,7 +16,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       title:data.title ||'',
       description:data.description ||null,
       is_user_nsfw:data.is_user_nsfw ||false,
-      display_home:true
+      display_home:data.display_home ||false
 
     }
     handleSetStorageImage(image,items,'before')
@@ -37,7 +37,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         exit={{ opacity: 0, y: -20 }}
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
-        <div className='text-center font-bold'>Check detail before public</div>
+        <div className='text-center font-bold'>Check Post Detail </div>
         <div className='text-xs my-3 flex flex-col justify-center items-center text-white/70'>
           <div>#{image?.id}</div>
           <div>Created at {image?.created_at.substr(0,10)}</div>
@@ -47,7 +47,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='grid grid-cols-2 gap-2'>
             <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/50 font-normal my-2'>*Title</label>
+              <label htmlFor="name" className='text-white/50 font-normal my-2'>*Title(required)</label>
               <Controller
                 name="title"
                 control={control}
@@ -72,6 +72,35 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             />
 
            
+          </div>
+          <div className='flex flex-col  mt-4 '>
+            <Controller
+              name="display_home"
+              control={control}
+              defaultValue={image?.display_home}
+              render={({ field }) => (
+                <div className="flex mt-4 ">
+                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                    <div
+                      className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
+                        field.value
+                          ? 'peer-checked:after:translate-x-full peer-checked:bg-green-600'
+                          : ''
+                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
+                    ></div>
+                    <span className="ml-2 text-sm font-medium text-white/80">
+                      Show in Gallery
+                    </span>
+                  </label>
+                </div>
+              )}
+            />
           </div>
           <div className='flex flex-col  mt-4 '>
             <Controller
