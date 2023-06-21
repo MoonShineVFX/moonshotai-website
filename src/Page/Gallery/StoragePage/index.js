@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit } from "react-icons/md";
 import { FaShareSquare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -162,7 +162,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
                         <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
                           onHandleDisplayHome(image)
-                        }}> <FaShareSquare size={15}/></div>
+                        }}> <MdModeEdit size={15}/></div>
                       
                     </div>
                     <motion.div

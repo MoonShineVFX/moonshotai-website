@@ -543,7 +543,7 @@ function Index() {
           return(
             <div 
               key={item.title} 
-              className={'text-xs text-white cursor-pointer pb-2 w-full flex flex-col justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
+              className={'text-xs text-white cursor-pointer pb-2 w-full flex flex-col justify-center items-center  text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
               onClick={()=>{
                 setCurrentDropDownItem(item)
                 handleOptionChange(item)
