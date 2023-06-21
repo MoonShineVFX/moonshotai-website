@@ -450,13 +450,13 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
+        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile.total_follows} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
+        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
