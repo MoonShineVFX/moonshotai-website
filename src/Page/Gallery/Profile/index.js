@@ -174,12 +174,20 @@ function Index() {
   }
   const handleStorage = (image) =>{
     userStorageAImage(image,token)
-      .then((data)=> console.log(data))
+      .then((data)=>{
+        setTimeout(()=>{
+          setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages+1});
+        },600)
+      })
       .catch((error) => console.error(error));
   }
   const handleCollection = (image) =>{
     userCollectionAImage(image,token)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        setTimeout(()=>{
+          setCurrentProfile({...currentProfile, total_collections: currentProfile.total_collections+1});
+        },600)
+      })
       .catch((error) => console.error(error));
   }
   const handleSetBanner = (id)=>{
@@ -286,6 +294,10 @@ function Index() {
       .then((data)=> {
         if(data.status === 200 || data.status === 204){
           setTimeout(()=>{
+
+            // change currentUser collections 
+            setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages-1});
+
             fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
             .then((images)=> {
                 setStorages(images)
@@ -303,6 +315,10 @@ function Index() {
         if(data.status === 200 || data.status === 204){
           console.log('200')
           setTimeout(()=>{
+            // change currentUser collections 
+            setCurrentProfile({...currentProfile, total_collections
+              : currentProfile.total_collections
+              -1});
             fetchUserCollections(currentProfile.id,token)
             .then((images)=> {
                 setCollections(images)
@@ -319,6 +335,9 @@ function Index() {
       .then(data=>{
         if( data.status === 204){
           setTimeout(()=>{
+            setCurrentProfile({...currentProfile, total_follows
+              : currentProfile.total_follows
+              -1});
             fetchUserFollowings(currentProfile.id,token)
               .then((folloings)=> {
                   setFollows(folloings)
@@ -350,7 +369,7 @@ function Index() {
     setImagesResults(prevData => {
       const index = prevData.findIndex(item => item.id === id);
       if (index === -1) {
-        // 如果没有找到对应的元素，直接返回原来的状态
+        // 如果沒找到物件 返回原本的狀態
         return prevData;
       }
       const updatedData = [...prevData];

@@ -43,7 +43,7 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow}) {
 
   return (
     <div >
-      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  </div>
       {!followsResults ?
         <div className='text-white'>Loading</div> 
         : 

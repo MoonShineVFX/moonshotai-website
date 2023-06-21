@@ -85,8 +85,8 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   }, []);
   return (
     <div >
-      <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
-      <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm'>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}  </div>
+      <div className='flex gap-4 items-center my-3 text-white/70 justify-end text-sm hidden'>
         {/* <div className='py-1 px-2 rounded-full'>{images.previous ? 
           <div onClick={onHandlePrev}>Previous</div>  
           : 
