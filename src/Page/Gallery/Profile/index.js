@@ -530,36 +530,31 @@ function Index() {
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
-              </div>
-
-
-              <div className='grid grid-cols-4 space-x-1 w-full '>
-                {dropDownManuItem.map((item,index)=>{
-                if(!item.display) return
-                return(
-                  <div 
-                    key={item.title} 
-                    className={'text-xs cursor-pointer pb-2 w-full flex  justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
-                    onClick={()=>{
-                      setCurrentDropDownItem(item)
-                      handleOptionChange(item)
-                    }}
-                  >
-                    <div>{switchIcons(item.title)}</div> 
-
-                    <div >{item.title} </div>
-                  </div>
-                )
-              })}
-              </div>
-         
-             
-              
+              </div>              
             </div>
             :
             <div className=' font-bold text-xl '>用戶未登入</div>
           }
 
+        </div>
+        <div className='grid grid-cols-4 space-x-1 w-full px-2 '>
+          {dropDownManuItem.map((item,index)=>{
+          if(!item.display) return
+          return(
+            <div 
+              key={item.title} 
+              className={'text-xs text-white cursor-pointer pb-2 w-full flex  justify-center items-center space-x-2 text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
+              onClick={()=>{
+                setCurrentDropDownItem(item)
+                handleOptionChange(item)
+              }}
+            >
+              <div>{switchIcons(item.title)}</div> 
+
+              <div >{item.title} </div>
+            </div>
+          )
+        })}
         </div>
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:hidden'>
           {dropDownManuItem.map((item,index)=>{
