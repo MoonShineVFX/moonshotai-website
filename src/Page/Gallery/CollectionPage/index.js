@@ -5,6 +5,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import {EmptyCollectionPage} from '../helpers/componentsHelper'
 
 function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage}) {
   const [openItems, setOpenItems] = useState([]);
@@ -38,6 +39,12 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
 
 
     // 
+  }
+  if(totalImage === 0) {
+    return <div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+      <EmptyCollectionPage />
+    </div>
   }
 
   return (

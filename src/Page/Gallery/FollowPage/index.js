@@ -5,7 +5,7 @@ import { MdErrorOutline } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
-
+import { EmptyFollowPage } from '../helpers/componentsHelper';
 function Index({title,follows,followsResults,currentProfile,handleUnfollow,totalImage}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -39,7 +39,12 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
 
     // 
   }
-  console.log(followsResults)
+  if(totalImage === 0) {
+    return <div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+      <EmptyFollowPage />
+    </div>
+  }
 
   return (
     <div >

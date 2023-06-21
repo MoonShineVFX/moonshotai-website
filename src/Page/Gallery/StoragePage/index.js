@@ -6,6 +6,7 @@ import { FaShareSquare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { EmptyStoragePage } from '../helpers/componentsHelper';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
@@ -123,6 +124,12 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       window.removeEventListener('scroll', handleScroll);
     };
   }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  if(totalImage === 0) {
+    return <div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+      <EmptyStoragePage />
+    </div>
+  }
   return (
     <div >
           <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage} items</div>  </div>

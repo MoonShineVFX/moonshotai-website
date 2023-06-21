@@ -342,3 +342,52 @@ export const CommentDataFormat = ({data})=>{
     </>
   )
 }
+export const EmptyRenderPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        <div>尚無圖片</div>
+        開始用 Moonshot 創造第一張 AI 圖吧！
+      </div>
+    </div>
+  )
+}
+export const EmptyStoragePage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        尚無留存的圖片
+      </div>
+    </div>
+  )
+}
+export const EmptyCollectionPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        尚無喜歡的圖片
+      </div>
+    </div>
+  )
+}
+export const EmptyFollowPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        還沒有追隨使用者
+      </div>
+    </div>
+  )
+}

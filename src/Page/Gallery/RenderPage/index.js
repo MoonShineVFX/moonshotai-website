@@ -6,6 +6,7 @@ import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle } fro
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
+import { EmptyRenderPage } from '../helpers/componentsHelper';
 function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
@@ -81,8 +82,16 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     };
   }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
+
+
   useEffect(() => {
   }, []);
+  if(totalImage === 0) {
+    return <div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+      <EmptyRenderPage />
+    </div>
+  }
   return (
     <div >
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
