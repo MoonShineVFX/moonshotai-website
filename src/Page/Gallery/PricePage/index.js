@@ -4,8 +4,8 @@ import Header from '../header'
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest} from '../helpers/fetchHelper'
-import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay} from '../helpers/fetchHelper'
+import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
 import { HmacSHA256 } from 'crypto-js';
@@ -15,6 +15,9 @@ function Index() {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
+
+  const [isLoadingReq, setIsLoadingReq] = useState(false);
+  const [isReqError, setReqError] = useState(false);
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
@@ -43,30 +46,25 @@ function Index() {
   const onSubmit = (data) => {
     console.log(data)
   }
-  let payURL = process.env.REACT_APP_LINEPAY_SANDBOX_URL
-  let payID = process.env.REACT_APP_LINEPAY_SANDBOX_ID
-  let payKEY = process.env.REACT_APP_LINEPAY_SANDBOX_KEY
-  let requestUri = '/v3/payments/request'
-  let nonce = Date.now() 
-  const handlePayment = () => {
-    console.log('click')
-    let headers = {
-      'Content-Type': 'application/json',
-      'X-LINE-ChannelId': payID,
-      'X-LINE-Authorization-Nonce': nonce,
-      'X-LINE-Authorization': encryptHmacSHA256Base64()
-    }
-    console.log(headers)
 
-    // fetchLinePayRequest(headers,order)
-  }
 
-  const encryptHmacSHA256Base64 = ()=>{
-    //Signature = Base64(HMAC-SHA256(Your ChannelSecret, (Your ChannelSecret + URI + RequestBody + nonce)))
-    let encrtpt = HmacSHA256(payKEY,(payKEY+requestUri+JSON.stringify(order)+nonce))
-    const hmacBase64 = Base64.encode(encrtpt)
-    return hmacBase64
+  const testpay =()=>{
+    setIsLoadingReq(true);
+    setReqError(false)
+      testLinePay(linLoginData).then(data=>{
+        //payment_url
+        //transaction_id
+        setIsLoadingReq(false);
+        setReqError(false)
+        const url = data.payment_url
+        window.location.href = url;
 
+        // console.log(data)
+    }).catch(e=>{
+      setIsLoadingReq(false);
+      setReqError(true)
+      console.log(e)
+    })
   }
 
   useEffect(()=>{
@@ -93,9 +91,41 @@ function Index() {
             <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加大儲存空間</div> <div className='text-white/70'> 增加個人儲存數量至 300 張。</div> </div> </div>
           </div>
         </div>
-        
+
         <div className="flex flex-col justify-between items-center lg:flex-row lg:items-start gap-6">
           
+          {/* Test Line Pay */}
+          <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0 ">
+            <div className="mb-7 pb-7 flex justify-between  items-center border-b border-gray-300">
+              <img src={process.env.PUBLIC_URL+'/images/price/01.jpg'}  alt="" className="rounded-3xl w-20 h-20" />
+              <div className="-5">
+                <span className="block text-2xl font-semibold text-white text-right">測試購買</span>
+                <div className='flex flex-col  items-end mt-1'>
+                  <div> <span className="text-4xl font-bold text-white">  </span></div>
+                </div>
+              </div>
+            </div>
+            <div className='flex space-x-2 justify-around'>
+              <button 
+                className="w-full flex flex-col justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                onClick={testpay}
+              >
+                 <MdCreditCard size={20} />  Line pay
+                 {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                 {isReqError && <div className='text-xs'>請求錯誤</div>}
+              </button>
+              <button 
+                className="w-full flex flex-col justify-center items-center gap-2 bg-blue-700  rounded-md py-3 text-center text-white text-sm"
+
+              >
+                 <MdCreditCard size={20} /> 藍新金流(信用卡)
+              </button>
+            </div>
+
+            
+
+
+          </div>
           <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0 ">
             <div className="mb-7 pb-7 flex justify-between  items-center border-b border-gray-300">
               <img src={process.env.PUBLIC_URL+'/images/price/01.jpg'}  alt="" className="rounded-3xl w-20 h-20" />

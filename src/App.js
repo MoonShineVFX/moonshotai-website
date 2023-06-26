@@ -13,6 +13,7 @@ import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
 import Price from './Page/Gallery/PricePage';
+import Checkout from './Page/Gallery/PricePage/Checkout';
 import Docs from './Page/Gallery/Docs'
 
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
@@ -47,6 +48,7 @@ function App() {
         <Route path="/user/:id" element={<User />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/price" element={<Price />} />
+        <Route path="/checkout/:id" element={<Checkout />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}
 
