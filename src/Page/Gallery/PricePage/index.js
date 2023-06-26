@@ -47,7 +47,7 @@ function Index() {
     console.log(data)
   }
 
-
+  //按下按鈕錢 先驗證是否已登入，要求登入
   const testpay =()=>{
     setIsLoadingReq(true);
     setReqError(false)
