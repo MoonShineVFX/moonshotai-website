@@ -54,10 +54,13 @@ function Index() {
       testLinePay(linLoginData).then(data=>{
         //payment_url
         //transaction_id
-        setIsLoadingReq(false);
+        setIsLoadingReq(false)
         setReqError(false)
         const url = data.payment_url
-        console.log(url)
+        console.log(data)
+        if(data.payment_url === undefined){
+          setReqError(true)
+        }
         // window.location.href = url;
 
         // console.log(data)
