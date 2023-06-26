@@ -57,7 +57,8 @@ function Index() {
         setIsLoadingReq(false);
         setReqError(false)
         const url = data.payment_url
-        window.location.href = url;
+        console.log(url)
+        // window.location.href = url;
 
         // console.log(data)
     }).catch(e=>{
