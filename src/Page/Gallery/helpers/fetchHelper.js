@@ -492,7 +492,7 @@ export const userDelCommentToImage = async (commentId,token)=>{
 
 
 // line pay test
-export const testLinePay =async (user,token) =>{
+export const testLinePay =async (token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
@@ -500,7 +500,7 @@ export const testLinePay =async (user,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'request_payment/', requestOptions)
+  const response =await fetch(apiUrl+'request_payment', requestOptions)
   const data =await response
   return data
 }
