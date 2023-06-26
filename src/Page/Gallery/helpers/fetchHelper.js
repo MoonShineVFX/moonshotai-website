@@ -501,6 +501,6 @@ export const testLinePay =async (token) =>{
     }
   };
   const response =await fetch(apiUrl+'request_payment', requestOptions)
-  const data =await response
+  const data =await response.json()
   return data
 }
