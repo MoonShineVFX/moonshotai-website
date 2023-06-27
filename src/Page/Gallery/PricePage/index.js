@@ -4,12 +4,13 @@ import Header from '../header'
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
 import { HmacSHA256 } from 'crypto-js';
 import { Base64 } from 'js-base64';
+import liff from '@line/liff';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -47,29 +48,43 @@ function Index() {
     console.log(data)
   }
 
+  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const testpay =()=>{
-    setIsLoadingReq(true);
-    setReqError(false)
-      testLinePay(linLoginData).then(data=>{
-        //payment_url
-        //transaction_id
-        setIsLoadingReq(false)
-        setReqError(false)
-        const url = data.payment_url
-        console.log(data)
-        if(data.payment_url === undefined){
-          setReqError(true)
-          return
-        }
-        window.location.href = url;
+    liff.init({liffId: liffID}) 
+      .then(() => {
+        if (!liff.isLoggedIn()) {
+          console.log("你還沒登入Line哦！");
+          liff.login({ redirectUri: "/price" });
+        } else {
+          setIsLoadingReq(true);
+          setReqError(false)
+            testLinePay(linLoginData).then(data=>{
+              //payment_url
+              //transaction_id
+              setIsLoadingReq(false)
+              setReqError(false)
+              const url = data.payment_url
+              console.log(data)
+              if(data.payment_url === undefined){
+                setReqError(true)
+                return
+              }
+              window.location.href = url;
+      
+              // console.log(data)
+          }).catch(e=>{
+            setIsLoadingReq(false);
+            setReqError(true)
+            console.log(e)
+          })
 
-        // console.log(data)
-    }).catch(e=>{
-      setIsLoadingReq(false);
-      setReqError(true)
-      console.log(e)
-    })
+        }
+      })
+      .catch((err) => {
+        console.log('初始化失敗')
+      });
+
   }
   const [selectedBlock, setSelectedBlock] = useState(0);
   const handleBlockClick = (blockIndex) => {
