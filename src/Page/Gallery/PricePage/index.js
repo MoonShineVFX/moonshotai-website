@@ -18,6 +18,7 @@ function Index() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);
+  const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
@@ -77,6 +78,10 @@ function Index() {
               })
           }else{
             console.log('尚未登入需要登入')
+            setIsNeedLogin(true)
+            liff.init({liffId: liffID}).then(()=>{
+              console.log('init完成可準備登入')
+            })
           }
 
   }
@@ -202,6 +207,7 @@ function Index() {
                                         {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                                         {isReqError && <div className='text-xs'>請求錯誤</div>}
                                       </button>
+                                      {isNeedLogin&&  <div className='text-xs'>尚未登入引導登入</div>}
                       </div>
                     }
                   </div>
