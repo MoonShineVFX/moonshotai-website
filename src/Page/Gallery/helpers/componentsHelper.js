@@ -141,14 +141,8 @@ export const LoadingLogoFly = ()=>{
 export const LoadingLogoSpin = ()=>{
   return (
     <div className='text-white h-[50vh] flex justify-center items-center relative'>
-      <div id="logospin01" className='text-lime-600  w-20 brightness-75'>
-        <div className='pt-[100%] relative  '>
-          <img  
-            src={process.env.PUBLIC_URL+'/images/logo.png'}
-            className='rounded-full absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full'
-
-          />
-        </div>
+      <div  className='text-lime-600  w-14 '>
+      <span className="loader"></span>
       </div>
     </div>
 
@@ -338,7 +332,7 @@ export const CommentDataFormat = ({data})=>{
               src={selectedImage} alt='' className='object-contain h-full w-full' />
             <button
               onClick={handleModalClose}
-              className='absolute top-2 right-2 text-white font-bold bg-lime-500 rounded p-2'
+              className='absolute top-2 right-2 text-white  bg-lime-600  p-2'
             >
               Close
             </button>
@@ -346,5 +340,54 @@ export const CommentDataFormat = ({data})=>{
         </motion.div>
       )}
     </>
+  )
+}
+export const EmptyRenderPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        <div>尚無圖片</div>
+        開始用 Moonshot 創造第一張 AI 圖吧！
+      </div>
+    </div>
+  )
+}
+export const EmptyStoragePage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        尚無留存的圖片
+      </div>
+    </div>
+  )
+}
+export const EmptyCollectionPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        尚無喜歡的圖片
+      </div>
+    </div>
+  )
+}
+export const EmptyFollowPage = ()=>{
+  return (
+    <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
+      <div className='w-1/2'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div className='mt-10'>
+        還沒有追隨使用者
+      </div>
+    </div>
   )
 }

@@ -8,10 +8,12 @@ import Camera from './Page/Camera'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
+import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
 import Price from './Page/Gallery/PricePage';
+import Checkout from './Page/Gallery/PricePage/Checkout';
 import Docs from './Page/Gallery/Docs'
 
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
@@ -32,6 +34,7 @@ function App() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
+
   return (
     <RecoilRoot>
     <BrowserRouter>
@@ -40,10 +43,13 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gv2" element={<GalleryV2 />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/user/:id" element={<User />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/price" element={<Price />} />
+        <Route path="/checkout/:id" element={<Checkout />} />
+
         {/* <Route path="/storages" element={<Storages />} /> */}
 
       </Routes>

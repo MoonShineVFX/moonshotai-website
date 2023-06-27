@@ -2,10 +2,10 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 import Header from '../header'
 import liff from '@line/liff';
-
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
@@ -43,7 +43,7 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(15)
   const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
@@ -78,6 +78,25 @@ function Index() {
       },
     },
   };
+  const switchIcons = (name)=>{
+    switch (name) {
+      case 'Renders':
+        return <MdViewModule size={15} />
+        break;
+      case 'Storage':
+        return <MdImage size={15}/>
+        break;
+      case 'Collections':
+        return <FaHeart size={13}/>
+        break;
+      case 'Following':
+        return <MdSupervisedUserCircle size={15}/>
+        break;
+      default:
+        return <MdBookmark />
+        break;
+    }
+  } 
   const handleImageClick = image => {
     setSelectedImage(image);
   };
@@ -175,12 +194,20 @@ function Index() {
   }
   const handleStorage = (image) =>{
     userStorageAImage(image,token)
-      .then((data)=> console.log(data))
+      .then((data)=>{
+        setTimeout(()=>{
+          setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages+1});
+        },600)
+      })
       .catch((error) => console.error(error));
   }
   const handleCollection = (image) =>{
     userCollectionAImage(image,token)
-      .then((data)=> console.log(data))
+      .then((data)=> {
+        setTimeout(()=>{
+          setCurrentProfile({...currentProfile, total_collections: currentProfile.total_collections+1});
+        },600)
+      })
       .catch((error) => console.error(error));
   }
   const handleSetBanner = (id)=>{
@@ -287,7 +314,11 @@ function Index() {
       .then((data)=> {
         if(data.status === 200 || data.status === 204){
           setTimeout(()=>{
-            fetchUserStorages(currentProfile.id,token)
+
+            // change currentUser collections 
+            setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages-1});
+
+            fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
             .then((images)=> {
                 setStorages(images)
                 setStoragesResults(images.results)
@@ -304,6 +335,10 @@ function Index() {
         if(data.status === 200 || data.status === 204){
           console.log('200')
           setTimeout(()=>{
+            // change currentUser collections 
+            setCurrentProfile({...currentProfile, total_collections
+              : currentProfile.total_collections
+              -1});
             fetchUserCollections(currentProfile.id,token)
             .then((images)=> {
                 setCollections(images)
@@ -320,6 +355,9 @@ function Index() {
       .then(data=>{
         if( data.status === 204){
           setTimeout(()=>{
+            setCurrentProfile({...currentProfile, total_follows
+              : currentProfile.total_follows
+              -1});
             fetchUserFollowings(currentProfile.id,token)
               .then((folloings)=> {
                   setFollows(folloings)
@@ -351,7 +389,7 @@ function Index() {
     setImagesResults(prevData => {
       const index = prevData.findIndex(item => item.id === id);
       if (index === -1) {
-        // 如果没有找到对应的元素，直接返回原来的状态
+        // 如果沒找到物件 返回原本的狀態
         return prevData;
       }
       const updatedData = [...prevData];
@@ -369,6 +407,8 @@ function Index() {
     setIsDropDownOpen(!isDropDownOpen);
   };
   const handleOptionChange = async (item) => {
+    setCurrentPage(1)
+    setPageSize(15)
     switch (item.title) {
       case 'Renders':
         fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
@@ -389,7 +429,7 @@ function Index() {
           })
           .catch((error) => console.error(error));
         break;
-      case 'Collection':
+      case 'Collections':
         fetchUserCollections(currentProfile.id,token)
           .then((images)=> {
               setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
@@ -412,13 +452,13 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
-      case 'Collection':
-        return <CollectionPage title={currentDropDownItem.title} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
+      case 'Collections':
+        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
-        return <FollowPage title={currentDropDownItem.title} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
+        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
@@ -492,35 +532,31 @@ function Index() {
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
-              </div>
-
-
-              <div className='grid grid-cols-4  divide-x'>
-                {dropDownManuItem.map((item,index)=>{
-                if(!item.display) return
-                return(
-                  <div 
-                    key={item.title} 
-                    className='text-xs px-4 cursor-pointer'
-                    onClick={()=>{
-                      setCurrentDropDownItem(item)
-                      handleOptionChange(item)
-                    }}
-                  >
-                    <div>{currentProfile && currentProfile[item.data_name]}</div> 
-                    <div>{item.title} </div>
-                  </div>
-                )
-              })}
-              </div>
-         
-             
-              
+              </div>              
             </div>
             :
             <div className=' font-bold text-xl '>用戶未登入</div>
           }
 
+        </div>
+        <div className='grid grid-cols-4 space-x-1 w-full px-2 '>
+          {dropDownManuItem.map((item,index)=>{
+          if(!item.display) return
+          return(
+            <div 
+              key={item.title} 
+              className={'text-xs text-white cursor-pointer pb-2 w-full flex flex-col justify-center items-center  text-center  '+ ( currentDropDownItem.title === item.title ? ' border-b ' : ' brightness-50'  )}
+              onClick={()=>{
+                setCurrentDropDownItem(item)
+                handleOptionChange(item)
+              }}
+            >
+              <div className='mb-1'>{switchIcons(item.title)}</div> 
+
+              <div >{item.title} </div>
+            </div>
+          )
+        })}
         </div>
         <div className='grid-cols-2 md:grid-cols-4  items-center gap-3 my-10 md:my-5 flex-wrap hidden lg:hidden'>
           {dropDownManuItem.map((item,index)=>{

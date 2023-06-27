@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/post/**",
+        "function": "host"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

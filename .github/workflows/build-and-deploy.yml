@@ -24,13 +24,21 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      - name: Install and build
+      - name: Install and build (Web)
         run: |
           yarn install --frozen-lockfile
           yarn build
+      - name: Install (Functions)
+        working-directory: functions
+        run: |
+          yarn install --frozen-lockfile
+      - name: Copy index.html
+        run: |
+          mkdir -p functions/source
+          cp build/index.html functions/source/index.html
       - name: Deploy to Firebase
         uses: docker://w9jds/firebase-action:master
         with:
-          args: deploy -P ${{ secrets.FIREBASE_PROJECT }} --only hosting
+          args: deploy -P ${{ secrets.FIREBASE_PROJECT }} --only hosting,functions:host
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

@@ -1,10 +1,13 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline } from "react-icons/md";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle } from "react-icons/md";
+import { FaShareSquare } from "react-icons/fa";
+
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage}) {
+import { EmptyStoragePage } from '../helpers/componentsHelper';
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -42,7 +45,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       handleRemoveStorage(image.id)
     }
 
-    // 
+    // remove後應更新使用者擁有數量
   }
   const handleClick = (id) => {
     if (openItems.includes(id)) {
@@ -56,18 +59,20 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     const items = {
       display_home:!image.display_home
     }
-    if(image.display_home === true){
-      const newData = { ...image, display_home: !image.display_home  }; 
-      handleStorageUpdate(image.id,newData)
-      handleDisplayHome(image.id,items)
+    setIsShowDisplayFormModal(true)
+    setImageData(image)
+    // if(image.display_home === true){
+    //   const newData = { ...image, display_home: !image.display_home  }; 
+    //   handleStorageUpdate(image.id,newData)
+    //   handleDisplayHome(image.id,items)
 
-    }else{
-      setIsShowDisplayFormModal(true)
-      setImageData(image)
-      // const newData = { ...image, display_home: !image.display_home  }; 
-      // handleStorageUpdate(image.id,newData)
-      // handleDisplayHome(image.id,items)
-    }
+    // }else{
+    //   setIsShowDisplayFormModal(true)
+    //   setImageData(image)
+    //   // const newData = { ...image, display_home: !image.display_home  }; 
+    //   // handleStorageUpdate(image.id,newData)
+    //   // handleDisplayHome(image.id,items)
+    // }
   }
   const onHandleSetBanner = (id)=>{
     handleSetBanner(id)
@@ -119,9 +124,15 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       window.removeEventListener('scroll', handleScroll);
     };
   }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  if(totalImage === 0) {
+    return <div>
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+      <EmptyStoragePage />
+    </div>
+  }
   return (
     <div >
-          <div className='text-lime-100/70 text-xl  md:text-left md:text-3xl  m-4'>{title}  </div>
+          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
           {show && <ConfirmCancelMsg setShow={setShow} />  }
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
@@ -150,20 +161,17 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     />
                   </div>
                   
-                  <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center p-1 '> 
-                    <div className='pt-3 pl-2' onClick={()=>{
+                  <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
+                    <div className='p-2 ' onClick={()=>{
                       handleClick(id)
-                    }}><MdMoreVert size={20} /></div>
-                    <div className='text-white'>
-                      { display_home ? 
-                        <div className='pt-3 pr-2' onClick={()=>{
-                          onHandleDisplayHome(image)
-                        }}><MdVisibility size={20}/></div>
-                        :
-                        <div className='pt-3 pr-2' onClick={()=>{
-                          onHandleDisplayHome(image)
-                        }}> <MdVisibilityOff size={20}/></div>
-                      }
+                    }}>
+                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+ 
+                    </div>
+                    <div className='text-white p-2'>
+                      <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
+                        onHandleDisplayHome(image)
+                      }}> <MdModeEdit size={15}/></div>
                     </div>
                     <motion.div
                       className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
@@ -190,7 +198,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                           onHandleSetAvatar(id)
                         }}
                       >Set as Avatar</div>       
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg hidden'
                         onClick={()=>{
                           handleClick(id)
                           setIsShowFormModal(true)
@@ -207,7 +215,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     </div>
                     <div className='flex gap-4'>
                       <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdBookmarkRemove />Remove
+                        <MdRemoveCircle />移除留存
                       </div>
 
 

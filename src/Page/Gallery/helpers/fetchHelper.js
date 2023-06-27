@@ -491,21 +491,16 @@ export const userDelCommentToImage = async (commentId,token)=>{
 }
 
 
-/**
- * Line Pay SDK not yet work
- * */ 
-
-const payURL = process.env.REACT_APP_LINEPAY_SANDBOX_URL
-const payID = process.env.REACT_APP_LINEPAY_SANDBOX_ID
-const payKEY = process.env.REACT_APP_LINEPAY_SANDBOX_KEY
-export const fetchLinePayRequest = async(headers,order)=>{
+// line pay test
+export const testLinePay =async (token) =>{
   const requestOptions = {
     method: 'POST',
-    headers: headers,
-    body: JSON.stringify(order)
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
   };
-  const response = await fetch(payURL+'/v3/payments/request' ,requestOptions)
-  const data = await response.json()
+  const response =await fetch(apiUrl+'request_payment', requestOptions)
+  const data =await response.json()
   return data
 }
-

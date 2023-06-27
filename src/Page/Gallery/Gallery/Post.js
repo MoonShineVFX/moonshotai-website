@@ -9,6 +9,7 @@ import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
+import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
 import EditCommentForm from '../Components/EditCommentForm';
 function Post() {
@@ -35,6 +36,10 @@ function Post() {
   const [ isCollected ,setIsCollected] = useState(false)
   const [ isCommentModal, setIsCommentModal]= useState(false)
   const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
+
+  const [currentStoragePage, setCurrentStoragePage]= useState(1)
+  const [totalPage, setTotalPage]= useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
@@ -140,7 +145,7 @@ function Post() {
       setIsLoginForComment(true)
      }else{
       if(isHaveUserComment){
-        toast('You have already commented on this image. Please edit it.', {
+        toast('You have already commented on this image. You can edit it.', {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -155,7 +160,7 @@ function Post() {
         setCurrentComment(null)
         setIsCommentModal(true)
         setIsLoginForComment(false)
-        fetchUserStorages(currentUser.id,linLoginData)
+        fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results)
@@ -169,7 +174,7 @@ function Post() {
   const handleEditComment = ()=>{
     setIsCommentModal(true)
     setIsLoginForComment(false)
-    fetchUserStorages(currentUser.id,linLoginData)
+    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
       .then((images)=> {
           setStorages(images)
           setStoragesResults(images.results)
@@ -212,7 +217,7 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSelectStorageImage = ()=>{
-    fetchUserStorages(currentUser.id,linLoginData)
+    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
         .then((images)=> {
             setStorages(images)
             setStoragesResults(images.results)
@@ -254,112 +259,135 @@ function Post() {
       <div className='text-white'>Loading</div> 
       :
       <>
-        <div className="w-full md:w-10/12  space-x-0  md:space-x-10 mx-auto  p-4  text-white relative flex flex-col md:flex-row">
-          <div className='w-full md:w-1/2 '> 
-            <button onClick={handleBackClick} className='text-white'>
-              <MdKeyboardArrowLeft size={42} />
-            </button>
-            <div className='text-xs text-white/40 leading-3'>#{ imageData?.id}</div>
-            <div className='text-xl text-white font-semibold'>{imageData?.title}</div> 
-            <div className=' flex items-center space-x-3 my-2'>
-              <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
-                <div className='w-8'>
-                  <div className='pt-[100%] relative'>
-                    <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
-                  </div>
-                </div>
-                <div className='text-white/80'>{imageData?.author?.name}</div>
-              </Link>
-
-            </div>
-            <div className="flex flex-col  justify-center items-center w-full">
-              <div className='w-full my-5'>
+        <div className="w-full md:w-10/12  space-x-0  md:space-x-10 mx-auto  text-white relative flex flex-col md:flex-row">
+          <div className="flex flex-col  justify-center items-center md:justify-start md:mt-10  w-full relative">
+              <div className='w-full'>
                 <img 
+                  data-id= {imageData?.id}
                   src={imageData?.urls?.regular} 
                   alt={imageData?.id} 
                   className="w-full" />
               </div>
-            </div>
-            <div className=' flex flex-col justify-end  relative pt-2'>
-              <div className='flex items-center space-x-2 text-white '>
-                <button className='flex items-center gap-2 p-2 ' onClick={handleCollection}>
-                  <FaHeart size={20} className={ isCollected ? ' text-rose-400' : ' text-white'} /> {imageData.likes}
+              <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-zinc-700 '>
+              <MdKeyboardArrowLeft size={32} />
+              </button>
+              <div className=' flex justify-center items-center my-4 space-x-2'>
+                <button 
+                  className='bg-zinc-700 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
+                  onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
+                  ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
                 </button>
-                <button className='p-2' onClick={handleComment}>
-                  <MdModeComment size={20} />
-                </button>
-                <button className='p-2' onClick={handleShare}>
-                  <MdOutlineShare size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className='w-full md:w-1/2 flex flex-col justify-end  relative pb-20 pt-2'>
-            <div className='mt-3 text-white/60 text-sm'>{imageData?.created_at && imageData?.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData?.model)}   </div> 
-            <div className='text-white font-bold my-3 '>Prompt</div>
-            <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-              <div className='p-3'>{imageData?.prompt}</div>
-            </div>
-            <div className='text-white font-bold my-3'>Negative prompt</div>
-            <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-            <div className='p-3'>{imageData?.negative_prompt}</div>
-            </div>
-            <div className='mt-4'>
-                <div className='text-white font-bold my-1 '>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData?.model)}</span> </div>
-                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData?.steps}</span></div>
-                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData?.sampler_index}</span></div>
-                <div className='text-white font-bold my-1 '>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData?.cfg_scale}</span></div>
-            </div>
-            {imageData?.description && 
-              <div className='my-2'>
-                <div className='text-white font-bold my-1 '>Description:</div>
-                <div className='relative whitespace-normal break-words '>
-                  <div className=''>{imageData?.description}</div>
+                <div className=' flex rounded-full bg-zinc-700 space-x-6 px-4 py-2'>
+                  <button className='flex items-center space-x-2 ' onClick={handleCollection}>
+                    <FaHeart size={15} className={ isCollected ? ' text-rose-400' : ' text-white'} /> <span className='text-sm'>{imageData.likes}</span>
+                  </button>
+                  <button className=' ' onClick={handleComment}>
+                    <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
+                  </button>
+                  <button className='' onClick={handleShare}>
+                    <MdOutlineShare size={15} />
+                  </button>
                 </div>
               </div>
-            }
-            {/* Comment area */}
-            <div className='mt-6'>
-              <div className='text-white font-bold my-1 mb-4 '>Discussion</div>
-              {
-                commentsResults.length > 0 ?
-           
-                  commentsResults.map((item,index)=>{
-                    const {author,text,created_at} = item
-                    return(
-                      <div className=' rounded-md bg-zinc-600 px-4 py-6'>
-                        <div>
-                          <div className='flex items-center gap-2'>
-                            <div className='w-8'>
-                              <div className='pt-[100%] relative'>
-                                <img src={author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+          </div>
+
+          <div className='w-full md:w-full p-4 '> 
+            <div className=' flex justify-between items-center'>
+              <div>
+                <div className='text-xl text-white font-semibold' data-id={imageData?.id}>
+                  {imageData?.title}
+                </div>
+                <div className=' flex items-center space-x-3 my-2'>
+                  <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
+                    <div className='w-7'>
+                      <div className='pt-[100%] relative'>
+                        <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                      </div>
+                    </div>
+                    <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>
+                  </Link>
+
+                </div>
+              </div>
+
+              <div className=' text-white/60 text-xs'>{imageData?.created_at && imageData?.created_at.substr(0,10)}  Model - {getWordFromLetter(imageData?.model)}   </div> 
+            </div>
+
+
+
+
+
+
+
+          
+            <div className='w-full md:w-full flex flex-col justify-end  relative pb-20 pt-2'>
+              
+              <div className='text-white font-bold my-3 pt-5'>Prompt</div>
+              <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+                <div className='p-3'>{imageData?.prompt}</div>
+              </div>
+              <div className='text-white font-bold my-3 pt-5'>Negative prompt</div>
+              <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+              <div className='p-3'>{imageData?.negative_prompt}</div>
+              </div>
+              <div className='mt-5'>
+                <div className='text-white font-bold my-1'>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData?.model)}</span> </div>
+                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData?.steps}</span></div>
+                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData?.sampler_index}</span></div>
+                <div className='text-white font-bold my-1'>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData?.cfg_scale}</span></div>
+                <div className='text-white font-bold my-1'>Seed:<span className='whitespace-normal break-words font-normal'> {imageData?.seed}</span></div>
+              </div>
+              {imageData?.description && 
+                <div className='my-'>
+                  <div className='text-white font-bold my-1 '>Description:</div>
+                  <div className='relative whitespace-normal break-words '>
+                    <div className=''>{imageData?.description}</div>
+                  </div>
+                </div>
+              }
+              {/* Comment area */}
+              <div className='mt-7'>
+                <div className='text-white font-bold my-1 mb-4 text-center'>Discussion</div>
+                {
+                  commentsResults.length > 0 ?
+            
+                    commentsResults.map((item,index)=>{
+                      const {author,text,created_at} = item
+                      return(
+                        <div className=' rounded-md bg-zinc-700 px-4 py-6'>
+                          <div>
+                            <div className='flex items-center gap-2'>
+                              <div className='w-8'>
+                                <div className='pt-[100%] relative'>
+                                  <img src={author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                                </div>
                               </div>
+                              <div className='text-white'>{author?.name}</div>
+                              <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
+                              <div onClick={()=>{
+                                setFormStatus('EDIT')
+                                setCurrentComment(item)
+                                handleEditComment(item)
+                              }}>Edit</div>
                             </div>
-                            <div className='text-white'>{author?.name}</div>
-                            <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
-                            <div onClick={()=>{
-                              setFormStatus('EDIT')
-                              setCurrentComment(item)
-                              handleEditComment(item)
-                            }}>Edit</div>
+                          </div>
+                          <div className='mt-4'>
+                          <CommentDataFormat  data={text}/>
                           </div>
                         </div>
-                        <div className='mt-4'>
-                        <CommentDataFormat  data={text}/>
-                        </div>
-                      </div>
-                    )
-                  })
-                :
-                <div className='text-white/50 '>No one has commented here yet. </div>
+                      )
+                    })
+                  :
+                  <div className='text-white/40 text-center'>No one has commented here yet. </div>
 
-      
-              }
+        
+                }
+              </div>
             </div>
 
           </div>
 
-          <div className='flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
+          <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
               onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
