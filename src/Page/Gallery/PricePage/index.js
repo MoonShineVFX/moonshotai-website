@@ -51,36 +51,36 @@ function Index() {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const testpay =()=>{
-    liff.init({liffId: liffID}) 
-      .then(() => {
-        if (!liff.isLoggedIn()) {
-          console.log("你還沒登入Line");
-          liff.login({ redirectUri: "/price" });
-        } else {
-          console.log("你已經登入Line");
-          setIsLoadingReq(true);
-          setReqError(false)
-            testLinePay(linLoginData).then(data=>{
-                //payment_url
-                //transaction_id
-                setIsLoadingReq(false)
-                setReqError(false)
-                const url = data.payment_url
-                console.log(data)
-                if(data.payment_url === undefined){
-                  setReqError(true)
-                  return
-                }
-                window.location.href = url;
-        
-                // console.log(data)
-            }).catch(e=>{
-              setIsLoadingReq(false);
-              setReqError(true)
-              console.log(e)
-            })
 
-        }
+          if(isLoggedIn){
+            console.log('已登入')
+            setIsLoadingReq(true);
+            setReqError(false)
+              testLinePay(linLoginData).then(data=>{
+                  //payment_url
+                  //transaction_id
+                  setIsLoadingReq(false)
+                  setReqError(false)
+                  const url = data.payment_url
+                  console.log(data)
+                  if(data.payment_url === undefined){
+                    setReqError(true)
+                    return
+                  }
+                  window.location.href = url;
+          
+                  // console.log(data)
+              }).catch(e=>{
+                setIsLoadingReq(false);
+                setReqError(true)
+                console.log(e)
+              })
+          }else{
+            console.log('尚未登入需要登入')
+          }
+
+
+        
       })
       .catch((err) => {
         console.log('初始化失敗')
