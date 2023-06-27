@@ -3,7 +3,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import {motion,AnimatePresence} from 'framer-motion'
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
-
+import Header from '../header'
 
 function Cancel() {
   const { id } = useParams();
