@@ -10,8 +10,11 @@ import Section2_ver2 from './Section2_ver2';
 import Blog from './Blog';
 import Section1_ver2 from './Section1_ver2';
 import Section4 from './Section4';
+import { useLocation } from "react-router-dom"
 import { AnimatePresence,motion } from "framer-motion";
 function Modal(props) {
+  const location = useLocation()
+  console.log(location)
   return (
     <motion.div 
       className="modal fixed top-0 left-0 w-full h-screen  z-50" style={{ display: props.show ? "block" : "none" }}
