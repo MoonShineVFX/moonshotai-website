@@ -18,7 +18,6 @@ function Modal(props) {
   return (
     <motion.div 
       className="modal fixed top-0 left-0 w-full h-screen  z-50" style={{ display: props.show ? "block" : "none" }}
-
     >
       <div className='fixed top-0 left-0 w-full h-screen bg-black/50' onClick={props.onClose}></div>
       {props.show&&

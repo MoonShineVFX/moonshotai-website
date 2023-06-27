@@ -16,7 +16,7 @@ import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
 import Docs from './Page/Gallery/Docs'
-
+import Notfound from './Page/Home/Notfound';
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
 
@@ -40,6 +40,8 @@ function App() {
     <RecoilRoot>
     <BrowserRouter>
       <Routes> 
+        <Route path="*" element={<Notfound />} />
+
         <Route path="/" element={<Home />} />
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
