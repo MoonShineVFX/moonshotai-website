@@ -60,8 +60,9 @@ function Index() {
         console.log(data)
         if(data.payment_url === undefined){
           setReqError(true)
+          return
         }
-        // window.location.href = url;
+        window.location.href = url;
 
         // console.log(data)
     }).catch(e=>{
