@@ -46,11 +46,10 @@ function Header() {
     <div className='flex flex-col md:flex-row'>
 
       <div className='w-full md:w-1/2 h-[70vh] md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#49531F]   to-black-600 ' ref={vantaRef}>
-        <div className='text-white font-semibold  text-lg absolute top-5 left-5 z-50 flex gap-5'>
-          <Link to="/gallery" class="rounded-full bg-gradient-to-r from-gray-800 to-gray-500 py-2 px-5 text-base " disabled> Gallery </Link>
-          <Link to="/price" class="rounded-full bg-gradient-to-r from-gray-800 to-gray-500 py-2 px-5 text-base" disabled> Price  </Link>
-          <Link to="/profile" class="rounded-full bg-gradient-to-r from-gray-800 to-gray-500 py-2 px-5 text-base" disabled> Sign In  </Link>
-          
+        <div className='text-white font-semibold  text-lg absolute top-0 md:left-0 z-50 flex gap-5 bg-zinc-700 rounded-b-xl p-1'>
+          <Link to="/gallery" class="rounded-full  py-2 px-5 text-base " > Gallery </Link>
+          <Link to="/price" class="rounded-full  py-2 px-5 text-base" > Price  </Link>
+          <Link to="/profile" class="rounded-full py-2 px-5 text-base" > Sign In  </Link>
         </div>
         <motion.div
           initial={{ opacity: 0,y:'15' }}
