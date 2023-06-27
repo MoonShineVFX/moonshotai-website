@@ -54,30 +54,31 @@ function Index() {
     liff.init({liffId: liffID}) 
       .then(() => {
         if (!liff.isLoggedIn()) {
-          console.log("你還沒登入Line哦！");
+          console.log("你還沒登入Line");
           liff.login({ redirectUri: "/price" });
         } else {
+          console.log("你已經登入Line");
           setIsLoadingReq(true);
           setReqError(false)
             testLinePay(linLoginData).then(data=>{
-              //payment_url
-              //transaction_id
-              setIsLoadingReq(false)
-              setReqError(false)
-              const url = data.payment_url
-              console.log(data)
-              if(data.payment_url === undefined){
-                setReqError(true)
-                return
-              }
-              window.location.href = url;
-      
-              // console.log(data)
-          }).catch(e=>{
-            setIsLoadingReq(false);
-            setReqError(true)
-            console.log(e)
-          })
+                //payment_url
+                //transaction_id
+                setIsLoadingReq(false)
+                setReqError(false)
+                const url = data.payment_url
+                console.log(data)
+                if(data.payment_url === undefined){
+                  setReqError(true)
+                  return
+                }
+                window.location.href = url;
+        
+                // console.log(data)
+            }).catch(e=>{
+              setIsLoadingReq(false);
+              setReqError(true)
+              console.log(e)
+            })
 
         }
       })
