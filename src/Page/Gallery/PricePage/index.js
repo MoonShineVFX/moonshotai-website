@@ -78,7 +78,7 @@ function Index() {
   const blocks = [
     { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'一天 10 次 (30 張)',storage:'10張', bgColor: 'white',payment_blue:false,payment_line:false },
     { title: '透過邀請碼開通',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300張' ,payment_blue:false,payment_line:false},
-    { title: '標準方案',price:'TWD90元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'不限次數',storage:'300張',payment_blue:true ,payment_line:true},
+    { title: '標準方案',price:'TWD90元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300張',payment_blue:true ,payment_line:true},
   ];
 
   useEffect(()=>{
