@@ -208,7 +208,7 @@ function Index() {
                                         {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                                         {isReqError && <div className='text-xs'>請求錯誤</div>}
                                       </button>
-                                      {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入引導登入</div>}
+                                      {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
                       </div>
                     }
                   </div>

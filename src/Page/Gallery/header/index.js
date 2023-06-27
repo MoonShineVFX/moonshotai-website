@@ -13,30 +13,57 @@ function Index({currentUser,isLoggedIn}) {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
+  const [isProcessLogout, setIsProcessLogout] = useState(false);
   const navigate = useNavigate();
+  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const handleLogout = async()=>{
-      try {
-        await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
-        if (liff.isLoggedIn()) {
-          // await liff.logout();
-        }
-        // setIsLoggedIn(false);
-        setLineProfile(null);
-        setToken(null);
-        console.log('logouting')
-        removeLocalStorageItem().then(data=>{
-          console.log(data)
-          if(data === 'finish'){
-            if (window.location.pathname === '/gallery') {
-              window.location.reload();
-            } else {
-              navigate('/gallery');
-            }
-          }
+      if(isLoggedIn){
+        liff.init({liffId: liffID}).then(()=>{
+          console.log('init完成可處理登出')
+          setIsProcessLogout(true)
+          
+            setLineProfile(null);
+            setToken(null);
+            setTimeout(()=>{
+              liff.logout()
+              removeLocalStorageItem().then(data=>{
+                console.log(data)
+                if(data === 'finish'){
+                  if (window.location.pathname === '/gallery') {
+                    window.location.reload();
+                  } else {
+                    navigate('/gallery');
+                  }
+                }
+              }).catch(()=>{
+                console.log('error')
+              })
+            
+            },500)
         })
-      } catch (err) {
-        console.log('登出失敗');
       }
+      // try {
+      //   await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
+      //   if (liff.isLoggedIn()) {
+      //     // await liff.logout();
+      //   }
+      //   // setIsLoggedIn(false);
+      //   setLineProfile(null);
+      //   setToken(null);
+      //   console.log('logouting')
+      //   removeLocalStorageItem().then(data=>{
+      //     console.log(data)
+      //     if(data === 'finish'){
+      //       if (window.location.pathname === '/gallery') {
+      //         window.location.reload();
+      //       } else {
+      //         navigate('/gallery');
+      //       }
+      //     }
+      //   })
+      // } catch (err) {
+      //   console.log('登出失敗');
+      // }
   }
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
@@ -73,6 +100,7 @@ function Index({currentUser,isLoggedIn}) {
                 </div>
               </div>
               <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Sign Out</div>
+              {isProcessLogout &&  <div className='text-xs mt-1'>正在處理登出</div>}
             </div>
             
             :
