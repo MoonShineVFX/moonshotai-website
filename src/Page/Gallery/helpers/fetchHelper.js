@@ -504,3 +504,44 @@ export const testLinePay =async (token) =>{
   const data =await response.json()
   return data
 }
+//order
+export const postOrder =async (token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'orders ', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//linepay
+export const paymentLinePay =async (token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//newebpay
+export const paymentNewebPay =async (token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
+  const data =await response.json()
+  return data
+}
