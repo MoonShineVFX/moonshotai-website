@@ -79,13 +79,6 @@ function Index() {
             console.log('尚未登入需要登入')
           }
 
-
-        
-      })
-      .catch((err) => {
-        console.log('初始化失敗')
-      });
-
   }
   const [selectedBlock, setSelectedBlock] = useState(0);
   const handleBlockClick = (blockIndex) => {
