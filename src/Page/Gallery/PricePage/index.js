@@ -66,6 +66,7 @@ function Index() {
                   console.log(data)
                   if(data.code === "token_not_valid"){
                     setReqError(true)
+                    setIsNeedLogin(true)
                     liff.init({liffId: liffID}).then(()=>{
                       console.log('init完成可準備登入')
                       setTimeout(()=>{liff.login();},500)
@@ -211,7 +212,7 @@ function Index() {
                         >
                           <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
                           {isLoadingReq && <div className='text-xs'>等待回應...</div>}
-                          {isReqError && <div className='text-xs'>錯誤，重新登入後購買</div>}
+                          {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
                         </button>
                         {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
                       </div>
@@ -219,14 +220,14 @@ function Index() {
                     {
                       block.invite_input && <div>
                         <div className='text-xs text-white/70 my-2'>需入序號後，將可獲得進階功能 5 天，透過分享推薦序號也可以獲得回饋 5 天</div>
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                           <div className='flex flex-col gap-2'>
                             <div className='flex flex-col'>
-                              <input  type="text" placeholder="輸入推薦序號" className='bg-zinc-700 rounded-md py-3 px-2 text-sm' />
+                              <input  type="text" placeholder="輸入推薦序號" className='bg-zinc-700 rounded-md py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
+                              {errors.invite_number && <div className='text-xs text-white/70 my-2'>請確認有輸入推薦序號。</div>}
                             </div>
                             <button type="submit"    
                               className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                              onClick={testpay}
                             >
                               輸入邀請碼
                               <MdOutlineTrendingFlat className='ml-2'/>
