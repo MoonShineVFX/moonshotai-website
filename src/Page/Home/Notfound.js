@@ -13,11 +13,11 @@ function Notfound() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const navigate = useNavigate();
   useEffect(() => {
-    // const timeout = setTimeout(() => {
-    //   navigate('/gallery');
-    // }, 3000); 
+    const timeout = setTimeout(() => {
+      navigate('/gallery');
+    }, 3000); 
   
-    // return () => clearTimeout(timeout);
+    return () => clearTimeout(timeout);
   }, [navigate]);
   return (
       <div>
@@ -31,7 +31,9 @@ function Notfound() {
             <div className='text-lg mt-2'>
             因為從外部瀏覽器登入或找不到頁面的關係，將在3秒後自動跳轉至 Gallery 頁面。
             </div>
-            <button className='my-6  p-2 px-4 text-black/80 bg-lime-300 rounded-sm text-sm flex items-center gap-2 ml-auto'>Go Gallery <MdArrowRightAlt/> </button>
+            <button className='my-6  p-2 px-4 text-black/80 bg-lime-300 rounded-sm text-sm flex items-center gap-2 ml-auto' onClick={()=>{
+              navigate('/gallery');
+            }}>Go Gallery <MdArrowRightAlt/> </button>
           </div>
 
         </div>
