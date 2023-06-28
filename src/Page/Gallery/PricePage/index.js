@@ -64,8 +64,12 @@ function Index() {
                   setReqError(false)
                   const url = data.payment_url
                   console.log(data)
-                  if(data.payment_url === undefined){
+                  if(data.code === "token_not_valid"){
                     setReqError(true)
+                    liff.init({liffId: liffID}).then(()=>{
+                      console.log('init完成可準備登入')
+                      setTimeout(()=>{liff.login();},500)
+                    })
                     return
                   }
                   window.location.href = url;
@@ -74,12 +78,7 @@ function Index() {
               }).catch(e=>{
                 setIsLoadingReq(false);
                 setReqError(true)
-                if(e.code === "token_not_valid"){
-                  liff.init({liffId: liffID}).then(()=>{
-                    console.log('init完成可準備登入')
-                    setTimeout(()=>{liff.login();},500)
-                  })
-                }
+
                 console.log(e)
               })
           }else{
@@ -206,15 +205,35 @@ function Index() {
                   <div className='my-2 flex flex-col'>
                     {
                       block.payment_line && <div>
-                                      <button 
-                                        className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                                        onClick={testpay}
-                                      >
-                                        <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
-                                        {isLoadingReq && <div className='text-xs'>等待回應...</div>}
-                                        {isReqError && <div className='text-xs'>錯誤，重新登入後購買</div>}
-                                      </button>
-                                      {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
+                        <button 
+                          className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                          onClick={testpay}
+                        >
+                          <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
+                          {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                          {isReqError && <div className='text-xs'>錯誤，重新登入後購買</div>}
+                        </button>
+                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
+                      </div>
+                    }
+                    {
+                      block.invite_input && <div>
+                        <div className='text-xs text-white/70 my-2'>需入序號後，將可獲得進階功能 5 天，透過分享推薦序號也可以獲得回饋 5 天</div>
+                        <form>
+                          <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col'>
+                              <input  type="text" placeholder="輸入推薦序號" className='bg-zinc-700 rounded-md py-3 px-2 text-sm' />
+                            </div>
+                            <button type="submit"    
+                              className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                              onClick={testpay}
+                            >
+                              輸入邀請碼
+                              <MdOutlineTrendingFlat className='ml-2'/>
+                            </button>
+                          </div>
+
+                        </form>
                       </div>
                     }
                   </div>
