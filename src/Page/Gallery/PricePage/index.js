@@ -21,6 +21,9 @@ function Index() {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
+
+  const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
+  const [isInviteReqError, setInviteReqError] = useState(false);
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
@@ -48,14 +51,15 @@ function Index() {
     })
   const onSubmit = (data) => {
     if(isLoggedIn){
-
+      setIsInviteLoadingReq(true)
+    }else{
+      setIsInviteLoadingReq(false)
     }
   }
 
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const testpay =()=>{
-
           if(isLoggedIn){
             console.log('已登入')
             setIsLoadingReq(true);
@@ -101,7 +105,7 @@ function Index() {
   };
   const blocks = [
     { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'一天 10 次 (30 張)',storage:'10 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
-    { title: '透過邀請碼開通',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
+    { title: '開通體驗',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
     { title: '標準方案',price:'TWD 90 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false},
   ];
 
@@ -130,7 +134,7 @@ function Index() {
         <div className="max-w-md mx-auto mb-14 text-center">
           <h1 className="text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">恣意想、任意玩</h1>
           <p className="text-lg text-gray-300 font-medium">進階功能無限使用<br /> 加速算圖以及更多的儲存空間！</p>
-          <div className='text-white '>
+          <div className='text-white hidden'>
             <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div>  <div className='text-lg font-bold'>無使用次數限制</div> <div className='text-white/70'>問答、修改、固定、骨架、放大。</div></div> </div>
             <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加速算圖</div> <div className='text-white/70'>與免費用戶相比更少的等待時間。</div></div></div>
             <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加大儲存空間</div> <div className='text-white/70'> 增加個人儲存數量至 300 張。</div> </div> </div>
@@ -241,6 +245,7 @@ function Index() {
                             >
                               輸入邀請碼
                               <MdOutlineTrendingFlat className='ml-2'/>
+                              {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
                             </button>
                           </div>
 
@@ -320,7 +325,7 @@ function Index() {
         <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">常見問答</h1>
         <div className='my-6 flex flex-col gap-8'>
           <div className='text-white'>
-            <div className='text-2xl my-3'>進階功能有哪些?</div>
+            <div className='text-xl my-3'>進階功能有哪些?</div>
             <div>
               <ul>
                 <li>修改 (I) 能夠使用遮罩畫出想要重繪的部分。</li>
@@ -331,11 +336,23 @@ function Index() {
             </div>
           </div> 
           <div className='text-white'>
-            <div className='text-2xl my-3'>不購買可以使用進階功能嗎? </div>
+            <div className='text-xl my-3'>免費會員可以使用進階功能嗎? </div>
             <div>
-            不購買也可以使用進階功能，每人每天會有 5次 使用的機會。並無特別限制這5次只能用於那些功能，可隨意使用。
+            免費會員可以無限使用基本功能，但。
             </div>
-          </div>                 
+          </div>       
+          <div className='text-white'>
+            <div className='text-xl my-3'>推薦序號分享規則 </div>
+            <div>
+            。
+            </div>
+          </div>
+          <div className='text-white'>
+            <div className='text-xl my-3'>購買後可以退費嗎 </div>
+            <div>
+            。
+            </div>
+          </div>               
 
 
 

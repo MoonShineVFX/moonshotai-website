@@ -15,7 +15,7 @@ function Notfound() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       navigate('/gallery');
-    }, 3000); 
+    }, 2500); 
   
     return () => clearTimeout(timeout);
   }, [navigate]);

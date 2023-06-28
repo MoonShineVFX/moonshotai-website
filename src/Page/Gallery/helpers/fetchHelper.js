@@ -545,3 +545,17 @@ export const paymentNewebPay =async (token) =>{
   const data =await response.json()
   return data
 }
+
+//邀請碼
+export const paymentInviteSerial =async (inviteSerial,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'invite/'+inviteSerial, requestOptions)
+  const data =await response.json()
+  return data
+}

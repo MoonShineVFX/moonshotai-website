@@ -135,7 +135,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
                   </div>
                 </div>
 
-                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-600' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
+                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
                       <div className=' flex items-center  justify-center gap-1 ' >
