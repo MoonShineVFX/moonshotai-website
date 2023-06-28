@@ -16,6 +16,7 @@ import EditUserForm from '../Components/EditUserForm';
 import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
+import TutorialPage from '../TutorialPage'
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Storage", display:true,data_name:"total_storages"},
@@ -500,6 +501,7 @@ function Index() {
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
         {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage}/>)}
+        {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
 

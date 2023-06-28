@@ -447,3 +447,31 @@ button.toggle-button.active .toggle-switch {
       transform: rotate(360deg);
   }
   } 
+
+
+
+.swiper-backface-hidden .swiper-slide{
+    margin-bottom: 40px;
+  }
+.swiper-horizontal>.swiper-pagination-bullets, 
+.swiper-pagination-bullets.swiper-pagination-horizontal, 
+.swiper-pagination-custom, .swiper-pagination-fraction {
+      bottom: 5px !important;
+  }
+.swiper-pagination-bullet {
+    width: 12px !important;
+    height: 12px !important;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    color: #ffffff;
+    opacity: 1 !important;
+    background: #ffffff60 !important;
+    transition: all .5s;
+  }
+  
+.swiper-pagination-bullet-active {
+    color: #fff;
+    background: #ffffff !important;
+    border-radius: 25px !important;
+  }
