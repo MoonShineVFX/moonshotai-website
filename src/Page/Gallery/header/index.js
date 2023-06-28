@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar } from "react-icons/md";
+import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
@@ -161,7 +161,7 @@ function Index({currentUser,isLoggedIn}) {
               <Link 
                 to='/docs' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdStar color="#88ad48"/> Documents
+                  <MdDocumentScanner color="#88ad48"/> Documents
               </Link>
             </div>
 

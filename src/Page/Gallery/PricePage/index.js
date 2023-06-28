@@ -16,6 +16,7 @@ function Index() {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
@@ -46,7 +47,9 @@ function Index() {
       }
     })
   const onSubmit = (data) => {
-    console.log(data)
+    if(isLoggedIn){
+
+    }
   }
 
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
@@ -109,6 +112,13 @@ function Index() {
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
         let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
+          refreshToken().then(data =>{
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            setCurrentHeaders(headers)
+            setLineLoginData(data.token)
+          })
+        }
         
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
