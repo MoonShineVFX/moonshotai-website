@@ -74,6 +74,12 @@ function Index() {
               }).catch(e=>{
                 setIsLoadingReq(false);
                 setReqError(true)
+                if(e.code === "token_not_valid"){
+                  liff.init({liffId: liffID}).then(()=>{
+                    console.log('init完成可準備登入')
+                    setTimeout(()=>{liff.login();},500)
+                  })
+                }
                 console.log(e)
               })
           }else{
@@ -91,9 +97,9 @@ function Index() {
     setSelectedBlock(blockIndex);
   };
   const blocks = [
-    { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'一天 10 次 (30 張)',storage:'10張', bgColor: 'white',payment_blue:false,payment_line:false },
-    { title: '透過邀請碼開通',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300張' ,payment_blue:false,payment_line:false},
-    { title: '標準方案',price:'TWD90元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300張',payment_blue:true ,payment_line:true},
+    { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'一天 10 次 (30 張)',storage:'10 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
+    { title: '透過邀請碼開通',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
+    { title: '標準方案',price:'TWD 90 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false},
   ];
 
   useEffect(()=>{
@@ -137,7 +143,7 @@ function Index() {
                 <span className='text-lime-400'>{selectedBlock === index ? <MdCheckCircle /> :<MdOutlineCircle/> }</span>
                 <div className='flex justify-between w-full'>
                   <div className={'text-lg font-bold  text-white'}>{block.title}</div>
-                  <div className={'text-sm   text-white'}>{block.price} {block.days.length>0 ? <span className=''> / {block.days}天</span>  : '' }</div>
+                  <div className={'text-sm   text-white'}>{block.price} {block.days.length>0 ? <span className=''> / {block.days} 天</span>  : '' }</div>
                 </div>
 
               </div>
@@ -204,9 +210,9 @@ function Index() {
                                         className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
                                         onClick={testpay}
                                       >
-                                        <MdCreditCard size={20} />  Line pay <MdArrowRightAlt />
+                                        <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
                                         {isLoadingReq && <div className='text-xs'>等待回應...</div>}
-                                        {isReqError && <div className='text-xs'>請求錯誤</div>}
+                                        {isReqError && <div className='text-xs'>錯誤，重新登入後購買</div>}
                                       </button>
                                       {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
                       </div>
