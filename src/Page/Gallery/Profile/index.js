@@ -1,7 +1,5 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart } from "react-icons/fi";
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'

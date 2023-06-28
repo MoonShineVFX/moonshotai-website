@@ -133,7 +133,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           </div>
           
           <div className='mt-6 flex gap-3 justify-center text-md'>
-            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Public to Gallery</button>
+            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Save</button>
             <button type="button" className='text-white/80' onClick={()=>{
               setIsShowDisplayFormModal(false)
             }}>Cancel</button>

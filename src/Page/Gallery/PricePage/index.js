@@ -326,7 +326,7 @@ function Index() {
         <div className='my-6 flex flex-col gap-8'>
           <div className='text-white'>
             <div className='text-xl my-3'>進階功能有哪些?</div>
-            <div>
+            <div className='text-sm'>
               <ul>
                 <li>修改 (I) 能夠使用遮罩畫出想要重繪的部分。</li>
                 <li>固定 (O) 能夠使用遮罩來畫出不想被重繪的部分。</li>
@@ -337,19 +337,19 @@ function Index() {
           </div> 
           <div className='text-white'>
             <div className='text-xl my-3'>免費會員可以使用進階功能嗎? </div>
-            <div>
+            <div className='text-sm'>
             免費會員可以無限使用基本功能，但。
             </div>
           </div>       
           <div className='text-white'>
             <div className='text-xl my-3'>推薦序號分享規則 </div>
-            <div>
+            <div className='text-sm'>
             。
             </div>
           </div>
           <div className='text-white'>
             <div className='text-xl my-3'>購買後可以退費嗎 </div>
-            <div>
+            <div className='text-sm'>
             。
             </div>
           </div>               
