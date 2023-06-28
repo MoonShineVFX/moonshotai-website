@@ -155,7 +155,7 @@ function Index() {
             >
               <div className='flex items-center gap-4 '>
                 <span className='text-lime-400'>{selectedBlock === index ? <MdCheckCircle /> :<MdOutlineCircle/> }</span>
-                <div className='flex justify-between w-full'>
+                <div className='flex justify-between items-center w-full'>
                   <div className={'text-lg font-bold  text-white'}>{block.title}</div>
                   <div className={'text-sm   text-white'}>{block.price} {block.days.length>0 ? <span className=''> / {block.days} 天</span>  : '' }</div>
                 </div>
