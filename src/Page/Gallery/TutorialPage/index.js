@@ -138,7 +138,51 @@ function Index() {
           </div>
         </SwiperSlide>
 
-        <SwiperSlide>Slide 3</SwiperSlide>
+        <SwiperSlide>
+          {/* page3 */}
+          <div className=' relative text-white py-10 px-2'>
+            <div className='text-center text-lg font-bold text-white/70 my-4'>
+              修改個人資料
+            </div>
+            <div className='text-sm my-2 px-4'>
+              點選到 Storage 頁面，圖片左上鉛筆圖案按鈕，可以進行分享設定。
+            </div>
+            <div className='text-xs mt-10 text-center text-white/80'> 按下編輯按鈕，進行設定 </div>
+            <div className='w-1/2 mx-auto my-2'>
+              
+              <motion.div key={'render-'} 
+                variants={imageVariants} initial="hidden" animate="visible"
+                className=' overflow-hidden relative'
+              >
+                <div className='pt-[100%] relative'>
+                  <img  
+                    src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
+                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                  />
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                    
+                  </div>
+                </div>
+
+                <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
+                    <div className='p-2 ' >
+                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+ 
+                    </div>
+                    <div className='text-white p-2'>
+                      <div className={'rounded-full p-2 bg-zinc-800 text-white'}> <MdModeEdit size={15}/></div>
+                    </div>
+                </div>
+
+
+                <div className=' absolute right-0 top-1 z-10 text-yellow-500 '><MdAdsClick size={35} /></div>
+              </motion.div>
+            </div>
+
+
+
+          </div>
+        </SwiperSlide>
         <SwiperSlide>Slide 4</SwiperSlide>
       </Swiper>
 
