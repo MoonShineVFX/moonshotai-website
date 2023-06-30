@@ -522,7 +522,7 @@ export const postOrder =async (pid,token) =>{
 }
 
 //linepay
-export const paymentLinePay =async (oid,token) =>{
+export const paymentLinePay =async (serNum,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
@@ -530,7 +530,7 @@ export const paymentLinePay =async (oid,token) =>{
       'Authorization': `Bearer ${token}`
     },
     body: JSON.stringify({ 
-      order_id:  oid,
+      serial_number:  serNum,
     })
   };
   const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)

@@ -71,7 +71,7 @@ function Index() {
               setIsOrdering(false)
               setIsLoadingReq(true)
               setTimeout(()=>{
-                paymentLinePay(odata.order_id,linLoginData).then(ldata=>{
+                paymentLinePay(odata.serial_number,linLoginData).then(ldata=>{
                   setIsLoadingReq(false)
                   setReqError(false)
                   const url = ldata.payment_url
