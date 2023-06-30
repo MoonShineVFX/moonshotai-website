@@ -505,13 +505,16 @@ export const testLinePay =async (token) =>{
   return data
 }
 //order
-export const postOrder =async (token) =>{
+export const postOrder =async (pid,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      plan_id:  pid,
+    })
   };
   const response =await fetch(apiUrl+'orders ', requestOptions)
   const data =await response.json()
@@ -519,13 +522,16 @@ export const postOrder =async (token) =>{
 }
 
 //linepay
-export const paymentLinePay =async (token) =>{
+export const paymentLinePay =async (oid,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      order_id:  oid,
+    })
   };
   const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)
   const data =await response.json()

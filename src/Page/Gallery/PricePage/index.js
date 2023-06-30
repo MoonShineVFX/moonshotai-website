@@ -4,7 +4,7 @@ import Header from '../header'
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
@@ -18,6 +18,7 @@ function Index() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentHeaders , setCurrentHeaders] = useState({})
 
+  const [isOrdering,setIsOrdering] = useState(false)
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
@@ -59,19 +60,21 @@ function Index() {
 
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
-  const testpay =()=>{
+  const handlePay =(pid)=>{
           if(isLoggedIn){
             console.log('已登入')
-            setIsLoadingReq(true);
+            setIsOrdering(true)
+            setIsLoadingReq(false);
             setReqError(false)
-              testLinePay(linLoginData).then(data=>{
-                  //payment_url
-                  //transaction_id
+            postOrder(pid,linLoginData).then(odata=>{
+              setIsOrdering(false)
+              setIsLoadingReq(true)
+              setTimeout(()=>{
+                paymentLinePay(odata.order_id,linLoginData).then(ldata=>{
                   setIsLoadingReq(false)
                   setReqError(false)
-                  const url = data.payment_url
-                  console.log(data)
-                  if(data.code === "token_not_valid"){
+                  const url = ldata.payment_url
+                  if(ldata?.code === "token_not_valid"){
                     setReqError(true)
                     setIsNeedLogin(true)
                     liff.init({liffId: liffID}).then(()=>{
@@ -81,14 +84,10 @@ function Index() {
                     return
                   }
                   window.location.href = url;
-          
-                  // console.log(data)
-              }).catch(e=>{
-                setIsLoadingReq(false);
-                setReqError(true)
+                }).catch(e=>{console.log(e)})
+              },500)
 
-                console.log(e)
-              })
+            }).catch(e=>{console.log(e)})
           }else{
             console.log('尚未登入需要登入')
             setIsNeedLogin(true)
@@ -106,7 +105,7 @@ function Index() {
   const blocks = [
     { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:[],daily_limit:'一天 10 次 (30 張)',storage:'10 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
     { title: '開通體驗',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
-    { title: '標準方案',price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false},
+    { title: '標準方案',price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','參考 R','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
   ];
 
   useEffect(()=>{
@@ -222,7 +221,7 @@ function Index() {
                       block.payment_line && <div>
                         <button 
                           className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                          onClick={testpay}
+                          onClick={()=>handlePay(block.plan_id)}
                         >
                           <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
                           {isLoadingReq && <div className='text-xs'>等待回應...</div>}
