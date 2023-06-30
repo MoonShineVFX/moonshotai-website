@@ -66,7 +66,7 @@ function Orders() {
           data.map((item,index)=>{
             const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status}=item
             return(
-              <div className='text-white border my-6 border-gray-400' key={'orders'+index}>
+              <div className='text-white border my-6 border-lime-400' key={'orders'+index}>
                 <table class="table-auto   divide-y  divide-gray-600 w-full text-sm">
                   <thead className='bg-zinc-700 '>
                     <tr>
