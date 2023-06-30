@@ -15,6 +15,7 @@ import User from './Page/Gallery/Gallery/User';
 import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
+import Orders from './Page/Gallery/PricePage/Orders';
 import Docs from './Page/Gallery/Docs'
 import Notfound from './Page/Home/Notfound';
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
@@ -53,6 +54,7 @@ function App() {
         <Route path="/price" element={<Price />} />
         <Route path="/confirm/:id" element={<Confirm />} />
         <Route path="/cancel/:id" element={<Cancel />} />
+        <Route path="/orders" element={<Orders />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}
 

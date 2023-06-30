@@ -14,6 +14,7 @@
     "framer-motion": "^8.1.7",
     "html-to-image": "^1.11.11",
     "js-base64": "^3.7.5",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-camera-pro": "^1.2.2",
     "react-device-detect": "^2.2.2",

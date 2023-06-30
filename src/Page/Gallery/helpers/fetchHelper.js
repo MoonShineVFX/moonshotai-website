@@ -504,7 +504,20 @@ export const testLinePay =async (token) =>{
   const data =await response.json()
   return data
 }
-//order
+//get order
+export const getOrders =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'orders ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//post order
 export const postOrder =async (pid,token) =>{
   const requestOptions = {
     method: 'POST',
