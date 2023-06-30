@@ -67,6 +67,7 @@ function Index() {
             setIsLoadingReq(false);
             setReqError(false)
             postOrder(pid,linLoginData).then(odata=>{
+              console.log('已建立訂單',odata)
               setIsOrdering(false)
               setIsLoadingReq(true)
               setTimeout(()=>{
