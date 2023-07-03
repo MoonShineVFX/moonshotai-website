@@ -493,13 +493,14 @@ function Index() {
 
   //LISTEN  LOGIN IF not LINE INIT
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV !== 'production') {
       // initializeLineLogin()
       getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let lineProfile = data.lineProfile
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           refreshToken().then(data =>{
@@ -511,7 +512,8 @@ function Index() {
               console.log(odata)
               setSubsData(odata)
             })
-            fetchUserImages(lineProfile.uid , currentPage, pageSize,data.token)
+            fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
+              
               .then((images)=> {
                   const results = images.results
                   setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
