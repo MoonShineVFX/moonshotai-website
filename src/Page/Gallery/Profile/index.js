@@ -6,7 +6,7 @@ import Header from '../header'
 import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -47,7 +47,12 @@ function Index() {
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
 
+  //CHECK IS USER LOGIN DATABASE
+  const [currentHeaders , setCurrentHeaders] = useState({})
+  const [subsData, setSubsData] = useState({})
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
@@ -485,13 +490,38 @@ function Index() {
         setCurrentStoragePage(nextPage);
       })
   }
+
+  //LISTEN  LOGIN IF not LINE INIT
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
-      initializeLineLogin()
+      // initializeLineLogin()
+      getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
+          refreshToken().then(data =>{
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            setCurrentHeaders(headers)
+            setLineLoginData(data.token)
+            getSubscriptions(data.token).then(odata=>{
+              console.log(odata)
+              setSubsData(odata)
+            })
+
+          })
+        }else{
+          initializeLineLogin()
+        }
+        
+      })
+
     }else{
       devLogin()
     }
-  }, [process.env.NODE_ENV]);
+  }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
   return (
     <div >

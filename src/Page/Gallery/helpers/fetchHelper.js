@@ -504,6 +504,31 @@ export const testLinePay =async (token) =>{
   const data =await response.json()
   return data
 }
+//get plans
+export const getPlans =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'plans ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//get subscriptions
+export const getSubscriptions =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'subscriptions ', requestOptions)
+  const data =await response.json()
+  return data
+}
 //get order
 export const getOrders =async (token) =>{
   const requestOptions = {
