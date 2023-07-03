@@ -505,11 +505,21 @@ function Index() {
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
+            setToken(data.token)
             setLineLoginData(data.token)
             getSubscriptions(data.token).then(odata=>{
               console.log(odata)
               setSubsData(odata)
             })
+            fetchUserImages(profile.userId , currentPage, pageSize,data.token)
+              .then((images)=> {
+                  const results = images.results
+                  setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+                  setImages(images)
+                  setImagesResults(results)
+                  setCurrentAuthor(images.results[0].author)
+              })
+              .catch((error) => console.error(error));
 
           })
         }else{
