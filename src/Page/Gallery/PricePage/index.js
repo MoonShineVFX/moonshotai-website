@@ -10,6 +10,7 @@ import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
 import { HmacSHA256 } from 'crypto-js';
 import { Base64 } from 'js-base64';
+import moment from 'moment';
 import liff from '@line/liff';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -18,6 +19,7 @@ function Index() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentHeaders , setCurrentHeaders] = useState({})
 
+  const [isNeddWithin5Days, setIsNeedWithin5Days]= useState(false)
   const [isOrdering,setIsOrdering] = useState(false)
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
@@ -57,47 +59,67 @@ function Index() {
       setIsInviteLoadingReq(false)
     }
   }
+  const diffDays = (targetday)=>{
+    const targetDate = moment(targetday);
+    const currentDate = moment();
+    const diffDays = targetDate.diff(currentDate, 'days');
+    if (diffDays <= 5) {
+      return true
+    } return false
 
+  }
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const handlePay =(pid)=>{
-          if(isLoggedIn){
-            console.log('已登入')
-            setIsOrdering(true)
-            setIsLoadingReq(false);
-            setReqError(false)
-            postOrder(pid,linLoginData).then(odata=>{
-              console.log('已建立訂單',odata)
-              setIsOrdering(false)
-              setIsLoadingReq(true)
-              setTimeout(()=>{
-                paymentLinePay(odata.serial_number,linLoginData).then(ldata=>{
-                  setIsLoadingReq(false)
-                  setReqError(false)
-                  const url = ldata.payment_url
-                  if(ldata?.code === "token_not_valid"){
-                    setReqError(true)
-                    setIsNeedLogin(true)
-                    liff.init({liffId: liffID}).then(()=>{
-                      console.log('init完成可準備登入')
-                      setTimeout(()=>{liff.login();},500)
-                    })
-                    return
-                  }
-                  window.location.href = url;
-                }).catch(e=>{console.log(e)})
-              },500)
-
-            }).catch(e=>{console.log(e)})
+      if(isLoggedIn){
+        console.log('已登入')
+        console.log(currentUser)
+        if(!currentUser.is_subscribed){
+          startLinePayFlow(pid)
+        }else{
+          if(diffDays(currentUser.subscription_end_at)){
+            setIsNeedWithin5Days(false)
+            startLinePayFlow(pid)
           }else{
-            console.log('尚未登入需要登入')
+            setIsNeedWithin5Days(true)
+          }
+        }
+      }else{
+        console.log('尚未登入需要登入')
+        setIsNeedLogin(true)
+        liff.init({liffId: liffID}).then(()=>{
+          console.log('init完成可準備登入')
+          setTimeout(()=>{liff.login();},500)
+        })
+      }
+  }
+  const startLinePayFlow = (pid)=>{
+    setIsOrdering(true)
+    setIsLoadingReq(false);
+    setReqError(false)
+    postOrder(pid,linLoginData).then(odata=>{
+      console.log('已建立訂單',odata)
+      setIsOrdering(false)
+      setIsLoadingReq(true)
+      setTimeout(()=>{
+        paymentLinePay(odata.serial_number,linLoginData).then(ldata=>{
+          setIsLoadingReq(false)
+          setReqError(false)
+          const url = ldata.payment_url
+          if(ldata?.code === "token_not_valid"){
+            setReqError(true)
             setIsNeedLogin(true)
             liff.init({liffId: liffID}).then(()=>{
               console.log('init完成可準備登入')
               setTimeout(()=>{liff.login();},500)
             })
+            return
           }
+          window.location.href = url;
+        }).catch(e=>{console.log(e)})
+      },500)
 
+    }).catch(e=>{console.log(e)})
   }
   const [selectedBlock, setSelectedBlock] = useState(0);
   const handleBlockClick = (blockIndex) => {
@@ -188,7 +210,7 @@ function Index() {
                 >
                   <div className='my-2 text-lime-500'>基本功能</div>
                   
-                  <ul className=' list-disc pl-4'>
+                  <ul className=' list-disc pl-4 grid grid-cols-2'>
                   {
                     block.basic.map((item,index)=>{
                       return(
@@ -199,7 +221,7 @@ function Index() {
                   </ul>
                   {block.advanced.length>0 && <div>
                     <div className='my-2 text-lime-500'>進階功能</div>
-                    <ul className=' list-disc pl-4'>
+                    <ul className=' list-disc pl-4 grid grid-cols-2'>
                     {
                       block.advanced.map((item,index)=>{
                         return(
@@ -227,8 +249,10 @@ function Index() {
                           <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
                           {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                           {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
+                          
                         </button>
                         {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
+                        {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
                       </div>
                     }
                     {

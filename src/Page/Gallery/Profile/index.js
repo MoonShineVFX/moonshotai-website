@@ -512,6 +512,14 @@ function Index() {
               console.log(odata)
               setSubsData(odata)
             })
+            fetchUserProfile(data.user_id, data.token)
+                .then((data)=> {
+                  console.log(data)
+                  setCurrentProfile(data)
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+                })
+                  
+                .catch((error) => console.error(error));
             fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
               
               .then((images)=> {
@@ -569,7 +577,7 @@ function Index() {
                 className=' text-xs flex items-center ml-auto absolute top-32 right-5  '
                 onClick={()=>setIsEdit(true)}
               > 
-                edit<MdMoreVert size={20} /> 
+                Settings<MdMoreVert size={20} /> 
               </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>

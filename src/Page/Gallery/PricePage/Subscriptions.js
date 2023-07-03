@@ -69,7 +69,7 @@ function Subscriptions() {
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
        <div className='text-white'>訂單列表 </div>
-       <div className='text-sm text-white/80'>{data.length} items</div>
+       <div className='text-sm text-white/80'>{data.length} ite s</div>
        <div>
         {
           data.map((item,index)=>{
