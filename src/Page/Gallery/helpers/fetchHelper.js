@@ -235,7 +235,7 @@ export const fetchUserImages =async (uuid,page,pageSize,token)=>{
     }
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date=2023-01-01'+'&end_date=2023-06-01' ,requestOptions)
     const data =await response.json()
     return data
     

@@ -8,19 +8,19 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
-
+import moment from 'moment';
 const filterDateItem = [
-  {title:'24 小時',type:'時間區間'},
-  {title:'7 天',type:'時間區間'},
-  {title:'30 天', type:'時間區間'},
-  {title:'全部',type:'時間區間'}
+  {title:'24 小時',type:'時間區間',command:'days',value:'1'},
+  {title:'7 天',type:'時間區間',command:'days',value:'7'},
+  {title:'30 天', type:'時間區間',command:'days',value:'30'},
+  {title:'全部',type:'時間區間',command:'days',value:'all'}
 ]
 const filterModelsDate = [
-  {title:'全部',type:'Models'},
-  {title:'插畫 CT',type:'Models'},
-  {title:'寫實 PR',type:'Models'},
-  {title:'漫畫 CM', type:'Models'},
-  {title:'寫實人像 PC',type:'Models'}
+  {title:'全部',type:'Models',command:'models',value:'all'},
+  {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
+  {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
+  {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
+  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
  ]
 
 
@@ -82,7 +82,17 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     // handleUpdate(image.id,newData)
   }
   const onHandleSelectDate = (item)=>{
-    console.log('click')
+    console.log(item)
+    switch (item.value) {
+      case '1':
+        const oneDayAgo = moment().subtract(1, 'days');
+        
+        break;
+    
+      default:
+        break;
+    }
+
   }
   const onHandleSelectModels = (item)=>{
     console.log('click')

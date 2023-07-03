@@ -26,7 +26,7 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
   const handleClickOption =(item)=>{
     setCurrentFilterDateItem(item)
     setIsDropDownOpen(!isDropDownOpen);
-    onHandleSelect()
+    onHandleSelect(item)
 
   }
   if(filterItems.length === 0) {

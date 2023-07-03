@@ -475,3 +475,52 @@ button.toggle-button.active .toggle-switch {
     background: #ffffff !important;
     border-radius: 25px !important;
   }
+
+
+
+
+  // glow effect
+
+  div.glow:after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 50%;
+    transform: scale(0.8);
+    -webkit-filter: blur(12vw);
+    -moz-filter: blur(12vw);
+    -ms-filter: blur(12vw);
+    filter: blur(12vw);
+    background: linear-gradient(270deg, #0fffc1, #7e0fff);
+    background-size: 200% 200%;
+    animation: animateGlow 10s ease infinite;
+    opacity: 0.3;
+  }
+  @keyframes animateGlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes textColor {
+    0% {
+      color: #7e0fff;
+    }
+    50% {
+      color: #0fffc1;
+    }
+    100% {
+      color: #7e0fff;
+    }
+  }
