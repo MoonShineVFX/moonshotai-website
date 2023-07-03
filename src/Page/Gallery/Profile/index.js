@@ -511,7 +511,7 @@ function Index() {
               console.log(odata)
               setSubsData(odata)
             })
-            fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
+            fetchUserImages(lineProfile.uid , currentPage, pageSize,data.token)
               .then((images)=> {
                   const results = images.results
                   setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
