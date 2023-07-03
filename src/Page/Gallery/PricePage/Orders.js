@@ -67,7 +67,7 @@ function Orders() {
             const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status}=item
             return(
               <div className='text-white border my-6 border-lime-400' key={'orders'+index}>
-                <table class="table-auto   divide-y  divide-gray-600 w-full text-sm">
+                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
                   <thead className='bg-zinc-700 '>
                     <tr>
                       <th className='p-2 '>訂單序號</th>
@@ -82,7 +82,7 @@ function Orders() {
                     </tr>
                   </tbody>
                 </table>
-                <table class="table-auto   divide-y  divide-gray-600 w-full text-sm">
+                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
                   <thead className='bg-zinc-700'>
                     <tr>
                       <th className='p-2'>商品名稱</th>
@@ -97,7 +97,7 @@ function Orders() {
                     </tr>
                   </tbody>
                 </table>
-                <table class="table-auto   divide-y  divide-gray-600 w-full text-sm">
+                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
                   <thead className='bg-zinc-700'>
                     <tr>
                       <th className='p-2'>支付日期{refund_at ? '(退款)': '(付款)'}</th>

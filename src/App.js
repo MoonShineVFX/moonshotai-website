@@ -3,6 +3,7 @@ import React,{useEffect} from 'react'
 import { BrowserRouter , Routes, Route} from 'react-router-dom';
 
 import Home from './Page/Home'
+import HomeV3 from './Page/Home_v3'
 import Camera from './Page/Camera'
 // import Docs from './Page/Docs'
 import AOS from 'aos';
@@ -45,6 +46,7 @@ function App() {
         <Route path="*" element={<Notfound />} />
 
         <Route path="/" element={<Home />} />
+        <Route path="/v2" element={<HomeV3 />} />
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />
