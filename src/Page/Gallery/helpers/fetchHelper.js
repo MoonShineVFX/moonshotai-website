@@ -31,10 +31,10 @@ export const useDevUserLogin = () =>{
   
   const devLogin = ()=>{
     const profile ={
-      displayName:"WuWood_dev",
-      pictureUrl: "https://profile.line-scdn.net/0hohWm3_nEMEd6FCWoI2NOOApEMy1ZZWlVBXIrcUlHOyJHcScTAiJ6KR1Bb3dFdiBEBHIvJxxBPnR2B0chZELMc30kbnBAJXAVX3R_qQ",
+      displayName:  process.env.REACT_APP_NAME,
+      pictureUrl: process.env.REACT_APP_TEST_URL,
       statusMessage:"123",
-      userId:"U895f7908fef7f32b717db91a8240ddc2"
+      userId:process.env.REACT_APP_TEST_UID
     }
     setIsLogin(true)
     fetchLineLogin(profile)
@@ -42,7 +42,7 @@ export const useDevUserLogin = () =>{
         setToken(data.token)
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
-            console.log(data)
+            // console.log(data)
             setCurrentProfile(data)
           })
           .catch((error) => console.error(error));
@@ -61,7 +61,7 @@ export const refreshToken = async () =>{
 }
 export const Logout = async ()=>{
   removeLocalStorageItem().then(data=>{
-    console.log(data)
+    // console.log(data)
     if(data === 'finish'){
       return 'logoutuccess'
     }

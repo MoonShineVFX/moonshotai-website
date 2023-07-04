@@ -161,7 +161,7 @@ function Index() {
  
   const devLogin = ()=>{
     const profile ={
-      displayName:  'testME',
+      displayName:  process.env.REACT_APP_NAME,
       pictureUrl: process.env.REACT_APP_TEST_URL,
       statusMessage:"123",
       userId:process.env.REACT_APP_TEST_UID
