@@ -129,7 +129,7 @@ function Index() {
                 localStorage.setItem('loginTokenData', JSON.stringify(data));
                 fetchUserProfile(data.user_id, data.token)
                   .then((data)=> {
-                    console.log(data)
+                    // console.log(data)
                     setCurrentProfile(data)
                     localStorage.setItem('currentUser', JSON.stringify(data));
                   })
@@ -161,10 +161,10 @@ function Index() {
  
   const devLogin = ()=>{
     const profile ={
-      displayName:"WuWood_dev",
-      pictureUrl: "https://profile.line-scdn.net/0hohWm3_nEMEd6FCWoI2NOOApEMy1ZZWlVBXIrcUlHOyJHcScTAiJ6KR1Bb3dFdiBEBHIvJxxBPnR2B0chZELMc30kbnBAJXAVX3R_qQ",
+      displayName:  'testME',
+      pictureUrl: process.env.REACT_APP_TEST_URL,
       statusMessage:"123",
-      userId:"U895f7908fef7f32b717db91a8240ddc2"
+      userId:process.env.REACT_APP_TEST_UID
     }
     setIsLoggedIn(true)
     setLineProfile(profile)
@@ -178,7 +178,7 @@ function Index() {
         localStorage.setItem('loginTokenData', JSON.stringify(data));
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
-            console.log(data)
+            // console.log(data)
             setCurrentProfile(data)
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
@@ -224,7 +224,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -244,7 +244,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -262,7 +262,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -278,7 +278,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)
                 setTimeout(()=>{setIsEdit(false)},500)
               })
@@ -514,7 +514,7 @@ function Index() {
             })
             fetchUserProfile(data.user_id, data.token)
                 .then((data)=> {
-                  console.log(data)
+                  // console.log(data)
                   setCurrentProfile(data)
                   localStorage.setItem('currentUser', JSON.stringify(data));
                 })
