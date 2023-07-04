@@ -577,13 +577,16 @@ export const paymentLinePay =async (serNum,token) =>{
 }
 
 //newebpay
-export const paymentNewebPay =async (token) =>{
+export const paymentNewebPay =async (serNum,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      serial_number:  serNum,
+    })
   };
   const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
   const data =await response.json()
@@ -600,6 +603,23 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     }
   };
   const response =await fetch(apiUrl+'invite/'+inviteSerial, requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//退費
+export const postOrder_refund =async (serNum,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      serial_number:  serNum,
+    })
+  };
+  const response =await fetch(apiUrl+'order_refund', requestOptions)
   const data =await response.json()
   return data
 }

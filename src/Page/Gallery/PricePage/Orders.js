@@ -3,7 +3,9 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund} from '../helpers/fetchHelper'
+import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
+
 import moment from 'moment';
 import liff from '@line/liff';
 function Orders() {
@@ -14,7 +16,52 @@ function Orders() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentHeaders , setCurrentHeaders] = useState({})
 
-  const [data, setData] = useState(null)
+  const [isLoadingReq, setIsLoadingReq] = useState(false);
+  const [isNeedLogin, setIsNeedLogin] = useState(false);
+  const [isReqError, setReqError] = useState(false);
+
+  const [orders, setOrders] = useState(null)
+  const handleRefund = (sn)=>{
+    console.log('click')
+    if(isLoggedIn){
+      console.log('已登入')
+      console.log(currentUser)
+      startRefundFlow(sn)
+    }else{
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
+    }
+   
+  }
+  const startRefundFlow = (sn)=>{
+    setIsLoadingReq(true);
+    setReqError(false)
+    postOrder_refund(sn,linLoginData).then(rdata=>{
+      console.log('準備退費')
+      setIsLoadingReq(false)
+      console.log(rdata)
+      updateRefundStatus(sn)
+
+    })
+  }
+  const updateRefundStatus = (serialNumber) => {
+    setOrders(prevOrders => {
+      const updatedOrders = prevOrders.map(order => {
+        if (order.serial_number === serialNumber) {
+          return {
+            ...order,
+            status: 'Refund' // 更新为退款成功状态
+          };
+        }
+        return order;
+      });
+      return updatedOrders;
+    });
+  };
   useEffect(()=>{
     liff.init({liffId: liffID}).then(()=>{
       console.log(liff.isLoggedIn())
@@ -35,7 +82,7 @@ function Orders() {
             setLineLoginData(data.token)
             getOrders(data.token).then(odata=>{
               console.log(odata)
-              setData(odata)
+              setOrders(odata)
             })
           })
         }
@@ -43,7 +90,7 @@ function Orders() {
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
-  if(!data){
+  if(!orders){
     return(
       <div>
         <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
@@ -60,10 +107,10 @@ function Orders() {
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
        <div className='text-white'>訂單列表 </div>
-       <div className='text-sm text-white/80'>{data.length} items</div>
+       <div className='text-sm text-white/80'>{orders.length} items</div>
        <div>
         {
-          data.map((item,index)=>{
+          orders.map((item,index)=>{
             const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status}=item
             return(
               <div className='text-white border my-6 border-lime-400' key={'orders'+index}>
@@ -100,7 +147,7 @@ function Orders() {
                 <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
                   <thead className='bg-zinc-700'>
                     <tr>
-                      <th className='p-2'>支付日期{refund_at ? '(退款)': '(付款)'}</th>
+                      <th className='p-2'>日期{status === 'Success' ? '(付款)': '(退款)'}</th>
                       <th className='p-2'>支付狀態</th>
 
                     </tr>
@@ -108,12 +155,26 @@ function Orders() {
                   <tbody className='text-center'>
                     <tr>
                       <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{refund_at ? moment(refund_at).format('YYYY-MM-DD HH:mm'): ` ${moment(paid_at).format('YYYY-MM-DD HH:mm')}`} </td>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{refund_at ? '已完成退款': '已完成付款'}</td>
+                      <td className={'py-2 px-6 text-sm font-medium text-white whitespace-nowrap ' + (status === 'Success' ?  'bg-green-600 ' :  ' bg-rose-900')}>{status === 'Success' ? '已完成付款': '已完成退款'}</td>
 
                       
                     </tr>
                   </tbody>
                 </table>
+                {
+                  status === "Success" &&               
+                  <div className='p-4'>
+                    <button 
+                      className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                      onClick={()=>handleRefund(serial_number)}
+                    >
+                      <MdAttachMoney size={20} />  按此退費 <MdArrowRightAlt />
+                      {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                      {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
+                    </button>
+                  </div>
+                }
+
 
               </div>
             )

@@ -16,7 +16,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
       text:data.text,
       img:[]
     }
-    console.log(data);
+    // console.log(data);
     if(data.method ==='ADD'){
        items ={
         text:data.text,
