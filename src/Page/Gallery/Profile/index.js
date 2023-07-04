@@ -493,8 +493,9 @@ function Index() {
 
   //LISTEN  LOGIN IF not LINE INIT
   useEffect(() => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'production') {
       // initializeLineLogin()
+      return
       getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
         setLineLoginData(data.loginToken)
