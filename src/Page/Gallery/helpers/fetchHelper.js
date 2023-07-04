@@ -235,7 +235,7 @@ export const fetchUserImages =async (uuid,page,pageSize,token)=>{
     }
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date=2023-01-01'+'&end_date=2023-06-01' ,requestOptions)
     const data =await response.json()
     return data
     
@@ -501,6 +501,105 @@ export const testLinePay =async (token) =>{
     }
   };
   const response =await fetch(apiUrl+'request_payment', requestOptions)
+  const data =await response.json()
+  return data
+}
+//get plans
+export const getPlans =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'plans ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//get subscriptions
+export const getSubscriptions =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'subscriptions ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//get order
+export const getOrders =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'orders ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//post order
+export const postOrder =async (pid,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      plan_id:  pid,
+    })
+  };
+  const response =await fetch(apiUrl+'orders ', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//linepay
+export const paymentLinePay =async (serNum,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      serial_number:  serNum,
+    })
+  };
+  const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//newebpay
+export const paymentNewebPay =async (token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//邀請碼
+export const paymentInviteSerial =async (inviteSerial,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'invite/'+inviteSerial, requestOptions)
   const data =await response.json()
   return data
 }

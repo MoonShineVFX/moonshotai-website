@@ -52,7 +52,7 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
       {!followsResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <div>
+        <div className=' space-y-4'>
           {followsResults.map((user,index) => {
             const {id, name, profile_image   } = user
             return (

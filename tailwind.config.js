@@ -12,6 +12,9 @@ module.exports = {
           '100%': { opacity:0.8},
         },
       },
+      transitionProperty: {
+        'height': 'height'
+      },
       animation: {
         'fade-loop': 'fade 1s linear infinite',
       },

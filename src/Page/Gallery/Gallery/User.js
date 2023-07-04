@@ -4,9 +4,8 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
-import {CallToLoginModal} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
@@ -94,8 +93,8 @@ function User() {
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
-        console.log(data)
-        console.log(id)
+        // console.log(data)
+        // console.log(id)
         fetchUserPublicImages(data.uid, currentPage, pageSize).then(data=>{
           setPublicImage(data)
           setPublicImageResults(data.results)

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar } from "react-icons/md";
+import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
@@ -13,30 +13,57 @@ function Index({currentUser,isLoggedIn}) {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
+  const [isProcessLogout, setIsProcessLogout] = useState(false);
   const navigate = useNavigate();
+  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const handleLogout = async()=>{
-      try {
-        await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
-        if (liff.isLoggedIn()) {
-          // await liff.logout();
-        }
-        // setIsLoggedIn(false);
-        setLineProfile(null);
-        setToken(null);
-        console.log('logouting')
-        removeLocalStorageItem().then(data=>{
-          console.log(data)
-          if(data === 'finish'){
-            if (window.location.pathname === '/gallery') {
-              window.location.reload();
-            } else {
-              navigate('/gallery');
-            }
-          }
+      if(isLoggedIn){
+        liff.init({liffId: liffID}).then(()=>{
+          console.log('init完成可處理登出')
+          setIsProcessLogout(true)
+          
+            setLineProfile(null);
+            setToken(null);
+            setTimeout(()=>{
+              liff.logout()
+              removeLocalStorageItem().then(data=>{
+                console.log(data)
+                if(data === 'finish'){
+                  if (window.location.pathname === '/gallery') {
+                    window.location.reload();
+                  } else {
+                    navigate('/gallery');
+                  }
+                }
+              }).catch(()=>{
+                console.log('error')
+              })
+            
+            },500)
         })
-      } catch (err) {
-        console.log('登出失敗');
       }
+      // try {
+      //   await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
+      //   if (liff.isLoggedIn()) {
+      //     // await liff.logout();
+      //   }
+      //   // setIsLoggedIn(false);
+      //   setLineProfile(null);
+      //   setToken(null);
+      //   console.log('logouting')
+      //   removeLocalStorageItem().then(data=>{
+      //     console.log(data)
+      //     if(data === 'finish'){
+      //       if (window.location.pathname === '/gallery') {
+      //         window.location.reload();
+      //       } else {
+      //         navigate('/gallery');
+      //       }
+      //     }
+      //   })
+      // } catch (err) {
+      //   console.log('登出失敗');
+      // }
   }
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
@@ -66,13 +93,14 @@ function Index({currentUser,isLoggedIn}) {
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
-            <div className='flex items-center flex-col md:flex-row'>
+            <div className='flex items-center flex-col md:flex-row '>
               <div className='w-8'>
                 <div className='pt-[100%] relative'>
                   <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                 </div>
               </div>
-              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' onClick={handleLogout}>Sign Out</div>
+              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600 ' onClick={handleLogout}>Sign Out</div>
+              {isProcessLogout &&  <div className='text-xs mt-1'>正在處理登出</div>}
             </div>
             
             :
@@ -95,7 +123,7 @@ function Index({currentUser,isLoggedIn}) {
           <div className='my-7 flex flex-col text-white/90 justify-between'>
             { 
               isLoggedIn ?
-              <div className='border-b border-white/20'>
+              <div className='border-b border-white/20 text-sm'>
                 <div className='flex items-center gap-2'>
                   <div className='w-8'>
                     <div className='pt-[100%] relative'>
@@ -106,7 +134,7 @@ function Index({currentUser,isLoggedIn}) {
                 </div>
 
                 <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
-                  <button className='my-4 py-1  border rounded-md w-full'> Sign Out</button>
+                  <button className='my-4 py-1  border border-zinc-500 rounded-md w-full'> Sign Out</button>
                 </div>
               </div>
               :
@@ -131,9 +159,14 @@ function Index({currentUser,isLoggedIn}) {
                   <MdStar color="#88ad48"/> Price
               </Link>
               <Link 
+                to='/orders' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAssignment color="#88ad48"/> Orders
+              </Link>
+              <Link 
                 to='/docs' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdStar color="#88ad48"/> Documents
+                  <MdDocumentScanner color="#88ad48"/> Documents
               </Link>
             </div>
 

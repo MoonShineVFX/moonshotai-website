@@ -1,14 +1,12 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart } from "react-icons/fi";
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import Header from '../header'
 import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -18,6 +16,7 @@ import EditUserForm from '../Components/EditUserForm';
 import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
+import TutorialPage from '../TutorialPage'
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Storage", display:true,data_name:"total_storages"},
@@ -48,7 +47,12 @@ function Index() {
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
 
+  //CHECK IS USER LOGIN DATABASE
+  const [currentHeaders , setCurrentHeaders] = useState({})
+  const [subsData, setSubsData] = useState({})
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [token, setToken] = useRecoilState(loginState)
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
@@ -125,7 +129,7 @@ function Index() {
                 localStorage.setItem('loginTokenData', JSON.stringify(data));
                 fetchUserProfile(data.user_id, data.token)
                   .then((data)=> {
-                    console.log(data)
+                    // console.log(data)
                     setCurrentProfile(data)
                     localStorage.setItem('currentUser', JSON.stringify(data));
                   })
@@ -157,10 +161,10 @@ function Index() {
  
   const devLogin = ()=>{
     const profile ={
-      displayName:"WuWood_dev",
-      pictureUrl: "https://profile.line-scdn.net/0hohWm3_nEMEd6FCWoI2NOOApEMy1ZZWlVBXIrcUlHOyJHcScTAiJ6KR1Bb3dFdiBEBHIvJxxBPnR2B0chZELMc30kbnBAJXAVX3R_qQ",
+      displayName:  'testME',
+      pictureUrl: process.env.REACT_APP_TEST_URL,
       statusMessage:"123",
-      userId:"U895f7908fef7f32b717db91a8240ddc2"
+      userId:process.env.REACT_APP_TEST_UID
     }
     setIsLoggedIn(true)
     setLineProfile(profile)
@@ -174,7 +178,7 @@ function Index() {
         localStorage.setItem('loginTokenData', JSON.stringify(data));
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
-            console.log(data)
+            // console.log(data)
             setCurrentProfile(data)
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
@@ -220,7 +224,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -240,7 +244,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -258,7 +262,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)})
               .catch((error) => console.error(error));
           },1000)
@@ -274,7 +278,7 @@ function Index() {
           setTimeout(()=>{
             fetchUserProfile(currentProfile.id, token)
               .then((data)=> {
-                console.log(data)
+                // console.log(data)
                 setCurrentProfile(data)
                 setTimeout(()=>{setIsEdit(false)},500)
               })
@@ -486,13 +490,58 @@ function Index() {
         setCurrentStoragePage(nextPage);
       })
   }
+
+  //LISTEN  LOGIN IF not LINE INIT
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      initializeLineLogin()
+    if (process.env.NODE_ENV !== 'production') {
+      // initializeLineLogin()
+      getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        let lineProfile = data.lineProfile
+        let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
+          refreshToken().then(data =>{
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            setCurrentHeaders(headers)
+            setToken(data.token)
+            setLineLoginData(data.token)
+            getSubscriptions(data.token).then(odata=>{
+              console.log(odata)
+              setSubsData(odata)
+            })
+            fetchUserProfile(data.user_id, data.token)
+                .then((data)=> {
+                  // console.log(data)
+                  setCurrentProfile(data)
+                  localStorage.setItem('currentUser', JSON.stringify(data));
+                })
+                  
+                .catch((error) => console.error(error));
+            fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
+              
+              .then((images)=> {
+                  const results = images.results
+                  setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+                  setImages(images)
+                  setImagesResults(results)
+                  setCurrentAuthor(images.results[0].author)
+              })
+              .catch((error) => console.error(error));
+
+          })
+        }else{
+          initializeLineLogin()
+        }
+        
+      })
+
     }else{
       devLogin()
     }
-  }, [process.env.NODE_ENV]);
+  }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
   return (
     <div >
@@ -502,6 +551,7 @@ function Index() {
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
         {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage}/>)}
+        {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
 
@@ -527,7 +577,7 @@ function Index() {
                 className=' text-xs flex items-center ml-auto absolute top-32 right-5  '
                 onClick={()=>setIsEdit(true)}
               > 
-                edit<MdMoreVert size={20} /> 
+                Settings<MdMoreVert size={20} /> 
               </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
