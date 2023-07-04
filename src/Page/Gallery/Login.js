@@ -34,7 +34,7 @@ function Login() {
     fetch('https://api.moonshot.today/line_login', requestOptions)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
+      // console.log(data)
       setToken(data)
       });
   }
