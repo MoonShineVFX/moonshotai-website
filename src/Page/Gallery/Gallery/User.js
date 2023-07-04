@@ -93,8 +93,8 @@ function User() {
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
-        console.log(data)
-        console.log(id)
+        // console.log(data)
+        // console.log(id)
         fetchUserPublicImages(data.uid, currentPage, pageSize).then(data=>{
           setPublicImage(data)
           setPublicImageResults(data.results)

@@ -39,7 +39,7 @@ function Subscriptions() {
             setLineLoginData(data.token)
             getPlans().then(data=>{
               setPlansList(data)
-              console.log(data)
+              // console.log(data)
             })
             getSubscriptions(data.token).then(odata=>{
               console.log(odata)

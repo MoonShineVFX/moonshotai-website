@@ -68,7 +68,7 @@ function Post() {
               setImageData(gData);
               // 
               fetchComments(gData).then(data=>{
-                  console.log(data)
+                  // console.log(data)
                   setComments(data)
                   setCommentsResults(data.results)
                   const isUserid = data.results.some((item,index)=>{
@@ -94,7 +94,7 @@ function Post() {
 
             setImageData(gdata);
             fetchComments(gdata).then(data=>{
-              console.log(data)
+              // console.log(data)
               setComments(data)
               setCommentsResults(data.results)
               const isUserid = data.results.some((item,index)=>{
@@ -183,12 +183,12 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSendComment= (data)=>{
-    console.log(data)
+    // console.log(data)
     userPostCommentToImage(imageData,data,linLoginData)
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
-          console.log(data)
+          // console.log(data)
           setComments(data)
           setCommentsResults(data.results)
           const isUserid = data.results.some((item,index)=>{
@@ -205,7 +205,7 @@ function Post() {
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
-          console.log(data)
+          // console.log(data)
           setComments(data)
           setCommentsResults(data.results)
           const isUserid = data.results.some((item,index)=>{
