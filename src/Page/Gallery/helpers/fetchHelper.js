@@ -226,7 +226,7 @@ export const userDelACollectionImage = async (id,token)=>{
   const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,page,pageSize,token)=>{
+export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,currModels)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -235,7 +235,7 @@ export const fetchUserImages =async (uuid,page,pageSize,token)=>{
     }
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date=2023-01-01'+'&end_date=2023-06-01' ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
     const data =await response.json()
     return data
     
@@ -385,7 +385,7 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * Galleries API
  */
 export const fetchGalleries = async (headers,page,pageSize) =>{
-  console.log(headers)
+  // console.log(headers)
   const requestOptions = {
     method: 'GET',
     headers:headers
@@ -462,7 +462,7 @@ export const userPostCommentToImage = async (image,msgData,token)=>{
   return data
 }
 export const userPatchCommentToImage = async (commentId,msgData,token)=>{
-  console.log(msgData)
+  // console.log(msgData)
   const requestOptions = {
     method: 'PATCH',
     headers: { 

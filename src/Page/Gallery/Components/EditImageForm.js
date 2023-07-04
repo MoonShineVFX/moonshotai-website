@@ -11,7 +11,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
   });
   console.log(image)
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const items ={
       title:data.title ||null,
       description:data.description ||null,
