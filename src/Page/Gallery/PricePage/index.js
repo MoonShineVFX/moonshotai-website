@@ -163,7 +163,7 @@ function Index() {
           </div>
         </div>
         <h1 className="text-center text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">方案選擇</h1>
-        <div>
+        <div className='hidden'>
           {blocks.map((block, index) => {
           
           return(
