@@ -46,7 +46,7 @@ function App() {
         <Route path="*" element={<Notfound />} />
 
         <Route path="/" element={<Home />} />
-        <Route path="/v2" element={<HomeV3 />} />
+        <Route path="/v3" element={<HomeV3 />} />
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />

@@ -12,7 +12,10 @@ function Header() {
         <div className='text-center text-sm my-4 '>Extend your creation limits through interaction with Moonshot. 
   Let AI enter your world with amazement.</div>
         <div className=' my-5 relative w-full' >
-          <div className=' w-3/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+          <div 
+            className=' w-3/5 absolute top-1/2 left-1/2 '
+            style={{animation: 'float_center 6s ease-in-out infinite'}}
+          >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/Home_MS_logo01.png'} alt="" className='w-full'/>
           </div>
           <div className='glow w-full'>

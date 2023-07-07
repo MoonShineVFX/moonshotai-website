@@ -524,3 +524,28 @@ button.toggle-button.active .toggle-switch {
       color: #7e0fff;
     }
   }
+
+
+  @keyframes float_t01 {
+    0% {
+      transform: translatey(2px);
+
+    }
+    50% {
+      transform: translatey(-10px);
+    }
+    100% {
+      transform: translatey(2px);
+    }
+  }
+  @keyframes float_center {
+    0% {
+     transform: translate(-50%,-35%);
+    }
+    50% {
+      transform: translate(-50%,-55%);
+    }
+    100% {
+      transform: translate(-50%,-35%);
+    }
+  }
