@@ -157,20 +157,22 @@ function Index() {
           setIsLoadingReq(false)
           setReqError(false)
           console.log(ldata)
-          let url1 = ldata.payment_url
-          fetch(url1, {
-            method: 'POST',
-            headers: {"Content-type": "application/x-www-form-urlencoded; charset=UTF-8"},
-            body: Object.entries(ldata).map(([k,v])=>{return k+'='+v}).join('&')
-          }).then((response) => {
-            if (response.ok) {
-              console.log(response)
-              console.log('ok')
 
-            }
-          }).catch(error => console.log('error'));
-
-
+          // form call 藍新 API
+          const form = document.createElement('form');
+          form.method = 'post';
+          form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';//藍新金流驗證網址(測試環境)
+          for (const key in ldata) {
+              if (ldata.hasOwnProperty(key)) {
+                  const hiddenField = document.createElement('input');
+                  hiddenField.type = 'hidden';
+                  hiddenField.name = key;
+                  hiddenField.value = ldata[key];
+                  form.appendChild(hiddenField);
+              }
+          }
+          document.body.appendChild(form);
+          form.submit();
 
           // const url = ldata.payment_url
           if(ldata?.code === "token_not_valid"){
