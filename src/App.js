@@ -52,8 +52,8 @@ function App() {
 
 
         <Route path='/'  element={<HomeLayout/>}>
-          <Route path="/" element={<Home />} />
-          <Route path="/v3" element={<HomeV3 />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<HomeV3 />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/policy" element={<Policy />} />
         </Route>

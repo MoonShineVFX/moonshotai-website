@@ -1,7 +1,7 @@
 import React,{useEffect,useState,useRef} from 'react'
 import * as THREE from 'three'
 import HALO from 'vanta/src/vanta.halo'
-function Header() {
+function Header({executeScroll}) {
   const [vantaEffect, setVantaEffect] = useState(0)
   const vantaRef = useRef(null)
 
@@ -48,7 +48,7 @@ function Header() {
        </div>
       </div>
       <div className='flex flex-col items-center space-y-6 mt-4'>
-        <div className='w-32 text-center px-2 py-2 rounded-full border'>Learn More</div>
+        <div className='w-32 text-center px-2 py-2 rounded-full border' onClick={executeScroll}>Learn More</div>
         <a 
           className='w-32 text-center px-2 py-2 rounded-full text-black bg-[#BDDE48] '
           href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
