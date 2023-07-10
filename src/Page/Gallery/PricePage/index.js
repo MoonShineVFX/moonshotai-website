@@ -97,7 +97,7 @@ function Index() {
     if(isLoggedIn){
       console.log('已登入')
       console.log(currentUser)
-      if(!currentUser.is_subscribed){
+      if(currentUser.is_subscribed){
         startBluePayFlow(pid)
       }else{
         if(diffDays(currentUser.subscription_end_at)){
@@ -161,7 +161,7 @@ function Index() {
           // form call 藍新 API
           const form = document.createElement('form');
           form.method = 'post';
-          form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway';//藍新金流驗證網址(測試環境)
+          form.action = ldata.payment_url;//藍新金流驗證網址(測試環境)
           for (const key in ldata) {
               if (ldata.hasOwnProperty(key)) {
                   const hiddenField = document.createElement('input');
