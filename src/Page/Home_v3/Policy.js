@@ -1,9 +1,7 @@
 import React from 'react'
-import Navbar from './Navbar'
 function Policy() {
   return (
     <div>
-      <Navbar />
       <div className='text-white pt-12 px-8'>
         <div className='my-4'>
          <div className='text-white/90 text-sm space-y-2'>

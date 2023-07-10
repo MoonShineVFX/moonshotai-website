@@ -1,9 +1,7 @@
 import React from 'react'
-import Navbar from './Navbar'
 function Terms() {
   return (
     <div>
-      <Navbar />
       <div className='text-white pt-12 px-8'>
         <div className='my-4'>
           <div className='text-xl font-bold  mb-4'>一、會員服務條款</div>
