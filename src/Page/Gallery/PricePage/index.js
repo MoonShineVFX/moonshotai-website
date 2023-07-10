@@ -63,6 +63,7 @@ function Index() {
     const targetDate = moment(targetday);
     const currentDate = moment();
     const diffDays = targetDate.diff(currentDate, 'days');
+    if(diffDays === null ) return false
     if (diffDays <= 5) {
       return true
     } return false
@@ -97,7 +98,7 @@ function Index() {
     if(isLoggedIn){
       console.log('已登入')
       console.log(currentUser)
-      if(currentUser.is_subscribed){
+      if(!currentUser.is_subscribed){
         startBluePayFlow(pid)
       }else{
         if(diffDays(currentUser.subscription_end_at)){
@@ -163,13 +164,13 @@ function Index() {
           form.method = 'post';
           form.action = ldata.payment_url;//藍新金流驗證網址(測試環境)
           for (const key in ldata) {
-              if (ldata.hasOwnProperty(key)) {
-                  const hiddenField = document.createElement('input');
-                  hiddenField.type = 'hidden';
-                  hiddenField.name = key;
-                  hiddenField.value = ldata[key];
-                  form.appendChild(hiddenField);
-              }
+            if (ldata.hasOwnProperty(key)) {
+              const hiddenField = document.createElement('input');
+              hiddenField.type = 'hidden';
+              hiddenField.name = key;
+              hiddenField.value = ldata[key];
+              form.appendChild(hiddenField);
+            }
           }
           document.body.appendChild(form);
           form.submit();
