@@ -68,7 +68,7 @@ export const Logout = async ()=>{
   })
 }
 export const removeLocalStorageItem = async ()=>{
-  localStorage.setItem('isLogin',false);
+  localStorage.removeItem('isLogin');
   localStorage.removeItem('loginTokenData');
   localStorage.removeItem('lineProfile');
   localStorage.removeItem('currentUser');
@@ -600,9 +600,12 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      invitation_code:  inviteSerial,
+    })
   };
-  const response =await fetch(apiUrl+'invite/'+inviteSerial, requestOptions)
+  const response =await fetch(apiUrl+'invitations', requestOptions)
   const data =await response.json()
   return data
 }
