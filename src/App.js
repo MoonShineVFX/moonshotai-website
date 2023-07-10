@@ -3,6 +3,8 @@ import React,{useEffect} from 'react'
 import { BrowserRouter , Routes, Route} from 'react-router-dom';
 
 import Home from './Page/Home'
+
+import HomeLayout from './Page/Lyaouts/HomeLayout';
 import HomeV3 from './Page/Home_v3'
 import Terms from './Page/Home_v3/Terms';
 import Policy from './Page/Home_v3/Policy';
@@ -47,11 +49,15 @@ function App() {
       <Routes> 
         <Route path="*" element={<Notfound />} />
 
-        <Route path="/" element={<Home />} />
 
-        <Route path="/v3" element={<HomeV3 />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/policy" element={<Policy />} />
+
+        <Route path='/'  element={<HomeLayout/>}>
+          <Route path="/" element={<Home />} />
+          <Route path="/v3" element={<HomeV3 />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/policy" element={<Policy />} />
+        </Route>
+
         
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />

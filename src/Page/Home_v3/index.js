@@ -9,13 +9,11 @@ import Footer from './Footer'
 function Index() {
   return (
     <div className=''>
-      <Navbar />
       <Header />
       <Section01 />
       <Section02 />
       <Section03 />
       <Section04 />
-      <Footer />
 
     </div>
   )
