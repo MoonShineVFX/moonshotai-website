@@ -36,39 +36,30 @@ function Navbar() {
                 <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
               </div>
           </div>
-          <div className='my-7 flex flex-col text-white/90 justify-between'>
+          <div className='my-7 flex flex-col text-white/90 justify-between items-center'>
 
-              <div className='my-3'>
+              <div className='my-3 text-center flex flex-col  font-bold'>
                 <Link 
                   to='/' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  className='p-2 cursor-pointer  hover:bg-gray-600 '>
                   Home  
                 </Link>
                 <Link 
                   to='/price' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  className='p-2 cursor-pointer  hover:bg-gray-600'>
                     Price
                 </Link>
                 <Link 
                   to='/gallery' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  className='p-2 cursor-pointer  hover:bg-gray-600 '>
                     Gallery
                 </Link>
                 <Link 
                   to='/docs' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  className='p-2 cursor-pointer  hover:bg-gray-600 '>
                    Documents
                 </Link>
-                <Link 
-                  to='/terms' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                   Terms of Use
-                </Link>
-                <Link 
-                  to='/policy' 
-                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                    Privacy Policy
-                </Link>
+
               </div>
 
 
