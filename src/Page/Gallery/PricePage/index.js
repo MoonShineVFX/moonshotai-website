@@ -26,7 +26,9 @@ function Index() {
   const [isReqError, setReqError] = useState(false);
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
+  const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
+  
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
@@ -53,11 +55,27 @@ function Index() {
       }
     })
   const onSubmit = (data) => {
+    setIsInviteLoadingReq(false)
     if(isLoggedIn){
+      console.log('已登入')
+      console.log(currentUser)
       setIsInviteLoadingReq(true)
+      paymentInviteSerial(data.invite_number,linLoginData).then(d=>{
+        console.log(d[0])
+        if(d[0]=== 'You have already used the invitation'){
+          setIsAlreadyUsed(true)
+        }
+        setIsInviteLoadingReq(false)
+      })
     }else{
-      setIsInviteLoadingReq(false)
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
     }
+
   }
   const diffDays = (targetday)=>{
     const targetDate = moment(targetday);
@@ -356,6 +374,7 @@ function Index() {
                               輸入邀請碼
                               <MdOutlineTrendingFlat className='ml-2'/>
                               {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
+                              {isAlreadyUsed&& <div className='text-xs'>您已經輸入過推薦序號了。</div>}
                             </button>
                           </div>
 
