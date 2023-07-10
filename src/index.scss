@@ -9,7 +9,7 @@
   }
 }
 body{
-  background: #1e1e1e;
+  background: #000;
   padding-bottom: constant(safe-area-inset-bottom);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -34,6 +34,10 @@ body{
 ::-webkit-scrollbar-corner {
   background-color: #555;
 }
+.chatroom::-webkit-scrollbar {
+  display: none;
+}
+
 
 .my-masonry-grid {
   display: -webkit-box; /* Not needed if autoprefixing */
@@ -500,7 +504,7 @@ button.toggle-button.active .toggle-switch {
     background: linear-gradient(270deg, #0fffc1, #7e0fff);
     background-size: 200% 200%;
     animation: animateGlow 10s ease infinite;
-    opacity: 0.3;
+    opacity: 0.6;
   }
   @keyframes animateGlow {
     0% {
@@ -536,6 +540,30 @@ button.toggle-button.active .toggle-switch {
     }
     100% {
       transform: translatey(2px);
+    }
+  }
+  @keyframes float_t02 {
+    0% {
+      transform: translate(2px,2px);
+
+    }
+    50% {
+      transform: translate(-10px,-5px);
+    }
+    100% {
+      transform: translate(2px,2px);
+    }
+  }
+  @keyframes float_t03 {
+    0% {
+      transform: translate(2px,2px);
+
+    }
+    50% {
+      transform: translate(10px,10px);
+    }
+    100% {
+      transform: translate(2px,2px);
     }
   }
   @keyframes float_center {

@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { MdArticle } from "react-icons/md";
+import { MdArticle,MdLaunch } from "react-icons/md";
 
 function Section03() {
   const mediumRssFeed = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@ai_72180"
@@ -22,34 +22,29 @@ function Section03() {
       <div className='mx-12 flex flex-col items-center'>
         <div className='text-3xl font-bold text-center relative'>
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/section03_title.png'} alt="" />
-          <div 
-            className=' absolute -top-3 -left-5'
-            style={{animation: 'float_t01 6s ease-in-out infinite'}}  
-          >
-            <img src={process.env.PUBLIC_URL+'/images/ver3_images/section01_c01.png'} alt="" />
-          </div>
+
         </div>
 
 
       </div>
-      <div className="jsonContent flex items-center gap-10 flex-col md:flex-row mt-10 divide-y divide-white/50 border-t border-b border-white/50">
+      <div className="jsonContent flex items-center flex-col md:flex-row mt-10 divide-y divide-white/30 border-t border-b border-white/30">
           {
             articles ? 
             articles.map((item,index)=>{
               console.log(item)
               const{guid,thumbnail,title,link,description,pubDate} = item
               return(
-                <div className="w-full md:w-1/3 hover:brightness-110 flex items-center " key={guid}>
+                <div className="w-full md:w-1/3 hover:brightness-110 flex items-center py-3" key={guid}>
 
-                  <div className="blogCard-body w-2/3 px-3">
-                    <div className="text-md font-bold my-3 text-white/90">
+                  <div className="blogCard-body w-8/12 px-3">
+                    <div className="text-sm font-bold my-3 pr-4 text-white/90">
                       <a href={link} target="_blank" rel="noreferrer"  className='flex items-center gap-2 hover:text-white/80'> {title}</a>
                     </div>
-                    <div className="text-sm my-1 text-white/50">{description.replace(/(<([^>]+)>)/ig,"").substr(0,15)}...</div>
-                    <div className="text-xs my-1 text-white/30">{pubDate.substr(0,10)}</div>
+                    <div className="text-sm my-1 text-white/50 hidden">{description.replace(/(<([^>]+)>)/ig,"").substr(0,15)}...</div>
+                    <div className="text-xs my-1 text-white/30 ">{pubDate.substr(0,10)}</div>
                   </div>
                   <div 
-                    className="w-1/3 aspect-[16/11] bg-black bg-center bg-cover bg-no-repeat cursor-pointer"
+                    className="w-4/12 aspect-[16/11] bg-black bg-center bg-cover bg-no-repeat cursor-pointer"
                     style={{backgroundImage:`url(${thumbnail})`}}
                     onClick={()=> window.open(link, "_blank")}
                   >
@@ -61,9 +56,13 @@ function Section03() {
             }):<div>目前還沒有文章</div>
           }
         </div>
-        <div className='h-12 bg-white w-full text-black font-bold flex justify-center items-center '>
-          Explore More AI Pockets ++
-        </div>
+        <a 
+          className='h-12 bg-white w-full text-black font-bold flex justify-center items-center '
+          href="https://medium.com/@ai_72180"
+          target={"_blank"} rel="noreferrer"
+        >
+          <MdLaunch /> <span className='pl-2'>Explore More AI Pockets ++ </span>  
+        </a>
 
     </div>
   )

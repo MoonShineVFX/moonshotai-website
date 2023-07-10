@@ -4,6 +4,8 @@ import { BrowserRouter , Routes, Route} from 'react-router-dom';
 
 import Home from './Page/Home'
 import HomeV3 from './Page/Home_v3'
+import Terms from './Page/Home_v3/Terms';
+import Policy from './Page/Home_v3/Policy';
 import Camera from './Page/Camera'
 // import Docs from './Page/Docs'
 import AOS from 'aos';
@@ -46,7 +48,11 @@ function App() {
         <Route path="*" element={<Notfound />} />
 
         <Route path="/" element={<Home />} />
+
         <Route path="/v3" element={<HomeV3 />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/policy" element={<Policy />} />
+        
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
         <Route path="/gallery" element={<Gallery />} />

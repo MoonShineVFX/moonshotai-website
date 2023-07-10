@@ -68,7 +68,7 @@ function ChatTutorial_ver3() {
         <div id="chat" className="mx-auto w-full  ">
           <div className=" rounded-md bg-gradient-to-b from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] p-[2px]">
 
-            <div className='rounded-md h-full w-full bg-[#1e1e1e]'>
+            <div className='rounded-md h-full w-full bg-[#000]'>
               {( ()=>{
                   switch (mode) {
                     case 'text':

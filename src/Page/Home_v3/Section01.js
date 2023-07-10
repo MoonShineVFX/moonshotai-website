@@ -18,7 +18,11 @@ function Section01() {
       </div>
       <ChatTutorial_ver3 />
       <div className='flex flex-col items-center space-y-6 mt-4'>
-        <div className='w-32 text-center px-2 py-2 rounded-full text-black font-bold bg-gradient-to-l from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] '>Start Now !  </div>
+        <a 
+          className='w-32 text-center px-2 py-2 rounded-full text-black font-bold bg-gradient-to-l from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] '
+          href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
+          target={"_blank"} rel="noreferrer"
+        >Start Now !  </a>
       </div>
     </div>
   )

@@ -390,7 +390,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
                 <div className=" relative max-w-xl px-5 py-3 text-white bg-[#263421]  shadow text-sm flex items-center gap-1  rounded-tl-2xl rounded-tr-2xl rounded-br-2xl">
                   <span className="block">您可以選擇以文生圖 / 以圖生圖，並於對話中輸入欲生成圖片的風格 (Model) 與關鍵字，讓我陪你一起創造！</span>
                   <div className=' absolute bottom-0 -left-[17px]'>
-                    <div className='w-[20px] h-[23px] bg-[#1e1e1e] absolute bottom-[1px] -left-[7px]  rotate-[60.33deg]'></div>
+                    <div className='w-[20px] h-[23px] bg-[#000] absolute bottom-[1px] -left-[7px]  rotate-[60.33deg]'></div>
                     <div className='w-[17px] h-[10px]  bg-[#263421]'></div>
                   </div>
                 </div>
@@ -452,7 +452,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
       </div>
       <div className="flex  justify-center w-full p-3  gap-2 border-t border-[#C2C1FD] rounded-b-lg"> 
       <div className='flex justify-between w-full items-center '>  
-        <div className='w-3/4 text-sm text-white bg-[#C2C1FD20]  border border-[#C2C1FD] py-2 px-4 rounded-xl h-10'>
+        <div className='w-3/4 text-sm text-white   border border-[#C2C1FD] py-2 px-4 rounded-xl h-10'>
           {
             showFirst ? <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete} /> : <div className='animate-fade-loop'>_</div>
           } 
@@ -467,7 +467,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
           </div>
           <div 
             onClick={()=>{handleClickStep(1)}} 
-            className={'bg-[#C2C1FD20]  text-center px-4 py-2 text-white pr-2  rounded-xl cursor-pointer flex items-center  justify-center relative border border-[#C2C1FD]' }>
+            className={'  text-center px-4 py-2 text-white pr-2  rounded-xl cursor-pointer flex items-center  justify-center relative border border-[#C2C1FD]' }>
               <MdSend size={18}/>
               {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                 <span class="relative flex h-3 w-3">
@@ -644,9 +644,12 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
           }
         </ul>
       </div>
-      <div className="flex  justify-center w-full p-2 gap-2 border-t border-[#C2C1FD]  rounded-b-lg"> 
+      <div className="flex  justify-center w-full p-3 gap-2 border-t border-[#C2C1FD]  rounded-b-lg"> 
         <div className='flex justify-between w-full items-center '>  
-          <div className='w-3/4 text-sm text-white bg-[#C2C1FD20]  border border-[#C2C1FD] py-2 px-4 rounded-full h-10   overflow-x-auto overflow-y-hidden '>
+          <div 
+            className='chatroom w-3/4 text-sm text-white  border border-[#C2C1FD] py-2 px-4 rounded-xl h-10  overflow-x-auto overflow-y-hidden '
+
+          >
             <div className=' whitespace-nowrap'>
             {
               showSecond && <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete}/> 
@@ -666,7 +669,7 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
             </div>
             <div 
               onClick={()=>{handleClickStep(1)}} 
-              className={'bg-[#C2C1FD20]   text-center px-4 py-2 pr-2 text-white rounded-xl cursor-pointer flex items-center  justify-center relative border border-zinc-300' }>
+              className={'  text-center px-4 py-2 pr-2 text-white rounded-xl cursor-pointer flex items-center  justify-center relative border border-[#C2C1FD]' }>
                 <MdSend size={18}/>
                 {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                   <span class="relative flex h-3 w-3">

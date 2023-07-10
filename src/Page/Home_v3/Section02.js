@@ -38,16 +38,14 @@ function Section02() {
 
         </div>
 
-
       </div>
       <div
         className='w-full aspect-[16/9]  bg-cover bg-center bg-no-repeat  relative'
         style={{backgroundImage: `url(${process.env.PUBLIC_URL + '/images/ver3_images/section02_bg02.png'})`}}
       >
-        <div className=' absolute bg-gradient-to-b from-[#1e1e1e] via-[#1e1e1e00] to-[#1e1e1e] top-0 w-full h-full'></div>
+        <div className=' absolute bg-gradient-to-b from-[#000] via-[#1e1e1e00] to-[#000] top-0 w-full h-full'></div>
         
-
-        </div>
+      </div>
 
     </div>
   )
