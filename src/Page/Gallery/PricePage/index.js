@@ -27,6 +27,7 @@ function Index() {
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
+  const [isYourself, setIsYouself] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
   
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -64,6 +65,9 @@ function Index() {
         console.log(d[0])
         if(d[0]=== 'You have already used the invitation'){
           setIsAlreadyUsed(true)
+        }
+        if(d[0]=== "You can't invite yourself"){
+          setIsYouself(true)
         }
         setIsInviteLoadingReq(false)
       })
@@ -377,6 +381,7 @@ function Index() {
                               <MdOutlineTrendingFlat className='ml-2'/>
                               {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
                               {isAlreadyUsed&& <div className='text-xs'>您已經輸入過推薦序號了。</div>}
+                              {isYourself&& <div className='text-xs'>你不可以使用自己的序號。</div>}
                             </button>
                           </div>
 
