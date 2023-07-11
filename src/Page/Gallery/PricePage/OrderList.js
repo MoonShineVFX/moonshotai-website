@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
+import { MdAttachMoney,MdArrowRightAlt,MdHelp } from "react-icons/md";
 function OrderList({orderData,handleRefund}) {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
+
+  const onHandleRefunds  = (sn)=>{
+    console.log(sn)
+  }
   return (
     <div className='text-white'>
       <div className='text-sm text-white/80'>{orderData.length} items</div>
@@ -50,12 +54,12 @@ function OrderList({orderData,handleRefund}) {
               
                 {
                   status === "Success" &&               
-                  <div className='p-4'>
+                  <div className='my-3'>
                     <button 
-                      className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                      onClick={()=>handleRefund(serial_number)}
+                      className="ml-auto px-3 flex  justify-center items-center gap-2 bg-amber-600  rounded-md py-2  text-center text-white text-sm"
+                      onClick={()=>onHandleRefunds(serial_number)}
                     >
-                      <MdAttachMoney size={20} />  按此退費 <MdArrowRightAlt />
+                      <MdHelp size={20} />  回報訂單問題
                       {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                       {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
                     </button>

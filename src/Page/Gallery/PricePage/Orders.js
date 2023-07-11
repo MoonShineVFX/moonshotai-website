@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
@@ -29,6 +29,7 @@ function Orders() {
 
   const [orders, setOrders] = useState(null)
   const [subscriptions, setSubscriptions] = useState(null)
+  const [plans, setPlans] = useState(null)
   
 
   const handleRefund = (sn)=>{
@@ -98,8 +99,11 @@ function Orders() {
               setOrders(odata)
             })
             getSubscriptions(data.token).then(sdata=>{
-              console.log(sdata)
+              console.log('subs',sdata)
               setSubscriptions(sdata)
+            })
+            getPlans().then(pdata=>{
+              setPlans(pdata)
             })
           })
         }
@@ -107,6 +111,7 @@ function Orders() {
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
+  
   if(!orders){
     return(
       <div>
@@ -121,6 +126,8 @@ function Orders() {
       </div>
     )
   }
+  const reversedData = orders?.slice().reverse();
+  const reversedSubData = subscriptions?.slice().reverse();
   return (
     <div>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
@@ -130,7 +137,7 @@ function Orders() {
             menuItems.map((item,index)=>{
               return(
                 <div 
-                  className={ (selectedItem?.id === item.id ? ' font-bold text-white border-b pb-2' : 'font-normal text-white/80')}
+                  className={'pb-2 '+ (selectedItem?.id === item.id ? ' font-bold text-white border-b ' : 'font-normal text-white/80')}
                   key={item.id} 
                   onClick={() => handleMenuItemClick(item)}>{item.title}</div>
               )
@@ -139,8 +146,8 @@ function Orders() {
        </div>
        {selectedItem && (
         <div>
-          {selectedItem.title === '訂單列表' && <OrderList orderData={orders} />}
-          {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={subscriptions}/>}
+          {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} />}
+          {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans}/>}
         </div>
       )}
 
