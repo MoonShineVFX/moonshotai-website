@@ -18,14 +18,12 @@ function Index({currentUser,isLoggedIn}) {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const handleLogout = async()=>{
       if(isLoggedIn){
-        liff.init({liffId: liffID}).then(()=>{
           console.log('init完成可處理登出')
           setIsProcessLogout(true)
           
             setLineProfile(null);
             setToken(null);
             setTimeout(()=>{
-              liff.logout()
               removeLocalStorageItem().then(data=>{
                 console.log(data)
                 if(data === 'finish'){
@@ -38,9 +36,8 @@ function Index({currentUser,isLoggedIn}) {
               }).catch(()=>{
                 console.log('error')
               })
-            
             },500)
-        })
+        
       }
       // try {
       //   await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
