@@ -6,6 +6,8 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData} from '../helpers/fetchHelper'
 import { FaBars,FaTimes } from "react-icons/fa";
+import Terms from '../../Home_v3/Terms';
+import Policy from '../../Home_v3/Policy';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -25,8 +27,8 @@ function Index() {
     {title:"關於moonshot",section:"section1"},
     {title:"指令介紹",section:"section2"},
     {title:"模型介紹",section:"section3"},
-    {title:"社群規章",section:"section4"},
-    {title:"使用聲明",section:"section5"},
+    {title:"使用條款",section:"section4"},
+    {title:"隱私權政策",section:"section5"},
   ]
   const commendItem = [
     {display_name:"寫實風格",name:"PR"},
@@ -94,7 +96,7 @@ function Index() {
         </div>
       </div>
 
-      <div className=' justify-start items-start text-white w-10/12 md:w-8/12 mx-auto '>
+      <div className=' justify-start items-start text-white w-full md:w-8/12 mx-auto '>
 
         <motion.div className=" modal relative  min-h-screen w-full   md:px-10 mx-auto text-white flex-auto overflow-y-auto ">
           <motion.div 
@@ -108,7 +110,7 @@ function Index() {
               delay: 0.5,
             }}
           >  
-            <div id="section1" className='min-h-screen pt-28'>
+            <div id="section1" className='min-h-screen pt-28 px-8'>
               <div className='text-lime-500 font-bold'>About</div>
               <div className='text-2xl font-bold  mb-4'>關於我們</div>
               <div className='mt-2 mb-8 text-white/70'>
@@ -117,7 +119,7 @@ function Index() {
               </div>
 
             </div>
-            <div id="section2" className='min-h-screen  pt-28'>
+            <div id="section2" className='min-h-screen  pt-28 px-8'>
               <div className='text-lime-500 font-bold'>Command </div>
               <div className='text-2xl font-bold  mb-4'>指令介紹 </div>
               <div className='mt-2 mb-8 leading-9 text-white/70'>
@@ -138,12 +140,12 @@ function Index() {
                     )
                   })}
 
-
                 </tbody>
               </table>
               </div>
             </div>
-            <div id="section3" className='min-h-screen  pt-28'>
+            <div id="section3" className='min-h-screen  pt-28 px-8'>
+              <div className='px-8'></div>
               <div className='text-lime-500 font-bold'>Model </div>
               <h1 className="text-2xl font-bold mb-4">模型介紹</h1>
               <div className='mt-2 mb-8 leading-9 text-white/70'>
@@ -153,22 +155,21 @@ function Index() {
             </div>
 
             <div id="section4" className='min-h-screen  pt-28'>
-              <div className='text-lime-500 font-bold'>Community Standards </div>
-              <h1 className="text-2xl font-bold mb-4">社群規章</h1>
-              <div className='mt-2 mb-8 leading-9 text-white/70'>
-
+              <div className='px-8'>
+                <div className='text-lime-500 font-bold'>Terms </div>
+                <h1 className="text-2xl font-bold mb-4">使用條款</h1>
               </div>
+
+              <Terms />
             </div>
 
             <div id="section5" className='min-h-screen  pt-28'>
-              <div className='text-lime-500 font-bold'>Terms </div>
-              <div className='text-2xl font-bold  mb-4'>使用聲明💡 </div>
-              <ul className=' space-y-2 list-disc text-white/70 list-inside'>
-                <li>本服務僅供娛樂與學習使用，意在推廣AI繪圖技術。使用者的行為與本服務無關。</li> 
-                <li>使用者需遵守網路社群使用規定，不得違反社會善良風俗、不使用AI傷害他人、煽動暴力或進行任何惡意行為。</li>
-                <li>我們會在可負擔範圍內盡力維持服務的穩定性，但不做任何保證，如果您在使用的過程中遇到問題，可以透過網頁上的聯絡資訊聯繫我們。</li>
-                <li>最後，希望使用者能夠理解本服務的宗旨和意圖，並且遵守相關的使用規定。如果您有任何建議，歡迎與我們分享。</li>
-              </ul>
+              <div className='px-8'>
+                <div className='text-lime-500 font-bold'>Private Policy </div>
+                <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
+              </div>
+
+              <Policy />
             </div>
 
 

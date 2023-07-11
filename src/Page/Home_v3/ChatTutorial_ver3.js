@@ -39,7 +39,7 @@ function ChatTutorial_ver3() {
 
 
   return (
-    <div className='mx-3'>
+    <div className='mx-8'>
 
     <div className='py-5 lg:py-28  '>
 
