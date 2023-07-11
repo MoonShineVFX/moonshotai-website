@@ -545,6 +545,7 @@ function Index() {
         let lineProfile = data.lineProfile
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
+          console.log('profilePage is login:', data.isLogin)
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
