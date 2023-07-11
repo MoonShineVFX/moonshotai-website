@@ -47,28 +47,29 @@ function App() {
     <RecoilRoot>
     <BrowserRouter>
       <Routes> 
-        {/* <Route path="*" element={<Notfound />} /> */}
+        <Route path="*" element={<Notfound />} />
 
 
 
-        <Route path='/'  element={<Home/>}>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/" element={<HomeV3 />} /> */}
+        <Route path='/'  element={<HomeLayout/>}>
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<HomeV3 />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/policy" element={<Policy />} />
         </Route>
 
         
         <Route path="/camera" element={<Camera />} />
-        <Route path="/docs" element={<Cooming />} />
-        <Route path="/gallery" element={<Cooming />} />
-        <Route path="/post/:id" element={<Cooming />} />
-        <Route path="/user/:id" element={<Cooming />} />
-        <Route path="/profile" element={<Cooming />} />
-        <Route path="/price" element={<Cooming />} />
-        <Route path="/confirm/:id" element={<Cooming />} />
-        <Route path="/cancel/:id" element={<Cooming />} />
-        <Route path="/orders" element={<Cooming />} />
+        <Route path="/docs" element={<Docs />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/gv2" element={<GalleryV2 />} />
+        <Route path="/post/:id" element={<Post />} />
+        <Route path="/user/:id" element={<User />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/price" element={<Price />} />
+        <Route path="/confirm/:id" element={<Confirm />} />
+        <Route path="/cancel/:id" element={<Cancel />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/come" element={<Cooming />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}
