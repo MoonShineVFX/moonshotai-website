@@ -93,12 +93,13 @@ function Index() {
       if(isLoggedIn){
         console.log('已登入')
         console.log(currentUser)
+        startLinePayFlow(pid)
         if(!currentUser.is_subscribed){
-          startLinePayFlow(pid)
+          // startLinePayFlow(pid)
         }else{
           if(diffDays(currentUser.subscription_end_at)){
             setIsNeedWithin5Days(false)
-            startLinePayFlow(pid)
+            // startLinePayFlow(pid)
           }else{
             setIsNeedWithin5Days(true)
           }
@@ -116,12 +117,13 @@ function Index() {
     if(isLoggedIn){
       console.log('已登入')
       console.log(currentUser)
+      startBluePayFlow(pid)
       if(!currentUser.is_subscribed){
-        startBluePayFlow(pid)
+        // startBluePayFlow(pid)
       }else{
         if(diffDays(currentUser.subscription_end_at)){
           setIsNeedWithin5Days(false)
-          startBluePayFlow(pid)
+          // startBluePayFlow(pid)
         }else{
           setIsNeedWithin5Days(true)
         }
@@ -409,7 +411,7 @@ function Index() {
           <div className='text-white'>
             <div className='text-xl my-3'>免費會員可以使用進階功能嗎? </div>
             <div className='text-sm'>
-            免費會員可以無限使用基本功能，但。
+            免費會員可以無限使用基本功能，但您可以透過輸入推薦序號獲得進階會員功能。
             </div>
           </div>       
           <div className='text-white'>

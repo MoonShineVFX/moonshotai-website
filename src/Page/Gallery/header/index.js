@@ -20,23 +20,23 @@ function Index({currentUser,isLoggedIn}) {
       if(isLoggedIn){
           console.log('init完成可處理登出')
           setIsProcessLogout(true)
+          setLineProfile(null);
+          setToken(null);
           
-            setLineProfile(null);
-            setToken(null);
-            setTimeout(()=>{
-              removeLocalStorageItem().then(data=>{
-                console.log(data)
-                if(data === 'finish'){
-                  if (window.location.pathname === '/gallery') {
-                    window.location.reload();
-                  } else {
-                    navigate('/gallery');
-                  }
+          setTimeout(()=>{
+            removeLocalStorageItem().then(data=>{
+              console.log(data)
+              if(data === 'finish'){
+                if (window.location.pathname === '/gallery') {
+                  window.location.reload();
+                } else {
+                  navigate('/gallery');
                 }
-              }).catch(()=>{
-                console.log('error')
-              })
-            },500)
+              }
+            }).catch(()=>{
+              console.log('error')
+            })
+          },500)
         
       }
       // try {
