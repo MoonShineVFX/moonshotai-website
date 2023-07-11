@@ -3,9 +3,16 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions} from '../helpers/fetchHelper'
+import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
+import OrderList from './OrderList';
+import SubscriptionsList from './SubscriptionsList';
 import moment from 'moment';
 import liff from '@line/liff';
+const menuItems=[
+  {id:1,title:'訂閱紀錄'},
+  {id:2,title:'訂單列表'},
+]
 function Orders() {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -14,7 +21,60 @@ function Orders() {
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentHeaders , setCurrentHeaders] = useState({})
 
-  const [data, setData] = useState(null)
+  const [selectedItem, setSelectedItem] = useState(menuItems[1]);
+
+  const [isLoadingReq, setIsLoadingReq] = useState(false);
+  const [isNeedLogin, setIsNeedLogin] = useState(false);
+  const [isReqError, setReqError] = useState(false);
+
+  const [orders, setOrders] = useState(null)
+  const [subscriptions, setSubscriptions] = useState(null)
+  
+
+  const handleRefund = (sn)=>{
+    console.log('click')
+    if(isLoggedIn){
+      console.log('已登入')
+      console.log(currentUser)
+      startRefundFlow(sn)
+    }else{
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
+    }
+   
+  }
+  const startRefundFlow = (sn)=>{
+    setIsLoadingReq(true);
+    setReqError(false)
+    postOrder_refund(sn,linLoginData).then(rdata=>{
+      console.log('準備退費')
+      setIsLoadingReq(false)
+      console.log(rdata)
+      updateRefundStatus(sn)
+
+    })
+  }
+  const updateRefundStatus = (serialNumber) => {
+    setOrders(prevOrders => {
+      const updatedOrders = prevOrders.map(order => {
+        if (order.serial_number === serialNumber) {
+          return {
+            ...order,
+            status: 'Refund' // 更新为退款成功状态
+          };
+        }
+        return order;
+      });
+      return updatedOrders;
+    });
+  };
+  const handleMenuItemClick = (item) => {
+    setSelectedItem(item);
+  };
   useEffect(()=>{
     liff.init({liffId: liffID}).then(()=>{
       console.log(liff.isLoggedIn())
@@ -35,7 +95,11 @@ function Orders() {
             setLineLoginData(data.token)
             getOrders(data.token).then(odata=>{
               console.log(odata)
-              setData(odata)
+              setOrders(odata)
+            })
+            getSubscriptions(data.token).then(sdata=>{
+              console.log(sdata)
+              setSubscriptions(sdata)
             })
           })
         }
@@ -43,12 +107,14 @@ function Orders() {
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
-  if(!data){
+  if(!orders){
     return(
       <div>
         <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
         <main className="max-w-6xl mx-auto pt-10 pb-10 px-8 text-white">
-        <div className=''>訂單列表 </div>
+        <div className=''>
+    
+        </div>
         <div>目前是空的或請登入後查看。</div>
         </main>
         
@@ -59,66 +125,28 @@ function Orders() {
     <div>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
-       <div className='text-white'>訂單列表 </div>
-       <div className='text-sm text-white/80'>{data.length} items</div>
-       <div>
+       <div className='text-white text-lg flex gap-3'>
         {
-          data.map((item,index)=>{
-            const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status}=item
-            return(
-              <div className='text-white border my-6 border-lime-400' key={'orders'+index}>
-                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
-                  <thead className='bg-zinc-700 '>
-                    <tr>
-                      <th className='p-2 '>訂單序號</th>
-                      <th className='p-2'>支付管道</th>
-                    </tr>
-                  </thead>
-                  <tbody className='text-center'>
-                    <tr>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{serial_number}</td>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{payment_type}</td>
-                      
-                    </tr>
-                  </tbody>
-                </table>
-                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
-                  <thead className='bg-zinc-700'>
-                    <tr>
-                      <th className='p-2'>商品名稱</th>
-                      <th className='p-2'>價格</th>
-                    </tr>
-                  </thead>
-                  <tbody className='text-center'>
-                    <tr>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{plan_history.name}(進階會員{plan_history.days}天)</td>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{plan_history.price}元</td>
-                      
-                    </tr>
-                  </tbody>
-                </table>
-                <table className="table-auto   divide-y  divide-gray-600 w-full text-sm">
-                  <thead className='bg-zinc-700'>
-                    <tr>
-                      <th className='p-2'>支付日期{refund_at ? '(退款)': '(付款)'}</th>
-                      <th className='p-2'>支付狀態</th>
+            menuItems.map((item,index)=>{
+              return(
+                <div 
+                  className={ (selectedItem?.id === item.id ? ' font-bold text-white border-b pb-2' : 'font-normal text-white/80')}
+                  key={item.id} 
+                  onClick={() => handleMenuItemClick(item)}>{item.title}</div>
+              )
+            })
+          }
+       </div>
+       {selectedItem && (
+        <div>
+          {selectedItem.title === '訂單列表' && <OrderList orderData={orders} />}
+          {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={subscriptions}/>}
+        </div>
+      )}
 
-                    </tr>
-                  </thead>
-                  <tbody className='text-center'>
-                    <tr>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{refund_at ? moment(refund_at).format('YYYY-MM-DD HH:mm'): ` ${moment(paid_at).format('YYYY-MM-DD HH:mm')}`} </td>
-                      <td className='py-2 px-6 text-sm font-medium text-white whitespace-nowrap '>{refund_at ? '已完成退款': '已完成付款'}</td>
 
-                      
-                    </tr>
-                  </tbody>
-                </table>
+       <div>
 
-              </div>
-            )
-          })
-        }
        </div>
       </main>
       

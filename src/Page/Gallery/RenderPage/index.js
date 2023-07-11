@@ -24,13 +24,13 @@ const filterModelsDate = [
  ]
 
 
-function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage}) {
+function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
-
+  // console.log('renderpage',imagesResults)
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterDateItem[1])
 
   const imageVariants = {
@@ -82,20 +82,32 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     // handleUpdate(image.id,newData)
   }
   const onHandleSelectDate = (item)=>{
-    console.log(item)
+    // console.log(item)
     switch (item.value) {
       case '1':
-        const oneDayAgo = moment().subtract(1, 'days');
-        
+        const oneDayAgo = moment().subtract(1, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,oneDayAgo)
         break;
-    
+      case '7':
+        const sevenDaysAgo = moment().subtract(7, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,sevenDaysAgo)
+        break;
+      case '30':
+        const thirtyDaysAgo = moment().subtract(30, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,thirtyDaysAgo)
+        break;   
+      case 'all':
+        handleSelectDate(item.value,'2022-01-01')
+          break; 
       default:
+        handleSelectDate('all','2022-01-01')
         break;
     }
 
   }
   const onHandleSelectModels = (item)=>{
-    console.log('click')
+    // console.log('click')
+    handleSelectModels(item.value)
   }
 
   const toggleDropdown = () => {
@@ -128,6 +140,8 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       <EmptyRenderPage />
     </div>
   }
+
+
   return (
     <div >
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
@@ -136,8 +150,11 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
 
       <div className='flex items-center my-3 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
-        <ImgFilter filterItems={filterDateItem} defaultIndex={1} onHandleSelect={onHandleSelectDate}/>
+        <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
       </div>
+      {
+        imagesResults.length === 0 && <div className='text-white/60'>沒有圖片。</div>
+      }
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 

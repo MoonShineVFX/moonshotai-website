@@ -7,6 +7,7 @@ import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
+import moment from 'moment';
 
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
@@ -17,6 +18,7 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
+
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Storage", display:true,data_name:"total_storages"},
@@ -39,11 +41,17 @@ function Index() {
   const [currentAuthor,setCurrentAuthor] = useState({})
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [ isCopied , setIsCopied ] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  //API FILTER QUERY 
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
   const [pageSize, setPageSize] = useState(15)
-  const [objectData, setObjectData] = useState({}); // 使用物件來儲存資料
+  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
+  const [currModels, setCurrModels] = useState('all')
+
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
 
@@ -135,16 +143,7 @@ function Index() {
                   })
                     
                   .catch((error) => console.error(error));
-
-                fetchUserImages(profile.userId , currentPage, pageSize,data.token)
-                  .then((images)=> {
-                      const results = images.results
-                      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-                      setImages(images)
-                      setImagesResults(results)
-                      setCurrentAuthor(images.results[0].author)
-                  })
-                  .catch((error) => console.error(error));
+                handleRenders(profile.userId,data.token,1,pageSize,startDate,endDate,currModels)
               })
               .catch((error) => console.error(error));
               
@@ -175,6 +174,7 @@ function Index() {
     fetchLineLogin(profile)
       .then((data)=> {
         setToken(data.token)
+        setLineLoginData(data.token)
         localStorage.setItem('loginTokenData', JSON.stringify(data));
         fetchUserProfile(data.user_id, data.token)
           .then((data)=> {
@@ -183,18 +183,48 @@ function Index() {
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
-        fetchUserImages(profile.userId , currentPage, pageSize,data.token)
-          .then((images)=> {
-              const results = images.results
-              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-              setImages(images)
-              setImagesResults(results)
-              setCurrentAuthor(images.results[0].author)
-          })
-          .catch((error) => console.error(error));
+        handleRenders(profile.userId ,data.token,1,pageSize,startDate,endDate,currModels)  
+        // handleRenders(profile.userId ,data.token)
+
 
       })
       .catch((error) => console.error(error));
+  }
+  //給 Render Page
+  const handleRenders = async (userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
+    setLoading(true);
+    try {
+      let ID = userId || currentProfile.uid
+      let TK = token || linLoginData
+      let pg = pageNum || currentPage 
+      let pgs = pageSizeNum || pageSize 
+      let s = sDate || startDate
+      let e = eDate || endDate
+      let m = cModels || currModels
+      console.log(pg, pgs,s, e, m)
+      const images = await fetchUserImages(ID, TK, pg, pgs,s, e, m);
+      const results = images.results;
+      console.log(images)
+      if(results.length === 0){
+        setImagesResults(results)
+        return
+      }
+      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+      setCurrentAuthor(images.results[0].author)
+
+      if(pg === 1){
+        setImagesResults(results)
+      }else{
+        setImagesResults(prevImages => [...prevImages, ...results]);
+        setCurrentPage(pg);
+      }
+
+    } catch (error) {
+      
+    } finally {
+      setLoading(false);
+    }
+
   }
   const handleStorage = (image) =>{
     userStorageAImage(image,token)
@@ -415,14 +445,15 @@ function Index() {
     setPageSize(15)
     switch (item.title) {
       case 'Renders':
-        fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
-          .then((images)=> {
-              const results = images.results
-              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-              setImages(images)
-              setImagesResults(results)
-          })
-          .catch((error) => console.error(error));
+        handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,currModels)
+        // fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
+        //   .then((images)=> {
+        //       const results = images.results
+        //       setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+        //       setImages(images)
+        //       setImagesResults(results)
+        //   })
+        //   .catch((error) => console.error(error));
         break;
       case 'Storage':
         fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
@@ -456,7 +487,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} />;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels} />;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collections':
@@ -468,15 +499,24 @@ function Index() {
   }
   
   const fetchMoreImages = () => {
-    if(currentPage >= totalPage) {
+    if(currentPage >= totalPage || loading) {
       return
     } 
     const nextPage = currentPage + 1;
-    fetchUserImages(currentProfile.uid,nextPage,pageSize,token)
-      .then(data=>{
-        setImagesResults(prevImages => [...prevImages, ...data.results]);
-        setCurrentPage(nextPage);
-      })
+    handleRenders(currentProfile.uid,token,nextPage,pageSize,startDate,endDate,currModels)
+  }
+  const handleSelectDate = (value,date)=>{
+    setCurrentPage(1)
+    setPageSize(15)
+    setStartDate(date)
+    handleRenders(currentProfile.uid,token,1,pageSize,date,endDate,currModels)
+  }
+  const handleSelectModels = (value)=>{
+    console.log(value)
+    setCurrentPage(1)
+    setPageSize(15)
+    setCurrModels(value)
+    handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,value)
   }
   const fetchMoreStorageImages = () => {
     if(currentPage >= totalPage) {
@@ -491,6 +531,8 @@ function Index() {
       })
   }
 
+
+
   //LISTEN  LOGIN IF not LINE INIT
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
@@ -503,6 +545,7 @@ function Index() {
         let lineProfile = data.lineProfile
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
+          console.log('profilePage is login:', data.isLogin)
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
@@ -520,7 +563,8 @@ function Index() {
                 })
                   
                 .catch((error) => console.error(error));
-            fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
+            // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
+            handleRenders(lineProfile.userId ,data.token,1,pageSize,startDate,endDate,currModels)
               
               .then((images)=> {
                   const results = images.results

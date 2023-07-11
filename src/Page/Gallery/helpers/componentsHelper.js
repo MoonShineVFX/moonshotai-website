@@ -173,7 +173,7 @@ export const InputInvite = () =>{
     name:''
   });
   const onSubmit = (data) => {
-    console.log(data)
+    // console.log(data)
   }
   return (
     <div>

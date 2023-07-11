@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
+import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
@@ -18,29 +18,26 @@ function Index({currentUser,isLoggedIn}) {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   const handleLogout = async()=>{
       if(isLoggedIn){
-        liff.init({liffId: liffID}).then(()=>{
           console.log('init完成可處理登出')
           setIsProcessLogout(true)
+          setLineProfile(null);
+          setToken(null);
           
-            setLineProfile(null);
-            setToken(null);
-            setTimeout(()=>{
-              liff.logout()
-              removeLocalStorageItem().then(data=>{
-                console.log(data)
-                if(data === 'finish'){
-                  if (window.location.pathname === '/gallery') {
-                    window.location.reload();
-                  } else {
-                    navigate('/gallery');
-                  }
+          setTimeout(()=>{
+            removeLocalStorageItem().then(data=>{
+              console.log(data)
+              if(data === 'finish'){
+                if (window.location.pathname === '/gallery') {
+                  window.location.reload();
+                } else {
+                  navigate('/gallery');
                 }
-              }).catch(()=>{
-                console.log('error')
-              })
-            
-            },500)
-        })
+              }
+            }).catch(()=>{
+              console.log('error')
+            })
+          },500)
+        
       }
       // try {
       //   await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
@@ -139,15 +136,16 @@ function Index({currentUser,isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile?login=true' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
               </div>
             }
             <div className='my-3'>
               <Link 
-                to='/profile' 
-                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAssignmentInd color="#88ad48"/> Profile 
+                to='/' 
+                className='p-2 cursor-pointer  hover:bg-gray-600 flex items-center gap-3 '>
+                <MdHome color="#88ad48"/>  Home  
               </Link>
+
               <Link 
                 to='/gallery' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
@@ -158,15 +156,24 @@ function Index({currentUser,isLoggedIn}) {
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdStar color="#88ad48"/> Price
               </Link>
-              <Link 
-                to='/orders' 
-                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAssignment color="#88ad48"/> Orders
-              </Link>
+
               <Link 
                 to='/docs' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdDocumentScanner color="#88ad48"/> Documents
+              </Link>
+
+            </div>
+            <div className='my-3'>
+              <Link 
+                to='/profile' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAssignmentInd color="#88ad48"/> Profile 
+              </Link>
+              <Link 
+                to='/orders' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAssignment color="#88ad48"/> Orders
               </Link>
             </div>
 

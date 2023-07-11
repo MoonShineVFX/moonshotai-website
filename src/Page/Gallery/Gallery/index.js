@@ -8,14 +8,20 @@ import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
+import moment from 'moment';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
+
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [startDate, setStartDate] = useState('2023-01-01')
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
+  const [currModels, setCurrModels] = useState('all')
+
   const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)

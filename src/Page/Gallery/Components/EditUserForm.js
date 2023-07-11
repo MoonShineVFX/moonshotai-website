@@ -8,7 +8,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
   });
   const [enabled, setEnabled] = useState(false);
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const items ={
       name:data.name ||'',
       email:data.email ||null,

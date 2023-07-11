@@ -4,7 +4,7 @@ import Header from '../header'
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
@@ -26,7 +26,9 @@ function Index() {
   const [isReqError, setReqError] = useState(false);
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
+  const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
+  
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
@@ -53,16 +55,33 @@ function Index() {
       }
     })
   const onSubmit = (data) => {
+    setIsInviteLoadingReq(false)
     if(isLoggedIn){
+      console.log('已登入')
+      console.log(currentUser)
       setIsInviteLoadingReq(true)
+      paymentInviteSerial(data.invite_number,linLoginData).then(d=>{
+        console.log(d[0])
+        if(d[0]=== 'You have already used the invitation'){
+          setIsAlreadyUsed(true)
+        }
+        setIsInviteLoadingReq(false)
+      })
     }else{
-      setIsInviteLoadingReq(false)
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
     }
+
   }
   const diffDays = (targetday)=>{
     const targetDate = moment(targetday);
     const currentDate = moment();
     const diffDays = targetDate.diff(currentDate, 'days');
+    if(diffDays === null ) return false
     if (diffDays <= 5) {
       return true
     } return false
@@ -74,12 +93,13 @@ function Index() {
       if(isLoggedIn){
         console.log('已登入')
         console.log(currentUser)
+        startLinePayFlow(pid)
         if(!currentUser.is_subscribed){
-          startLinePayFlow(pid)
+          // startLinePayFlow(pid)
         }else{
           if(diffDays(currentUser.subscription_end_at)){
             setIsNeedWithin5Days(false)
-            startLinePayFlow(pid)
+            // startLinePayFlow(pid)
           }else{
             setIsNeedWithin5Days(true)
           }
@@ -93,6 +113,31 @@ function Index() {
         })
       }
   }
+  const handleBluePay = (pid) =>{
+    if(isLoggedIn){
+      console.log('已登入')
+      console.log(currentUser)
+      startBluePayFlow(pid)
+      if(!currentUser.is_subscribed){
+        // startBluePayFlow(pid)
+      }else{
+        if(diffDays(currentUser.subscription_end_at)){
+          setIsNeedWithin5Days(false)
+          // startBluePayFlow(pid)
+        }else{
+          setIsNeedWithin5Days(true)
+        }
+      }
+    }else{
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
+    }
+  }
+
   const startLinePayFlow = (pid)=>{
     setIsOrdering(true)
     setIsLoadingReq(false);
@@ -116,6 +161,52 @@ function Index() {
             return
           }
           window.location.href = url;
+        }).catch(e=>{console.log(e)})
+      },500)
+
+    }).catch(e=>{console.log(e)})
+  }
+  const startBluePayFlow = (pid)=>{
+    setIsOrdering(true)
+    setIsLoadingReq(false);
+    setReqError(false)
+    postOrder(pid,linLoginData).then(odata=>{
+      console.log('已建立訂單',odata)
+      setIsOrdering(false)
+      setIsLoadingReq(true)
+      setTimeout(()=>{
+        paymentNewebPay(odata.serial_number,linLoginData).then(ldata=>{
+          setIsLoadingReq(false)
+          setReqError(false)
+          console.log(ldata)
+
+          // form call 藍新 API
+          const form = document.createElement('form');
+          form.method = 'post';
+          form.action = ldata.payment_url;//藍新金流驗證網址(測試環境)
+          for (const key in ldata) {
+            if (ldata.hasOwnProperty(key)) {
+              const hiddenField = document.createElement('input');
+              hiddenField.type = 'hidden';
+              hiddenField.name = key;
+              hiddenField.value = ldata[key];
+              form.appendChild(hiddenField);
+            }
+          }
+          document.body.appendChild(form);
+          form.submit();
+
+          // const url = ldata.payment_url
+          if(ldata?.code === "token_not_valid"){
+            setReqError(true)
+            setIsNeedLogin(true)
+            liff.init({liffId: liffID}).then(()=>{
+              console.log('init完成可準備登入')
+              setTimeout(()=>{liff.login();},500)
+            })
+            return
+          }
+          // window.location.href = url;
         }).catch(e=>{console.log(e)})
       },500)
 
@@ -251,7 +342,22 @@ function Index() {
                           {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
                           
                         </button>
-                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至Line登入</div>}
+                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
+                        {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
+                      </div>
+                    }
+                    {
+                      block.payment_blue && <div>
+                        <button 
+                          className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
+                          onClick={()=>handleBluePay(block.plan_id)}
+                        >
+                          <MdCreditCard size={20} />  藍新支付 (test) <MdArrowRightAlt />
+                          {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                          {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
+                          
+                        </button>
+                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
                         {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
                       </div>
                     }
@@ -270,6 +376,7 @@ function Index() {
                               輸入邀請碼
                               <MdOutlineTrendingFlat className='ml-2'/>
                               {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
+                              {isAlreadyUsed&& <div className='text-xs'>您已經輸入過推薦序號了。</div>}
                             </button>
                           </div>
 
@@ -284,65 +391,7 @@ function Index() {
             </motion.div>
           )})}
         </div>
-        <div className="flex flex-col justify-between items-center lg:flex-row lg:items-start gap-6 hidden">
-          
-          <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0 ">
-            <div className="mb-7 pb-7 flex justify-between  items-center border-b border-gray-300">
-              <img src={process.env.PUBLIC_URL+'/images/price/01.jpg'}  alt="" className="rounded-3xl w-20 h-20" />
-              <div className="-5">
-                <span className="block text-2xl font-semibold text-white text-right">免費開通</span>
-                <div className='flex flex-col  items-end mt-1'>
-                  <div> <span className="text-4xl font-bold text-white"> 5 day</span></div>
-                </div>
-              </div>
-            </div>
-            <div>
-              {/* form start */}
-              <DisableInputInvite />
 
-            </div>
-            
-
-
-          </div>
-          
-          <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-800 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
-            <div className="mb-8 pb-8 flex justify-between items-center border-b border-gray-600">
-              <img src={process.env.PUBLIC_URL+'/images/price/02.jpg'}  alt="" className="rounded-3xl w-20 h-20" />
-              <div className="-5">
-                <span className="block text-2xl font-semibold text-white text-right">單月體驗</span>
-                <div className='flex flex-col  items-end mt-1'>
-                  <div> <span className="font-medium text-xl align-top">NTD$&thinsp;</span><span className="text-4xl font-bold text-white"> 90</span></div>
-                  <div className="font-medium mt-1">30 Day</div>
-                </div>
-              </div>
-            </div>
-            {/* buy button */}
-            <DisableBuyButton />
-            {/* <button 
-              onClick={handlePayment}
-              className="flex justify-center items-center bg-gradient-to-r from-lime-700 to-lime-600 rounded-xl py-5 px-4 text-center text-white text-xl">
-              訂購(test)
-              <MdOutlineTrendingFlat className='ml-2'/>
-            </button> */}
-          </div>
-          
-          {/* <div className="w-full flex-1 p-8  shadow-xl rounded-3xl bg-zinc-900 text-gray-400 sm:w-96 lg:w-full  lg:mt-0">
-            <div className="mb-7 pb-7 flex justify-between items-center border-b border-gray-300">
-              <img src={process.env.PUBLIC_URL+'/images/price/03.jpg'}  alt="" className="rounded-3xl w-20 h-20" />
-              <div className="-5">
-                <span className="block text-2xl font-semibold text-white text-right">超值方案</span>
-                <div className='flex flex-col  items-end mt-1'>
-                  <div> <span className="font-medium text-xl align-top">NTD$&thinsp;</span><span className="text-4xl font-bold text-white"> 300</span></div>
-                  <div className="font-medium mt-1">180 Day</div>
-                </div>
-              </div>
-            </div>
-            buy button 
-            <DisableBuyButton />
-          </div> */}
-          
-        </div>
         
       </main>
       <div className='max-w-md mx-auto mb-14 px-10'>
@@ -362,7 +411,7 @@ function Index() {
           <div className='text-white'>
             <div className='text-xl my-3'>免費會員可以使用進階功能嗎? </div>
             <div className='text-sm'>
-            免費會員可以無限使用基本功能，但。
+            免費會員可以無限使用基本功能，但您可以透過輸入推薦序號獲得進階會員功能。
             </div>
           </div>       
           <div className='text-white'>

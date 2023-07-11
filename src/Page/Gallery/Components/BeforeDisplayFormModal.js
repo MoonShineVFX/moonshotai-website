@@ -11,7 +11,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const items ={
       title:data.title ||'',
       description:data.description ||null,

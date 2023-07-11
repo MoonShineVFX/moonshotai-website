@@ -56,6 +56,7 @@ export const useDevUserLogin = () =>{
 }
 export const refreshToken = async () =>{
   const storedLineProfile = localStorage.getItem('lineProfile');
+  console.log('refreshToken', storedLineProfile)
   const data = await fetchLineLogin(JSON.parse(storedLineProfile))
   return data
 }
@@ -68,7 +69,7 @@ export const Logout = async ()=>{
   })
 }
 export const removeLocalStorageItem = async ()=>{
-  localStorage.setItem('isLogin',false);
+  localStorage.removeItem('isLogin');
   localStorage.removeItem('loginTokenData');
   localStorage.removeItem('lineProfile');
   localStorage.removeItem('currentUser');
@@ -226,7 +227,7 @@ export const userDelACollectionImage = async (id,token)=>{
   const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,page,pageSize,token)=>{
+export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,currModels)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -235,7 +236,7 @@ export const fetchUserImages =async (uuid,page,pageSize,token)=>{
     }
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date=2023-01-01'+'&end_date=2023-06-01' ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
     const data =await response.json()
     return data
     
@@ -385,7 +386,7 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * Galleries API
  */
 export const fetchGalleries = async (headers,page,pageSize) =>{
-  console.log(headers)
+  // console.log(headers)
   const requestOptions = {
     method: 'GET',
     headers:headers
@@ -462,7 +463,7 @@ export const userPostCommentToImage = async (image,msgData,token)=>{
   return data
 }
 export const userPatchCommentToImage = async (commentId,msgData,token)=>{
-  console.log(msgData)
+  // console.log(msgData)
   const requestOptions = {
     method: 'PATCH',
     headers: { 
@@ -577,13 +578,16 @@ export const paymentLinePay =async (serNum,token) =>{
 }
 
 //newebpay
-export const paymentNewebPay =async (token) =>{
+export const paymentNewebPay =async (serNum,token) =>{
   const requestOptions = {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      serial_number:  serNum,
+    })
   };
   const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
   const data =await response.json()
@@ -597,9 +601,29 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     headers: { 
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
-    }
+    },
+    body: JSON.stringify({ 
+      invitation_code:  inviteSerial,
+    })
   };
-  const response =await fetch(apiUrl+'invite/'+inviteSerial, requestOptions)
+  const response =await fetch(apiUrl+'invitations', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+//退費
+export const postOrder_refund =async (serNum,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      serial_number:  serNum,
+    })
+  };
+  const response =await fetch(apiUrl+'order_refund', requestOptions)
   const data =await response.json()
   return data
 }
