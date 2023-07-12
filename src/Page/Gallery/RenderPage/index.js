@@ -125,9 +125,11 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     };
     // 監聽滾動事件
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('touchmove', handleScroll);
     return () => {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
     };
   }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
