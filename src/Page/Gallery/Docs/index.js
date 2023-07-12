@@ -29,6 +29,7 @@ function Index() {
     {title:"模型介紹",section:"section3"},
     {title:"使用條款",section:"section4"},
     {title:"隱私權政策",section:"section5"},
+    {title:"退款流程",section:"section6"},
   ]
   const commendItem = [
     {display_name:"寫實風格",name:"PR"},
@@ -170,6 +171,82 @@ function Index() {
               </div>
 
               <Policy />
+            </div>
+
+            <div id="section3" className='min-h-screen  pt-28'>
+              <div className='px-8'>
+                <div className='text-lime-500 font-bold'>Refunds </div>
+                <h1 className="text-2xl font-bold mb-4">退款流程</h1>
+              </div>
+              <div className='text-white pt-12 px-8'>
+                <div className='my-4'>
+                  <div className='text-white/90 text-sm space-y-2'>
+                    <p> 在符合退款政策規定的情況下，Moonshot 可以針對某些 Moonshot 交易給予退款，詳見下方說明。您也可以直接與 Moonshot 官方開發團隊聯絡 (超連結 ms 信箱)。</p>
+
+                  </div>
+                </div>
+
+                <div className='my-4'>
+                  <div className='text-white/90 text-sm space-y-2'>
+                    <p>如果您的好友或家庭成員不小心使用了您的帳戶購物，您可以前往 Moonshot 網站 (退款頁面)，於契約訂單生效的 48 小時內申請退款。</p>
+                    <p>如果發現有陌生人使用你的信用卡或其他付款方式在 Moonshot 消費，消費者可以於開始行使契約訂單的 48 小時內，至 Moonshot 網站申請退款。</p>
+                    <p>如果退款申請通過核准，請參閱如下「退款處理時間」。</p>
+                    <table class="border-collapse border border-slate-400 w-full">
+                      <thead>
+                        <tr className='bg-zinc-600 '>
+                          <th className='border border-slate-300 p-2'>功能</th>
+                          <th className='border border-slate-300 p-2'>指令</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                            <tr>
+                              <td className='border border-slate-300 p-2  text-center'>信用卡或簽帳金融卡</td>
+                              <td className='border border-slate-300 p-2 text-center'>
+                                <p>3-5 個工作天</p>
+                                <p>處理時間可能因發卡機構而異，最慢需要 10 個工作天。</p>
+                                <p>如果您的信用卡已失效，Moonshot 會將款項退還至您的發卡銀行，請向銀行洽詢相關事宜。</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className='border border-slate-300 p-2  text-center'>Line Pay </td>
+                              <td className='border border-slate-300 p-2 text-center'>
+                                <p>3-5 個工作天</p>
+                                <p>退款應該會顯示在使用者的帳戶中。</p>
+                              </td>
+                            </tr>
+                      </tbody>
+                    </table>
+
+                  </div>
+                </div>
+
+                <div className='my-4'>
+                  <div className='text-xl font-bold  mb-4'>瞭解退款申請選項</div>
+                  <div className='text-xl font-bold  mb-4'>方法一：前往 Moonshot 網站申請退款</div>
+                  <div className='text-white/90 text-sm space-y-2'>
+                    <p>如果距離您購買 Moonshot 服務的時間不到 48 小時，可以透過 Moonshot 申請退款。</p>
+                    <p>前往 moonshot.today (退款頁面)。</p>
+                    <p>點選「訂單列表」。</p>
+                    <p>選取要退回的訂單，按一下「回報問題」。</p>
+                    <p>視情況選擇合適的選項。</p>
+                    <p>填妥表單並註明要申請退款。</p>
+                    <p>按一下「送出」。</p>
+
+
+                  </div>
+                  <div className='text-xl font-bold  mb-4'>方法二：向 Moonshot 開發團隊人員尋求支援</div>
+                  <div className='text-white/90 text-sm space-y-2'>
+                    <p>遇到下列情況時，建議您與應用程式開發人員聯絡：</p>
+                    <p>您有 Moonshot 工具相關問題。</p>
+                    <p>您在進行應用程式內購交易後並未收到相應內容，或是該內容不符預期。</p>
+                    <p>您想要退款，但距離交易已超過 48 小時。開發人員可協助處理購買問題，並根據自家政策和適用法規處理退款事宜。</p>
+                  </div>            
+                </div>
+              </div>
+
+
+
             </div>
 
 

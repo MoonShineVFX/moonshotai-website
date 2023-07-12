@@ -22,10 +22,12 @@ function Index() {
   const [isNeddWithin5Days, setIsNeedWithin5Days]= useState(false)
   const [isOrdering,setIsOrdering] = useState(false)
   const [isLoadingReq, setIsLoadingReq] = useState(false);
+  const [isLoadingBlueReq, setIsLoadingBlueReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
+  const [isInviteSuccess, setIsInviteSuccess] = useState(false);
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [isYourself, setIsYouself] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
@@ -57,19 +59,34 @@ function Index() {
     })
   const onSubmit = (data) => {
     setIsInviteLoadingReq(false)
+    setIsAlreadyUsed(false) 
+    setIsYouself(false)
+    setIsInviteSuccess(false)
     if(isLoggedIn){
       console.log('已登入')
       console.log(currentUser)
       setIsInviteLoadingReq(true)
       paymentInviteSerial(data.invite_number,linLoginData).then(d=>{
-        console.log(d[0])
-        if(d[0]=== 'You have already used the invitation'){
-          setIsAlreadyUsed(true)
-        }
-        if(d[0]=== "You can't invite yourself"){
-          setIsYouself(true)
-        }
-        setIsInviteLoadingReq(false)
+        console.log(d)
+        setTimeout(()=>{
+          if(d.message=== 'You have already used the invitation'){
+            setIsAlreadyUsed(true) 
+            setIsInviteLoadingReq(false)
+            return
+          }
+          if(d.message=== "You can't invite yourself"){
+            setIsYouself(true)
+            setIsInviteLoadingReq(false)
+            return
+          }
+          if(d.message=== "Invitation success"){
+            setIsInviteSuccess(true)
+            setIsInviteLoadingReq(false)
+          }
+          setIsInviteLoadingReq(false)
+        },600)
+
+
       })
     }else{
       console.log('尚未登入需要登入')
@@ -102,10 +119,10 @@ function Index() {
           // startLinePayFlow(pid)
         }else{
           if(diffDays(currentUser.subscription_end_at)){
-            setIsNeedWithin5Days(false)
+            // setIsNeedWithin5Days(false)
             // startLinePayFlow(pid)
           }else{
-            setIsNeedWithin5Days(true)
+            // setIsNeedWithin5Days(true)
           }
         }
       }else{
@@ -126,10 +143,10 @@ function Index() {
         // startBluePayFlow(pid)
       }else{
         if(diffDays(currentUser.subscription_end_at)){
-          setIsNeedWithin5Days(false)
+          // setIsNeedWithin5Days(false)
           // startBluePayFlow(pid)
         }else{
-          setIsNeedWithin5Days(true)
+          // setIsNeedWithin5Days(true)
         }
       }
     }else{
@@ -172,15 +189,15 @@ function Index() {
   }
   const startBluePayFlow = (pid)=>{
     setIsOrdering(true)
-    setIsLoadingReq(false);
+    setIsLoadingBlueReq(false);
     setReqError(false)
     postOrder(pid,linLoginData).then(odata=>{
       console.log('已建立訂單',odata)
       setIsOrdering(false)
-      setIsLoadingReq(true)
+      setIsLoadingBlueReq(true)
       setTimeout(()=>{
         paymentNewebPay(odata.serial_number,linLoginData).then(ldata=>{
-          setIsLoadingReq(false)
+          setIsLoadingBlueReq(false)
           setReqError(false)
           console.log(ldata)
 
@@ -357,7 +374,7 @@ function Index() {
                           onClick={()=>handleBluePay(block.plan_id)}
                         >
                           <MdCreditCard size={20} />  藍新支付 (test) <MdArrowRightAlt />
-                          {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                          {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
                           {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
                           
                         </button>
@@ -373,16 +390,21 @@ function Index() {
                             <div className='flex flex-col'>
                               <input  type="text" placeholder="輸入推薦序號" className='bg-zinc-700 rounded-md py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
                               {errors.invite_number && <div className='text-xs text-white/70 my-2'>請確認有輸入推薦序號。</div>}
+
                             </div>
                             <button type="submit"    
                               className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
                             >
-                              輸入邀請碼
+                              輸入推薦序號
                               <MdOutlineTrendingFlat className='ml-2'/>
                               {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
-                              {isAlreadyUsed&& <div className='text-xs'>您已經輸入過推薦序號了。</div>}
-                              {isYourself&& <div className='text-xs'>你不可以使用自己的序號。</div>}
                             </button>
+                            <div className='text-center text-yellow-500'>
+                             
+                              {isInviteSuccess&& <div className='text-xs'>完成，體驗天數已成功增加。</div>}
+                              {isAlreadyUsed&& <div className='text-xs'>已經輸入過序號了，只能開通一次。</div>}
+                              {isYourself&& <div className='text-xs'>不可以使用自己的序號。</div>}
+                            </div>
                           </div>
 
                         </form>

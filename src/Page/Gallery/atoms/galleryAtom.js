@@ -70,3 +70,13 @@ export const commentDataState = atom({
   key: 'commentDataState',
   default: null,
 });
+
+//for Report Modal
+export const repoortModalState = atom({
+  key: 'repoortModalState',
+  default: false,
+});
+export const repoortDataState = atom({
+  key: 'repoortDataState',
+  default: null,
+});

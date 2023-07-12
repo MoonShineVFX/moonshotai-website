@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { MdAttachMoney,MdArrowRightAlt,MdHelp } from "react-icons/md";
-function OrderList({orderData,handleRefund}) {
+import { repoortModalState,repoortDataState } from '../atoms/galleryAtom';
+import {  useRecoilValue ,useRecoilState } from 'recoil';
+function OrderList({orderData,handleRefund,handleReport}) {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
-
-  const onHandleRefunds  = (sn)=>{
-    console.log(sn)
+  const [isShowReport,serIsShowReport] = useRecoilState(repoortModalState)
+  const [currentOrder,setCurrentOrder] = useRecoilState(repoortDataState)
+  const onHandleRoport  = (item)=>{
+    handleReport(item)
   }
+
   return (
     <div className='text-white'>
       <div className='text-sm text-white/80'>{orderData.length} items</div>
@@ -57,7 +61,10 @@ function OrderList({orderData,handleRefund}) {
                   <div className='my-3'>
                     <button 
                       className="ml-auto px-3 flex  justify-center items-center gap-2 bg-amber-600  rounded-md py-2  text-center text-white text-sm"
-                      onClick={()=>onHandleRefunds(serial_number)}
+                      onClick={()=>{
+                        setCurrentOrder(item)
+                        serIsShowReport(true)
+                      }}
                     >
                       <MdHelp size={20} />  回報訂單問題
                       {isLoadingReq && <div className='text-xs'>等待回應...</div>}

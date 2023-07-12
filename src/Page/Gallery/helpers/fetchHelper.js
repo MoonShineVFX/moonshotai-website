@@ -607,7 +607,7 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     })
   };
   const response =await fetch(apiUrl+'invitations', requestOptions)
-  const data =await response.json()
+  const data = await response.json()
   return data
 }
 

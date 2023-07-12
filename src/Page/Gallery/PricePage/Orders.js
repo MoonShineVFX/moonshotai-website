@@ -7,6 +7,8 @@ import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUse
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
+import ReportModal from './ReportModal';
+import { repoortModalState,repoortDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
 const menuItems=[
@@ -22,6 +24,8 @@ function Orders() {
   const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [selectedItem, setSelectedItem] = useState(menuItems[1]);
+  const [isShowReport,serIsShowReport] = useRecoilState(repoortModalState)
+  
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
@@ -47,6 +51,8 @@ function Orders() {
       })
     }
    
+  }
+  const handleReport = (item)=>{
   }
   const startRefundFlow = (sn)=>{
     setIsLoadingReq(true);
@@ -130,6 +136,9 @@ function Orders() {
   const reversedSubData = subscriptions?.slice().reverse();
   return (
     <div>
+      <AnimatePresence>
+        {isShowReport && <ReportModal /> }
+      </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
        <div className='text-white text-lg flex gap-3'>
@@ -146,7 +155,7 @@ function Orders() {
        </div>
        {selectedItem && (
         <div>
-          {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} />}
+          {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
           {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans}/>}
         </div>
       )}
