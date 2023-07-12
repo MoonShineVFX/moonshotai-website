@@ -11,8 +11,9 @@ function SubscriptionsList({subData,plans}) {
     const newData = plans.filter(item=>{
       return item.id === id
     })
+    console.log(newData[0])
     return(
-      <div>{newData[0].name}</div>
+      <div>{newData[0]?.name}</div>
     )
   }
   const xxxdata = {

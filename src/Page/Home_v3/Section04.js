@@ -21,10 +21,10 @@ function Section04() {
       </div>
       <a 
         className='w-1/2 text-center px-2 py-2 rounded-full bg-gradient-to-l from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] text-black  flex justify-center items-center  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-        href="https://medium.com/@ai_72180"
+        href="/gallery"
         target={"_blank"} rel="noreferrer"
       >
-        <span className='pr-2'>See Gallery</span>   <MdOutlineArrowRightAlt />
+        <span className='pr-2  font-bold'>See Gallery</span>   <MdOutlineArrowRightAlt />
       </a>
     </div>
   )

@@ -45,15 +45,16 @@ function Navbar() {
                   Home  
                 </Link>
                 <Link 
-                  to='/price' 
-                  className='p-2 cursor-pointer  hover:bg-gray-600'>
-                    Price
-                </Link>
-                <Link 
                   to='/gallery' 
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                     Gallery
                 </Link>
+                <Link 
+                  to='/price' 
+                  className='p-2 cursor-pointer  hover:bg-gray-600'>
+                    Price
+                </Link>
+
                 <Link 
                   to='/docs' 
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
