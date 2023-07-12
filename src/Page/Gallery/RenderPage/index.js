@@ -127,7 +127,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       if (event.touches.length === 1) {
         const touch = event.touches[0];
         const { clientHeight, scrollHeight, scrollTop } = document.documentElement || document.body;
-        const isBottom = touch.clientY >= clientHeight && scrollTop + clientHeight >= scrollHeight;
+        const isBottom = touch.clientY >= clientHeight - 150 && scrollTop + clientHeight >= scrollHeight - 150;
         if (isBottom) {
           fetchMoreImages();
         }
