@@ -123,23 +123,12 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
         fetchMoreImages(); // 加載更多圖片
       }
     };
-    const handleTouchMove = (event) => {
-      if (event.touches.length === 1) {
-        const touch = event.touches[0];
-        const { clientHeight, scrollHeight, scrollTop } = document.documentElement || document.body;
-        const isBottom = touch.clientY >= clientHeight - 150 && scrollTop + clientHeight >= scrollHeight - 150;
-        if (isBottom) {
-          fetchMoreImages();
-        }
-      }
-    };
     // 監聽滾動事件
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('touchmove', handleTouchMove);
+    
     return () => {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('touchmove', handleTouchMove);
     };
   }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
