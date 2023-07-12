@@ -710,7 +710,6 @@ function Index() {
 
         <div className='my-10 m-4'>
           {renderComponent()}
-       
         </div> 
       </div>
 

@@ -27,14 +27,14 @@ function Section03() {
 
 
       </div>
-      <div className="jsonContent flex items-center flex-col md:flex-row mt-10 divide-y divide-white/30 border-t border-b border-white/30">
+      <div className="jsonContent grid grid-cols-1 md:grid-cols-2 md:gap-8  mt-10 divide-y divide-white/30 border-t border-b border-white/30">
           {
             articles ? 
             articles.map((item,index)=>{
               console.log(item)
               const{guid,thumbnail,title,link,description,pubDate} = item
               return(
-                <div className="w-full md:w-1/3 hover:brightness-110 flex items-center py-3" key={guid}>
+                <div className="w-full md:w-full hover:brightness-110 flex items-center py-3" key={guid}>
 
                   <div className="blogCard-body w-8/12 px-3">
                     <div className="text-sm font-bold my-3 pr-4 text-white/90">

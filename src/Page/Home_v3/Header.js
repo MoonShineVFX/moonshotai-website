@@ -6,12 +6,12 @@ function Header({executeScroll}) {
   const vantaRef = useRef(null)
 
   return (
-    <div className='text-white py-10' >
+    <div className='text-white py-10 md:w-8/12 mx-auto' >
       <div className='mx-12 flex flex-col items-center'>
         <div className='text-4xl font-bold text-center'>Let Moonshot Create For You.</div>
         <div className='text-center text-sm my-4 '>Extend your creation limits through interaction with Moonshot. 
   Let AI enter your world with amazement.</div>
-        <div className=' my-5 relative w-full' >
+        <div className=' my-5 relative w-full md:w-1/2' >
           <div 
             className=' w-3/5 absolute top-1/2 left-1/2 '
             style={{animation: 'float_center 12s ease-in-out infinite'}}
@@ -47,7 +47,7 @@ function Header({executeScroll}) {
 
        </div>
       </div>
-      <div className='flex flex-col items-center space-y-6 mt-4'>
+      <div className='flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-8'>
         <div className='w-32 text-center px-2 py-2 rounded-full border' onClick={executeScroll}>Learn More</div>
         <a 
           className='w-32 text-center px-2 py-2 rounded-full text-black bg-[#BDDE48] '

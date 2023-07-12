@@ -13,13 +13,13 @@ function Section02() {
         <div className='text-3xl font-bold text-center relative glow'>
           Fulfill Your AI Applications with Diverse Model Styles
           <div 
-            className=' absolute -top-12 -left-8'
+            className=' absolute -top-12 -left-8 md:-left-12'
             style={{animation: 'float_t01 6s ease-in-out infinite'}}  
           >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/section02_c01.png'} alt="" />
           </div>
           <div 
-            className=' absolute -bottom-14 -right-8'
+            className=' absolute -bottom-14 -right-8 md:-right-12'
             style={{animation: 'float_t01 5.8s ease-in-out infinite'}}  
           >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/section02_c02.png'} alt="" />
@@ -28,7 +28,7 @@ function Section02() {
 
 
       </div>
-      <div className='mx-8 mt-16 mb-10'>
+      <div className='mx-8 mt-16 mb-10 hidden'>
         <div className='flex  justify-between items-center text-sm border-t pt-5 '>
           {menuItems.map((item,index)=>{
             return(

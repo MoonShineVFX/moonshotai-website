@@ -10,7 +10,7 @@ function Index() {
   const myRef = useRef(null)
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
   return (
-    <div className=''>
+    <div className='md:w-10/12 mx-auto'>
       <Header executeScroll={executeScroll}/>
       <div ref={myRef}>
         <Section01 />

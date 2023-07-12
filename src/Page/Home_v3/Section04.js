@@ -14,9 +14,9 @@ function Section04() {
     console.log(imgData)
   },[])
   return (
-    <div className=' relative'>
-      Section04
-      <div className='  w-[1000px] md:w-[1500px] opacity-50 h-[450px] overflow-hidden' id="headerBg">
+    <div className=' relative my-6'>
+      
+      <div className='  w-[1000px] md:w-[2500px] opacity-50 h-[450px] overflow-hidden' id="headerBg">
         <HeaderImagesBg  data={imgData}/>
       </div>
       <a 
