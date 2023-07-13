@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import {  useRecoilValue,useRecoilState  } from 'recoil';
-import { reportModalState,reoortDataState } from '../atoms/galleryAtom';
+import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import { MdClear } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import {LoadingCircle} from '../helpers/componentsHelper'
