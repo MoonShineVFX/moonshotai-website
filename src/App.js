@@ -15,6 +15,8 @@ import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
+import Work from './Page/Gallery/Profile';
+import Account from './Page/Gallery/AccountPage'
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
 import Price from './Page/Gallery/PricePage';
@@ -61,10 +63,12 @@ function App() {
         
         <Route path="/camera" element={<Camera />} />
         <Route path="/docs" element={<Docs />} />
+
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/gv2" element={<GalleryV2 />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/user/:id" element={<User />} />
+        <Route path="/work" element={<Profile />} />
+        <Route path="/account" element={<Account />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/price" element={<Price />} />
         <Route path="/confirm/:id" element={<Confirm />} />

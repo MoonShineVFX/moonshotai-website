@@ -52,7 +52,7 @@ function ReportModal() {
             <div className='text-white/50 text-xs'> 
               關於退款申請規則，可於我們的使用說明頁面查看，針對購買未滿 48 小時的的商品可以進行退款申請，如不符合以上條件，您也可以提出，我們會視情況決定是否受理。
               <div>對於訂單疑問或建議，請透過此信箱聯繫我們 </div> 
-              <div>service@moonshine.tw</div> 
+              <div>ai@moonshine.tw</div> 
             </div>
             <div>2. 申請退款</div>
             <div className='text-white/50 text-xs flex items-center gap-2'>按此
