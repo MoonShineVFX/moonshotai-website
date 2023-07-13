@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { MdAttachMoney,MdArrowRightAlt,MdHelp } from "react-icons/md";
-import { repoortModalState,repoortDataState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 function OrderList({orderData,handleRefund,handleReport}) {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
-  const [isShowReport,serIsShowReport] = useRecoilState(repoortModalState)
-  const [currentOrder,setCurrentOrder] = useRecoilState(repoortDataState)
+  const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
+  const [currentOrder,setCurrentOrder] = useRecoilState(reportDataState)
   const onHandleRoport  = (item)=>{
     handleReport(item)
   }

@@ -8,7 +8,7 @@ import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOut
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
 import ReportModal from './ReportModal';
-import { repoortModalState,repoortDataState } from '../atoms/galleryAtom';
+import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
 const menuItems=[
@@ -24,7 +24,7 @@ function Orders() {
   const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [selectedItem, setSelectedItem] = useState(menuItems[1]);
-  const [isShowReport,serIsShowReport] = useRecoilState(repoortModalState)
+  const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
   
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);

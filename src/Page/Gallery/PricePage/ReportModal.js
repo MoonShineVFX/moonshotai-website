@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import {  useRecoilValue,useRecoilState  } from 'recoil';
-import { repoortModalState,repoortDataState } from '../atoms/galleryAtom';
+import { reportModalState,reoortDataState } from '../atoms/galleryAtom';
 import { MdClear } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import {LoadingCircle} from '../helpers/componentsHelper'
@@ -15,8 +15,8 @@ const options = [
   '其他',
 ];
 function ReportModal() {
-  const currentOrder = useRecoilValue(repoortDataState)
-  const [isShowReport,serIsShowReport] = useRecoilState(repoortModalState)
+  const currentOrder = useRecoilValue(reportDataState)
+  const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
   const { handleSubmit, control } = useForm();
   const [isShowForm , setIsShowForm] = useState(false)
   const [isShowLoading , setIsShowLoading] = useState(false)

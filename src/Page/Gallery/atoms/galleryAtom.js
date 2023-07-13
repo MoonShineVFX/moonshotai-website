@@ -72,11 +72,11 @@ export const commentDataState = atom({
 });
 
 //for Report Modal
-export const repoortModalState = atom({
-  key: 'repoortModalState',
+export const reportModalState = atom({
+  key: 'reportModalState',
   default: false,
 });
-export const repoortDataState = atom({
-  key: 'repoortDataState',
+export const reportDataState = atom({
+  key: 'reportDataState',
   default: null,
 });
