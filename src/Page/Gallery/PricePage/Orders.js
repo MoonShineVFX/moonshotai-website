@@ -25,7 +25,7 @@ function Orders() {
 
   const [selectedItem, setSelectedItem] = useState(menuItems[1]);
   const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
-  
+  const currentOrder = useRecoilValue(reportDataState)
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
@@ -58,6 +58,14 @@ function Orders() {
     setReportMsg('')
     if(isLoggedIn){
       console.log('已登入')
+      if(currentOrder.is_surveyed){
+        setReportMsg('表單已填過。')
+        setTimeout(()=>{
+          setReportMsg('準備執行退款..')
+          startRefundFlow(items.order_serial_number)
+        },600)
+        return
+      }
       postRefund_surveys(items,linLoginData).then(data=>{
         if(data.message === 'Survey is done'){
           setReportMsg('表單已送出')

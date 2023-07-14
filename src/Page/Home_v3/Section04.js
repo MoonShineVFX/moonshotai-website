@@ -15,10 +15,12 @@ function Section04() {
   },[])
   return (
     <div className=' relative my-6'>
-      
-      <div className='  w-[1000px] md:w-[2500px] opacity-50 h-[450px] overflow-hidden' id="headerBg">
-        <HeaderImagesBg  data={imgData}/>
+      <div className='overflow-hidden'>
+        <div className='  w-[1000px] md:w-[2500px] opacity-50 h-[450px]  relative' id="headerBg">
+          <HeaderImagesBg  data={imgData}/>
+        </div>
       </div>
+
       <a 
         className='w-1/2 text-center px-2 py-2 rounded-full bg-gradient-to-l from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] text-black  flex justify-center items-center  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
         href="/gallery"
