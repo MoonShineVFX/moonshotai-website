@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { Link } from "react-router-dom";
 import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
-
+import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } from "react-icons/fa";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -64,7 +64,11 @@ function Navbar() {
               </div>
 
 
-            </div>
+          </div>
+          <div className=' flex justify-center items-center gap-10'>
+            <a href='https://twitter.com/MoonshotAI_' target="_blank" rel="noopener noreferrer" >      <FaTwitter size={24}  /></a>
+            <a href='https://www.youtube.com/channel/UCT0noXFjgZ30lLCwZjJYdgQ' target="_blank" rel="noopener noreferrer" > <FaYoutube size={24} /></a>
+          </div>
 
 
         </div>

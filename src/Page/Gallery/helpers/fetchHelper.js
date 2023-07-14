@@ -639,3 +639,18 @@ export const postOrder_refund =async (serNum,token) =>{
   const data =await response.json()
   return data
 }
+
+// 退費問券 POST /refund_surveys
+export const postRefund_surveys =async (items,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response =await fetch(apiUrl+'refund_surveys', requestOptions)
+  const data =await response.json()
+  return data
+}

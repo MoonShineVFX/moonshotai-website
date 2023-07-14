@@ -173,7 +173,7 @@ function Index() {
               <Policy />
             </div>
 
-            <div id="section3" className='min-h-screen  pt-28'>
+            <div id="section6" className='min-h-screen  pt-28'>
               <div className='px-8'>
                 <div className='text-lime-500 font-bold'>Refunds </div>
                 <h1 className="text-2xl font-bold mb-4">退款流程</h1>

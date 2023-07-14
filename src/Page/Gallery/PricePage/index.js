@@ -122,7 +122,7 @@ function Index() {
         console.log('已登入')
         console.log(currentUser)
         setIsNeedEmail(false)
-        setIsCheckAccount(false)
+        setIsCheckAccount(true)
         // startLinePayFlow(pid)
         if(!currentUser.email || currentUser.email.length <= 0){
           console.log('234')
@@ -197,6 +197,7 @@ function Index() {
             })
             return
           }
+          setIsCheckAccount(false)
           setIsReadyToPayPage(true)
           setTimeout(()=>{
             window.location.href = url;
@@ -219,6 +220,7 @@ function Index() {
         paymentNewebPay(odata.serial_number,linLoginData).then(ldata=>{
           setIsLoadingBlueReq(false)
           setReqError(false)
+          setIsCheckAccount(false)
           setIsReadyToPayPage(true)
           console.log(ldata)
 
@@ -384,7 +386,7 @@ function Index() {
                               className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
                               onClick={()=>handlePay(block.plan_id,'linepay')}
                             >
-                              <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
+                              <MdCreditCard size={20} />  Line pay (正式) <MdArrowRightAlt />
                               {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                               
                             </button>
@@ -398,7 +400,7 @@ function Index() {
                               className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
                               onClick={()=>handlePay(block.plan_id,'bluepay')}
                             >
-                              <MdCreditCard size={20} />  藍新支付 (test) <MdArrowRightAlt />
+                              <MdCreditCard size={20} />  藍新支付 (模擬) <MdArrowRightAlt />
                               {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
                             </button>
                           
@@ -411,7 +413,7 @@ function Index() {
                             {isCheckAccount &&<div>檢查帳號資料..</div>}
                             {isNeedEmail &&<div>購買前需要填入Email..</div>}
                             {isSuccessSaveEmail && <div>通訊資料儲存成功，請再嘗試購買。</div>}
-                            {isReadyToPayPage && <div>準備跳轉頁面..</div>}
+                            {isReadyToPayPage && <div>檢查完成，準備跳轉頁面..</div>}
                           </div>
 
                       </div>

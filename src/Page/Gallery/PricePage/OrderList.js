@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { MdAttachMoney,MdArrowRightAlt,MdHelp } from "react-icons/md";
+import { MdAttachMoney,MdArrowRightAlt,MdHelp,MdInfo } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 function OrderList({orderData,handleRefund,handleReport}) {
@@ -12,6 +12,13 @@ function OrderList({orderData,handleRefund,handleReport}) {
   const onHandleRoport  = (item)=>{
     handleReport(item)
   }
+
+  const isPast48Hours = (date) => {
+    const now = moment();
+    const specifiedDate = moment(date);
+    const diffHours = now.diff(specifiedDate, 'hours');
+    return diffHours >= 48;
+  };
 
   return (
     <div className='text-white'>
@@ -50,6 +57,15 @@ function OrderList({orderData,handleRefund,handleReport}) {
                     <div>
                       <div className={'text-xs opacity-70'}>日期{status === 'Success' ? <span className='text-green-500'> (付款)</span> : <span className='text-rose-400'> (退款)</span>}</div>
                       <div>{refund_at ? moment(refund_at).format('YYYY-MM-DD HH:mm'): ` ${moment(paid_at).format('YYYY-MM-DD HH:mm')}`}</div>
+                      <div>
+                        {!refund_at ? 
+                          <div className='text-xs flex  items-center text-white/50 mt-1'>
+                           <MdInfo /> {isPast48Hours(paid_at) ? '已過48小時無法申請退款' : '可以申請退款'}
+                          </div>
+                        : ''
+
+                        }
+                      </div>
                     </div>
                   </div>
 

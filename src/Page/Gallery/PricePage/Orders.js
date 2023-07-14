@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
@@ -34,6 +34,8 @@ function Orders() {
   const [orders, setOrders] = useState(null)
   const [subscriptions, setSubscriptions] = useState(null)
   const [plans, setPlans] = useState(null)
+
+  const [ reportMsg , setReportMsg ] = useState('')
   
 
   const handleRefund = (sn)=>{
@@ -52,18 +54,54 @@ function Orders() {
     }
    
   }
-  const handleReport = (item)=>{
+  const handleReport = (items)=>{
+    setReportMsg('')
+    if(isLoggedIn){
+      console.log('已登入')
+      postRefund_surveys(items,linLoginData).then(data=>{
+        if(data.message === 'Survey is done'){
+          setReportMsg('表單已送出')
+          setTimeout(()=>{
+            setReportMsg('準備執行退款..')
+            startRefundFlow(items.order_serial_number)
+          },600)
+        }
+      }).catch(err=>console.log(err))
+
+    }else{
+      console.log('尚未登入需要登入')
+      setIsNeedLogin(true)
+      liff.init({liffId: liffID}).then(()=>{
+        console.log('init完成可準備登入')
+        setTimeout(()=>{liff.login();},500)
+      })
+    }
+
+
   }
   const startRefundFlow = (sn)=>{
     setIsLoadingReq(true);
+    setReportMsg('正在執行退款流程..')
     setReqError(false)
-    postOrder_refund(sn,linLoginData).then(rdata=>{
-      console.log('準備退費')
-      setIsLoadingReq(false)
-      console.log(rdata)
-      updateRefundStatus(sn)
+    setTimeout(()=>{
+      postOrder_refund(sn,linLoginData).then(rdata=>{
+        console.log('準備退費')
+        setIsLoadingReq(false)
+        if(rdata.message=== "You can't refund a expired order"){
+          setReportMsg('已超過48小時無法申請。')
+          return
+        }
+        
+        setReportMsg('這筆訂單已完成退款。')
+        setTimeout(()=>{
+          serIsShowReport(false)
+        },500)
+        console.log(rdata)
+        updateRefundStatus(sn)
+  
+      })
+    },1000)
 
-    })
   }
   const updateRefundStatus = (serialNumber) => {
     setOrders(prevOrders => {
@@ -79,6 +117,7 @@ function Orders() {
       return updatedOrders;
     });
   };
+
   const handleMenuItemClick = (item) => {
     setSelectedItem(item);
   };
@@ -137,7 +176,7 @@ function Orders() {
   return (
     <div>
       <AnimatePresence>
-        {isShowReport && <ReportModal /> }
+        {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} /> }
       </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
