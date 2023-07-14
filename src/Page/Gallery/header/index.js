@@ -84,25 +84,36 @@ function Index({currentUser,isLoggedIn}) {
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
-          <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Profile </Link>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
           <Link to='/price' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Price</Link>
+
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
             <div className='flex items-center flex-col md:flex-row '>
-              <div className='w-8'>
-                <div className='pt-[100%] relative'>
-                  <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
-                </div>
-              </div>
-              <div className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600 ' onClick={handleLogout}>Sign Out</div>
-              {isProcessLogout &&  <div className='text-xs mt-1'>正在處理登出</div>}
+                <Link to='/profile'  className='flex items-center gap-2'>
+                  <div className='w-8'>
+                    <div className='pt-[100%] relative'>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                    </div>
+                  </div>
+                  <div>{currentUser?.name}</div>
+                </Link>
             </div>
             
             :
             <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
+          <div className="block  ml-auto">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
+              >
+                <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
+                <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
+                
+              </button>
+          </div>
  
         </div>
       </div>

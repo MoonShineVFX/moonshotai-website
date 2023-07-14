@@ -14,7 +14,7 @@ function Navbar() {
                 </a>
                 <div className='lg:text-xl'></div>
             </div>
-            <div className="block lg:hidden ml-auto">
+            <div className="block lg: ml-auto">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"

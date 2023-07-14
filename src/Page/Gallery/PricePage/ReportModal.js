@@ -7,13 +7,13 @@ import { useForm,Controller } from 'react-hook-form';
 import {LoadingCircle} from '../helpers/componentsHelper'
 import moment from 'moment';
 const options = [
-  {id:0,title:'產品與預期不符',},
-  {id:1,title:'操作難度高，不好理解',},
-  {id:2,title:'生圖速度慢',},
-  {id:3,title:'使用頻率過低',},
-  {id:4,title:'能使用的模組太少',},
-  {id:5,title:'已經有其他同質性的產品',},
-  {id:6,title:'其他',},
+  {id:1,title:'產品與預期不符',},
+  {id:2,title:'操作難度高，不好理解',},
+  {id:3,title:'生圖速度慢',},
+  {id:4,title:'使用頻率過低',},
+  {id:5,title:'能使用的模組太少',},
+  {id:6,title:'已經有其他同質性的產品',},
+  {id:7,title:'其他',},
 ];
 function ReportModal({handleReport,reportMsg}) {
   const currentOrder = useRecoilValue(reportDataState)
