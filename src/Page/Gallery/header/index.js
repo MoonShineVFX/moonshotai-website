@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
+import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
@@ -120,47 +120,47 @@ function Index({currentUser,isLoggedIn}) {
           <div className='my-7 flex flex-col text-white/90 justify-between '>
             { 
               isLoggedIn ?
-              <Link to='/work' className='border-b border-white/20 text-sm '>
-                <div className='flex items-center gap-2'>
+              <div className='border-b border-white/20 text-sm '>
+                <Link to='/profile'  className='flex items-center gap-2'>
                   <div className='w-8'>
                     <div className='pt-[100%] relative'>
                       <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
-                </div>
+                </Link>
 
                 <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
                   <button className='my-4 py-1  border border-zinc-500 rounded-md w-full'> Sign Out</button>
                 </div>
-              </Link>
+              </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in</Link>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in to</Link>
               </div>
             }
             <div className='my-3 '>
               <Link 
                 to='/' 
                 className='p-2 cursor-pointer  hover:bg-gray-600 flex items-center gap-3 '>
-                <MdHome color="#88ad48"/>  Home  
+                <MdHome color="#88ad48" size={20}/>  Home  
               </Link>
 
               <Link 
                 to='/gallery' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdDashboard color="#88ad48"/> Gallery
+                  <MdDashboard color="#88ad48" size={20}/> Gallery
               </Link>
               <Link 
                 to='/price' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdStar color="#88ad48"/> Price
+                  <MdStar color="#88ad48" size={20}/> Price
               </Link>
 
               <Link 
                 to='/docs' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdDocumentScanner color="#88ad48"/> Documents
+                  <MdDocumentScanner color="#88ad48" size={20}/> Documents
               </Link>
 
             </div>
@@ -168,12 +168,17 @@ function Index({currentUser,isLoggedIn}) {
               <Link 
                 to='/profile' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAssignmentInd color="#88ad48"/> Profile 
+                  <MdViewModule color="#88ad48" size={20}/> Profile 
+              </Link>
+              <Link 
+                to='/account' 
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                  <MdAccountBox color="#88ad48" size={20}/> Account 
               </Link>
               <Link 
                 to='/orders' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAssignment color="#88ad48"/> Orders
+                  <MdAssignment color="#88ad48" size={20}/> Orders
               </Link>
             </div>
 

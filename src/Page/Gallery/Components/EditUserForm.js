@@ -55,7 +55,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
         exit={{ opacity: 0, y: -20 }}
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
-        <div className='text-center font-bold'>Your Profile</div>
+        <div className='text-center font-bold'>您的帳號資料</div>
         <div >
           <div>個人資料</div>
         

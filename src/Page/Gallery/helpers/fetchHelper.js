@@ -347,7 +347,19 @@ export const patchUserProfile = async (userid,token,items) =>{
   const data = await response
   return data
 }
-
+export const patchUserEmail = async (userid,token,items) =>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch(apiUrl+'user_profile/'+userid, requestOptions)
+  const data = await response
+  return data
+}
 /**
  * 
  * Images API

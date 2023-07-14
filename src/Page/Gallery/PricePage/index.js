@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
+import EditUserEmailForm from '../Components/EditUserEmailForm';
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
@@ -25,6 +26,10 @@ function Index() {
   const [isLoadingBlueReq, setIsLoadingBlueReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
+  const [isCheckAccount, setIsCheckAccount] = useState(false);
+  const [isNeedEmail, setIsNeedEmail] = useState(false);
+  const [isSuccessSaveEmail, setIsSuccessSaveEmail] = useState(false);
+  const [isReadyToPayPage, setIsReadyToPayPage,] = useState(false);
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
   const [isInviteSuccess, setIsInviteSuccess] = useState(false);
@@ -35,28 +40,6 @@ function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
-  const [ order , setOrder] = useState({
-      amount : 500,
-      currency : 'TWD',
-      orderId : 'order20210921003',
-      packages : [
-        {
-          id : "20210921003",
-          amount : 90,
-          products : [
-            {
-              name : "MSai90",
-              quantity : 1,
-              price : 90
-            }
-          ]
-        }
-      ],
-      redirectUrls : {
-        confirmUrl: "http://127.0.0.1:3000/confitmUrl",
-        cancelUrl : "http://127.0.0.1:3000/cancelUrl"
-      }
-    })
   const onSubmit = (data) => {
     setIsInviteLoadingReq(false)
     setIsAlreadyUsed(false) 
@@ -108,16 +91,49 @@ function Index() {
     } return false
 
   }
+  const handleSaveEditEmail = (data)=>{
+    console.log(data)
+    patchUserEmail(currentUser.id,linLoginData,data)
+      .then((data)=> {
+        if(data.status === 200){
+          setTimeout(()=>{
+            fetchUserProfile(currentUser.id, linLoginData)
+              .then((data)=> {
+                // console.log(data)
+                setCurrentUser(data)
+                localStorage.setItem('currentUser', JSON.stringify(data));
+                setTimeout(()=>{
+                  setIsNeedEmail(false)
+                  setIsSuccessSaveEmail(true)
+                },600)
+              })  
+              .catch((error) => console.error(error));
+          },1000)
+        }
+      })
+      .catch((error) => console.error(error));
+
+  } 
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
-  const handlePay =(pid)=>{
+  const handlePay =(pid,payment_type)=>{
+      const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
       if(isLoggedIn){
         console.log('已登入')
         console.log(currentUser)
-        startLinePayFlow(pid)
-        if(!currentUser.is_subscribed){
+        setIsNeedEmail(false)
+        setIsCheckAccount(false)
+        // startLinePayFlow(pid)
+        if(!currentUser.email || currentUser.email.length <= 0){
+          console.log('234')
+          setTimeout(()=>{
+            setIsCheckAccount(false)
+            setIsNeedEmail(true)
+          },1200)
+
           // startLinePayFlow(pid)
         }else{
+          payment()
           if(diffDays(currentUser.subscription_end_at)){
             // setIsNeedWithin5Days(false)
             // startLinePayFlow(pid)
@@ -181,7 +197,11 @@ function Index() {
             })
             return
           }
-          window.location.href = url;
+          setIsReadyToPayPage(true)
+          setTimeout(()=>{
+            window.location.href = url;
+          },500)
+
         }).catch(e=>{console.log(e)})
       },500)
 
@@ -199,6 +219,7 @@ function Index() {
         paymentNewebPay(odata.serial_number,linLoginData).then(ldata=>{
           setIsLoadingBlueReq(false)
           setReqError(false)
+          setIsReadyToPayPage(true)
           console.log(ldata)
 
           // form call 藍新 API
@@ -262,6 +283,9 @@ function Index() {
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   return (
     <div>
+       <AnimatePresence>
+        {isNeedEmail && <EditUserEmailForm closeModal={()=>setIsNeedEmail(false)} handleSaveEditEmail={handleSaveEditEmail}/>  }
+       </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
   
@@ -352,35 +376,47 @@ function Index() {
                     {block.storage}
                   </div>
                   <div className='my-2 flex flex-col'>
-                    {
-                      block.payment_line && <div>
-                        <button 
-                          className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                          onClick={()=>handlePay(block.plan_id)}
-                        >
-                          <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
-                          {isLoadingReq && <div className='text-xs'>等待回應...</div>}
-                          {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
+                    {block.payment_line || block.payment_blue ?
+                      <div>
+                        {
+                          block.payment_line && <div>
+                            <button 
+                              className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                              onClick={()=>handlePay(block.plan_id,'linepay')}
+                            >
+                              <MdCreditCard size={20} />  Line pay (test) <MdArrowRightAlt />
+                              {isLoadingReq && <div className='text-xs'>等待回應...</div>}
+                              
+                            </button>
+                            
+                            
+                          </div>
+                        }
+                        {
+                          block.payment_blue && <div>
+                            <button 
+                              className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
+                              onClick={()=>handlePay(block.plan_id,'bluepay')}
+                            >
+                              <MdCreditCard size={20} />  藍新支付 (test) <MdArrowRightAlt />
+                              {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
+                            </button>
                           
-                        </button>
-                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
-                        {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
+                          </div>
+                        }
+                          <div className='text-sm text-white/80 mt-2'>
+                            {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
+                            {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
+                            {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
+                            {isCheckAccount &&<div>檢查帳號資料..</div>}
+                            {isNeedEmail &&<div>購買前需要填入Email..</div>}
+                            {isSuccessSaveEmail && <div>通訊資料儲存成功，請再嘗試購買。</div>}
+                            {isReadyToPayPage && <div>準備跳轉頁面..</div>}
+                          </div>
+
                       </div>
-                    }
-                    {
-                      block.payment_blue && <div>
-                        <button 
-                          className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
-                          onClick={()=>handleBluePay(block.plan_id)}
-                        >
-                          <MdCreditCard size={20} />  藍新支付 (test) <MdArrowRightAlt />
-                          {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
-                          {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
-                          
-                        </button>
-                        {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
-                        {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
-                      </div>
+                      :
+                      <div></div>
                     }
                     {
                       block.invite_input && <div>
@@ -410,6 +446,7 @@ function Index() {
                         </form>
                       </div>
                     }
+
                   </div>
 
                 </motion.div>

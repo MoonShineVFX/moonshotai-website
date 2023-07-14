@@ -67,7 +67,7 @@ function App() {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/post/:id" element={<Post />} />
         <Route path="/user/:id" element={<User />} />
-        <Route path="/work" element={<Profile />} />
+        {/* <Route path="/work" element={<Profile />} /> */}
         <Route path="/account" element={<Account />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/price" element={<Price />} />
