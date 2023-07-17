@@ -9,23 +9,25 @@ import { FaBars,FaTimes,FaChevronDown,FaAngleRight } from "react-icons/fa";
 import Terms from '../../Home_v3/Terms';
 import Policy from '../../Home_v3/Policy';
 import RefundDoc from '../../Home_v3/RefundDoc';
+import QuickStart from '../../Home_v3/QuickStart';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
-  const [currentKey, setCurrentKey] = useState(0);
+  const [currentKey, setCurrentKey] = useState('main0');
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuFixed, setIsMenuFixed] = useState(false);
   const scrollTo = (target) => {
     scroller.scrollTo(target, {
       duration: 800,
       delay: 0,
-      smooth: 'easeInOutQuart'
+      smooth: 'easeInOutQuart',
+      offset:-80
     });
   };
   const menuItem = [
-    {title:"如何開始",section:"section1"},
+    {title:"如何開始",section:"section1" , submenus:[{title:"Quick Start",section:"quick"},{title:"Gallery Guidelines",section:"guidelines"}]},
     {title:"指令介紹",section:"section2"},
     {title:"退款流程",section:"section6"},
     {title:"使用條款",section:"section4"},
@@ -42,11 +44,12 @@ function Index() {
     {display_name:"遮罩固定",name:"O__"},
     {display_name:"骨架參考",name:"P__"},
   ]
-  const handleMenuItemClick = (index) => {
-    scrollTo(menuItem[index].section);
-    setCurrentKey(index);
+  const handleMenuItemClick = (section) => {
+    scrollTo(section);
+    setCurrentKey(section);
     setIsOpen(false); // 自動隱藏選單
   };
+
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
@@ -89,9 +92,28 @@ function Index() {
               menuItem.map((item,index)=>{
                 return(
                   <li 
-                    className={' cursor-pointer hover:text-white' + (currentKey === index ? ' text-white' : ' text-white/50')} 
-                    onClick={() => handleMenuItemClick(index)}
-                  >{item.title}</li>
+                  key={'main'+index}
+                  className={' cursor-pointer hover:text-white ' } 
+                 
+                > 
+                  <div className={'flex items-center ' + (currentKey === item.section ? ' text-white' : ' text-white/50')}  onClick={() => handleMenuItemClick(item.section)}>
+                    {item.title} <FaAngleRight /> 
+                  </div>
+                  {
+                    item?.submenus && 
+                    <div className={'pl-2 '}>
+                      {item.submenus.map((s,i)=>{
+                        return(
+                          <div  
+                            key={'sub'+index}
+                            className={' '  + (currentKey === s.section ? ' text-white' : ' text-white/50')}
+                            onClick={() => handleMenuItemClick(s.section)}>{s.title}</div>
+                        )
+                      })}
+                    </div>
+                  }
+
+                </li>
                 )
               })
             }
@@ -107,9 +129,28 @@ function Index() {
                 menuItem.map((item,index)=>{
                   return(
                     <li 
-                      className={' cursor-pointer hover:text-white flex items-center' + (currentKey === index ? ' text-white' : ' text-white/50')} 
-                      onClick={() => handleMenuItemClick(index)}
-                    > {item.title} <FaAngleRight /></li>
+                      key={'main'+index}
+                      className={' cursor-pointer hover:text-white ' } 
+                     
+                    > 
+                      <div className={'flex items-center ' + (currentKey === item.section ? ' text-white' : ' text-white/50')}  onClick={() => handleMenuItemClick(item.section)}>
+                        {item.title} <FaAngleRight /> 
+                      </div>
+                      {
+                        item?.submenus && 
+                        <div className={'pl-2 '}>
+                          {item.submenus.map((s,i)=>{
+                            return(
+                              <div  
+                                key={'sub'+index}
+                                className={' '  + (currentKey === s.section ? ' text-white' : ' text-white/50')}
+                                onClick={() => handleMenuItemClick(s.section)} >{s.title}</div>
+                            )
+                          })}
+                        </div>
+                      }
+
+                    </li>
                   )
                 })
               }
@@ -131,16 +172,15 @@ function Index() {
                 delay: 0.5,
               }}
             >  
-              <div id="section1" className='min-h-screen pt-28 px-8'>
-                <div className='text-lime-500 font-bold'>About</div>
-                <div className='text-2xl font-bold  mb-4'>關於我們</div>
+              <div id="section1" className='min-h-screen pt-20 px-8'>
+                <div className='text-lime-500 font-bold'>Getting Statred</div>
+                <div className='text-2xl font-bold  mb-4'>如何開始</div>
                 <div className='mt-2 mb-8 text-white/70'>
-                  Moonshot 是一個能夠在 Line 上輕鬆使用的 AI 繪圖工具，可輕易地通過指令切換多個 model 來達到風格轉換，使用「Stable Diffusion」作為運行的基礎，盡可能的在便利與多元使用上取得平衡。
-                希望透過此服務讓更多人能夠認識並了解AI繪圖，所以同時也在 Line 上成立討論社群，鼓勵新手勇於提問老手熱心解惑的互動形式，營造良好學習成長環境。
+                  <QuickStart />
                 </div>
 
               </div>
-              <div id="section2" className='min-h-screen  pt-28 px-8'>
+              <div id="section2" className='min-h-screen  pt-20 px-8'>
                 <div className='text-lime-500 font-bold'>Command </div>
                 <div className='text-2xl font-bold  mb-4'>指令介紹 </div>
                 <div className='mt-2 mb-8 leading-9 text-white/70'>
@@ -165,15 +205,15 @@ function Index() {
                 </table>
                 </div>
               </div>
-              <div id="section6" className='min-h-screen  pt-28'>
+              <div id="section6" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Refunds </div>
                   <h1 className="text-2xl font-bold mb-4">退款流程</h1>
                 </div>
                 <RefundDoc />
               </div>
-              
-              <div id="section4" className='min-h-screen  pt-28'>
+
+              <div id="section4" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Terms </div>
                   <h1 className="text-2xl font-bold mb-4">使用條款</h1>
@@ -182,7 +222,7 @@ function Index() {
                 <Terms />
               </div>
 
-              <div id="section5" className='min-h-screen  pt-28'>
+              <div id="section5" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Private Policy </div>
                   <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
