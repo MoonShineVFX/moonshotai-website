@@ -530,6 +530,69 @@ button.toggle-button.active .toggle-switch {
   }
 
 
+  //glow effect 02
+  .circle {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(270deg, #16f0ba, #7e0fff);
+    border-radius: 50%;
+    -webkit-filter: blur(8vw);
+    -moz-filter: blur(8vw);
+    -ms-filter: blur(8vw);
+    filter: blur(10vw);
+    transition: 1.8s;    
+    transform: scale(1.1);
+    animation: opactiy infinite 8s linear;
+  }
+  .circle2 {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(270deg, #16f0ba, #7e0fff);
+    border-radius: 50%;
+    -webkit-filter: blur(8vw);
+    -moz-filter: blur(8vw);
+    -ms-filter: blur(8vw);
+    filter: blur(12vw);
+    transition: 1.8s;    
+    transform: scale(0.7);
+    animation: opactiy2 infinite 8s linear;
+  }
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+      
+    }
+    to {
+      transform: rotate(365deg);
+    }
+  }
+  @keyframes opactiy {
+    0% {
+      opacity: 1;
+      filter: blur(8vw);
+
+    }
+    50% {
+      opacity: 0.8;
+      filter: blur(2vw);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(8vw);
+    }
+  }
+  @keyframes opactiy2 {
+    0% {
+      opacity: 0.5;
+
+    }
+    50% {
+      opacity: 0.8;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
   @keyframes float_t01 {
     0% {
       transform: translatey(2px);

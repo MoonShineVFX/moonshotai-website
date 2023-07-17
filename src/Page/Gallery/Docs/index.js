@@ -5,7 +5,7 @@ import { animateScroll as scroll, scroller } from 'react-scroll';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData} from '../helpers/fetchHelper'
-import { FaBars,FaTimes } from "react-icons/fa";
+import { FaBars,FaTimes,FaChevronDown } from "react-icons/fa";
 import Terms from '../../Home_v3/Terms';
 import Policy from '../../Home_v3/Policy';
 import RefundDoc from '../../Home_v3/RefundDoc';
@@ -25,12 +25,12 @@ function Index() {
     });
   };
   const menuItem = [
-    {title:"關於moonshot",section:"section1"},
+    {title:"如何開始",section:"section1"},
     {title:"指令介紹",section:"section2"},
-    {title:"模型介紹",section:"section3"},
+    {title:"退款流程",section:"section6"},
     {title:"使用條款",section:"section4"},
     {title:"隱私權政策",section:"section5"},
-    {title:"退款流程",section:"section6"},
+
   ]
   const commendItem = [
     {display_name:"寫實風格",name:"PR"},
@@ -79,7 +79,7 @@ function Index() {
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className='focus:outline-none'
-          ><FaBars /></button>
+          ><FaChevronDown /></button>
           <div>Documentation</div> 
         </div>
         <div className={`   md:w-1/5 md:h-screen  md:p-10 absolute bg-zinc-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
@@ -145,15 +145,6 @@ function Index() {
                 </tbody>
               </table>
               </div>
-            </div>
-            <div id="section3" className='min-h-screen  pt-28 px-8'>
-              <div className='px-8'></div>
-              <div className='text-lime-500 font-bold'>Model </div>
-              <h1 className="text-2xl font-bold mb-4">模型介紹</h1>
-              <div className='mt-2 mb-8 leading-9 text-white/70'>
-
-              </div>
-
             </div>
 
             <div id="section4" className='min-h-screen  pt-28'>

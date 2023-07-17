@@ -7,7 +7,7 @@ function Section01() {
         <div className='text-3xl font-bold text-center relative'>
           Creating through   simple commands
           <div 
-            className=' absolute -top-3 -left-5'
+            className=' absolute -top-3 -left-2 md:-left-6'
             style={{animation: 'float_t01 6s ease-in-out infinite'}}  
           >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/section01_c01.png'} alt="" />

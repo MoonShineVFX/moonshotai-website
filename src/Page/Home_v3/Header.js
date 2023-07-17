@@ -16,6 +16,7 @@ function Header({executeScroll}) {
             className=' w-3/5 absolute top-1/2 left-1/2 '
             style={{animation: 'float_center 12s ease-in-out infinite'}}
           >
+            <div className="circle absolute  -z-10  "></div>
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/Home_MS_logo01.png'} alt="" className='w-full'/>
             <div 
             className=' absolute -top-12 -right-16'
@@ -29,10 +30,12 @@ function Header({executeScroll}) {
           >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_c02.png'} alt="" />
           </div>
+          
           </div>
 
 
-          <div className='glow w-full relative'>
+          <div className=' w-full relative'>
+
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc01.png'} alt="" className='w-full' />
             <div className=' absolute top-4 left-4' style={{animation: 'float_t02 10s ease-in-out infinite' , animationDelay:'1000ms'}} >
               <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc02.png'} alt="" className='max-w-full scale-75' />

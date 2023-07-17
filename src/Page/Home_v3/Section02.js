@@ -28,7 +28,7 @@ function Section02() {
 
       </div>
 
-      <div className='w-10/12 mx-auto mt-10 md:mt-20'>
+      <div className='w-10/12 mx-auto mt-20 md:mt-20'>
         {menuItems.map((item,index)=>{
           return(
             <div className='flex flex-col justify-center items-center md:flex-row my-10  '>
