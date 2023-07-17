@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 function CountdownTimer() {
-  const targetDate = '2023-07-20T17:59:59+08:00'; 
+  const targetDate = '2023-07-20T20:00:00+08:00'; 
   const [remainingTime, setRemainingTime] = useState(null);
 
   useEffect(() => {
