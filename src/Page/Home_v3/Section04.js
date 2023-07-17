@@ -16,7 +16,7 @@ function Section04() {
   return (
     <div className=' relative my-6'>
       <div className='overflow-hidden'>
-        <div className='  w-[1000px] md:w-[2500px] opacity-50 h-[450px]  relative' id="headerBg">
+        <div className='  w-[1000px] md:w-[2000px] opacity-50 h-[450px]  relative' id="headerBg">
           <HeaderImagesBg  data={imgData}/>
         </div>
       </div>
