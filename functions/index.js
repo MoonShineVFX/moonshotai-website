@@ -34,7 +34,7 @@ exports.host = functions.https.onRequest((request, response) => {
             name="description"
             content="AIGC Tools"
           />
-          <meta property="og:title" content=">Moonshot" />
+          <meta property="og:title" content="Moonshot" />
           <meta property="og:description" content="AIGC Tools" />
           <meta property="og:image" content="logo.png" />
         `;
