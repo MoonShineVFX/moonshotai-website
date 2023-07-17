@@ -148,9 +148,10 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     <div >
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
+        <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
 
-      <div className='flex items-center my-3 gap-2  justify-end w-full '>
+      <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
         <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
       </div>

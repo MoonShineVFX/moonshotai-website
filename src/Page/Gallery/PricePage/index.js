@@ -261,9 +261,9 @@ function Index() {
     setSelectedBlock(blockIndex);
   };
   const blocks = [
-    { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','直 V','橫 H'],advanced:[],daily_limit:'不限次數',storage:'100 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
-    { title: '開通體驗',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext','參考 R','大圖 hr','中圖 mr', '調整步數 steps:50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
-    { title: '進階方案',price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','翻譯 TL','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext','參考 R','大圖 hr','中圖 mr', '調整步數 steps:50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
+    { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 V','橫 H'],advanced:[],daily_limit:'不限次數',storage:'100 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
+    { title: '開通推薦序號',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext','大圖 hr','中圖 mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
+    { title: '進階用戶',price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 V','橫 H'],advanced:['修改 I','固定 O','骨架 P','放大 ext','大圖 hr','中圖 mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
   ];
 
   useEffect(()=>{
@@ -422,7 +422,8 @@ function Index() {
                     }
                     {
                       block.invite_input && <div>
-                        <div className='text-xs text-white/70 my-2'>需入序號後，將可獲得進階功能 5 天，透過分享推薦序號也可以獲得回饋 5 天</div>
+                        <div className='text-xs text-white/70 my-2'>開通推薦序號：每人可使用一次他人的推薦序號，並擁有一個自己的推薦序號。需入序號後，將可獲得進階功能 5 天，透過分享推薦序號也可以獲得回饋 5 天</div>
+                        <div className='text-xs text-white/70 my-2'>推薦序號使用方式：每人的推薦序號能提供給五位不同使用者，僅有五次，用完不補。當對方使用你的推薦序號後，你與對方的進階帳號使用天數會自動 +5 天。</div>
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div className='flex flex-col gap-2'>
                             <div className='flex flex-col'>
