@@ -8,6 +8,7 @@ exports.host = functions.https.onRequest((request, response) => {
   let indexHTML = fs.readFileSync('./source/index.html').toString();
   const path = request.path ? request.path.split('/') : request.path;
   let customOpenGraph=''
+  console.log('1',path[1])
   if(path[1] === 'post'){
     console.log(path)
     fetchGalleriesDetail(path[2])
