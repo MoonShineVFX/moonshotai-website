@@ -12,7 +12,7 @@ function Index() {
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
   return (
     <div className=''>
-      <div className='w-10/12 mx-auto'>
+      <div className='md:w-10/12 mx-auto'>
         <Header executeScroll={executeScroll}/>
         <Secrtion05_countdown />
         <div ref={myRef}>
