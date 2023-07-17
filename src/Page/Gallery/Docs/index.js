@@ -5,7 +5,7 @@ import { animateScroll as scroll, scroller } from 'react-scroll';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData} from '../helpers/fetchHelper'
-import { FaBars,FaTimes,FaChevronDown } from "react-icons/fa";
+import { FaBars,FaTimes,FaChevronDown,FaAngleRight } from "react-icons/fa";
 import Terms from '../../Home_v3/Terms';
 import Policy from '../../Home_v3/Policy';
 import RefundDoc from '../../Home_v3/RefundDoc';
@@ -74,7 +74,7 @@ function Index() {
   return (
     <div className=''>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
-      <div className={` font-bold  bg-white/10 backdrop-blur-lg z-10 text-white   fixed w-full ${isMenuFixed ? 'fixed top-0 left-0 w-full' : ''}`}>
+      <div className={` font-bold  bg-white/10 backdrop-blur-lg z-10 text-white   fixed w-full md:hidden ${isMenuFixed ? 'fixed top-0 left-0 w-full' : ''}`}>
         <div className='flex items-center space-x-3 p-4'>
           <button 
             onClick={() => setIsOpen(!isOpen)}
@@ -83,6 +83,7 @@ function Index() {
           <div>Documentation</div> 
         </div>
         <div className={`   md:w-1/5 md:h-screen  md:p-10 absolute bg-zinc-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
+          
           <ul className=' border-l border-white/50 p-5 tracking-wide leading-loose text-normal text-white/50'>
             {
               menuItem.map((item,index)=>{
@@ -97,91 +98,110 @@ function Index() {
           </ul>
         </div>
       </div>
+      <div className=' relative '>
+        <div  className='sidebar hidden md:block fixed  mt-[65px] top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto  border-r border-white/20 '>
+          
+          <div className='text-white mt-10 p-10  '>
+            <ul className='space-y-3'>
+              {
+                menuItem.map((item,index)=>{
+                  return(
+                    <li 
+                      className={' cursor-pointer hover:text-white flex items-center' + (currentKey === index ? ' text-white' : ' text-white/50')} 
+                      onClick={() => handleMenuItemClick(index)}
+                    > {item.title} <FaAngleRight /></li>
+                  )
+                })
+              }
+            </ul>
+          </div>
+        </div>
+          
+        <div className=' justify-start items-start text-white w-full  mx-auto md:pl-[300px]'>
 
-      <div className=' justify-start items-start text-white w-full md:w-8/12 mx-auto '>
+          <motion.div className=" modal relative  min-h-screen w-full   md:px-10 mx-auto text-white flex-auto overflow-y-auto ">
+            <motion.div 
+              className=" pt-0 "
+              initial={{ opacity: 0,y:0 }}
+              animate={{ opacity: 1,y:0 }}
+              exit={{ opacity: 0,y:0 }}
+              transition={{
+                ease: "easeInOut",
+                duration: 0.3,
+                delay: 0.5,
+              }}
+            >  
+              <div id="section1" className='min-h-screen pt-28 px-8'>
+                <div className='text-lime-500 font-bold'>About</div>
+                <div className='text-2xl font-bold  mb-4'>關於我們</div>
+                <div className='mt-2 mb-8 text-white/70'>
+                  Moonshot 是一個能夠在 Line 上輕鬆使用的 AI 繪圖工具，可輕易地通過指令切換多個 model 來達到風格轉換，使用「Stable Diffusion」作為運行的基礎，盡可能的在便利與多元使用上取得平衡。
+                希望透過此服務讓更多人能夠認識並了解AI繪圖，所以同時也在 Line 上成立討論社群，鼓勵新手勇於提問老手熱心解惑的互動形式，營造良好學習成長環境。
+                </div>
 
-        <motion.div className=" modal relative  min-h-screen w-full   md:px-10 mx-auto text-white flex-auto overflow-y-auto ">
-          <motion.div 
-            className=" pt-0 "
-            initial={{ opacity: 0,y:0 }}
-            animate={{ opacity: 1,y:0 }}
-            exit={{ opacity: 0,y:0 }}
-            transition={{
-              ease: "easeInOut",
-              duration: 0.3,
-              delay: 0.5,
-            }}
-          >  
-            <div id="section1" className='min-h-screen pt-28 px-8'>
-              <div className='text-lime-500 font-bold'>About</div>
-              <div className='text-2xl font-bold  mb-4'>關於我們</div>
-              <div className='mt-2 mb-8 text-white/70'>
-                Moonshot 是一個能夠在 Line 上輕鬆使用的 AI 繪圖工具，可輕易地通過指令切換多個 model 來達到風格轉換，使用「Stable Diffusion」作為運行的基礎，盡可能的在便利與多元使用上取得平衡。
-              希望透過此服務讓更多人能夠認識並了解AI繪圖，所以同時也在 Line 上成立討論社群，鼓勵新手勇於提問老手熱心解惑的互動形式，營造良好學習成長環境。
+              </div>
+              <div id="section2" className='min-h-screen  pt-28 px-8'>
+                <div className='text-lime-500 font-bold'>Command </div>
+                <div className='text-2xl font-bold  mb-4'>指令介紹 </div>
+                <div className='mt-2 mb-8 leading-9 text-white/70'>
+                <table class="border-collapse border border-slate-400 w-full">
+                  <thead>
+                    <tr className='bg-zinc-600 '>
+                      <th className='border border-slate-300 p-2'>功能</th>
+                      <th className='border border-slate-300 p-2'>指令</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {commendItem.map((item,index)=>{
+                      return(
+                        <tr>
+                          <td className='border border-slate-300 p-2  text-center'>{item.display_name}</td>
+                          <td className='border border-slate-300 p-2 text-center'>{item.name}</td>
+                        </tr>
+                      )
+                    })}
+
+                  </tbody>
+                </table>
+                </div>
+              </div>
+              <div id="section6" className='min-h-screen  pt-28'>
+                <div className='px-8'>
+                  <div className='text-lime-500 font-bold'>Refunds </div>
+                  <h1 className="text-2xl font-bold mb-4">退款流程</h1>
+                </div>
+                <RefundDoc />
+              </div>
+              
+              <div id="section4" className='min-h-screen  pt-28'>
+                <div className='px-8'>
+                  <div className='text-lime-500 font-bold'>Terms </div>
+                  <h1 className="text-2xl font-bold mb-4">使用條款</h1>
+                </div>
+
+                <Terms />
               </div>
 
-            </div>
-            <div id="section2" className='min-h-screen  pt-28 px-8'>
-              <div className='text-lime-500 font-bold'>Command </div>
-              <div className='text-2xl font-bold  mb-4'>指令介紹 </div>
-              <div className='mt-2 mb-8 leading-9 text-white/70'>
-              <table class="border-collapse border border-slate-400 w-full">
-                <thead>
-                  <tr className='bg-zinc-600 '>
-                    <th className='border border-slate-300 p-2'>功能</th>
-                    <th className='border border-slate-300 p-2'>指令</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {commendItem.map((item,index)=>{
-                    return(
-                      <tr>
-                        <td className='border border-slate-300 p-2  text-center'>{item.display_name}</td>
-                        <td className='border border-slate-300 p-2 text-center'>{item.name}</td>
-                      </tr>
-                    )
-                  })}
+              <div id="section5" className='min-h-screen  pt-28'>
+                <div className='px-8'>
+                  <div className='text-lime-500 font-bold'>Private Policy </div>
+                  <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
+                </div>
 
-                </tbody>
-              </table>
-              </div>
-            </div>
-
-            <div id="section4" className='min-h-screen  pt-28'>
-              <div className='px-8'>
-                <div className='text-lime-500 font-bold'>Terms </div>
-                <h1 className="text-2xl font-bold mb-4">使用條款</h1>
+                <Policy />
               </div>
 
-              <Terms />
-            </div>
-
-            <div id="section5" className='min-h-screen  pt-28'>
-              <div className='px-8'>
-                <div className='text-lime-500 font-bold'>Private Policy </div>
-                <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
-              </div>
-
-              <Policy />
-            </div>
-
-            <div id="section6" className='min-h-screen  pt-28'>
-              <div className='px-8'>
-                <div className='text-lime-500 font-bold'>Refunds </div>
-                <h1 className="text-2xl font-bold mb-4">退款流程</h1>
-              </div>
-              <RefundDoc />
 
 
 
 
-            </div>
-
-
-
+            </motion.div>
           </motion.div>
-        </motion.div>
+          </div>
+
+        
       </div>
+
 
 
     </div>

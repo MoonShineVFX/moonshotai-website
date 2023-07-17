@@ -9,7 +9,7 @@ exports.host = functions.https.onRequest((request, response) => {
   const path = request.path ? request.path.split('/') : request.path;
   let customOpenGraph=''
   if(path[1] === 'post'){
-
+    console.log(path)
     fetchGalleriesDetail(path[2])
       .then(gData=>{
         const {title, description,urls} = gData
