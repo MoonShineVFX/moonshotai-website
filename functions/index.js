@@ -10,7 +10,7 @@ exports.host = functions.https.onRequest((request, response) => {
   let customOpenGraph=''
 
   if(path[1] === 'post'){
-    console.log(path)
+
     fetchGalleriesDetail(path[2])
       .then(gData=>{
         const {title, description,urls} = gData
@@ -30,13 +30,13 @@ exports.host = functions.https.onRequest((request, response) => {
       })
       .catch(error=>{
         customOpenGraph = `
-          <title>Moonshot</title>
+          <title>Moonshot | ${path[2]}</title>
           <meta
             name="description"
-            content="AIGC Tools"
+            content="Moonshot Gallery | ${path[2]} "
           />
-          <meta property="og:title" content="Moonshot ${path[1]} / ${path[2]}" />
-          <meta property="og:description" content="AIGC Tools testme" />
+          <meta property="og:title" content="Moonshot | ${path[2]}" />
+          <meta property="og:description" content="Moonshot Gallery | ${path[2]} " />
           <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
@@ -49,7 +49,7 @@ exports.host = functions.https.onRequest((request, response) => {
 const fetchGalleriesDetail = async (id) => {
 
   return new Promise((resolve, reject) => {
-    const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL+'galleries/';
+    const apiUrl = 'https://api-dev.moonshot.today/galleries/';
     const url = apiUrl + id;
 
     axios.get(url, { headers: { 'Content-Type': 'application/json' } })
