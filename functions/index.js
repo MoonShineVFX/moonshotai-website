@@ -8,7 +8,7 @@ exports.host = functions.https.onRequest((request, response) => {
   let indexHTML = fs.readFileSync('./source/index.html').toString();
   const path = request.path ? request.path.split('/') : request.path;
   let customOpenGraph=''
-  console.log('1',path[1])
+
   if(path[1] === 'post'){
     console.log(path)
     fetchGalleriesDetail(path[2])
@@ -35,8 +35,8 @@ exports.host = functions.https.onRequest((request, response) => {
             name="description"
             content="AIGC Tools"
           />
-          <meta property="og:title" content="Moonshot" />
-          <meta property="og:description" content="AIGC Tools" />
+          <meta property="og:title" content="Moonshot ${path[1]} / ${path[2]}" />
+          <meta property="og:description" content="AIGC Tools testme" />
           <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
