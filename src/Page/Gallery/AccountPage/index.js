@@ -7,6 +7,8 @@ import { useForm,Controller } from 'react-hook-form';
 import liff from '@line/liff';
 import Header from '../header'
 import moment from 'moment';
+import { MdContentCopy } from "react-icons/md";
+
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -221,15 +223,29 @@ function Index() {
   
         </div>
         <div>
-          <div className='text-white/70 my-2 text-xs'>推薦序號</div>
+          <div className='text-white/70 my-2 text-xs'>推薦序號(個人專屬)</div>
           <div className='flex items-center  gap-3'>
             <div onClick={()=>handleCopy(currentProfile.invitation_code)}>{currentProfile.invitation_code} </div>
-            <div className='text-xs rounded-md border border-white/70 py-1 px-2' onClick={()=>handleCopy(currentProfile.invitation_code)}>{isCopied ?'Copied!'  :'Copy'}</div>
+            <div className='text-xs flex items-center ' onClick={()=>handleCopy(currentProfile.invitation_code)}> <MdContentCopy size={18}/>  {isCopied ?'Copied!'  :''}</div>
           </div>
+          
 
         </div>
+        <div className='my-4'>
+          <div className='text-white/70 my-2 text-xs'>使用量</div>
+          <div className='text-xs text-white/ㄞ0 mt-1 space-y-1 '>
+            <div className='flex justify-between'> 推薦序號被使用次數:(上限 5)  <span>{currentProfile.total_invitations}</span> </div>
+            <div className='flex justify-between'> 製圖總圖片量         <span>{currentProfile.total_photos}</span>          </div>
+            <div className='flex justify-between'> 已保留圖片數         <span>{currentProfile.total_storages}</span>          </div>
+            <div className='flex justify-between'> 已收藏圖片數         <span>{currentProfile.total_collections}</span>         </div>
+            <div className='flex justify-between'> 被收藏圖片數         <span>{currentProfile.total_collected}</span>         </div>
+            <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_followers}</span>         </div>
+            <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_follows}</span>         </div>
+          </div>
+        </div>
+   
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-8'>
+      <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-6'>
           <div className='grid grid-cols-2 gap-2'>
             <div className='flex flex-col'>
               <label htmlFor="name" className='text-white/70 my-2 text-xs'>顯示名稱</label>

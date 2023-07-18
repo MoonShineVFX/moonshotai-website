@@ -7,7 +7,7 @@ import { FaShareSquare } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -107,6 +107,22 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       </div>
     )
   }
+  const renderLimitImage = (currentCounter, limitImage)=>{
+    const currentCount = parseInt(currentCounter);
+    const limit = parseInt(limitImage);
+  
+    const isExceeded = currentCount > limit;
+  
+    const textStyle = isExceeded
+      ? 'text-red-500' // Red text color for exceeded counter
+      : 'text-white/70'; // White text color for within limit counter
+  
+    return (
+      <div className={`text-xs ${textStyle}`}>
+        {currentCount} / {limit} items
+      </div>
+    );
+  }
   
   useEffect(() => {
     const handleScroll = () => {
@@ -132,7 +148,12 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
   }
   return (
     <div >
-          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title}   <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
+          <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
+            {title}   {renderLimitImage(totalImage,limitImage)} 
+            <div className='text-xs text-white/50'>免費會員可留存 100 張圖片，進階會員可留存 300 張圖片</div>
+
+          </div>
+
           {show && <ConfirmCancelMsg setShow={setShow} />  }
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
