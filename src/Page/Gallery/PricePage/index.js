@@ -35,6 +35,7 @@ function Index() {
   const [isInviteSuccess, setIsInviteSuccess] = useState(false);
   const [isAlreadyUsed, setIsAlreadyUsed] = useState(false);
   const [isYourself, setIsYouself] = useState(false);
+  const [isLimits, setIsLimits] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
   
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -62,6 +63,12 @@ function Index() {
             setIsInviteLoadingReq(false)
             return
           }
+          if(d.message=== "This Invitation code has reached the limit"){
+            setIsLimits(true)
+            setIsInviteLoadingReq(false)
+            return
+          }
+
           if(d.message=== "Invitation success"){
             setIsInviteSuccess(true)
             setIsInviteLoadingReq(false)
@@ -443,6 +450,7 @@ function Index() {
                               {isInviteSuccess&& <div className='text-xs'>完成，體驗天數已成功增加。</div>}
                               {isAlreadyUsed&& <div className='text-xs'>已經輸入過序號了，只能開通一次。</div>}
                               {isYourself&& <div className='text-xs'>不可以使用自己的序號。</div>}
+                              {isLimits&& <div className='text-xs'>這個序號已經到達使用次數。</div>}
                             </div>
                           </div>
 
