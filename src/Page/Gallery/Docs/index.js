@@ -10,6 +10,8 @@ import Terms from '../../Home_v3/Terms';
 import Policy from '../../Home_v3/Policy';
 import RefundDoc from '../../Home_v3/RefundDoc';
 import QuickStart from '../../Home_v3/QuickStart';
+import UserDoc from '../../Home_v3/UserDoc';
+import FaqDoc from '../../Home_v3/FaqDoc';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -28,10 +30,12 @@ function Index() {
   };
   const menuItem = [
     {title:"如何開始",section:"section1" , submenus:[{title:"Quick Start",section:"quick"},{title:"Gallery Guidelines",section:"guidelines"}]},
-    {title:"指令介紹",section:"section2"},
-    {title:"退款流程",section:"section6"},
-    {title:"使用條款",section:"section4"},
-    {title:"隱私權政策",section:"section5"},
+    {title:"個人帳戶",section:"section2" , submenus:[{title:"Profile",section:"profile"},{title:"Account",section:"account"},{title:"Refeeral",section:"refeeral"},{title:"Orders",section:"orders"}]},
+    {title:"常見問答",section:"faq"},
+    {title:"指令介紹",section:"section3"},
+    {title:"退款流程",section:"section4"},
+    {title:"使用條款",section:"section5"},
+    {title:"隱私權政策",section:"section6"},
 
   ]
   const commendItem = [
@@ -101,7 +105,7 @@ function Index() {
                   </div>
                   {
                     item?.submenus && 
-                    <div className={'pl-2 '}>
+                    <div className={'pl-2 my-4 space-y-1'}>
                       {item.submenus.map((s,i)=>{
                         return(
                           <div  
@@ -138,7 +142,7 @@ function Index() {
                       </div>
                       {
                         item?.submenus && 
-                        <div className={'pl-2 '}>
+                        <div className={'pl-2 my-4 space-y-1'}>
                           {item.submenus.map((s,i)=>{
                             return(
                               <div  
@@ -180,7 +184,24 @@ function Index() {
                 </div>
 
               </div>
-              <div id="section2" className='min-h-screen  pt-20 px-8'>
+              <div id="section2" className='min-h-screen pt-20 px-8'>
+                <div className='text-lime-500 font-bold'>User</div>
+                <div className='text-2xl font-bold  mb-4'>個人帳戶</div>
+                <div className='mt-2 mb-8 text-white/70'>
+                  <UserDoc />
+                </div>
+
+              </div>
+
+              <div id="section1" className='min-h-screen pt-20 px-8'>
+                <div className='text-lime-500 font-bold'>FAQ</div>
+                <div className='text-2xl font-bold  mb-4'>常見問答</div>
+                <div className='mt-2 mb-8 text-white/70'>
+                  <FaqDoc />
+                </div>
+
+              </div> 
+              <div id="section3" className='min-h-screen  pt-20 px-8'>
                 <div className='text-lime-500 font-bold'>Command </div>
                 <div className='text-2xl font-bold  mb-4'>指令介紹 </div>
                 <div className='mt-2 mb-8 leading-9 text-white/70'>
@@ -205,7 +226,7 @@ function Index() {
                 </table>
                 </div>
               </div>
-              <div id="section6" className='min-h-screen  pt-20'>
+              <div id="section4" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Refunds </div>
                   <h1 className="text-2xl font-bold mb-4">退款流程</h1>
@@ -213,7 +234,7 @@ function Index() {
                 <RefundDoc />
               </div>
 
-              <div id="section4" className='min-h-screen  pt-20'>
+              <div id="section5" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Terms </div>
                   <h1 className="text-2xl font-bold mb-4">使用條款</h1>
@@ -222,7 +243,7 @@ function Index() {
                 <Terms />
               </div>
 
-              <div id="section5" className='min-h-screen  pt-20'>
+              <div id="section6" className='min-h-screen  pt-20'>
                 <div className='px-8'>
                   <div className='text-lime-500 font-bold'>Private Policy </div>
                   <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
