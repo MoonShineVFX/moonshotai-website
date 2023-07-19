@@ -56,7 +56,7 @@ function ReportModal({handleReport,reportMsg}) {
       initial={{ opacity: 0, y: -20,x:'-50%' }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className='text-white bg-gray-900 border border-white/20  absolute  top-5 left-1/2 -translate-x-1/2  z-20 p-4 pb-12 w-11/12 h-full overflow-y-auto'>
+      className='text-white bg-gray-900 border border-white/20  absolute  top-5 left-1/2 -translate-x-1/2  z-20 p-4 pb-10 w-11/12 max-h-[90vh] overflow-y-auto'>
 
           <div className='ml-auto w-8 h-8 text-center' onClick={()=>{serIsShowReport(false)}}><MdClear size={24} /></div>
           <div className='border-b border-white/60 text-white/60 pb-2 text-xl '>MoonShot 客服</div>
@@ -131,7 +131,7 @@ function ReportModal({handleReport,reportMsg}) {
                         />
                       </div>
 
-                      <button type="submit" className='border border-gray-700 px-2 py-1'>送出並退款</button>
+                      <button type="submit" className='border border-gray-700 px-2 py-1 mt-4'>送出並退款</button>
                       {reportMsg.length > 0 && <span className='text-sm text-white/80 ml-2'>{reportMsg}</span>}
                     </form>
 
