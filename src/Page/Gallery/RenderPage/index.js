@@ -121,9 +121,9 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight >= scrollHeight - 20) {
         const now = Date.now();
-        if (now - lastScrollTime >= 1500) {
+        if (now - lastScrollTime >= 1000) {
           console.log('go')
           fetchMoreImages(); // 加載更多圖片
           setLastScrollTime(now);
