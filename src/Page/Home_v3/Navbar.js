@@ -41,22 +41,26 @@ function Navbar() {
               <div className='my-3 text-center flex flex-col  font-bold'>
                 <Link 
                   to='/' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                   Home  
                 </Link>
                 <Link 
                   to='/gallery' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                     Gallery
                 </Link>
                 <Link 
                   to='/price' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600'>
                     Price
                 </Link>
 
                 <Link 
                   to='/docs' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                    Documents
                 </Link>

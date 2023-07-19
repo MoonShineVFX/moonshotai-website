@@ -153,23 +153,29 @@ function Index({currentUser,isLoggedIn}) {
             <div className='my-3 '>
               <Link 
                 to='/' 
-                className='p-2 cursor-pointer  hover:bg-gray-600 flex items-center gap-3 '>
+                className='p-2 cursor-pointer  hover:bg-gray-600 flex items-center gap-3 '
+                onClick={()=>setIsOpen(false)}
+                
+              >
                 <MdHome color="#88ad48" size={20}/>  Home  
               </Link>
 
               <Link 
                 to='/gallery' 
+                onClick={()=>setIsOpen(false)}
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdDashboard color="#88ad48" size={20}/> Gallery
               </Link>
               <Link 
                 to='/price' 
+                onClick={()=>setIsOpen(false)}
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdStar color="#88ad48" size={20}/> Price
               </Link>
 
               <Link 
                 to='/docs' 
+                onClick={()=>setIsOpen(false)}
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdDocumentScanner color="#88ad48" size={20}/> Documents
               </Link>
@@ -179,6 +185,7 @@ function Index({currentUser,isLoggedIn}) {
             <div className='my-3 '>
               <Link 
                 to='/profile' 
+                onClick={()=>setIsOpen(false)}
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdViewModule color="#88ad48" size={20}/> Profile 
               </Link>
@@ -187,11 +194,13 @@ function Index({currentUser,isLoggedIn}) {
               <>
                 <Link 
                   to='/account' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                     <MdAccountBox color="#88ad48" size={20}/> Account 
                 </Link>
                 <Link 
                   to='/orders' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                     <MdAssignment color="#88ad48" size={20}/> Orders
                 </Link>
