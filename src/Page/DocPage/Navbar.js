@@ -86,9 +86,9 @@ function Navbar() {
                   className={' cursor-pointer hover:text-white ' } 
                 
                 > 
-                  <div className={'flex items-center ' + (currentKey === item.section ? ' text-white' : ' text-white/50')}  onClick={() => handleMenuItemClick(item.section)}>
+                  <Link to={item.section} className={'flex items-center ' + (currentKey === item.section ? ' text-white' : ' text-white/50')}  onClick={() => handleMenuItemClick(item.section)}>
                     {item.title} <FaAngleRight /> 
-                  </div>
+                  </Link>
   
 
                 </li>
