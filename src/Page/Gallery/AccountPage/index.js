@@ -207,7 +207,7 @@ function Index() {
       <div className='md:w-8/12 mx-auto'>
         <div className='mx-4 my-4 '>
           <div className='text-center font-bold'>您的帳號資料</div>
-          <div>個人資料</div>
+          <div className='text-lime-500'>個人資料</div>
           
           <div>
             <div className='text-white/70 my-2 text-xs'>會員狀態</div>
@@ -285,7 +285,7 @@ function Index() {
                 )}
               />
             </div>
-            <div className='mt-8'>其他設定</div>
+            <div className='mt-8 text-lime-500'>其他設定</div>
             <div className='grid grid-cols-2 gap-2 '>
               <div className='flex flex-col  '>
                 <label htmlFor="portfolioUrl" className='text-white/70 my-2 text-xs'>Website</label>

@@ -4,7 +4,6 @@ import ReactPlayer from 'react-player'
 function Secrtion05_countdown() {
   return (
     <div className=' flex flex-col justify-center items-center'>
-      
       <CountdownTimer />
       <div className=' relative w-full aspect-video mt-6'>
         <ReactPlayer
