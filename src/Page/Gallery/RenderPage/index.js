@@ -116,10 +116,8 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
 
   useEffect(() => {
     let isHandlingScroll = false; 
-
-
-    const handleTouchMove = () => {
-      // 手機觸摸滑動時執行的處理邏輯
+    const handleScroll = () => {
+      // 獲取頁面滾動相關信息
       if (!isHandlingScroll) {
         isHandlingScroll = true; 
         const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
@@ -131,28 +129,11 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       setTimeout(() => {
         isHandlingScroll = false;
       }, 1500); 
-    };
-  
-    const handleScroll = () => {
-      // 獲取頁面滾動相關信息
-      if (!isHandlingScroll) {
-        isHandlingScroll = true; 
-        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-        // 檢查是否滾動到頁面底部
-        if (scrollTop + clientHeight >= scrollHeight) {
-          fetchMoreImages(); // 加載更多圖片
-        }
-      }
-
 
     };
-
-    if ('ontouchstart' in window) {
-      window.addEventListener('touchmove', handleTouchMove);
-    } else {
-      // 如果不是手機瀏覽器，則添加滾動事件監聽器
-      window.addEventListener('scroll', handleScroll);
-    }
+    // 監聽滾動事件
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('touchstart', handleScroll); 
     return () => {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', handleScroll);
