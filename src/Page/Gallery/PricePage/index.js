@@ -133,6 +133,8 @@ function Index() {
         // startLinePayFlow(pid)
         if(!currentUser.email || currentUser.email.length <= 0){
           console.log('234')
+          setIsLoadingReq(false);
+          setIsLoadingBlueReq(false);
           setTimeout(()=>{
             setIsCheckAccount(false)
             setIsNeedEmail(true)
@@ -413,13 +415,13 @@ function Index() {
                           
                           </div>
                         }
-                          <div className='text-sm text-white/80 mt-2'>
+                          <div className='text-sm text-yellow-500 mt-2'>
                             {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
                             {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
                             {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
                             {isCheckAccount &&<div>檢查帳號資料..</div>}
                             {isNeedEmail &&<div>購買前需要填入Email..</div>}
-                            {isSuccessSaveEmail && <div>通訊資料儲存成功，請再嘗試購買。</div>}
+                            {isSuccessSaveEmail && <div>填寫資料儲存成功，請再點擊購買。</div>}
                             {isReadyToPayPage && <div>檢查完成，準備跳轉頁面..</div>}
                           </div>
 
