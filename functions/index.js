@@ -33,15 +33,28 @@ exports.host = functions.https.onRequest((request, response) => {
           <title>Moonshot | ${path[2]}</title>
           <meta
             name="description"
-            content="Moonshot Gallery | ${path[2]} "
+            content="Let Moonshot Create For You."
           />
           <meta property="og:title" content="Moonshot | ${path[2]}" />
-          <meta property="og:description" content="Moonshot Gallery | ${path[2]} " />
+          <meta property="og:description" content="Let Moonshot Create For You." />
           <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
       })
+  }else{
+      customOpenGraph = `
+          <title>Moonshot Gallery</title>
+          <meta
+            name="description"
+            content="Let Moonshot Create For You."
+          />
+          <meta property="og:title" content="Moonshot Gallery" />
+          <meta property="og:description" content="Let Moonshot Create For You." />
+          <meta property="og:image" content="logo.png" />
+        `;
+        indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
+        response.status(200).send(indexHTML);
   }
 
 });

@@ -109,8 +109,14 @@ function Orders() {
           setReportMsg('已超過48小時無法申請。')
           return
         }
+        if(rdata.message=== "Refund success"){
+          setReportMsg('這筆訂單已完成退款。')
+          return
+        }else{
+          setReportMsg('此筆訂單退款流程出現問題，如有疑問請與我們客服聯繫: ai@moomshint.tw')
+        }
         
-        setReportMsg('這筆訂單已完成退款。')
+     
         setIsRefundLoading(false)
         setTimeout(()=>{
           serIsShowReport(false)
