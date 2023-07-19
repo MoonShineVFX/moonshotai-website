@@ -40,7 +40,7 @@ return (
         className='text-white rounded-md bg-zinc-700 px-3 py-2 flex justify-between items-center min-w-[110px]'
         onClick={toggleDropdown}
       >
-        <div className=' absolute text-xs -top-2 left-1'>{currentFilterDateItem.type}</div>
+        <div className=' absolute text-xs -top-4 left-1'>{currentFilterDateItem.type}</div>
        <span className=' rounded-xl px-2 py-0 mr-1 text-xs'>{currentFilterDateItem.title}</span>  <MdKeyboardArrowDown size={20}/>
       </div>
         <motion.div
@@ -64,7 +64,7 @@ return (
                 onClick={()=>{
                   handleClickOption(item)
                 }}
-              ><span className=' rounded-xl px-2 py-0 mr-1 '>{item.title}</span> </div>
+              ><span className=' rounded-xl px-2 py-0 mr-1  whitespace-nowrap'>{item.title}</span> </div>
             )
           })}
         </motion.div>

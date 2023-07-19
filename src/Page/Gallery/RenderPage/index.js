@@ -128,7 +128,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       }
       setTimeout(() => {
         isHandlingScroll = false;
-      }, 300); 
+      }, 1500); 
 
     };
     // 監聽滾動事件

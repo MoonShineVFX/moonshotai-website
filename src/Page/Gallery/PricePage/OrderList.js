@@ -42,7 +42,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
                           : 
                           <div className='flex items-center'>
                             <div className={'py-1 px-2 text-xs rounded-md bg-lime-800 '}>已完成付款</div>
-                            {is_surveyed && <div className={'py-1 px-2 text-xs rounded-md bg-yellow-800'}>正在受理退款流程</div>}
+                            {is_surveyed && <div className={' text-yellow-800'}>- 正在受理退款流程</div>}
                           </div>
                         }
                         
@@ -71,9 +71,11 @@ function OrderList({orderData,handleRefund,handleReport}) {
                       <div className={'text-xs opacity-70'}>日期{status === 'Success' ? <span className='text-green-500'> (付款)</span> : <span className='text-rose-400'> (退款)</span>}</div>
                       <div>{refund_at ? moment(refund_at).format('YYYY-MM-DD HH:mm'): ` ${moment(paid_at).format('YYYY-MM-DD HH:mm')}`}</div>
                       <div>
+                        
                         {!refund_at ? 
                           <div className='text-xs flex  items-center text-white/50 mt-1'>
                            <MdInfo /> {isPast48Hours(paid_at) ? '已過48小時無法申請退款' : '可以申請退款'}
+                           {is_surveyed && <div className={' text-yellow-800'}>您的退款已受理，請等候 3-5 個工作天，謝謝您。</div>}
                           </div>
                         : ''
 
