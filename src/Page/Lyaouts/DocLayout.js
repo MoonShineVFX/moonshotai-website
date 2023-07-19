@@ -10,7 +10,7 @@ function DocLayout() {
       <MainNavbar />
       <div className=' relative'>
         <Navbar />
-        <div className='  w-full  mx-auto px-5 pt-20 md:pt-10 md:pl-[300px]'>
+        <div className=' w-full  mx-auto px-0 pt-20 md:pt-10 md:pl-[300px]'>
           <Outlet />
         </div>
 
