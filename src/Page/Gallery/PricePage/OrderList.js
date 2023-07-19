@@ -41,7 +41,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
                   <div className='flex gap-3'>
                     <div>
                       <div className='text-xs opacity-70'>商品名稱</div>
-                      <div>{plan_history.name}(進階會員{plan_history.days}天) </div>
+                      <div>{plan_history.name}</div>
                     </div>
                     <div>
                       <div className='text-xs opacity-70'>商品金額</div>
