@@ -175,26 +175,30 @@ function Index({currentUser,isLoggedIn}) {
               </Link>
 
             </div>
-            {
-            isLoggedIn &&
+
             <div className='my-3 '>
               <Link 
                 to='/profile' 
                 className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
                   <MdViewModule color="#88ad48" size={20}/> Profile 
               </Link>
-              <Link 
-                to='/account' 
-                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAccountBox color="#88ad48" size={20}/> Account 
-              </Link>
-              <Link 
-                to='/orders' 
-                className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
-                  <MdAssignment color="#88ad48" size={20}/> Orders
-              </Link>
+              {
+              isLoggedIn &&
+              <>
+                <Link 
+                  to='/account' 
+                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                    <MdAccountBox color="#88ad48" size={20}/> Account 
+                </Link>
+                <Link 
+                  to='/orders' 
+                  className='p-2 cursor-pointer rounded-md hover:bg-gray-600 flex items-center gap-3'>
+                    <MdAssignment color="#88ad48" size={20}/> Orders
+                </Link>
+              </>
+              }
             </div>
-            }
+
 
 
 
