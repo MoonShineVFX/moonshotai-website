@@ -56,7 +56,7 @@ function ReportModal({handleReport,reportMsg}) {
       initial={{ opacity: 0, y: -20,x:'-50%' }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className='text-white bg-gray-900 border border-white/20  absolute  top-5 left-1/2 -translate-x-1/2  z-20 p-4 w-11/12 h-full overflow-y-auto'>
+      className='text-white bg-gray-900 border border-white/20  absolute  top-5 left-1/2 -translate-x-1/2  z-20 p-4 pb-12 w-11/12 h-full overflow-y-auto'>
 
           <div className='ml-auto w-8 h-8 text-center' onClick={()=>{serIsShowReport(false)}}><MdClear size={24} /></div>
           <div className='border-b border-white/60 text-white/60 pb-2 text-xl '>MoonShot 客服</div>
