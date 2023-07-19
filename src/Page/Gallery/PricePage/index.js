@@ -421,7 +421,7 @@ function Index() {
                             {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
                             {isCheckAccount &&<div>檢查帳號資料..</div>}
                             {isNeedEmail &&<div>購買前需要填入Email..</div>}
-                            {isSuccessSaveEmail && <div>填寫資料儲存成功，請再點擊購買。</div>}
+                            {isSuccessSaveEmail && <div>填寫資料儲存成功，請再點擊按鈕購買。</div>}
                             {isReadyToPayPage && <div>檢查完成，準備跳轉頁面..</div>}
                           </div>
 

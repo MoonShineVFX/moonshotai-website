@@ -129,7 +129,7 @@ function User() {
             <div className='ml-auto' onClick={handleFollow}>
               {
                 isFollowed ? 
-                <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Following</button>
+                <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>
                 : 
                 <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
               }

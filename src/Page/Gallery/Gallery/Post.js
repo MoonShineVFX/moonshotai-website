@@ -43,12 +43,14 @@ function Post() {
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
-    const hasPreviousPage = navigate.length > 1;
-    if (hasPreviousPage) {
-      navigate(-1); // 返回上一页
-    } else {
-      navigate('/gallery'); // 导航到指定页面
-    }
+    navigate('/gallery')
+    // const hasPreviousPage = navigate.length > 1;
+    // console.log(navigate.length)
+    // if (hasPreviousPage) {
+    //   navigate(-1); // 返回上一页
+    // } else {
+    //   navigate('/gallery'); // 导航到指定页面
+    // }
   };
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
