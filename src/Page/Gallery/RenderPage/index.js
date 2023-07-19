@@ -115,14 +115,21 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   };
 
   useEffect(() => {
+    let isHandlingScroll = false; 
     const handleScroll = () => {
       // 獲取頁面滾動相關信息
-      
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-      // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight) {
-        fetchMoreImages(); // 加載更多圖片
+      if (!isHandlingScroll) {
+        isHandlingScroll = true; 
+        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+        // 檢查是否滾動到頁面底部
+        if (scrollTop + clientHeight >= scrollHeight) {
+          fetchMoreImages(); // 加載更多圖片
+        }
       }
+      setTimeout(() => {
+        isHandlingScroll = false;
+      }, 300); 
+
     };
     // 監聽滾動事件
     window.addEventListener('scroll', handleScroll);
