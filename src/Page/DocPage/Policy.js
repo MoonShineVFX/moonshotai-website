@@ -10,6 +10,7 @@ function Policy() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
       className=''>
+        
       <div className='my-4'>
         <div className='text-white/90 text-sm space-y-2'>
           <p>非常歡迎您光臨「Moonshot 網站」（以下簡稱本網站），為了讓您能夠安心的使用本網站的各項服務與資訊，特此向您說明本網站的隱私權保護政策，以保障您的權益，請您詳閱下列內容：</p>
@@ -161,7 +162,11 @@ function Policy() {
     </motion.div>
   );
   return (
-    <div>
+    <div className='text-white'>
+      <div className='px-8'>
+        <div className='text-lime-500 font-bold'>Private Policy </div>
+        <div className='text-2xl font-bold  mb-4'>隱私權政策 </div>
+      </div>
       <div className='text-white pt-12 px-8'>
         <div className='flex gap-3 text-sm'>
           <div className={'border border-white/50 px-3 py-1 rounded-md cursor-pointer ' + (language === 'zh' && ' bg-slate-200 text-black ' )} onClick={()=>setLanguage('zh')}>中</div> 

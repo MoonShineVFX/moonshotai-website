@@ -6,8 +6,8 @@ function Footer() {
     <div className='text-white/60 p-4 border-t border-white/20'>
       <div className='flex flex-col text-sm  '>
         <div className='flex flex-col space-y-2'>
-          <a href="/terms">Terms of Use</a>
-          <a href="/policy">Privacy Policy</a>
+          <a href="/docs/terms">Terms of Use</a>
+          <a href="/docs/policy">Privacy Policy</a>
         </div>
 
         <div className=' flex  items-center gap-5 mt-4'>

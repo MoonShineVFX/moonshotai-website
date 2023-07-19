@@ -6,12 +6,12 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData} from '../helpers/fetchHelper'
 import { FaBars,FaTimes,FaChevronDown,FaAngleRight } from "react-icons/fa";
-import Terms from '../../Home_v3/Terms';
-import Policy from '../../Home_v3/Policy';
-import RefundDoc from '../../Home_v3/RefundDoc';
-import QuickStart from '../../Home_v3/QuickStart';
-import UserDoc from '../../Home_v3/UserDoc';
-import FaqDoc from '../../Home_v3/FaqDoc';
+import Terms from '../../DocPage/Terms';
+import Policy from '../../DocPage/Policy';
+import RefundDoc from '../../DocPage/RefundDoc';
+import QuickStart from '../../DocPage/QuickStart';
+import UserDoc from '../../DocPage/UserDoc';
+import FaqDoc from '../../DocPage/FaqDoc';
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);

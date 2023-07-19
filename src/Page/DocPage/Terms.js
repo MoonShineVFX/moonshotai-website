@@ -1,7 +1,11 @@
 import React from 'react'
 function Terms() {
   return (
-    <div>
+    <div className='text-white'>
+      <div className='px-8'>
+        <div className='text-lime-500 font-bold'>Terms </div>
+        <h1 className="text-2xl font-bold mb-4">使用條款</h1>
+      </div>
       <div className='text-white pt-12 px-8'>
         <div className='my-4'>
           <div className='text-xl font-bold  mb-4'>一、會員服務條款</div>

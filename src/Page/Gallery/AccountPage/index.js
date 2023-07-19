@@ -204,202 +204,205 @@ function Index() {
     <div className='text-white'>
       <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
 
+      <div className='md:w-8/12 mx-auto'>
+        <div className='mx-4 my-4 '>
+          <div className='text-center font-bold'>您的帳號資料</div>
+          <div>個人資料</div>
+          
+          <div>
+            <div className='text-white/70 my-2 text-xs'>會員狀態</div>
+            <div className='flex items-center gap-1 border-b border-zinc-700 pb-2 text-white/80'>  
+              <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          
+              {currentProfile.is_subscribed && 
+                <div htmlFor="name" className='text-sm '>至 {moment(currentProfile.subscription_end_at).format('YYYY-MM-DD HH:mm') }</div>
+              }
+              
+            </div>
+            {diffDays(currentProfile.subscription_end_at)}
+          
     
-      <div className='mx-4 my-4'>
-        <div className='text-center font-bold'>您的帳號資料</div>
-        <div>個人資料</div>
-        
-        <div>
-          <div className='text-white/70 my-2 text-xs'>會員狀態</div>
-          <div className='flex items-center gap-1 border-b border-zinc-700 pb-2 text-white/80'>  
-            <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          
-            {currentProfile.is_subscribed && 
-              <div htmlFor="name" className='text-sm '>至 {moment(currentProfile.subscription_end_at).format('YYYY-MM-DD HH:mm') }</div>
-            }
+          </div>
+          <div>
+            <div className='text-white/70 my-2 text-xs'>推薦序號(個人專屬)</div>
+            <div className='flex items-center  gap-3'>
+              <div onClick={()=>handleCopy(currentProfile.invitation_code)}>{currentProfile.invitation_code} </div>
+              <div className='text-xs flex items-center ' onClick={()=>handleCopy(currentProfile.invitation_code)}> <MdContentCopy size={18}/>  {isCopied ?'Copied!'  :''}</div>
+            </div>
             
-          </div>
-          {diffDays(currentProfile.subscription_end_at)}
-        
-  
-        </div>
-        <div>
-          <div className='text-white/70 my-2 text-xs'>推薦序號(個人專屬)</div>
-          <div className='flex items-center  gap-3'>
-            <div onClick={()=>handleCopy(currentProfile.invitation_code)}>{currentProfile.invitation_code} </div>
-            <div className='text-xs flex items-center ' onClick={()=>handleCopy(currentProfile.invitation_code)}> <MdContentCopy size={18}/>  {isCopied ?'Copied!'  :''}</div>
-          </div>
-          
 
+          </div>
+          <div className='my-4'>
+            <div className='text-white/70 my-2 text-xs'>使用量</div>
+            <div className='text-xs text-white/ㄞ0 mt-1 space-y-1 '>
+              <div className='flex justify-between'> 推薦序號被使用次數:(上限 5)  <span>{currentProfile.total_invitations}</span> </div>
+              <div className='flex justify-between'> 製圖總圖片量         <span>{currentProfile.total_photos}</span>          </div>
+              <div className='flex justify-between'> 已保留圖片數         <span>{currentProfile.total_storages}</span>          </div>
+              <div className='flex justify-between'> 已收藏圖片數         <span>{currentProfile.total_collections}</span>         </div>
+              <div className='flex justify-between'> 被收藏圖片數         <span>{currentProfile.total_collected}</span>         </div>
+              <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_followers}</span>         </div>
+              <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_follows}</span>         </div>
+            </div>
+          </div>
+    
         </div>
-        <div className='my-4'>
-          <div className='text-white/70 my-2 text-xs'>使用量</div>
-          <div className='text-xs text-white/ㄞ0 mt-1 space-y-1 '>
-            <div className='flex justify-between'> 推薦序號被使用次數:(上限 5)  <span>{currentProfile.total_invitations}</span> </div>
-            <div className='flex justify-between'> 製圖總圖片量         <span>{currentProfile.total_photos}</span>          </div>
-            <div className='flex justify-between'> 已保留圖片數         <span>{currentProfile.total_storages}</span>          </div>
-            <div className='flex justify-between'> 已收藏圖片數         <span>{currentProfile.total_collections}</span>         </div>
-            <div className='flex justify-between'> 被收藏圖片數         <span>{currentProfile.total_collected}</span>         </div>
-            <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_followers}</span>         </div>
-            <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_follows}</span>         </div>
-          </div>
-        </div>
-   
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-6'>
-          <div className='grid grid-cols-2 gap-2'>
-            <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/70 my-2 text-xs'>顯示名稱</label>
-              <Controller
-                name="name"
-                control={control}
-                defaultValue={currentProfile && currentProfile.name}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="Name" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            </div>
-          </div>
-
-          <div className='flex flex-col   '>
-            <label htmlFor="email" className='text-white/70 my-2 text-xs'>Email</label>
-            <Controller
-              name="email"
-              control={control}
-              defaultValue={currentProfile && currentProfile.email}
-              rules={{ required: false }}
-              render={({ field }) => (
-                <input {...field} type="text" placeholder="email" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-              )}
-            />
-          </div>
-          <div className='flex flex-col  '>
-            <label htmlFor="bio" className='text-white/70 my-2 text-xs'>關於我</label>
-            <Controller
-              name="bio"
-              control={control}
-              defaultValue={currentProfile && currentProfile.bio}
-              rules={{ required: false }}
-              render={({ field }) => (
-                <input {...field} type="text" placeholder="Short bio about 20-70 characters" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
-              )}
-            />
-          </div>
-          <div className='mt-8'>其他設定</div>
-          <div className='grid grid-cols-2 gap-2 '>
-            <div className='flex flex-col  '>
-              <label htmlFor="portfolioUrl" className='text-white/70 my-2 text-xs'>Website</label>
-              <Controller
-                name="portfolioUrl"
-                control={control}
-                defaultValue={currentProfile && currentProfile.portfolio_url}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="portfolio url" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            </div>
-            <div className='flex flex-col  '>
-              <label htmlFor="facebookId" className='text-white/70 my-2 text-xs'>Facebook</label>
-              <Controller
-                name="facebookId"
-                control={control}
-                defaultValue={currentProfile && currentProfile.facebook_id}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="facebookId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            </div>
-            <div className='flex flex-col '>
-              <label htmlFor="instagramId" className='text-white/70 my-2 text-xs'>Instagram</label>
-              <Controller
-                name="instagramId"
-                control={control}
-                defaultValue={currentProfile && currentProfile.instagram_id}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="instagramId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            
-            </div>
-            <div className='flex flex-col' >
-              <label htmlFor="linkedinId" className='text-white/70 my-2 text-xs'>LinkedIn</label>
-              <Controller
-                name="linkedinId"
-                control={control}
-                defaultValue={currentProfile && currentProfile.linkedin_id}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="linkedinId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            
-            </div>
-            <div className='flex flex-col' >
-              <label htmlFor="discordId" className='text-white/70 my-2 text-xs'>Discord</label>
-              <Controller
-                name="discordId"
-                control={control}
-                defaultValue={currentProfile && currentProfile.discord_id}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="discordId" className='bg-zinc-900 border border-zinc-7000 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            
-            </div>
-            <div className='flex flex-col' >
-              <label htmlFor="twitterId" className='text-white/70 my-2 text-xs'>Twitter</label>
-              <Controller
-                name="twitterId"
-                control={control}
-                defaultValue={currentProfile && currentProfile.twitter_id}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="twitterId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
-                )}
-              />
-            
-            </div>
-          </div>
-
-          
-          <Controller
-            name="isNsfw"
-            control={control}
-            defaultValue={currentProfile && currentProfile.display_nsfw}
-            render={({ field }) => (
-              <div className="flex mt-4 ">
-                <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={field.value}
-                    onChange={(e) => field.onChange(e.target.checked)}
-                  />
-                  <div
-                    className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
-                      field.value
-                        ? 'peer-checked:after:translate-x-full peer-checked:bg-green-700'
-                        : ''
-                    } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
-                  ></div>
-                  <span className="ml-2 text-sm font-medium text-white/80">
-                    啟用顯示包含成人內容
-                  </span>
-                </label>
+        <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-6'>
+            <div className='grid grid-cols-2 gap-2'>
+              <div className='flex flex-col'>
+                <label htmlFor="name" className='text-white/70 my-2 text-xs'>顯示名稱</label>
+                <Controller
+                  name="name"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.name}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="Name" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
               </div>
-            )}
-          />
-          
-          <div className='mt-6 flex gap-3 justify-center text-md'>
-            <button type="submit" className='w-full  py-1 px-2 rounded-md bg-lime-700'>儲存變更</button>
-          </div>
-          {isSaveSuccess && <div className=''>修改完成。</div>}
+            </div>
+
+            <div className='flex flex-col   '>
+              <label htmlFor="email" className='text-white/70 my-2 text-xs'>Email</label>
+              <Controller
+                name="email"
+                control={control}
+                defaultValue={currentProfile && currentProfile.email}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="email" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
+            <div className='flex flex-col  '>
+              <label htmlFor="bio" className='text-white/70 my-2 text-xs'>關於我</label>
+              <Controller
+                name="bio"
+                control={control}
+                defaultValue={currentProfile && currentProfile.bio}
+                rules={{ required: false }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="Short bio about 20-70 characters" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
+                )}
+              />
+            </div>
+            <div className='mt-8'>其他設定</div>
+            <div className='grid grid-cols-2 gap-2 '>
+              <div className='flex flex-col  '>
+                <label htmlFor="portfolioUrl" className='text-white/70 my-2 text-xs'>Website</label>
+                <Controller
+                  name="portfolioUrl"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.portfolio_url}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="portfolio url" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              </div>
+              <div className='flex flex-col  '>
+                <label htmlFor="facebookId" className='text-white/70 my-2 text-xs'>Facebook</label>
+                <Controller
+                  name="facebookId"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.facebook_id}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="facebookId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              </div>
+              <div className='flex flex-col '>
+                <label htmlFor="instagramId" className='text-white/70 my-2 text-xs'>Instagram</label>
+                <Controller
+                  name="instagramId"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.instagram_id}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="instagramId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              
+              </div>
+              <div className='flex flex-col' >
+                <label htmlFor="linkedinId" className='text-white/70 my-2 text-xs'>LinkedIn</label>
+                <Controller
+                  name="linkedinId"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.linkedin_id}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="linkedinId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              
+              </div>
+              <div className='flex flex-col' >
+                <label htmlFor="discordId" className='text-white/70 my-2 text-xs'>Discord</label>
+                <Controller
+                  name="discordId"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.discord_id}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="discordId" className='bg-zinc-900 border border-zinc-7000 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              
+              </div>
+              <div className='flex flex-col' >
+                <label htmlFor="twitterId" className='text-white/70 my-2 text-xs'>Twitter</label>
+                <Controller
+                  name="twitterId"
+                  control={control}
+                  defaultValue={currentProfile && currentProfile.twitter_id}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <input {...field} type="text" placeholder="twitterId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  )}
+                />
+              
+              </div>
+            </div>
+
+            
+            <Controller
+              name="isNsfw"
+              control={control}
+              defaultValue={currentProfile && currentProfile.display_nsfw}
+              render={({ field }) => (
+                <div className="flex mt-4 ">
+                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)}
+                    />
+                    <div
+                      className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
+                        field.value
+                          ? 'peer-checked:after:translate-x-full peer-checked:bg-green-700'
+                          : ''
+                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
+                    ></div>
+                    <span className="ml-2 text-sm font-medium text-white/80">
+                      啟用顯示包含成人內容
+                    </span>
+                  </label>
+                </div>
+              )}
+            />
+            
+            <div className='mt-6 flex gap-3 justify-center text-md'>
+              <button type="submit" className='w-full  py-1 px-2 rounded-md bg-lime-700'>儲存變更</button>
+            </div>
+            {isSaveSuccess && <div className=''>修改完成。</div>}
 
         </form>
+
+      </div>
+
     </div>
   )
 }

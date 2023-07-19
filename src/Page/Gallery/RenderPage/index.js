@@ -117,6 +117,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   useEffect(() => {
     const handleScroll = () => {
       // 獲取頁面滾動相關信息
+      
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
       if (scrollTop + clientHeight >= scrollHeight) {

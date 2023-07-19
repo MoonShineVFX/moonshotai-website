@@ -2,7 +2,11 @@ import React from 'react'
 
 function RefundDoc() {
   return (
-    <div>
+    <div className='text-white'>
+      <div className='px-8'>
+        <div className='text-lime-500 font-bold'>Refunds </div>
+        <h1 className="text-2xl font-bold mb-4">退款流程</h1>
+      </div>
       <div className='text-white pt-12 px-8'>
 
         <div className='my-4'>
@@ -52,7 +56,7 @@ function RefundDoc() {
           </table>
         </div>
 
-        <div className='my-8'>
+        <div className='my-8 pt-10 border-t border-white/20'>
           <div className='text-xl font-bold  mb-4'>瞭解退款申請選項</div>
           <div className='text-lg font-bold  mb-4'>方法一：前往 Moonshot 網站申請退款</div>
           <div className='text-white/90 text-sm space-y-2'>
