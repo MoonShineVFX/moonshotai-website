@@ -68,7 +68,10 @@ function Orders() {
         setReportMsg('表單已填過。')
         setTimeout(()=>{
           setReportMsg('準備執行退款..')
-          startRefundFlow(items.order_serial_number)
+          // startRefundFlow(items.order_serial_number)
+        },600)
+        setTimeout(()=>{
+          setReportMsg('已送出受理退款。')
         },600)
         return
       }
@@ -77,7 +80,10 @@ function Orders() {
           setReportMsg('表單已送出')
           setTimeout(()=>{
             setReportMsg('準備執行退款..')
-            startRefundFlow(items.order_serial_number)
+            // startRefundFlow(items.order_serial_number)
+          },600)
+          setTimeout(()=>{
+            setReportMsg('已送出受理退款。')
           },600)
         }
       }).catch(err=>console.log(err))

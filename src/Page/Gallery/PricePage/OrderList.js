@@ -26,15 +26,28 @@ function OrderList({orderData,handleRefund,handleReport}) {
       <div>
       {
           orderData.map((item,index)=>{
-            const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status}=item
+            const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status,is_surveyed}=item
             return(
               <div className='text-white border my-6 p-3 border-zinc-400 rounded-md' key={'orders'+index}>
                 <div className=' space-y-3'>
                   <div>
                     <div className='text-xs opacity-70'>支付方式</div>
                     <div className='flex items-center gap-3'>
+
                         {payment_type} 
-                        <div className={'py-1 px-2 text-xs rounded-md ' + (status === 'Success' ?  'bg-green-600 ' :  ' bg-rose-900')}>{status === 'Success' ? '已完成付款': '已完成退款'}</div>
+                        {
+                          status === "Refund" ? 
+
+                          <div className={'py-1 px-2 text-xs rounded-md bg-rose-800 '}>已完成退款</div>
+                          : 
+                          <div className='flex items-center'>
+                            <div className={'py-1 px-2 text-xs rounded-md bg-lime-800 '}>已完成付款</div>
+                            {is_surveyed && <div className={'py-1 px-2 text-xs rounded-md bg-yellow-800'}>正在受理退款流程</div>}
+                          </div>
+                        }
+                        
+
+                        
                     </div>
                   </div>
 
