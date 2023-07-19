@@ -75,7 +75,7 @@ function RefundDoc() {
 
 
           </div>
-          <div className='text-lg font-bold  mb-4'>方法二：向 Moonshot 開發團隊人員尋求支援</div>
+          <div className='text-lg font-bold  mb-4 pt-10'>方法二：向 Moonshot 開發團隊人員尋求支援</div>
           <div className='text-white/90 text-sm space-y-2'>
             <p>遇到下列情況時，建議您與應用程式開發人員聯絡：</p>
 

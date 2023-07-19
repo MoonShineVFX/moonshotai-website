@@ -70,7 +70,7 @@ function FaqDoc() {
             </div>
 
             <div className='text-white/90 text-sm space-y-2 my-8'>
-              <p cclassName='text-xl font-bold  mb-4'>3. 除了推薦序號外，還有其他機會可以獲得免費進階帳號天數嗎？</p>
+              <p className='text-xl font-bold  mb-4'>3. 除了推薦序號外，還有其他機會可以獲得免費進階帳號天數嗎？</p>
               <p>有的！Moonshot 會定時推出不同的活動，只要有參與體驗，都有機會可以獲得免費天數的機會唷，歡迎隨時關注 Moonshot 的社群粉專！</p>
             </div>
 

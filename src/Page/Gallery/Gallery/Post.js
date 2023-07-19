@@ -121,6 +121,8 @@ function Post() {
           .then((data)=> {
             if(data.status===204){
               setIsCollected(false)
+              setImageData( {...imageData, likes: imageData.likes-1 })
+            
             }
           })
           .catch((error) => console.error(error));
@@ -129,6 +131,7 @@ function Post() {
           .then((data)=> {
             if(data.status===200){
               setIsCollected(true)
+              setImageData( {...imageData, likes: imageData.likes+1 })
             }
           })
           .catch((error) => console.error(error));
@@ -137,6 +140,8 @@ function Post() {
     }
     
   }
+
+
   const handleComment = (item)=>{
     console.log('click')
     console.log(isHaveUserComment)

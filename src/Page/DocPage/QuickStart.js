@@ -29,7 +29,7 @@ function QuickStart() {
           </div>
 
           <div className='text-white/90 text-sm space-y-2 my-8'>
-            <p>3. Subscribe to a Moonshot Plan. </p>
+            <p className='text-xl font-bold  mb-4'>3. Subscribe to a Moonshot Plan. </p>
             <p>訂閱 Moonshot 計畫</p>
             <p>前往 <a href="/price">Moonshot 付款頁面</a>，使用已驗證的 LINE 帳號登入。</p>
             <p>有免費方案和進階方案兩種選擇，兩者可使用的內容指令不同：</p>
