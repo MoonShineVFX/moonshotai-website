@@ -118,17 +118,19 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     let isHandlingScroll = false; 
     const handleScroll = () => {
       // 獲取頁面滾動相關信息
+      
       if (!isHandlingScroll) {
         isHandlingScroll = true; 
         const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
         // 檢查是否滾動到頁面底部
         if (scrollTop + clientHeight >= scrollHeight) {
+          console.log('go')
           fetchMoreImages(); // 加載更多圖片
         }
       }
       setTimeout(() => {
         isHandlingScroll = false;
-      }, 1500); 
+      }, 500); 
 
     };
     // 監聽滾動事件
@@ -142,8 +144,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
   }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
 
-  useEffect(() => {
-  }, []);
+
   if(totalImage === 0) {
     return <div>
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>

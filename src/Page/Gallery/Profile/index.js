@@ -192,6 +192,7 @@ function Index() {
   }
   //給 Render Page
   const handleRenders = async (userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
+    console.log(userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)
     setLoading(true);
     try {
       let ID = userId || currentProfile.uid
