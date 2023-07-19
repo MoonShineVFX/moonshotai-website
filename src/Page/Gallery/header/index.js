@@ -175,6 +175,8 @@ function Index({currentUser,isLoggedIn}) {
               </Link>
 
             </div>
+            {
+            isLoggedIn &&
             <div className='my-3 '>
               <Link 
                 to='/profile' 
@@ -192,6 +194,7 @@ function Index({currentUser,isLoggedIn}) {
                   <MdAssignment color="#88ad48" size={20}/> Orders
               </Link>
             </div>
+            }
 
 
 
