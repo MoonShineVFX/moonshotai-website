@@ -4,7 +4,7 @@ import ReactPlayer from 'react-player'
 function Secrtion05_countdown() {
   return (
     <div className=' flex flex-col justify-center items-center'>
-      <div className='text-white/70 my-3'>距離 MoonShot 登月倒數</div>
+      
       <CountdownTimer />
       <div className=' relative w-full aspect-video mt-6'>
         <ReactPlayer
