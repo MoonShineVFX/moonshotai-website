@@ -47,7 +47,7 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(27)
   const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
