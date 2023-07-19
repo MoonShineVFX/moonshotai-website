@@ -15,9 +15,9 @@ const options = [
   {id:6,title:'已經有其他同質性的產品',},
   {id:7,title:'其他',},
 ];
-function ReportModal({handleReport,reportMsg,isRefundLoading}) {
+function ReportModal({handleReport,reportMsg,isRefundLoading,is_surveyed}) {
   const currentOrder = useRecoilValue(reportDataState)
-  const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
+  const [isShowReport,setIsShowReport] = useRecoilState(reportModalState)
   const { handleSubmit, control } = useForm();
   const [isShowForm , setIsShowForm] = useState(false)
   const [isShowLoading , setIsShowLoading] = useState(false)
@@ -54,14 +54,14 @@ function ReportModal({handleReport,reportMsg,isRefundLoading}) {
     <div 
 
       className='text-white fixed  top-0 left-0 w-full  z-20  '>
-      <div className='bg-black/50 w-full h-screen' onClick={()=>{serIsShowReport(false)}}></div>
+      <div className='bg-black/50 w-full h-screen' onClick={()=>{setIsShowReport(false)}}></div>
       <motion.div 
       initial={{ opacity: 0, y: -20,x:'-50%' }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       className='text-white bg-gray-900 border border-white/20  absolute  top-5 left-1/2 -translate-x-1/2  z-20 p-4 pb-10 w-11/12 max-h-[90vh] overflow-y-auto'>
 
-          <div className='ml-auto w-8 h-8 text-center' onClick={()=>{serIsShowReport(false)}}><MdClear size={24} /></div>
+          <div className='ml-auto w-8 h-8 text-center' onClick={()=>{setIsShowReport(false)}}><MdClear size={24} /></div>
           <div className='border-b border-white/60 text-white/60 pb-2 text-xl '>MoonShot 客服</div>
           <div className='my-3 space-y-3'>
             <div className='font-bold'>訂單序號：{currentOrder.serial_number}</div>
@@ -72,76 +72,85 @@ function ReportModal({handleReport,reportMsg,isRefundLoading}) {
               <div>對於訂單疑問或建議，請聯繫我們 </div> 
               <div>ai@moonshine.tw</div> 
             </div>
+            
             <div>2. 申請退款</div>
-            {
-              isPast48Hours(currentOrder.paid_at) ? 
-                <div className='text-white/50 text-xs space-y-2'> 
-                <div>很抱歉訂單時間已經超過 48 小時，無法線上申請。</div>
-                <div>如您有特殊原因需要立即退款，請來信與 Moonshot 開發團隊聯繫 ai@moonshine.tw</div>
-                </div>
-                :
-                <div>
-                  <div className='text-white/50 text-xs flex items-center gap-2'>按此
-                    <div className='bg-gray-700 rounded-md px-2 py-1 text-white/80' onClick={handleShowForm}>申請單筆訂單退款</div>並填表。</div>
-                  {isShowLoading && 
-                    <div className='h-32 flex justify-center items-center'>
-                      <LoadingCircle />
-                    </div>}
-                  {
-                    isShowForm &&
-                    <div className='py-5'>
-                    <div className='font-bold text-md'>您在 Moonshot 產品中遇到什麼問題？</div>
-                    <div className='text-xs text-white/50'>確定填妥後按送出，將會執行退款。</div>
-                    
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className='text-xs my-1'>原因(必選)</div>
-                      <div className=' space-y-2 text-xs my-2'>
-                        {options.map((option, index) => (
-                          <div key={index} className=''>
+            {is_surveyed ? 
+              <div className={' text-white/80 text-xs'}>您的退款已受理，請等候 3-5 個工作天，謝謝您。</div>
+              :
+              <div>
+                {
+                  isPast48Hours(currentOrder.paid_at) ? 
+                    <div className='text-white/50 text-xs space-y-2'> 
+                    <div>很抱歉訂單時間已經超過 48 小時，無法線上申請。</div>
+                    <div>如您有特殊原因需要立即退款，請來信與 Moonshot 開發團隊聯繫 ai@moonshine.tw</div>
+                    </div>
+                    :
+                    <div>
+                      <div className='text-white/50 text-xs flex items-center gap-2'>按此
+                        <div className='bg-gray-700 rounded-md px-2 py-1 text-white/80' onClick={handleShowForm}>申請單筆訂單退款</div>並填表。</div>
+                      {isShowLoading && 
+                        <div className='h-32 flex justify-center items-center'>
+                          <LoadingCircle />
+                        </div>}
+                      {
+                        isShowForm &&
+                        <div className='py-5'>
+                        <div className='font-bold text-md'>您在 Moonshot 產品中遇到什麼問題？</div>
+                        <div className='text-xs text-white/50'>確定填妥後按送出，將會執行退款。</div>
+                        
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <div className='text-xs my-1'>原因(必選)</div>
+                          <div className=' space-y-2 text-xs my-2'>
+                            {options.map((option, index) => (
+                              <div key={index} className=''>
+                                <Controller
+                                  name="reason_id"
+                                  control={control}
+                                  defaultValue=""
+                                  rules={{ required: true }}
+                                  render={({ field }) => (
+                                  
+                                    <div 
+                                      onClick={() => field.onChange(option.id)}
+                                      className={`cursor-pointer b p-1 px-3 ${field.value === option.id ? 'bg-gray-700 border border-white/60' : 'bg-zinc-700'}`}>
+                                      <label  >
+                                        <input type="radio" value={option.id} {...field} className=' hidden' />
+                                        <span >
+                                          {option.title}
+                                        </span>
+                                      </label>
+                                    </div>
+
+                                  )}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                          <div className='text-xs my-1'>註記</div>
+                          <div>
                             <Controller
-                              name="reason_id"
+                              name="note"
                               control={control}
                               defaultValue=""
-                              rules={{ required: true }}
+                              rules={{ required: false }}
                               render={({ field }) => (
-                              
-                                <div 
-                                  onClick={() => field.onChange(option.id)}
-                                  className={`cursor-pointer b p-1 px-3 ${field.value === option.id ? 'bg-gray-700 border border-white/60' : 'bg-zinc-700'}`}>
-                                  <label  >
-                                    <input type="radio" value={option.id} {...field} className=' hidden' />
-                                    <span >
-                                      {option.title}
-                                    </span>
-                                  </label>
-                                </div>
-
+                                <textarea rows="4" {...field} className='w-full bg-zinc-700'></textarea>
                               )}
                             />
                           </div>
-                        ))}
-                      </div>
-                      <div className='text-xs my-1'>註記</div>
-                      <div>
-                        <Controller
-                          name="note"
-                          control={control}
-                          defaultValue=""
-                          rules={{ required: false }}
-                          render={({ field }) => (
-                            <textarea rows="4" {...field} className='w-full bg-zinc-700'></textarea>
-                          )}
-                        />
-                      </div>
 
-                      <button type="submit" className={'border border-gray-700 px-2 py-1 mt-4 ' + (isRefundLoading ? ' opacity-50' : ' opacity-100' )} disabled={isRefundLoading}>送出並退款</button>
-                      {reportMsg.length > 0 && <span className='text-sm text-white/80 ml-2'>{reportMsg}</span>}
-                    </form>
+                          <button type="submit" className={'border border-gray-700 px-2 py-1 mt-4 ' + (isRefundLoading ? ' opacity-50' : ' opacity-100' )} disabled={isRefundLoading}>送出並退款</button>
+                          {reportMsg.length > 0 && <span className='text-sm text-white/80 ml-2'>{reportMsg}</span>}
+                        </form>
+
+                      </div>
+                      }
 
                   </div>
-                  }
+                }
 
-                </div>
+
+              </div>
                 
             }
             

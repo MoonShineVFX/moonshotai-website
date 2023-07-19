@@ -24,7 +24,7 @@ function Orders() {
   const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [selectedItem, setSelectedItem] = useState(menuItems[1]);
-  const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
+  const [isShowReport,setIsShowReport] = useRecoilState(reportModalState)
   const [isRefundLoading , setIsRefundLoading] = useState(false)
   const currentOrder = useRecoilValue(reportDataState)
 
@@ -68,10 +68,12 @@ function Orders() {
         setReportMsg('表單已填過。')
         setTimeout(()=>{
           setReportMsg('準備執行退款..')
+          
           // startRefundFlow(items.order_serial_number)
         },600)
         setTimeout(()=>{
           setReportMsg('已送出受理退款。')
+          setIsShowReport(false)
         },600)
         return
       }
@@ -84,6 +86,7 @@ function Orders() {
           },600)
           setTimeout(()=>{
             setReportMsg('已送出受理退款。')
+            setIsShowReport(false)
           },600)
         }
       }).catch(err=>console.log(err))
@@ -125,7 +128,7 @@ function Orders() {
      
         setIsRefundLoading(false)
         setTimeout(()=>{
-          serIsShowReport(false)
+          setIsShowReport(false)
         },500)
         console.log(rdata)
         updateRefundStatus(sn)
@@ -207,7 +210,7 @@ function Orders() {
   return (
     <div>
       <AnimatePresence>
-        {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} /> }
+        {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} is_surveyed={currentOrder.is_surveyed} /> }
       </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
