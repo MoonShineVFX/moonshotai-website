@@ -469,7 +469,7 @@ function Index() {
 
         
       </main>
-      <div className='max-w-md mx-auto mb-14 px-10'>
+      <div className='max-w-md mx-auto mb-14 px-10 hidden'>
         <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">常見問答</h1>
         <div className='my-6 flex flex-col gap-8'>
           <div className='text-white'>

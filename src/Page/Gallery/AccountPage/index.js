@@ -239,8 +239,8 @@ function Index() {
               <div className='flex justify-between'> 已保留圖片數         <span>{currentProfile.total_storages}</span>          </div>
               <div className='flex justify-between'> 已收藏圖片數         <span>{currentProfile.total_collections}</span>         </div>
               <div className='flex justify-between'> 被收藏圖片數         <span>{currentProfile.total_collected}</span>         </div>
-              <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_followers}</span>         </div>
-              <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_follows}</span>         </div>
+              <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_follows}</span>         </div>
+              <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_followers}</span>         </div>
             </div>
           </div>
     

@@ -13,8 +13,8 @@ function Header({executeScroll}) {
   Let AI enter your world with amazement.</div>
         <div className=' my-5 relative w-full md:w-1/2' >
           <div 
-            className=' w-3/5 absolute top-1/2 left-1/2 '
-            style={{animation: 'float_center 12s ease-in-out infinite'}}
+            className=' w-3/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+            // style={{animation: 'float_center 12s ease-in-out infinite'}}
           >
             <div className="circle absolute  -z-10  "></div>
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/Home_MS_logo01.png'} alt="" className='w-full'/>
