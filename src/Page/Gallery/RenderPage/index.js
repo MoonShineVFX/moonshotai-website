@@ -9,6 +9,7 @@ import { imageFormModalState, imageDataState,imageModalState } from '../atoms/ga
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
+
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -114,32 +115,33 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     setIsDropDownOpen(!isDropDownOpen);
   };
 
+
   useEffect(() => {
-    let isHandlingScroll = false; 
+    let lastScrollTime = 0;
     const handleScroll = () => {
       // 獲取頁面滾動相關信息
       
-      if (!isHandlingScroll) {
-        isHandlingScroll = true; 
         const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
         // 檢查是否滾動到頁面底部
         if (scrollTop + clientHeight >= scrollHeight) {
-          console.log('go')
-          fetchMoreImages(); // 加載更多圖片
+          const now = Date.now();
+          if (now - lastScrollTime >= 1500) {
+            console.log('go')
+            fetchMoreImages(); // 加載更多圖片
+            lastScrollTime = now;
+          }
+
         }
-      }
-      setTimeout(() => {
-        isHandlingScroll = false;
-      }, 500); 
+
 
     };
     // 監聽滾動事件
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('touchstart', handleScroll); 
+    // window.addEventListener('touchstart', handleScroll); 
     return () => {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('touchstart', handleScroll);
+      // window.removeEventListener('touchstart', handleScroll);
     };
   }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
