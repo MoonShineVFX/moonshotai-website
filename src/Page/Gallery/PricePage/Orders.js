@@ -25,6 +25,7 @@ function Orders() {
 
   const [selectedItem, setSelectedItem] = useState(menuItems[1]);
   const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
+  const [isRefundLoading , setIsRefundLoading] = useState(false)
   const currentOrder = useRecoilValue(reportDataState)
 
   const [isLoadingReq, setIsLoadingReq] = useState(false);
@@ -55,6 +56,11 @@ function Orders() {
    
   }
   const handleReport = (items)=>{
+    if (isRefundLoading) {
+      return;
+    }
+    setIsRefundLoading(true)
+
     setReportMsg('')
     if(isLoggedIn){
       console.log('已登入')
@@ -83,24 +89,29 @@ function Orders() {
         console.log('init完成可準備登入')
         setTimeout(()=>{liff.login();},500)
       })
+      setIsRefundLoading(false)
     }
 
 
   }
   const startRefundFlow = (sn)=>{
     setIsLoadingReq(true);
-    setReportMsg('正在執行退款流程..')
+    setReportMsg('準備執行退款流程..')
     setReqError(false)
     setTimeout(()=>{
+      console.log('準備退費')
+      setReportMsg('正在執行退款流程..')
       postOrder_refund(sn,linLoginData).then(rdata=>{
-        console.log('準備退費')
+        
         setIsLoadingReq(false)
+        
         if(rdata.message=== "You can't refund a expired order"){
           setReportMsg('已超過48小時無法申請。')
           return
         }
         
         setReportMsg('這筆訂單已完成退款。')
+        setIsRefundLoading(false)
         setTimeout(()=>{
           serIsShowReport(false)
         },500)
@@ -184,7 +195,7 @@ function Orders() {
   return (
     <div>
       <AnimatePresence>
-        {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} /> }
+        {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} /> }
       </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">

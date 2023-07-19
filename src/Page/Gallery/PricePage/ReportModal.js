@@ -15,12 +15,13 @@ const options = [
   {id:6,title:'已經有其他同質性的產品',},
   {id:7,title:'其他',},
 ];
-function ReportModal({handleReport,reportMsg}) {
+function ReportModal({handleReport,reportMsg,isRefundLoading}) {
   const currentOrder = useRecoilValue(reportDataState)
   const [isShowReport,serIsShowReport] = useRecoilState(reportModalState)
   const { handleSubmit, control } = useForm();
   const [isShowForm , setIsShowForm] = useState(false)
   const [isShowLoading , setIsShowLoading] = useState(false)
+  const [isRefundLoading , setIsRefundLoading] = useState(false)
 
   const handleShowForm = () =>{
     setIsShowLoading(true)
@@ -32,6 +33,9 @@ function ReportModal({handleReport,reportMsg}) {
   }
 
   const onSubmit = (data) => {
+
+
+
     let items = {
       order_serial_number: currentOrder.serial_number,
       reason_id: data.reason_id,
@@ -131,7 +135,7 @@ function ReportModal({handleReport,reportMsg}) {
                         />
                       </div>
 
-                      <button type="submit" className='border border-gray-700 px-2 py-1 mt-4'>送出並退款</button>
+                      <button type="submit" className={'border border-gray-700 px-2 py-1 mt-4 ' + (isSubmitting ? ' opacity-50' : ' opacity-100' )} disabled={isSubmitting}>送出並退款</button>
                       {reportMsg.length > 0 && <span className='text-sm text-white/80 ml-2'>{reportMsg}</span>}
                     </form>
 
