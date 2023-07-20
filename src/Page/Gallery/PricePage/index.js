@@ -136,14 +136,15 @@ function Index() {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const handlePay =(pid,payment_type)=>{
-      const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
+      
       if(isLoggedIn){
         console.log('已登入')
         console.log(currentUser)
         setIsNeedEmail(false)
         setIsCheckAccount(true)
         // startLinePayFlow(pid)
-        if(!currentUser.email || currentUser.email.length <= 0){
+
+        if(!currentUser.email){
           console.log('234')
           setIsLoadingReq(false);
           setIsLoadingBlueReq(false);
@@ -151,10 +152,19 @@ function Index() {
             setIsCheckAccount(false)
             setIsNeedEmail(true)
           },1200)
-
+          return
           // startLinePayFlow(pid)
+        } else if(currentUser.email.length <= 0 || currentUser.email === null){
+          console.log('234')
+          setIsLoadingReq(false);
+          setIsLoadingBlueReq(false);
+          setTimeout(()=>{
+            setIsCheckAccount(false)
+            setIsNeedEmail(true)
+          },1200)
+          return
         }else{
-          payment()
+          const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
           if(diffDays(currentUser.subscription_end_at)){
             // setIsNeedWithin5Days(false)
             // startLinePayFlow(pid)
@@ -197,6 +207,7 @@ function Index() {
   }
 
   const startLinePayFlow = (pid)=>{
+
     setIsOrdering(true)
     setIsLoadingReq(false);
     setReqError(false)

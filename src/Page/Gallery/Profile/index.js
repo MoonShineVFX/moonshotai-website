@@ -193,7 +193,6 @@ function Index() {
   }
   //給 Render Page
   const handleRenders = async (userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
-    console.log(userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)
     setLoading(true);
     try {
       let ID = userId || currentProfile.uid
@@ -206,7 +205,7 @@ function Index() {
       console.log(pg, pgs,s, e, m)
       const images = await fetchUserImages(ID, TK, pg, pgs,s, e, m);
       const results = images.results;
-      console.log(images)
+      // console.log(images)
       if(results.length === 0){
         setImagesResults(results)
         return

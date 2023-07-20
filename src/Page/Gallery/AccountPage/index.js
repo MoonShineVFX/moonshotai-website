@@ -46,7 +46,6 @@ function Index() {
     
   };
   const handleSetUserProfile = (items)=>{
-
     patchUserProfile(currentProfile.id,linLoginData,items)
       .then((data)=> {
         if(data.status === 200){
@@ -56,6 +55,7 @@ function Index() {
               .then((data)=> {
                 // console.log(data)
                 setCurrentProfile(data)
+                localStorage.setItem('currentUser', JSON.stringify(data));
                 
               })
               .catch((error) => console.error(error));

@@ -18,7 +18,7 @@ function EditUserEmailForm({handleSaveEditEmail,closeModal}) {
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className='bg-zinc-900 border border-white/30   rounded-md p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='bg-zinc-900 border border-white/30   rounded-md p-4 box-border text-white fixed top-[20%] left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
           <div className='text-lg text-center font-bold'>輸入 Email</div>
           <div className='text-sm text-center text-white/60'>將儲存於個人資料中</div>
