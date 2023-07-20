@@ -1,5 +1,6 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import { Link } from "react-router-dom";
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdErrorOutline } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -60,19 +61,15 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                 className='relative w-full  flex items-center '
               >
-                <div className='w-14'>
+                <Link  to={`/user/${id}`} className='w-14'>
                   <div className='pt-[100%] relative'>
                     <img  
                       src={profile_image} alt={profile_image} 
                       data-id={id}
                       className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-full'
-                      onClick={() => {
-                        // setImageData(user)
-                        // setIsShowImageModal(true)
-                      }} 
                     />
                   </div>
-                </div>
+                </Link>
                 <div className=' flex justify-between  gap-0 p-2 w-full  bottom-0 text-white'>
                   <div className='text-sm'>
                     {name }

@@ -38,7 +38,7 @@ function Index() {
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
             fetchGalleries(headers,currentPage, pageSize).then(galleryData => {
-              console.log(galleryData)
+              // console.log(galleryData)
               setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
               setData(galleryData.results);
               // console.log(galleryData.results)
@@ -50,7 +50,7 @@ function Index() {
                   })
                 })
               ).then(dataWithComments=>{
-                console.log(dataWithComments)
+                // console.log(dataWithComments)
                 setData(dataWithComments);
               })
 
@@ -76,7 +76,7 @@ function Index() {
     const nextPage = currentPage + 1;
     setCurrentPage(prevPage => prevPage + 1)
     fetchGalleries(currentHeaders,currentPage, pageSize).then(galleryData => {
-      console.log(galleryData)
+      // console.log(galleryData)
       setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
       setData(galleryData.results);
       // console.log(galleryData.results)

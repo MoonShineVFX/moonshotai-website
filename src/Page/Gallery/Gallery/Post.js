@@ -43,12 +43,14 @@ function Post() {
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
-    const hasPreviousPage = navigate.length > 1;
-    if (hasPreviousPage) {
-      navigate(-1); // 返回上一页
-    } else {
-      navigate('/gallery'); // 导航到指定页面
-    }
+    navigate('/gallery')
+    // const hasPreviousPage = navigate.length > 1;
+    // console.log(navigate.length)
+    // if (hasPreviousPage) {
+    //   navigate(-1); // 返回上一页
+    // } else {
+    //   navigate('/gallery'); // 导航到指定页面
+    // }
   };
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
@@ -112,15 +114,17 @@ function Post() {
   const handleCollection = ()=>{
     console.log('click')
     if(!isLoggedIn){
-     console.log(isLoggedIn)
+    //  console.log(isLoggedIn)
      setIsLoginForCollection(true)
     }else{
-      console.log(imageData)
+      // console.log(imageData)
       if(isCollected){
         userDelACollectionImage(imageData.id,linLoginData)
           .then((data)=> {
             if(data.status===204){
               setIsCollected(false)
+              setImageData( {...imageData, likes: imageData.likes-1 })
+            
             }
           })
           .catch((error) => console.error(error));
@@ -129,6 +133,7 @@ function Post() {
           .then((data)=> {
             if(data.status===200){
               setIsCollected(true)
+              setImageData( {...imageData, likes: imageData.likes+1 })
             }
           })
           .catch((error) => console.error(error));
@@ -137,11 +142,13 @@ function Post() {
     }
     
   }
+
+
   const handleComment = (item)=>{
-    console.log('click')
-    console.log(isHaveUserComment)
+    // console.log('click')
+    // console.log(isHaveUserComment)
     if(!isLoggedIn){
-      console.log(isLoggedIn)
+      // console.log(isLoggedIn)
       setIsLoginForComment(true)
      }else{
       if(isHaveUserComment){
@@ -164,7 +171,7 @@ function Post() {
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results)
-              console.log(images)
+              // console.log(images)
           })
           .catch((error) => console.error(error));
       }
@@ -178,7 +185,7 @@ function Post() {
       .then((images)=> {
           setStorages(images)
           setStoragesResults(images.results)
-          console.log(images)
+          // console.log(images)
       })
       .catch((error) => console.error(error));
   }
@@ -200,7 +207,7 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSaveEditComment = (id,data)=>{
-    console.log(id,data)
+    // console.log(id,data)
     userPatchCommentToImage(id,data,linLoginData)
       .then(data=>{
         setIsCommentModal(false)
@@ -221,7 +228,7 @@ function Post() {
         .then((images)=> {
             setStorages(images)
             setStoragesResults(images.results)
-            console.log(images)
+            // console.log(images)
         })
         .catch((error) => console.error(error));
   }
@@ -347,14 +354,15 @@ function Post() {
               }
               {/* Comment area */}
               <div className='mt-7'>
-                <div className='text-white font-bold my-1 mb-4 text-center'>Discussion</div>
+                <div className='text-white font-bold my-1 mb-4 text-center '>Discussion</div>
                 {
                   commentsResults.length > 0 ?
             
                     commentsResults.map((item,index)=>{
+                      // console.log(item)
                       const {author,text,created_at} = item
                       return(
-                        <div className=' rounded-md bg-zinc-700 px-4 py-6'>
+                        <div className=' rounded-md bg-zinc-700 px-4 py-6 my-2'>
                           <div>
                             <div className='flex items-center gap-2'>
                               <div className='w-8'>
@@ -364,11 +372,14 @@ function Post() {
                               </div>
                               <div className='text-white'>{author?.name}</div>
                               <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
-                              <div onClick={()=>{
-                                setFormStatus('EDIT')
-                                setCurrentComment(item)
-                                handleEditComment(item)
-                              }}>Edit</div>
+                              {
+                                author.id !== currentUser?.id ?   <div></div>  :  <div onClick={()=>{
+                                  setFormStatus('EDIT')
+                                  setCurrentComment(item)
+                                  handleEditComment(item)
+                                }}>Edit</div>
+                              }
+
                             </div>
                           </div>
                           <div className='mt-4'>

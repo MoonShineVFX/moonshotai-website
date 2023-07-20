@@ -6,16 +6,17 @@ function Header({executeScroll}) {
   const vantaRef = useRef(null)
 
   return (
-    <div className='text-white py-10' >
+    <div className='text-white py-10 md:w-8/12 mx-auto' >
       <div className='mx-12 flex flex-col items-center'>
         <div className='text-4xl font-bold text-center'>Let Moonshot Create For You.</div>
         <div className='text-center text-sm my-4 '>Extend your creation limits through interaction with Moonshot. 
   Let AI enter your world with amazement.</div>
-        <div className=' my-5 relative w-full' >
+        <div className=' my-5 relative w-full md:w-1/2' >
           <div 
-            className=' w-3/5 absolute top-1/2 left-1/2 '
-            style={{animation: 'float_center 12s ease-in-out infinite'}}
+            className=' w-3/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+            // style={{animation: 'float_center 12s ease-in-out infinite'}}
           >
+            <div className="circle absolute  -z-10  "></div>
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/Home_MS_logo01.png'} alt="" className='w-full'/>
             <div 
             className=' absolute -top-12 -right-16'
@@ -29,10 +30,12 @@ function Header({executeScroll}) {
           >
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_c02.png'} alt="" />
           </div>
+          
           </div>
 
 
-          <div className='glow w-full relative'>
+          <div className=' w-full relative'>
+
             <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc01.png'} alt="" className='w-full' />
             <div className=' absolute top-4 left-4' style={{animation: 'float_t02 10s ease-in-out infinite' , animationDelay:'1000ms'}} >
               <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc02.png'} alt="" className='max-w-full scale-75' />
@@ -47,7 +50,7 @@ function Header({executeScroll}) {
 
        </div>
       </div>
-      <div className='flex flex-col items-center space-y-6 mt-4'>
+      <div className='flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-8'>
         <div className='w-32 text-center px-2 py-2 rounded-full border' onClick={executeScroll}>Learn More</div>
         <a 
           className='w-32 text-center px-2 py-2 rounded-full text-black bg-[#BDDE48] '

@@ -6,15 +6,26 @@ import Home from './Page/Home'
 
 import HomeLayout from './Page/Lyaouts/HomeLayout';
 import HomeV3 from './Page/Home_v3'
-import Terms from './Page/Home_v3/Terms';
-import Policy from './Page/Home_v3/Policy';
+
+
 import Camera from './Page/Camera'
+
+import DocLayout from './Page/Lyaouts/DocLayout';
+import QuickStart from './Page/DocPage/QuickStart';
+import UserDoc from './Page/DocPage/UserDoc';
+import FaqDoc from './Page/DocPage/FaqDoc';
+import CommandDoc from './Page/DocPage/CommandDoc';
+import RefundDoc from './Page/DocPage/RefundDoc';
+import Terms from './Page/DocPage/Terms';
+import Policy from './Page/DocPage/Policy';
 // import Docs from './Page/Docs'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Gallery from './Page/Gallery/Gallery';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
+import Work from './Page/Gallery/Profile';
+import Account from './Page/Gallery/AccountPage'
 import Post from './Page/Gallery/Gallery/Post';
 import User from './Page/Gallery/Gallery/User';
 import Price from './Page/Gallery/PricePage';
@@ -47,28 +58,39 @@ function App() {
     <RecoilRoot>
     <BrowserRouter>
       <Routes> 
-        {/* <Route path="*" element={<Notfound />} /> */}
+        <Route path="*" element={<Notfound />} />
 
 
 
-        <Route path='/'  element={<Home/>}>
-          <Route path="/" element={<Home />} />
-          {/* <Route path="/" element={<HomeV3 />} /> */}
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/policy" element={<Policy />} />
+        <Route path='/'  element={<HomeLayout/>}>
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<HomeV3 />} />
+
         </Route>
 
         
         <Route path="/camera" element={<Camera />} />
-        <Route path="/docs" element={<Cooming />} />
-        <Route path="/gallery" element={<Cooming />} />
-        <Route path="/post/:id" element={<Cooming />} />
-        <Route path="/user/:id" element={<Cooming />} />
-        <Route path="/profile" element={<Cooming />} />
-        <Route path="/price" element={<Cooming />} />
-        <Route path="/confirm/:id" element={<Cooming />} />
-        <Route path="/cancel/:id" element={<Cooming />} />
-        <Route path="/orders" element={<Cooming />} />
+
+        <Route path="/docs" element={<DocLayout/> }>
+          <Route path="" element={<QuickStart />}/>
+          <Route path="account" element={<UserDoc />}/>
+          <Route path="faq" element={<FaqDoc />}/>
+          <Route path="command" element={<CommandDoc />}/>
+          <Route path="refunds" element={<RefundDoc />}/>
+          <Route path="terms" element={<Terms />} />
+          <Route path="policy" element={<Policy />} />
+        </Route>
+
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/post/:id" element={<Post />} />
+        <Route path="/user/:id" element={<User />} />
+        {/* <Route path="/work" element={<Profile />} /> */}
+        <Route path="/account" element={<Account />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/price" element={<Price />} />
+        <Route path="/confirm/:id" element={<Confirm />} />
+        <Route path="/cancel/:id" element={<Cancel />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/come" element={<Cooming />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}

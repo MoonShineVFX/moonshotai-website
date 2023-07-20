@@ -21,14 +21,14 @@ function Cancel() {
           <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
         </div>
         <div className='text-xl font-bold my-4'>感謝！  </div>
-        <div className='text-center'>您辦理退款的訂單已處理完畢。<br />現在，您可以回到訂單頁查詢訂單狀態。</div>
+        <div className='text-center'>您已經取消訂單。<br /></div>
         
         <div className='text-sm mt-12 mb-2'></div>
-        <div className=' text-white/70 my-1 '>訂單號碼:{id}</div>
+        {/* <div className=' text-white/70 my-1 '>訂單號碼:{id}</div> */}
         <button
           className='my-4 p-2 px-4 text-white/90 bg-zinc-600 rounded-sm text-sm ' onClick={()=>{
-          navigate('/orders');}}
-        >回到訂單頁</button>
+          navigate('/price');}}
+        >回到 Price</button>
       </div>
     </div>
   )

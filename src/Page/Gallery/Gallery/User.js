@@ -23,7 +23,7 @@ function User() {
   const [ isLoginForFollow , setIsLoginForFollow] = useState(false)
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
-  const [pageSize, setPageSize] = useState(30)
+  const [pageSize, setPageSize] = useState(50)
   const [isFollowed ,setIsFollowed] = useState(false)
   const navigate = useNavigate();
   const imageVariants = {
@@ -49,6 +49,7 @@ function User() {
           .then((data)=> {
             if(data.status===204){
               setIsFollowed(false)
+              setUserData({...userData, total_followers: userData.total_followers-1 })
             }
           })
         .catch((error) => console.error(error));
@@ -57,8 +58,10 @@ function User() {
       }else{
         userFollowAUser(userData,linLoginData)
           .then((data)=> {
+            console.log(data)
             if(data.status===200){
               setIsFollowed(true)
+              setUserData({...userData, total_followers: userData.total_followers+1 })
             }
           })
           .catch((error) => console.error(error));
@@ -74,10 +77,10 @@ function User() {
         setIsLoggedIn(data.isLogin)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let user = data.currentUser
         refreshToken().then(tData =>{
           setLineLoginData(tData.token)
-          fetchUserFollowings(currentUser.id,tData.token).then(followings =>{
-            console.log(followings)
+          fetchUserFollowings(user.id,tData.token).then(followings =>{
             const findFollowId = followings.some(item=>{
               return item.id === parseInt(id)
             })
@@ -96,10 +99,14 @@ function User() {
         // console.log(data)
         // console.log(id)
         fetchUserPublicImages(data.uid, currentPage, pageSize).then(data=>{
+
+          if(data === undefined) return
+          console.log(data)
           setPublicImage(data)
           setPublicImageResults(data.results)
         })
         setUserData(data);
+        console.log(data)
   
       })
 
@@ -120,19 +127,24 @@ function User() {
 
       <div className='flex flex-col relative text-white mx-5 mt-10'>
           <div className='flex items-center justify-between'>
-            <div className='w-10'>
+            <div className='w-12'>
               <div className='pt-[100%] relative'>
                 <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
 
             <div className='ml-auto' onClick={handleFollow}>
-              {
-                isFollowed ? 
-                <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Following</button>
-                : 
-                <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
+              {parseInt(id) === userData?.id ? '' : 
+                <div>
+                {
+                  isFollowed ? 
+                  <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>
+                  : 
+                  <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
+                }
+                </div>
               }
+
             </div>
           </div>
           <div className='flex items-center  space-x-2 mt-3'>
@@ -147,7 +159,7 @@ function User() {
           <div className='flex text-xs  space-x-3 '>
             <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
             <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
-            <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
+            <div><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
           </div>
           <div className=' text-xs'>
             {userData?.bio}  

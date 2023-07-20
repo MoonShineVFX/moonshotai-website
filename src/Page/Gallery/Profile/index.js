@@ -1,14 +1,16 @@
 import React, { useState, useEffect }  from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
+import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
 import moment from 'moment';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
@@ -47,7 +49,7 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(15)
+  const [pageSize, setPageSize] = useState(27)
   const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
@@ -204,7 +206,7 @@ function Index() {
       console.log(pg, pgs,s, e, m)
       const images = await fetchUserImages(ID, TK, pg, pgs,s, e, m);
       const results = images.results;
-      console.log(images)
+      // console.log(images)
       if(results.length === 0){
         setImagesResults(results)
         return
@@ -229,6 +231,19 @@ function Index() {
   const handleStorage = (image) =>{
     userStorageAImage(image,token)
       .then((data)=>{
+        if(data.message === "You have reached the storage limits"){
+          toast('留存圖片已到達可用上限。', {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+          return
+        }
         setTimeout(()=>{
           setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages+1});
         },600)
@@ -446,14 +461,6 @@ function Index() {
     switch (item.title) {
       case 'Renders':
         handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,currModels)
-        // fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
-        //   .then((images)=> {
-        //       const results = images.results
-        //       setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-        //       setImages(images)
-        //       setImagesResults(results)
-        //   })
-        //   .catch((error) => console.error(error));
         break;
       case 'Storage':
         fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
@@ -489,7 +496,7 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels} />;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':
@@ -598,6 +605,7 @@ function Index() {
         {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
+      <ToastContainer />
 
       <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
 
@@ -617,14 +625,23 @@ function Index() {
                 className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
               ></div>
+
               <div 
-                className=' text-xs flex items-center ml-auto absolute top-32 right-5  '
+                className=' text-xs flex items-center ml-auto absolute top-32 right-5  hidden '
                 onClick={()=>setIsEdit(true)}
               > 
                 Settings<MdMoreVert size={20} /> 
               </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className='text-white flex gap-3 my-2'>
+                {currentProfile?.portfolio_url && <a href={currentProfile?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
+                {currentProfile?.facebook_id && <a href={currentProfile?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
+                {currentProfile?.instagram_id && <a href={currentProfile?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
+                {currentProfile?.linkedin_id && <a href={currentProfile?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
+                {currentProfile?.twitter_id && <a href={currentProfile?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter /></a> }
+                {currentProfile?.discord_id && <a href={currentProfile?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
+                </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
               </div>              
             </div>
@@ -710,7 +727,6 @@ function Index() {
 
         <div className='my-10 m-4'>
           {renderComponent()}
-       
         </div> 
       </div>
 

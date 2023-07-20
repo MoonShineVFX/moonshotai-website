@@ -2,6 +2,8 @@ import React,{useState} from 'react'
 import { AnimatePresence,motion } from "framer-motion";
 import Header from './header'
 import { animateScroll as scroll, scroller } from 'react-scroll';
+import Terms from '../Home_v3/Terms';
+
 function Index() {
   const [currentKey, setCurrentKey] = useState(0);
   const scrollTo = (target) => {
@@ -15,7 +17,7 @@ function Index() {
     {title:"關於moonshot",section:"section1"},
     {title:"指令介紹",section:"section2"},
     {title:"模型介紹",section:"section3"},
-    {title:"社群規章",section:"section4"},
+    {title:"使用條款",section:"section4"},
     {title:"使用聲明",section:"section5"},
   ]
   return (
@@ -78,9 +80,9 @@ function Index() {
             </div>
 
             <div id="section4" className='min-h-screen  pt-28'>
-              <h1 className="text-2xl font-bold mb-4">社群規章</h1>
+              <h1 className="text-2xl font-bold mb-4">使用條款</h1>
               <div className='mt-2 mb-8 leading-9 text-white/70'>
-
+              <Terms />
               </div>
             </div>
 

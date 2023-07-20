@@ -8,6 +8,7 @@ exports.host = functions.https.onRequest((request, response) => {
   let indexHTML = fs.readFileSync('./source/index.html').toString();
   const path = request.path ? request.path.split('/') : request.path;
   let customOpenGraph=''
+
   if(path[1] === 'post'){
 
     fetchGalleriesDetail(path[2])
@@ -29,18 +30,31 @@ exports.host = functions.https.onRequest((request, response) => {
       })
       .catch(error=>{
         customOpenGraph = `
-          <title>Moonshot</title>
+          <title>Moonshot | ${path[2]}</title>
           <meta
             name="description"
-            content="AIGC Tools"
+            content="Let Moonshot Create For You."
           />
-          <meta property="og:title" content=">Moonshot" />
-          <meta property="og:description" content="AIGC Tools" />
+          <meta property="og:title" content="Moonshot | ${path[2]}" />
+          <meta property="og:description" content="Let Moonshot Create For You." />
           <meta property="og:image" content="logo.png" />
         `;
         indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
         response.status(200).send(indexHTML);
       })
+  }else{
+      customOpenGraph = `
+          <title>Moonshot Gallery</title>
+          <meta
+            name="description"
+            content="Let Moonshot Create For You."
+          />
+          <meta property="og:title" content="Moonshot Gallery" />
+          <meta property="og:description" content="Let Moonshot Create For You." />
+          <meta property="og:image" content="logo.png" />
+        `;
+        indexHTML = indexHTML.replace(META_PLACEHOLDER, customOpenGraph);
+        response.status(200).send(indexHTML);
   }
 
 });
@@ -48,7 +62,7 @@ exports.host = functions.https.onRequest((request, response) => {
 const fetchGalleriesDetail = async (id) => {
 
   return new Promise((resolve, reject) => {
-    const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL+'galleries/';
+    const apiUrl = 'https://api-dev.moonshot.today/galleries/';
     const url = apiUrl + id;
 
     axios.get(url, { headers: { 'Content-Type': 'application/json' } })

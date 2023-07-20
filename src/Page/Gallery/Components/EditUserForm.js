@@ -7,6 +7,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
   const [enabled, setEnabled] = useState(false);
+  const [ isCopied , setIsCopied ] = useState(false);
   const onSubmit = (data) => {
     // console.log(data);
     const items ={
@@ -38,6 +39,10 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
     } return(  <div className='hidden'>no</div>)
 
   }
+  const handleCopy=(text)=>{
+    navigator.clipboard.writeText(text);
+    setIsCopied(true)
+  }
 
   return (
     <div 
@@ -50,7 +55,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
         exit={{ opacity: 0, y: -20 }}
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
-        <div className='text-center font-bold'>Your Profile</div>
+        <div className='text-center font-bold'>您的帳號資料</div>
         <div >
           <div>個人資料</div>
         
@@ -66,6 +71,14 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
             {diffDays(userData.subscription_end_at)}
            
             
+
+          </div>
+          <div>
+            <div className='text-white/50 my-2 text-xs'>推薦序號</div>
+            <div className='flex items-center  gap-3'>
+              <div onClick={()=>handleCopy(userData.invitation_code)}>{userData.invitation_code} </div>
+              <div className='text-xs rounded-md border border-white/50 py-1 px-2' onClick={()=>handleCopy(userData.invitation_code)}>{isCopied ?'Copied!'  :'Copy'}</div>
+            </div>
 
           </div>
           

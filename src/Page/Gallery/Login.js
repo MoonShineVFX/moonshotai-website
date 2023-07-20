@@ -8,7 +8,7 @@ function Login() {
       await liff.init({ liffId: "1660658719-0BvpAjkG" })
       if (liff.isLoggedIn()) {
         const profile = await liff.getProfile();
-        console.log(profile)
+        // console.log(profile)
         setProfile(profile);
         fetchlinelogin(profile)
       } else {
@@ -47,7 +47,7 @@ function Login() {
   }
   const getLineProfile =  () => {
     liff.getProfile().then(profile=>{
-      console.log(profile)
+      // console.log(profile)
       setProfile(profile)
     }).catch(err => console.log(err))
 

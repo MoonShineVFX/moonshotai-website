@@ -56,7 +56,7 @@ export const useDevUserLogin = () =>{
 }
 export const refreshToken = async () =>{
   const storedLineProfile = localStorage.getItem('lineProfile');
-  console.log('refreshToken', storedLineProfile)
+  // console.log('refreshToken', storedLineProfile)
   const data = await fetchLineLogin(JSON.parse(storedLineProfile))
   return data
 }
@@ -347,7 +347,19 @@ export const patchUserProfile = async (userid,token,items) =>{
   const data = await response
   return data
 }
-
+export const patchUserEmail = async (userid,token,items) =>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch(apiUrl+'user_profile/'+userid, requestOptions)
+  const data = await response
+  return data
+}
 /**
  * 
  * Images API
@@ -385,14 +397,14 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * 
  * Galleries API
  */
-export const fetchGalleries = async (headers,page,pageSize) =>{
+export const fetchGalleries = async (headers,page,pageSize,startDate,endDate,currModels) =>{
   // console.log(headers)
   const requestOptions = {
     method: 'GET',
     headers:headers
   };
 
-  const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+  const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   const data = await response.json()
   return data
 
@@ -607,8 +619,17 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     })
   };
   const response =await fetch(apiUrl+'invitations', requestOptions)
-  const data =await response.json()
+  console.log(response)
+  let data 
+  if(response.status === 500){
+    data = await response
+  }else{
+    data = await response.json()
+    
+  }
+ 
   return data
+  
 }
 
 //退費
@@ -624,6 +645,21 @@ export const postOrder_refund =async (serNum,token) =>{
     })
   };
   const response =await fetch(apiUrl+'order_refund', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+// 退費問券 POST /refund_surveys
+export const postRefund_surveys =async (items,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response =await fetch(apiUrl+'refund_surveys', requestOptions)
   const data =await response.json()
   return data
 }

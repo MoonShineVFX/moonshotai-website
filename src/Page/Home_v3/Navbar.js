@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { Link } from "react-router-dom";
 import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
-
+import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } from "react-icons/fa";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -14,7 +14,7 @@ function Navbar() {
                 </a>
                 <div className='lg:text-xl'></div>
             </div>
-            <div className="block lg:hidden ml-auto">
+            <div className="block lg: ml-auto">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className="flex items-center px-3 py-2 rounded text-black-500 hover:text-black-400"
@@ -41,21 +41,26 @@ function Navbar() {
               <div className='my-3 text-center flex flex-col  font-bold'>
                 <Link 
                   to='/' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                   Home  
                 </Link>
                 <Link 
-                  to='/price' 
-                  className='p-2 cursor-pointer  hover:bg-gray-600'>
-                    Price
-                </Link>
-                <Link 
                   to='/gallery' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                     Gallery
                 </Link>
                 <Link 
+                  to='/price' 
+                  onClick={()=>setIsOpen(false)}
+                  className='p-2 cursor-pointer  hover:bg-gray-600'>
+                    Price
+                </Link>
+
+                <Link 
                   to='/docs' 
+                  onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer  hover:bg-gray-600 '>
                    Documents
                 </Link>
@@ -63,7 +68,11 @@ function Navbar() {
               </div>
 
 
-            </div>
+          </div>
+          <div className=' flex justify-center items-center gap-10'>
+            <a href='https://twitter.com/MoonshotAI_' target="_blank" rel="noopener noreferrer" >      <FaTwitter size={24}  /></a>
+            <a href='https://www.youtube.com/channel/UCT0noXFjgZ30lLCwZjJYdgQ' target="_blank" rel="noopener noreferrer" > <FaYoutube size={24} /></a>
+          </div>
 
 
         </div>

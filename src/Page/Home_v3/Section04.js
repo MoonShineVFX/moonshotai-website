@@ -14,17 +14,19 @@ function Section04() {
     console.log(imgData)
   },[])
   return (
-    <div className=' relative'>
-      Section04
-      <div className='  w-[1000px] md:w-[1500px] opacity-50 h-[450px] overflow-hidden' id="headerBg">
-        <HeaderImagesBg  data={imgData}/>
+    <div className=' relative my-16'>
+      <div className='overflow-hidden'>
+        <div className='  w-[1000px] md:w-[2000px] opacity-50 h-[450px]  relative' id="headerBg">
+          <HeaderImagesBg  data={imgData}/>
+        </div>
       </div>
+
       <a 
         className='w-1/2 text-center px-2 py-2 rounded-full bg-gradient-to-l from-[#BDDE48] via-[#C0CFA6] to-[#C2C1FD] text-black  flex justify-center items-center  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-        href="https://medium.com/@ai_72180"
+        href="/gallery"
         target={"_blank"} rel="noreferrer"
       >
-        <span className='pr-2'>See Gallery</span>   <MdOutlineArrowRightAlt />
+        <span className='pr-2  font-bold'>See Gallery</span>   <MdOutlineArrowRightAlt />
       </a>
     </div>
   )
