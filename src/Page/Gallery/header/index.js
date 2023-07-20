@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,15 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile} from '../helpers/fetchHelper'
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
 function Index({currentUser,isLoggedIn}) {
-  const isLogin = useRecoilValue(isLoginState)
+
+  //CHECK IS USER LOGIN DATABASE
+  // const [currentUser, setCurrentUser] = useRecoilState(userState)
   // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  // const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const isLogin = useRecoilValue(isLoginState)
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessLogout, setIsProcessLogout] = useState(false);
@@ -67,6 +71,17 @@ function Index({currentUser,isLoggedIn}) {
       }
     })
   }
+  // useEffect(()=>{
+  //   if (process.env.NODE_ENV === 'production') {
+  //     getStoredLocalData().then((localData)=>{
+  //       setIsLoggedIn(localData.isLogin)
+  //       setLineLoginToken(localData.loginToken)
+  //       setLineProfile(localData.lineProfile)
+  //       setCurrentUser(localData.currentUser)
+  //     })
+  //   }
+  // })
+  
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>

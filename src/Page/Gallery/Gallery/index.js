@@ -111,7 +111,7 @@ function Index() {
       // console.log(pg, pgs,s, e, m)
       const images = await fetchGalleries(ch, pg, pgs,s, e, m);
       const results = images.results;
-      // console.log(images)
+
       if(images === 401){
         // console.log('401')
         return 401
@@ -129,7 +129,7 @@ function Index() {
         setCurrentPage(pg);
       }
         
-      return 'success'
+      
  
   
       // setCurrentAuthor(images.results[0].author)
@@ -174,16 +174,15 @@ function Index() {
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           // const refreshTokenResult = refreshToken()
-          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-          setCurrentHeaders(headers)
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-            console.log(d)
-          })
 
-          // refreshToken().then(data =>{
-
+          refreshToken().then(data =>{
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            setCurrentHeaders(headers)
+            handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+              console.log(d)
+            })
             
-          // })
+          })
         }else{
           handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
             console.log(d)
