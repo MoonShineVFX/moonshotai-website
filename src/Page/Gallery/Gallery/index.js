@@ -10,6 +10,7 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
+import debounce from 'lodash.debounce';
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -31,8 +32,8 @@ function Index() {
 
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
-  const [pageSize, setPageSize] = useState(20)
-  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
+  const [pageSize, setPageSize] = useState(14)
+  const [startDate, setStartDate] = useState(moment().format('2022-01-01'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
@@ -158,20 +159,29 @@ function Index() {
     }
 
   }
-  useEffect(() => {
-    const handleScroll = () => {
-      // 獲取頁面滾動相關信息
+  const [lastScrollTime, setLastScrollTime] = useState(0);
+  const handleScroll = () => {
+    // 獲取頁面滾動相關信息
+    
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight) {
-        fetchMoreImages(); // 加載更多圖片
+      if (scrollTop + clientHeight >= scrollHeight - 20) {
+        const now = Date.now();
+        if (now - lastScrollTime >= 1000) {
+          console.log('go')
+          fetchMoreImages(); // 加載更多圖片
+          setLastScrollTime(now);
+        }
+
       }
-    };
+  };
+  const debouncedHandleScroll = debounce(handleScroll, 500);
+  useEffect(() => {
     // 監聽滾動事件
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', debouncedHandleScroll);
     return () => {
       // 在組件卸載時移除滾動事件監聽器
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
@@ -187,7 +197,7 @@ function Index() {
           <div>
             <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
               <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
-              <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
+              <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
             </div>
             {
               data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
