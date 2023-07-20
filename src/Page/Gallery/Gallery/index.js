@@ -129,6 +129,7 @@ function Index() {
         setCurrentPage(pg);
       }
         
+      return 'success'
  
   
       // setCurrentAuthor(images.results[0].author)

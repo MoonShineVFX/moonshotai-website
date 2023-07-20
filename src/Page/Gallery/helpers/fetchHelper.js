@@ -409,8 +409,7 @@ export const fetchGalleries = async (headers,page,pageSize,startDate,endDate,cur
   let data = await response.json()
 
   if(status === 401){
-      data = 401
-      return data
+    return 401
   }else{
     data = await response.json()
     return data
