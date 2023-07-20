@@ -359,6 +359,7 @@ function Post() {
                   commentsResults.length > 0 ?
             
                     commentsResults.map((item,index)=>{
+                      console.log(item)
                       const {author,text,created_at} = item
                       return(
                         <div className=' rounded-md bg-zinc-700 px-4 py-6'>
@@ -371,11 +372,14 @@ function Post() {
                               </div>
                               <div className='text-white'>{author?.name}</div>
                               <div className='text-sm ml-auto'>{created_at.substr(0,10)}</div>
-                              <div onClick={()=>{
-                                setFormStatus('EDIT')
-                                setCurrentComment(item)
-                                handleEditComment(item)
-                              }}>Edit</div>
+                              {
+                                author.id !== currentUser?.id ?   <div></div>  :  <div onClick={()=>{
+                                  setFormStatus('EDIT')
+                                  setCurrentComment(item)
+                                  handleEditComment(item)
+                                }}>Edit</div>
+                              }
+
                             </div>
                           </div>
                           <div className='mt-4'>
