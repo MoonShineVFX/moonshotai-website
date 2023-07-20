@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +6,15 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem} from '../helpers/fetchHelper'
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
 function Index({currentUser,isLoggedIn}) {
-  const isLogin = useRecoilValue(isLoginState)
+
+  //CHECK IS USER LOGIN DATABASE
+  // const [currentUser, setCurrentUser] = useRecoilState(userState)
   // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  // const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
+  const isLogin = useRecoilValue(isLoginState)
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessLogout, setIsProcessLogout] = useState(false);
@@ -39,29 +43,45 @@ function Index({currentUser,isLoggedIn}) {
           },500)
         
       }
-      // try {
-      //   await liff.init({ liffId: process.env.REACT_APP_LIFF_LOGIN_ID });
-      //   if (liff.isLoggedIn()) {
-      //     // await liff.logout();
-      //   }
-      //   // setIsLoggedIn(false);
-      //   setLineProfile(null);
-      //   setToken(null);
-      //   console.log('logouting')
-      //   removeLocalStorageItem().then(data=>{
-      //     console.log(data)
-      //     if(data === 'finish'){
-      //       if (window.location.pathname === '/gallery') {
-      //         window.location.reload();
-      //       } else {
-      //         navigate('/gallery');
-      //       }
-      //     }
-      //   })
-      // } catch (err) {
-      //   console.log('登出失敗');
-      // }
   }
+  const handleLogin = async()=>{
+    liff.init({liffId: liffID})
+    .then(function() {
+      if (liff.isLoggedIn()) {
+        const accessToken = liff.getAccessToken();
+        localStorage.setItem('isLogin', true);
+        if(accessToken){
+          liff.getProfile().then(profile=>{
+            localStorage.setItem('lineProfile', JSON.stringify(profile));
+
+            fetchLineLogin(profile)
+              .then((lined)=>{
+                localStorage.setItem('loginTokenData', JSON.stringify(lined));
+                fetchUserProfile(lined.user_id, lined.token)
+                  .then((udata)=>{
+                  localStorage.setItem('currentUser', JSON.stringify(udata));
+                  })
+                  .catch((error) => console.error(error));
+              })
+              .catch((error) => console.error(error));
+          })
+        }else{
+          liff.login();
+        }
+      }
+    })
+  }
+  // useEffect(()=>{
+  //   if (process.env.NODE_ENV === 'production') {
+  //     getStoredLocalData().then((localData)=>{
+  //       setIsLoggedIn(localData.isLogin)
+  //       setLineLoginToken(localData.loginToken)
+  //       setLineProfile(localData.lineProfile)
+  //       setCurrentUser(localData.currentUser)
+  //     })
+  //   }
+  // })
+  
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
    justify-between '>
@@ -102,7 +122,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <Link to='/profile' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <div onClick={handleLogin} className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</div>
           }
           <div className="block  ml-auto">
               <button
