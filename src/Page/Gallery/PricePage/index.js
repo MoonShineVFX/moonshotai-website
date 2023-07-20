@@ -431,7 +431,7 @@ function Index() {
                           </div>
                         }
                         {
-                          block.payment_blue && <div>
+                          !block.payment_blue && <div>
                             <button 
                               className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
                               onClick={()=>handlePay(block.plan_id,'bluepay')}
