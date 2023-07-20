@@ -127,7 +127,7 @@ function Index() {
       let s = sDate || startDate
       let e = eDate || endDate
       let m = cModels || currModels
-      console.log(pg, pgs,s, e, m)
+      // console.log(pg, pgs,s, e, m)
       const images = await fetchGalleries(ch, pg, pgs,s, e, m);
       const results = images.results;
       if(results.length === 0){

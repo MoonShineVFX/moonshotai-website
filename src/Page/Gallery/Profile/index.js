@@ -447,14 +447,6 @@ function Index() {
     switch (item.title) {
       case 'Renders':
         handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,currModels)
-        // fetchUserImages(currentProfile.uid,currentPage,pageSize,token)
-        //   .then((images)=> {
-        //       const results = images.results
-        //       setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-        //       setImages(images)
-        //       setImagesResults(results)
-        //   })
-        //   .catch((error) => console.error(error));
         break;
       case 'Storage':
         fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)

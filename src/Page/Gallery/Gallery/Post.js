@@ -114,10 +114,10 @@ function Post() {
   const handleCollection = ()=>{
     console.log('click')
     if(!isLoggedIn){
-     console.log(isLoggedIn)
+    //  console.log(isLoggedIn)
      setIsLoginForCollection(true)
     }else{
-      console.log(imageData)
+      // console.log(imageData)
       if(isCollected){
         userDelACollectionImage(imageData.id,linLoginData)
           .then((data)=> {
@@ -145,10 +145,10 @@ function Post() {
 
 
   const handleComment = (item)=>{
-    console.log('click')
-    console.log(isHaveUserComment)
+    // console.log('click')
+    // console.log(isHaveUserComment)
     if(!isLoggedIn){
-      console.log(isLoggedIn)
+      // console.log(isLoggedIn)
       setIsLoginForComment(true)
      }else{
       if(isHaveUserComment){
@@ -171,7 +171,7 @@ function Post() {
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results)
-              console.log(images)
+              // console.log(images)
           })
           .catch((error) => console.error(error));
       }
@@ -185,7 +185,7 @@ function Post() {
       .then((images)=> {
           setStorages(images)
           setStoragesResults(images.results)
-          console.log(images)
+          // console.log(images)
       })
       .catch((error) => console.error(error));
   }
@@ -207,7 +207,7 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSaveEditComment = (id,data)=>{
-    console.log(id,data)
+    // console.log(id,data)
     userPatchCommentToImage(id,data,linLoginData)
       .then(data=>{
         setIsCommentModal(false)
@@ -228,7 +228,7 @@ function Post() {
         .then((images)=> {
             setStorages(images)
             setStoragesResults(images.results)
-            console.log(images)
+            // console.log(images)
         })
         .catch((error) => console.error(error));
   }
@@ -359,7 +359,7 @@ function Post() {
                   commentsResults.length > 0 ?
             
                     commentsResults.map((item,index)=>{
-                      console.log(item)
+                      // console.log(item)
                       const {author,text,created_at} = item
                       return(
                         <div className=' rounded-md bg-zinc-700 px-4 py-6 my-2'>

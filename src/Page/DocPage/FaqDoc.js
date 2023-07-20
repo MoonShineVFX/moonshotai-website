@@ -31,16 +31,10 @@ function FaqDoc() {
               <p>Moonshot 團隊也將持續開發、優化好用的指令提供給使用者！也歡迎填寫使用者調查表單向我們許願！</p>
             </div>
 
-            <div className='text-white/90 text-sm space-y-2 my-8'>
-              <p className='text-xl font-bold  mb-4'>3. 我可以在圖片上加入文字或標籤嗎？</p>
-              <p>可以！只要在指令中加入「」即可成功在圖片新增文字與標籤。</p>
 
-
-
-            </div>
 
             <div className='text-white/90 text-sm space-y-2 my-8'>
-              <p className='text-xl font-bold  mb-4'>4. 是否有常見的疑問解答或教學資源可供參考？</p>
+              <p className='text-xl font-bold  mb-4'>3. 是否有常見的疑問解答或教學資源可供參考？</p>
               <p>你可以參考 Moonshot 官網中的文章，我們會不定時釋出厲害的創作者使用文章，讓大家參考，你還可以加入 Moonshot 的 Line 討論社群，裡面有許多大師能請教、一起交流。</p>
               <div className='w-1/2'><img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick01.jpg" alt="" /></div>
 
@@ -49,7 +43,7 @@ function FaqDoc() {
             </div>
 
             <div className='text-white/90 text-sm space-y-2 my-8'>
-              <p className='text-xl font-bold  mb-4'>5. 如何聯繫客 Moonshot 開發團隊？</p>
+              <p className='text-xl font-bold  mb-4'>4. 如何聯繫客 Moonshot 開發團隊？</p>
               <p>若您有關於服務、商業合作相關問題，請來信至：ai@moonshine.tw，Moonshot 開發團隊專員將與您聯繫。</p>
             </div>
 

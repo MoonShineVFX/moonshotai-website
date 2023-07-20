@@ -7,11 +7,49 @@ function CommandDoc() {
     {display_name:"插畫風格",name:"CT"},
     {display_name:"漫畫風格",name:"CM"},
     {display_name:"寫實人像",name:"PC"},
-    {display_name:"圖生圖",name:"R__"},
-    {display_name:"遮罩修改",name:"I__"},
-    {display_name:"遮罩固定",name:"O__"},
-    {display_name:"骨架參考",name:"P__"},
+    {display_name:"參考圖生圖",name:"R**"},
+    {display_name:"遮罩修改",name:"I**"},
+    {display_name:"遮罩固定",name:"O**"},
+    {display_name:"骨架參考",name:"P**"},
+    {display_name:"放大",name:"/ext"},
+    {display_name:"大圖",name:"/hr"},
+    {display_name:"中圖",name:"/mr"},
+    {display_name:"調整步數",name:"steps:1-50"},
+    {display_name:"直圖",name:"/V"},
+    {display_name:"橫圖",name:"/H"},
+    {display_name:"負面詞",name:"--"},
+    {display_name:"加字",name:"+字"},
+    {display_name:"文字座標位置",name:"+(x,y,size,一行內有幾個字)"},
+
   ]
+
+  /*
+  【一般指令｜文生圖 】
+• 寫實 PR
+• 插畫 CT 
+• 漫畫 CM 
+• 寫實人像 PC
+
+【一般指令｜圖生圖】
+• 參考 R**
+
+【進階指令】(**此指令為進階帳戶使用**)
+• 修改 I**
+• 固定 O**
+• 骨架 P** 
+• 放大 /ext
+• 大圖 /hr
+• 中圖 /mr
+• 調整步數 steps:1-50
+
+【工具指令】
+• 直 /V
+• 橫 /H
+• ‐‐ 負面詞
+• ＋加字
+  ＋(x,y,size,一行內有幾個字)
+  
+  */ 
   return (
     <div className='text-white '>
       <div className='px-8'>
