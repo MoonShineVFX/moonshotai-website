@@ -49,6 +49,7 @@ function User() {
           .then((data)=> {
             if(data.status===204){
               setIsFollowed(false)
+              setUserData({...userData, total_followers: userData.total_followers-1 })
             }
           })
         .catch((error) => console.error(error));
@@ -60,6 +61,7 @@ function User() {
             console.log(data)
             if(data.status===200){
               setIsFollowed(true)
+              setUserData({...userData, total_followers: userData.total_followers+1 })
             }
           })
           .catch((error) => console.error(error));
@@ -104,6 +106,7 @@ function User() {
           setPublicImageResults(data.results)
         })
         setUserData(data);
+        console.log(data)
   
       })
 
@@ -131,12 +134,17 @@ function User() {
             </div>
 
             <div className='ml-auto' onClick={handleFollow}>
-              {
-                isFollowed ? 
-                <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>
-                : 
-                <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
+              {parseInt(id) === userData?.id ? '' : 
+                <div>
+                {
+                  isFollowed ? 
+                  <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>
+                  : 
+                  <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
+                }
+                </div>
               }
+
             </div>
           </div>
           <div className='flex items-center  space-x-2 mt-3'>
