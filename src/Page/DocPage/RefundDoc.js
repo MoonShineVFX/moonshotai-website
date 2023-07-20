@@ -14,7 +14,7 @@ function RefundDoc() {
             瞭解 Moonshot 退款相關資訊
           </div>
           <div className='text-white/90 text-sm space-y-2'>
-            在符合退款政策規定的情況下，Moonshot 可以針對某些 Moonshot 交易給予退款，詳見下方說明。您也可以直接與 Moonshot 官方開發團隊聯絡 (超連結 ms 信箱)。
+            在符合退款政策規定的情況下，Moonshot 可以針對某些 Moonshot 交易給予退款，詳見下方說明。您也可以直接與 <a href="mailto:ai@moonshine.tw" className='text-blue-400 underline'>Moonshot 官方開發團隊聯絡</a>，。
           </div>
         </div>
 
@@ -85,7 +85,7 @@ function RefundDoc() {
             </div>
 
             <p>如您想要退款，但距離交易已超過 48 小時，可連絡開發人員協助處理，於此特殊情形本公司保有是否退款之決定權。</p>
-            <p>請將退款特殊原因來信至： <a href="mailto:ai@moonshine.tw">ai@moonshine.tw</a>，由 Moonshot 開發團隊評估審查，感謝。</p>
+            <p>請將退款特殊原因來信至： <a href="mailto:ai@moonshine.tw" className='text-blue-400 underline'>ai@moonshine.tw</a>，由 Moonshot 開發團隊評估審查，感謝。</p>
           </div>            
         </div>
 

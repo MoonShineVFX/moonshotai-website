@@ -75,7 +75,7 @@ function Navbar() {
           ><FaChevronDown /></button>
           <div>Documentation</div> 
         </div>
-        <div className={`   md:w-1/5 md:h-screen  md:p-10 absolute bg-zinc-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
+        <div className={` md:w-1/5 md:h-screen  md:p-10 absolute bg-zinc-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
           
           <ul className=' border-l border-white/50 p-5 tracking-wide leading-loose text-normal text-white/50'>
             {

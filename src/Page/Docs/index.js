@@ -3,6 +3,7 @@ import { AnimatePresence,motion } from "framer-motion";
 import Header from './header'
 import { animateScroll as scroll, scroller } from 'react-scroll';
 import Terms from '../Home_v3/Terms';
+
 function Index() {
   const [currentKey, setCurrentKey] = useState(0);
   const scrollTo = (target) => {
