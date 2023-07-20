@@ -405,8 +405,16 @@ export const fetchGalleries = async (headers,page,pageSize,startDate,endDate,cur
   };
 
   const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
-  const data = await response.json()
-  return data
+  let status = response.status
+  let data = await response.json()
+
+  if(status === 401){
+      data = 401
+      return data
+  }else{
+    data = await response.json()
+    return data
+  }
 
 }
 

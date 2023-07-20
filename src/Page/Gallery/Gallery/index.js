@@ -47,26 +47,7 @@ function Index() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
-  useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let headers = {'Content-Type': 'application/json'} 
-        if(data.isLogin){
-          // const refreshTokenResult = refreshToken()
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels)
-          })
-        }else{
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels)
-        }
-        
-      })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+
 
   const fetchMoreImages = () => {
     if(currentPage >= totalPage || loading) {
@@ -130,27 +111,26 @@ function Index() {
       // console.log(pg, pgs,s, e, m)
       const images = await fetchGalleries(ch, pg, pgs,s, e, m);
       const results = images.results;
+      // console.log(images)
+      if(images === 401){
+        // console.log('401')
+        return 401
+      }
       if(results.length === 0){
         setData(results)
-        return
+        return 
       }
-      Promise.all(
-        results.map((item,index)=>{
-          return fetchComments(item).then(data=>{
-            const updatedItem = { ...item, comments: data.results.length };
-            return updatedItem
-          })
-        })
-      ).then(dataWithComments=>{
-        if(pg === 1){
-          setData(dataWithComments);
-        }else{
-          setData(prevImages => [...prevImages, ...dataWithComments]);
-          setCurrentPage(pg);
-        }
-        
-      })
       setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+
+      if(pg === 1){
+        setData(results);
+      }else{
+        setData(prevImages => [...prevImages, ...results]);
+        setCurrentPage(pg);
+      }
+        
+ 
+  
       // setCurrentAuthor(images.results[0].author)
     } catch (error) {
       
@@ -184,6 +164,33 @@ function Index() {
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  useEffect(()=>{
+    getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
+          // const refreshTokenResult = refreshToken()
+          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+          setCurrentHeaders(headers)
+          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+            console.log(d)
+          })
+
+          // refreshToken().then(data =>{
+
+            
+          // })
+        }else{
+          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+            console.log(d)
+          })
+        }
+        
+      })
+  },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
   return (
     <div className='w-full '>

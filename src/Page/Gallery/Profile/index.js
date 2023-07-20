@@ -573,14 +573,6 @@ function Index() {
             // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
             handleRenders(lineProfile.userId ,data.token,1,pageSize,startDate,endDate,currModels)
               
-              .then((images)=> {
-                  const results = images.results
-                  setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-                  setImages(images)
-                  setImagesResults(results)
-                  setCurrentAuthor(images.results[0].author)
-              })
-              .catch((error) => console.error(error));
 
           })
         }else{
