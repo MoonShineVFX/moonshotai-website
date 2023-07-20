@@ -58,7 +58,7 @@ function User() {
       }else{
         userFollowAUser(userData,linLoginData)
           .then((data)=> {
-            console.log(data)
+            // console.log(data)
             if(data.status===200){
               setIsFollowed(true)
               setUserData({...userData, total_followers: userData.total_followers+1 })
@@ -106,7 +106,7 @@ function User() {
           setPublicImageResults(data.results)
         })
         setUserData(data);
-        console.log(data)
+        // console.log(data)
   
       })
 
