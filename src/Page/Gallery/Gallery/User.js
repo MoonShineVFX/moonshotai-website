@@ -148,7 +148,7 @@ function User() {
             </div>
           </div>
           <div className='flex items-center  space-x-2 mt-3'>
-            <div className='text-white'>{userData?.name} </div>
+            <div className='text-white whitespace-nowrap'>{userData?.name} </div>
             {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
             {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
             {userData?.instagram_id && <a href={userData?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
