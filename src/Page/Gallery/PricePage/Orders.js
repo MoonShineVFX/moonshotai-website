@@ -229,7 +229,7 @@ function Orders() {
        {selectedItem && (
         <div>
           {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
-          {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans}/>}
+          {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans} currentUser={currentUser}/>}
         </div>
       )}
 
