@@ -157,7 +157,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
 
   return (
     <div >
-        {
+        {/* {
           (()=>{
             const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
             return (
@@ -166,11 +166,11 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
              
                 <div>scrollTop:{scrollTop} </div>
                 <div>clientHeight:{clientHeight} </div>
-                <div>scrollHeight:{scrollHeight-20}</div>
+                <div>scrollHeight:{scrollHeight}</div>
               </div>
             )
           })()
-        }
+        } */}
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
