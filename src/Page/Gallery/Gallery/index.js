@@ -17,10 +17,11 @@ function Index() {
 
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(20)
   const [startDate, setStartDate] = useState('2023-01-01')
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -43,24 +44,25 @@ function Index() {
           refreshToken().then(data =>{
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
-            fetchGalleries(headers,currentPage, pageSize).then(galleryData => {
-              console.log(galleryData)
-              setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
-              setData(galleryData.results);
-              // console.log(galleryData.results)
-              Promise.all(
-                galleryData.results.map((item,index)=>{
-                  return fetchComments(item).then(data=>{
-                    const updatedItem = { ...item, comments: data.results.length };
-                    return updatedItem
-                  })
-                })
-              ).then(dataWithComments=>{
-                console.log(dataWithComments)
-                setData(dataWithComments);
-              })
+            handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels)
+            // fetchGalleries(headers,currentPage, pageSize).then(galleryData => {
+            //   // console.log(galleryData)
+            //   setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
+            //   setData(galleryData.results);
+            //   // console.log(galleryData.results)
+            //   Promise.all(
+            //     galleryData.results.map((item,index)=>{
+            //       return fetchComments(item).then(data=>{
+            //         const updatedItem = { ...item, comments: data.results.length };
+            //         return updatedItem
+            //       })
+            //     })
+            //   ).then(dataWithComments=>{
+            //     console.log(dataWithComments)
+            //     setData(dataWithComments);
+            //   })
 
-            });
+            // });
           })
         }else{
             setCurrentHeaders(headers)
@@ -73,32 +75,75 @@ function Index() {
         
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
+
   const fetchMoreImages = () => {
-    if(currentPage >= totalPage) {
-      console.log('stop')
+    if(currentPage >= totalPage || loading) {
       return
     } 
-    console.log('go')
     const nextPage = currentPage + 1;
-    setCurrentPage(prevPage => prevPage + 1)
-    fetchGalleries(currentHeaders,currentPage, pageSize).then(galleryData => {
-      console.log(galleryData)
-      setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
-      setData(galleryData.results);
-      // console.log(galleryData.results)
+    handleGalleries(currentHeaders,nextPage,pageSize,startDate,endDate,currModels)
+    // setCurrentPage(prevPage => prevPage + 1)
+    // fetchGalleries(currentHeaders,currentPage, pageSize).then(galleryData => {
+    //   console.log(galleryData)
+    //   setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
+    //   setData(galleryData.results);
+    //   // console.log(galleryData.results)
+    //   Promise.all(
+    //     galleryData.results.map((item,index)=>{
+    //       return fetchComments(item).then(data=>{
+    //         const updatedItem = { ...item, comments: data.results.length };
+    //         return updatedItem
+    //       })
+    //     })
+    //   ).then(dataWithComments=>{
+    //     console.log(dataWithComments)
+    //     setData(dataWithComments);
+    //   })
+
+    // });
+  }
+  // get galleries
+  const handleGalleries = async (currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
+    // console.log(currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)
+    setLoading(true);
+    try {
+      let ch = currentHeaders 
+      let pg = pageNum || currentPage 
+      let pgs = pageSizeNum || pageSize 
+      let s = sDate || startDate
+      let e = eDate || endDate
+      let m = cModels || currModels
+      console.log(pg, pgs,s, e, m)
+      const images = await fetchGalleries(ch, pg, pgs,s, e, m);
+      const results = images.results;
+      if(results.length === 0){
+        setData(results)
+        return
+      }
       Promise.all(
-        galleryData.results.map((item,index)=>{
+        results.map((item,index)=>{
           return fetchComments(item).then(data=>{
             const updatedItem = { ...item, comments: data.results.length };
             return updatedItem
           })
         })
       ).then(dataWithComments=>{
-        console.log(dataWithComments)
-        setData(dataWithComments);
+        if(pg === 1){
+          setData(dataWithComments);
+        }else{
+          setData(prevImages => [...prevImages, ...dataWithComments]);
+          setCurrentPage(pg);
+        }
+        
       })
+      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
+      // setCurrentAuthor(images.results[0].author)
+    } catch (error) {
+      
+    } finally {
+      setLoading(false);
+    }
 
-    });
   }
   useEffect(() => {
     const handleScroll = () => {
