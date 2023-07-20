@@ -124,21 +124,32 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
       </div>
     );
   }
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      // 獲取頁面滾動相關信息
+  const [lastScrollTime, setLastScrollTime] = useState(0);
+  const handleScroll = () => {
+    // 獲取頁面滾動相關信息
+    
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight) {
-        fetchMoreStorageImages(); // 加載更多圖片
+      if (scrollTop + clientHeight >= scrollHeight - 30) {
+        const now = Date.now();
+        if (now - lastScrollTime >= 1000) {
+          console.log('go')
+          fetchMoreStorageImages(); // 加載更多圖片
+          setLastScrollTime(now);
+        }
+
       }
-    };
+
+
+  };
+  const debouncedHandleScroll = debounce(handleScroll, 500);
+  useEffect(() => {
+
     // 監聽滾動事件
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', debouncedHandleScroll);
     return () => {
       // 在組件卸載時移除滾動事件監聽器
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentStoragePage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
   if(totalImage === 0) {
