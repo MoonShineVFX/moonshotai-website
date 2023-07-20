@@ -422,7 +422,7 @@ function Index() {
                               className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
                               onClick={()=>handlePay(block.plan_id,'linepay')}
                             >
-                              <MdCreditCard size={20} />  Line pay (正式) <MdArrowRightAlt />
+                              <MdCreditCard size={20} />  Line pay <MdArrowRightAlt />
                               {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                               
                             </button>
@@ -436,7 +436,7 @@ function Index() {
                               className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
                               onClick={()=>handlePay(block.plan_id,'bluepay')}
                             >
-                              <MdCreditCard size={20} />  藍新支付 (模擬) <MdArrowRightAlt />
+                              <MdCreditCard size={20} />  藍新支付 <MdArrowRightAlt />
                               {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
                             </button>
                           
