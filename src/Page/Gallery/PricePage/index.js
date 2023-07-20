@@ -164,7 +164,11 @@ function Index() {
           },1200)
           return
         }else{
-          const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
+          setTimeout(()=>{
+            const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
+            console.log('go payment')
+          },500)
+
           if(diffDays(currentUser.subscription_end_at)){
             // setIsNeedWithin5Days(false)
             // startLinePayFlow(pid)
