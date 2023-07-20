@@ -57,6 +57,7 @@ function User() {
       }else{
         userFollowAUser(userData,linLoginData)
           .then((data)=> {
+            console.log(data)
             if(data.status===200){
               setIsFollowed(true)
             }
@@ -74,10 +75,10 @@ function User() {
         setIsLoggedIn(data.isLogin)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let user = data.currentUser
         refreshToken().then(tData =>{
           setLineLoginData(tData.token)
-          fetchUserFollowings(currentUser.id,tData.token).then(followings =>{
-            console.log(followings)
+          fetchUserFollowings(user.id,tData.token).then(followings =>{
             const findFollowId = followings.some(item=>{
               return item.id === parseInt(id)
             })
@@ -150,7 +151,7 @@ function User() {
           <div className='flex text-xs  space-x-3 '>
             <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
             <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
-            <div><span className='text-sm'>{userData?.total_follower}</span> follower</div> 
+            <div><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
           </div>
           <div className=' text-xs'>
             {userData?.bio}  
