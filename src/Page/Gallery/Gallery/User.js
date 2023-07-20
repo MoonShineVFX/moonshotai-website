@@ -133,9 +133,9 @@ function User() {
               </div>
             </div>
 
-            <div className='ml-auto' onClick={handleFollow}>
-              {parseInt(id) === userData?.id ? '' : 
-                <div>
+            <div className='ml-auto' >
+              {parseInt(id) === currentUser?.id ? '' : 
+                <div onClick={handleFollow}>
                 {
                   isFollowed ? 
                   <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>

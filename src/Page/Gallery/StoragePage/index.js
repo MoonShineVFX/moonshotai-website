@@ -7,6 +7,7 @@ import { FaShareSquare } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
+import debounce from 'lodash.debounce';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
