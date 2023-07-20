@@ -1,7 +1,8 @@
 import React, { useState, useEffect }  from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
+import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 import liff from '@line/liff';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
@@ -618,6 +619,7 @@ function Index() {
                 className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
                 style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
               ></div>
+
               <div 
                 className=' text-xs flex items-center ml-auto absolute top-32 right-5  hidden '
                 onClick={()=>setIsEdit(true)}
@@ -626,6 +628,14 @@ function Index() {
               </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className='text-white flex gap-3 my-2'>
+                {currentProfile?.portfolio_url && <a href={currentProfile?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
+                {currentProfile?.facebook_id && <a href={currentProfile?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
+                {currentProfile?.instagram_id && <a href={currentProfile?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
+                {currentProfile?.linkedin_id && <a href={currentProfile?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
+                {currentProfile?.twitter_id && <a href={currentProfile?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter /></a> }
+                {currentProfile?.discord_id && <a href={currentProfile?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
+                </div>
                 <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
               </div>              
             </div>
