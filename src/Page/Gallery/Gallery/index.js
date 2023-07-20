@@ -9,6 +9,20 @@ import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,re
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
+import ImgFilter from '../Components/ImgFilter';
+const filterDateItem = [
+  {title:'24 小時',type:'時間區間',command:'days',value:'1'},
+  {title:'7 天',type:'時間區間',command:'days',value:'7'},
+  {title:'30 天', type:'時間區間',command:'days',value:'30'},
+  {title:'全部',type:'時間區間',command:'days',value:'all'}
+]
+const filterModelsDate = [
+  {title:'全部',type:'Models',command:'models',value:'all'},
+  {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
+  {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
+  {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
+  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
+ ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -18,7 +32,7 @@ function Index() {
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
   const [pageSize, setPageSize] = useState(20)
-  const [startDate, setStartDate] = useState('2023-01-01')
+  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
@@ -45,32 +59,9 @@ function Index() {
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
             handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels)
-            // fetchGalleries(headers,currentPage, pageSize).then(galleryData => {
-            //   // console.log(galleryData)
-            //   setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
-            //   setData(galleryData.results);
-            //   // console.log(galleryData.results)
-            //   Promise.all(
-            //     galleryData.results.map((item,index)=>{
-            //       return fetchComments(item).then(data=>{
-            //         const updatedItem = { ...item, comments: data.results.length };
-            //         return updatedItem
-            //       })
-            //     })
-            //   ).then(dataWithComments=>{
-            //     console.log(dataWithComments)
-            //     setData(dataWithComments);
-            //   })
-
-            // });
           })
         }else{
-            setCurrentHeaders(headers)
-            fetchGalleries(headers,currentPage, pageSize).then(data=>{
-              setTotalPage(parseInt((data.count + pageSize - 1) / pageSize))
-              setData(data.results);
-              // console.log(data.results)
-            })
+          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels)
         }
         
       })
@@ -82,25 +73,47 @@ function Index() {
     } 
     const nextPage = currentPage + 1;
     handleGalleries(currentHeaders,nextPage,pageSize,startDate,endDate,currModels)
-    // setCurrentPage(prevPage => prevPage + 1)
-    // fetchGalleries(currentHeaders,currentPage, pageSize).then(galleryData => {
-    //   console.log(galleryData)
-    //   setTotalPage(parseInt((galleryData.count + pageSize - 1) / pageSize))
-    //   setData(galleryData.results);
-    //   // console.log(galleryData.results)
-    //   Promise.all(
-    //     galleryData.results.map((item,index)=>{
-    //       return fetchComments(item).then(data=>{
-    //         const updatedItem = { ...item, comments: data.results.length };
-    //         return updatedItem
-    //       })
-    //     })
-    //   ).then(dataWithComments=>{
-    //     console.log(dataWithComments)
-    //     setData(dataWithComments);
-    //   })
+    
+  }
+  const onHandleSelectDate = (item)=>{
+    // console.log(item)
+    switch (item.value) {
+      case '1':
+        const oneDayAgo = moment().subtract(1, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,oneDayAgo)
+        break;
+      case '7':
+        const sevenDaysAgo = moment().subtract(7, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,sevenDaysAgo)
+        break;
+      case '30':
+        const thirtyDaysAgo = moment().subtract(30, 'days').format('YYYY-MM-DD');
+        handleSelectDate(item.value,thirtyDaysAgo)
+        break;   
+      case 'all':
+        handleSelectDate(item.value,'2022-01-01')
+          break; 
+      default:
+        handleSelectDate('all','2022-01-01')
+        break;
+    }
 
-    // });
+  }
+  const onHandleSelectModels = (item)=>{
+    // console.log('click')
+    handleSelectModels(item.value)
+  }
+  const handleSelectDate = (value,date)=>{
+    setCurrentPage(1)
+    setPageSize(15)
+    setStartDate(date)
+    handleGalleries(currentHeaders,1,pageSize,date,endDate,currModels)
+  }
+  const handleSelectModels = (value)=>{
+    setCurrentPage(1)
+    setPageSize(15)
+    setCurrModels(value)
+    handleGalleries(currentHeaders,1,pageSize,startDate,endDate,value)
   }
   // get galleries
   const handleGalleries = async (currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
@@ -167,68 +180,79 @@ function Index() {
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
+
           {!data ? 
             <LoadingLogoSpin />
           :
-          <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
-            {data.map((image,index)=>{
-              const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
-              return (
-                <motion.div key={'gallery-'+index} 
-                  variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                  className='  overflow-hidden relative'
-                >
-                  <Link to={`/post/${id}`} className=' relative' >
-                    <div className='pt-[100%] relative'>
-                      <img  
-                        src={urls.thumb} alt={image?.description} 
-                        data-id={id}
-                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
- 
-                      />
-                    </div>
-
-                    <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
-                      <div className='flex items-center space-x-2'>
-                        <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
-                        <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
-                      </div>
-
-                      <div className='text-red-300'>
-                        {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
-                      </div>
-
-
-                    </div>
-                    <div>
-                      
-                    </div>
-                  </Link>
-
-
-
-                  <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
-                    <Link to={`/user/${author?.id}`}  className='w-8'>
+          <div>
+            <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
+              <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
+              <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
+            </div>
+            {
+              data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
+            }
+            <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+              {data.map((image,index)=>{
+                const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                return (
+                  <motion.div key={'gallery-'+index} 
+                    variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
+                    className='  overflow-hidden relative'
+                  >
+                    <Link to={`/post/${id}`} className=' relative' >
                       <div className='pt-[100%] relative'>
-                        <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                        <img  
+                          src={urls.thumb} alt={image?.description} 
+                          data-id={id}
+                          className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+  
+                        />
+                      </div>
+
+                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
+                        <div className='flex items-center space-x-2'>
+                          <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
+                          <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
+                        </div>
+
+                        <div className='text-red-300'>
+                          {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
+                        </div>
+
+
+                      </div>
+                      <div>
+                        
                       </div>
                     </Link>
 
-                    <div className='flex flex-col'>
-                      <div className='text-base font-bold'>{title} </div>
-                      <div className='text-xs text-white/50'>{author?.name}</div>
+
+
+                    <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
+                      <Link to={`/user/${author?.id}`}  className='w-8'>
+                        <div className='pt-[100%] relative'>
+                          <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                        </div>
+                      </Link>
+
+                      <div className='flex flex-col'>
+                        <div className='text-base font-bold'>{title} </div>
+                        <div className='text-xs text-white/50'>{author?.name}</div>
+                      </div>
                     </div>
-                  </div>
 
 
 
-                </motion.div>
+                  </motion.div>
 
-              )
-              })}
+                )
+                })}
 
 
             </div>
+          </div>
+
 
           }
          

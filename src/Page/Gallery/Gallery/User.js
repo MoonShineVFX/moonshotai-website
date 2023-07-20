@@ -23,7 +23,7 @@ function User() {
   const [ isLoginForFollow , setIsLoginForFollow] = useState(false)
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
-  const [pageSize, setPageSize] = useState(30)
+  const [pageSize, setPageSize] = useState(50)
   const [isFollowed ,setIsFollowed] = useState(false)
   const navigate = useNavigate();
   const imageVariants = {
