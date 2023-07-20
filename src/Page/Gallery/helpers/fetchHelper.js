@@ -619,8 +619,17 @@ export const paymentInviteSerial =async (inviteSerial,token) =>{
     })
   };
   const response =await fetch(apiUrl+'invitations', requestOptions)
-  const data = await response.json()
+  console.log(response)
+  let data 
+  if(response.status === 500){
+    data = await response
+  }else{
+    data = await response.json()
+    
+  }
+ 
   return data
+  
 }
 
 //退費

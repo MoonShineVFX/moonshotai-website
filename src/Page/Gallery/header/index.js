@@ -84,14 +84,14 @@ function Index({currentUser,isLoggedIn}) {
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
-          <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Gallery</Link>
+          <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' >Gallery</Link>
           <Link to='/price' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Price</Link>
 
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
             isLoggedIn ?
             <div className='flex items-center flex-col md:flex-row '>
-                <Link to='/profile'  className='flex items-center gap-2'>
+                <Link to='/profile'  className='flex items-center gap-2' onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-8'>
                     <div className='pt-[100%] relative'>
                       <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -132,7 +132,7 @@ function Index({currentUser,isLoggedIn}) {
             { 
               isLoggedIn ?
               <div className='border-b border-white/20 text-sm '>
-                <Link to='/profile'  className='flex items-center gap-2'>
+                <Link to='/profile'  className='flex items-center gap-2'  onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-8'>
                     <div className='pt-[100%] relative'>
                       <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -147,7 +147,7 @@ function Index({currentUser,isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3'><MdLogin color="#88ad48"/>Sign in to</Link>
+                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={() => setIsOpen(!isOpen)}><MdLogin color="#88ad48"/>Sign in to</Link>
               </div>
             }
             <div className='my-3 '>

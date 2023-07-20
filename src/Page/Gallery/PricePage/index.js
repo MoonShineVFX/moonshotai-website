@@ -37,6 +37,7 @@ function Index() {
   const [isYourself, setIsYouself] = useState(false);
   const [isLimits, setIsLimits] = useState(false);
   const [isInviteReqError, setInviteReqError] = useState(false);
+  const [inviteSubmitMsg,setInviteSubmitMsg]= useState('');
   
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
@@ -46,6 +47,7 @@ function Index() {
     setIsAlreadyUsed(false) 
     setIsYouself(false)
     setIsInviteSuccess(false)
+    setInviteSubmitMsg('')
     if(isLoggedIn){
       console.log('已登入')
       console.log(currentUser)
@@ -53,27 +55,37 @@ function Index() {
       paymentInviteSerial(data.invite_number,linLoginData).then(d=>{
         console.log(d)
         setTimeout(()=>{
+          if(d.status === 500){
+            setInviteSubmitMsg('請輸入正確的推薦序號') 
+            setIsInviteLoadingReq(false)
+            return
+          }
           if(d.message=== 'You have already used the invitation'){
             setIsAlreadyUsed(true) 
             setIsInviteLoadingReq(false)
+            setInviteSubmitMsg('')
             return
           }
           if(d.message=== "You can't invite yourself"){
             setIsYouself(true)
             setIsInviteLoadingReq(false)
+            setInviteSubmitMsg('')
             return
           }
           if(d.message=== "This Invitation code has reached the limit"){
             setIsLimits(true)
             setIsInviteLoadingReq(false)
+            setInviteSubmitMsg('')
             return
           }
 
           if(d.message=== "Invitation success"){
             setIsInviteSuccess(true)
             setIsInviteLoadingReq(false)
+            setInviteSubmitMsg('')
           }
           setIsInviteLoadingReq(false)
+          setInviteSubmitMsg('')
         },600)
 
 
@@ -453,6 +465,7 @@ function Index() {
                               {isAlreadyUsed&& <div className='text-xs'>已經輸入過序號了，只能開通一次。</div>}
                               {isYourself&& <div className='text-xs'>不可以使用自己的序號。</div>}
                               {isLimits&& <div className='text-xs'>這個序號已經到達使用次數。</div>}
+                              {inviteSubmitMsg.length > 0 && <div className='text-xs'>{inviteSubmitMsg}</div>} 
                             </div>
                           </div>
 
