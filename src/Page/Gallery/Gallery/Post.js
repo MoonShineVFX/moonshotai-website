@@ -354,7 +354,7 @@ function Post() {
               }
               {/* Comment area */}
               <div className='mt-7'>
-                <div className='text-white font-bold my-1 mb-4 text-center'>Discussion</div>
+                <div className='text-white font-bold my-1 mb-4 text-center '>Discussion</div>
                 {
                   commentsResults.length > 0 ?
             
@@ -362,7 +362,7 @@ function Post() {
                       console.log(item)
                       const {author,text,created_at} = item
                       return(
-                        <div className=' rounded-md bg-zinc-700 px-4 py-6'>
+                        <div className=' rounded-md bg-zinc-700 px-4 py-6 my-2'>
                           <div>
                             <div className='flex items-center gap-2'>
                               <div className='w-8'>
