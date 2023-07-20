@@ -142,7 +142,7 @@ function Index() {
           .then((data)=> {
             // console.log(data)
             setCurrentProfile(data)
-            console.log(data)
+            // console.log(data)
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
@@ -170,7 +170,7 @@ function Index() {
             setToken(data.token)
             setLineLoginData(data.token)
             getSubscriptions(data.token).then(odata=>{
-              console.log(odata)
+              // console.log(odata)
               setSubsData(odata)
             })
             fetchUserProfile(data.user_id, data.token)

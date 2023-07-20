@@ -121,7 +121,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 20) {
+      if (scrollTop + clientHeight >= scrollHeight - 30) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -157,6 +157,20 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
 
   return (
     <div >
+        {
+          (()=>{
+            const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+            return (
+              <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
+
+             
+                <div>scrollTop:{scrollTop} </div>
+                <div>clientHeight:{clientHeight} </div>
+                <div>scrollHeight:{scrollHeight-20}</div>
+              </div>
+            )
+          })()
+        }
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>

@@ -165,7 +165,7 @@ function Index() {
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 20) {
+      if (scrollTop + clientHeight >= scrollHeight - 30) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -188,6 +188,7 @@ function Index() {
   return (
     <div className='w-full '>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
 
