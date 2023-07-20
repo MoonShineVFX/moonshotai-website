@@ -9,7 +9,8 @@ import { isLoginState,loginState,lineProfileState, userState, imageFormModalStat
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
 import moment from 'moment';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import RenderPage from '../RenderPage'
 import StoragePage from '../StoragePage'
 import CollectionPage from '../CollectionPage'
@@ -230,6 +231,19 @@ function Index() {
   const handleStorage = (image) =>{
     userStorageAImage(image,token)
       .then((data)=>{
+        if(data.message === "You have reached the storage limits"){
+          toast('留存圖片已到達可用上限。', {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
+          return
+        }
         setTimeout(()=>{
           setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages+1});
         },600)
@@ -591,6 +605,7 @@ function Index() {
         {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
+      <ToastContainer />
 
       <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
 

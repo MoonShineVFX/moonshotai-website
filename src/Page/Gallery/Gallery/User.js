@@ -96,6 +96,9 @@ function User() {
         // console.log(data)
         // console.log(id)
         fetchUserPublicImages(data.uid, currentPage, pageSize).then(data=>{
+
+          if(data === undefined) return
+          console.log(data)
           setPublicImage(data)
           setPublicImageResults(data.results)
         })
