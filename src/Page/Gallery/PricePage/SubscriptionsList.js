@@ -54,7 +54,10 @@ function SubscriptionsList({subData,plans,currentUser}) {
                       {
                         current_plan !== null && <div><SelecPlans id={current_plan} /></div>
                       }
-                      { who_invite !== currentUser.id ?  <div className=''>使用好友序號</div> :  <div className='text- mt-'>推薦序號被使用</div>}
+                      { current_plan === null && <div>
+                        {who_invite !== currentUser.id ?  <div className=''>使用好友序號</div> :  <div className='text- mt-'>推薦序號被使用</div>}
+                      </div>
+                      }
                      
                
 
