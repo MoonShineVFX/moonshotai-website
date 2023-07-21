@@ -24,7 +24,7 @@ function Index() {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-
+  //TODO no login many time
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)

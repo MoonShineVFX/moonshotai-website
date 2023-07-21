@@ -165,6 +165,7 @@ function Index() {
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+    //TODO no login many time
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
