@@ -99,7 +99,7 @@ function User() {
       .then(data => {
         // console.log(data)
         // console.log(id)
-        fetchUserPublicImages(data.uid, currentPage, pageSize).then(data=>{
+        fetchUserPublicImages(data.id, currentPage, pageSize).then(data=>{
 
           if(data === undefined) return
           console.log(data)
