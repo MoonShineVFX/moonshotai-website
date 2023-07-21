@@ -67,7 +67,7 @@ function Post() {
             setLineLoginData(tData.token)
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${tData.token}` }
             fetchGalleriesDetail(headers,id).then(gData=>{
-              console.log(gData)
+              // console.log(gData)
               setImageData(gData);
               // 
               fetchComments(gData).then(data=>{
