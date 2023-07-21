@@ -186,7 +186,7 @@ function Index() {
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
-        handleRenders(profile.userId ,data.token,1,pageSize,startDate,endDate,currModels)  
+        handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
         // handleRenders(profile.userId ,data.token)
 
 
@@ -461,7 +461,7 @@ function Index() {
     setPageSize(15)
     switch (item.title) {
       case 'Renders':
-        handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,currModels)
+        handleRenders(currentProfile.id,token,1,pageSize,startDate,endDate,currModels)
         break;
       case 'Storage':
         fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
@@ -511,20 +511,20 @@ function Index() {
       return
     } 
     const nextPage = currentPage + 1;
-    handleRenders(currentProfile.uid,token,nextPage,pageSize,startDate,endDate,currModels)
+    handleRenders(currentProfile.id,token,nextPage,pageSize,startDate,endDate,currModels)
   }
   const handleSelectDate = (value,date)=>{
     setCurrentPage(1)
     setPageSize(15)
     setStartDate(date)
-    handleRenders(currentProfile.uid,token,1,pageSize,date,endDate,currModels)
+    handleRenders(currentProfile.id,token,1,pageSize,date,endDate,currModels)
   }
   const handleSelectModels = (value)=>{
     console.log(value)
     setCurrentPage(1)
     setPageSize(15)
     setCurrModels(value)
-    handleRenders(currentProfile.uid,token,1,pageSize,startDate,endDate,value)
+    handleRenders(currentProfile.id,token,1,pageSize,startDate,endDate,value)
   }
   const fetchMoreStorageImages = () => {
     if(currentPage >= totalPage) {
@@ -573,7 +573,7 @@ function Index() {
                   
                 .catch((error) => console.error(error));
             // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
-            handleRenders(lineProfile.userId ,data.token,1,pageSize,startDate,endDate,currModels)
+            handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
               
 
           })
