@@ -76,12 +76,13 @@ function User() {
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
         let user = data.currentUser
-        refreshToken().then(tData =>{
-          setLineLoginData(tData.token)
-          fetchUserFollowings(user.id,tData.token).then(followings =>{
+
+          fetchUserFollowings(user.id,loginToken).then(followings =>{
             const findFollowId = followings.some(item=>{
               return item.id === parseInt(id)
             })
@@ -91,23 +92,21 @@ function User() {
               setIsFollowed(false)
             }
           })
-        })
+
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
-        // console.log(data)
-        // console.log(id)
+
         fetchUserPublicImages(data.id, currentPage, pageSize).then(data=>{
 
           if(data === undefined) return
-          console.log(data)
           setPublicImage(data)
           setPublicImageResults(data.results)
         })
         setUserData(data);
-        // console.log(data)
+
   
       })
 

@@ -330,8 +330,16 @@ export const fetchUserProfile = async (userid,token) =>{
   };
 
   const response = await fetch(apiUrl+'user_profile/'+userid ,requestOptions)
-  const data = await response.json()
-  return data
+  let data 
+  let status =  response.status
+  console.log(status)
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
+  
 }
 
 export const patchUserProfile = async (userid,token,items) =>{

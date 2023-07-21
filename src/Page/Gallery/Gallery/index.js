@@ -172,18 +172,17 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           // const refreshTokenResult = refreshToken()
-
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-              console.log(d)
-            })
-            
+          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
+          setCurrentHeaders(headers)
+          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+            console.log(d)
           })
+          // refreshToken().then(data =>{
+          // })
         }else{
           handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
             console.log(d)
@@ -211,7 +210,7 @@ function Index() {
             {
               data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
             }
-            <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+            <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
               {data.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
@@ -270,6 +269,9 @@ function Index() {
 
 
             </div>
+            {loading && <div className='text-white/80 flex justify-center my-4 text-xs '>
+              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入中..</div> 
+            </div>}
           </div>
 
 

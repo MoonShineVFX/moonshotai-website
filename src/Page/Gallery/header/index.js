@@ -7,10 +7,10 @@ import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocum
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
-function Index({currentUser,isLoggedIn}) {
+function Index({isLoggedIn}) {
 
   //CHECK IS USER LOGIN DATABASE
-  // const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   // const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -44,43 +44,90 @@ function Index({currentUser,isLoggedIn}) {
         
       }
   }
-  const handleLogin = async()=>{
-    liff.init({liffId: liffID})
-    .then(function() {
+  const handleLogin = async () => {
+    try {
+      await liff.init({ liffId: liffID });
       if (liff.isLoggedIn()) {
         const accessToken = liff.getAccessToken();
         localStorage.setItem('isLogin', true);
-        if(accessToken){
-          liff.getProfile().then(profile=>{
-            localStorage.setItem('lineProfile', JSON.stringify(profile));
-
-            fetchLineLogin(profile)
-              .then((lined)=>{
-                localStorage.setItem('loginTokenData', JSON.stringify(lined));
-                fetchUserProfile(lined.user_id, lined.token)
-                  .then((udata)=>{
-                  localStorage.setItem('currentUser', JSON.stringify(udata));
-                  })
-                  .catch((error) => console.error(error));
-              })
-              .catch((error) => console.error(error));
-          })
-        }else{
-          liff.login();
+        if (accessToken) {
+          const profile = await liff.getProfile();
+          localStorage.setItem('lineProfile', JSON.stringify(profile));
+          const lined = await fetchLineLogin(profile);
+          localStorage.setItem('loginTokenData', JSON.stringify(lined));
+          const udata = await fetchUserProfile(lined.user_id, lined.token);
+          localStorage.setItem('currentUser', JSON.stringify(udata));
+        } else {
+          // 用戶未取得 accessToken，可能需要進行其他處理
         }
+      } else {
+        // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
+        console.log('用戶未登入');
       }
-    })
+    } catch (error) {
+      console.error('Error handling user login: ', error);
+    }
+  };
+
+  //針對頭像檢查
+  const checkUserForHeader = async()=>{
+    const storedLoginTokenData = localStorage.getItem('loginTokenData');
+    if(storedLoginTokenData){
+      try{
+        const userLoginData = JSON.parse(storedLoginTokenData)
+        const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
+        if(udata === 401){
+          setCurrentUser({})
+        } else{
+          setCurrentUser(udata)
+        }
+
+      } catch (error){
+        console.error('Error initializing LIFF: ', error.message);
+      }
+    } else {
+        // 未找到登入資訊，執行其他操作或導向登入頁面
+    }
   }
-  // useEffect(()=>{
-  //   if (process.env.NODE_ENV === 'production') {
-  //     getStoredLocalData().then((localData)=>{
-  //       setIsLoggedIn(localData.isLogin)
-  //       setLineLoginToken(localData.loginToken)
-  //       setLineProfile(localData.lineProfile)
-  //       setCurrentUser(localData.currentUser)
-  //     })
-  //   }
-  // })
+  const checkUserLogin = async ()=>{
+    const storedLoginTokenData = localStorage.getItem('loginTokenData');
+    if(storedLoginTokenData){
+      try{
+        const userLoginData = JSON.parse(storedLoginTokenData)
+        const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
+        if(udata === 401){
+          liff.init({ liffId: 'YOUR_LIFF_APP_ID' });
+          if (liff.isLoggedIn()) {
+            liff.login();
+          } else{
+            const accessToken = liff.getAccessToken();
+            if(accessToken){
+              const profile = await liff.getProfile();
+              localStorage.setItem('lineProfile', JSON.stringify(profile));
+              const lined = await fetchLineLogin(profile);
+              localStorage.setItem('loginTokenData', JSON.stringify(lined));
+              const udata = await fetchUserProfile(lined.user_id, lined.token);
+              localStorage.setItem('currentUser', JSON.stringify(udata));
+              setCurrentUser(udata);
+            }
+          }
+        } else{
+          setCurrentUser(udata)
+        }
+
+      } catch (error){
+        console.error('Error initializing LIFF: ', error.message);
+      }
+    } else {
+        // 未找到登入資訊，執行其他操作或導向登入頁面
+    }
+
+  
+  }
+  useEffect(()=>{
+    checkUserForHeader()
+
+  },[])
   
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
@@ -122,7 +169,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <Link to='/profile'  className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <Link   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
           <div className="block  ml-auto">
               <button

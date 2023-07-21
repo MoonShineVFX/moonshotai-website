@@ -56,18 +56,17 @@ function Post() {
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)
-        
+        setLineLoginData(localData.loginToken)
         setLineProfile(localData.lineProfile)
         setCurrentUser(localData.currentUser)
+        let loginToken = localData.loginToken
         let currentUser = localData.currentUser
         let headers = {'Content-Type': 'application/json'} 
         if(localData.isLogin){
           // const refreshTokenResult = refreshToken()
-          refreshToken().then(tData =>{
-            setLineLoginData(tData.token)
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${tData.token}` }
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
             fetchGalleriesDetail(headers,id).then(gData=>{
-              console.log(gData)
+              // console.log(gData)
               setImageData(gData);
               // 
               fetchComments(gData).then(data=>{
@@ -80,7 +79,7 @@ function Post() {
                   setIsHaveUserComment(isUserid)
                 })
             })
-            fetchUserCollections(currentUser.id,tData.token).then(collections=>{
+            fetchUserCollections(currentUser.id,loginToken).then(collections=>{
               const findCollectionId = collections.results.some((item)=>{
                 return item.id === parseInt(id)
               })
@@ -91,10 +90,9 @@ function Post() {
               }
             })
 
-          })
+  
         }else{
           fetchGalleriesDetail(headers,id).then(gdata=>{
-
             setImageData(gdata);
             fetchComments(gdata).then(data=>{
               // console.log(data)
