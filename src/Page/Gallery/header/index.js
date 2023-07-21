@@ -122,7 +122,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <div onClick={handleLogin} className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</div>
+            <Link to='/profile'  className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
           <div className="block  ml-auto">
               <button

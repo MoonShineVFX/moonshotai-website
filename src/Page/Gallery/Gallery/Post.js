@@ -52,6 +52,7 @@ function Post() {
     //   navigate('/gallery'); // 导航到指定页面
     // }
   };
+  //TODO no login many time
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)

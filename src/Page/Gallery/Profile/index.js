@@ -117,6 +117,7 @@ function Index() {
   const handleModalClose = () => {
     setSelectedImage(null);
   };
+    //TODO no login many time
   const initializeLineLogin = async () => {
     liff.init({
       liffId: liffID
@@ -541,6 +542,7 @@ function Index() {
 
 
   //LISTEN  LOGIN IF not LINE INIT
+  //TODO no login many time
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
       // initializeLineLogin()
