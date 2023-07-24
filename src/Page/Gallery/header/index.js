@@ -53,30 +53,34 @@ function Index({}) {
       
 
   }
+  const handleLoginProcess = async () => {
+    const profile = await liff.getProfile();
+    localStorage.setItem('lineProfile', JSON.stringify(profile));
+    const lined = await fetchLineLogin(profile);
+    localStorage.setItem('loginTokenData', JSON.stringify(lined));
+    const udata = await fetchUserProfile(lined.user_id, lined.token);
+    localStorage.setItem('currentUser', JSON.stringify(udata));
+    setCurrentUser(udata);
+  };
   const handleLogin = async () => {
     try {
       liff.init({ liffId: liffID })
-      .then(()=>{
-        if (liff.isLoggedIn()) {
-          const accessToken = liff.getAccessToken();
-          localStorage.setItem('isLogin', true);
-          if (accessToken) {
-            console.log('ＯＫ可以做站內登入')
-            const profile = await liff.getProfile();
-            localStorage.setItem('lineProfile', JSON.stringify(profile));
-            const lined = await fetchLineLogin(profile);
-            localStorage.setItem('loginTokenData', JSON.stringify(lined));
-            const udata = await fetchUserProfile(lined.user_id, lined.token);
-            localStorage.setItem('currentUser', JSON.stringify(udata));
+        .then(()=>{
+          if (liff.isLoggedIn()) {
+            const accessToken = liff.getAccessToken();
+            localStorage.setItem('isLogin', true);
+            if (accessToken) {
+              console.log('ＯＫ可以做站內登入')
+              handleLoginProcess()
+            } else {
+              // 用戶未取得 accessToken，可能需要進行其他處理
+            }
           } else {
-            // 用戶未取得 accessToken，可能需要進行其他處理
+            // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
+            console.log('用戶 未line 登入');
+            liff.login();
           }
-        } else {
-          // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
-          console.log('用戶 未line 登入');
-          liff.login();
-        }
-      })
+        })
 
     } catch (error) {
       console.error('Error handling user login: ', error);
@@ -117,15 +121,10 @@ function Index({}) {
             } else{
               const accessToken = liff.getAccessToken();
               if(accessToken){
-                const profile = await liff.getProfile();
-                localStorage.setItem('lineProfile', JSON.stringify(profile));
-                const lined = await fetchLineLogin(profile);
-                localStorage.setItem('loginTokenData', JSON.stringify(lined));
-                const udata = await fetchUserProfile(lined.user_id, lined.token);
-                localStorage.setItem('currentUser', JSON.stringify(udata));
+                handleLoginProcess()
                 localStorage.setItem('isLogin', true);
                 setIsLoggedIn(true)
-                setCurrentUser(udata);
+
               }
             }
           })
@@ -147,19 +146,14 @@ function Index({}) {
             } else{
               const accessToken = liff.getAccessToken();
               if(accessToken){
-                const profile = await liff.getProfile();
-                localStorage.setItem('lineProfile', JSON.stringify(profile));
-                const lined = await fetchLineLogin(profile);
-                localStorage.setItem('loginTokenData', JSON.stringify(lined));
-                const udata = await fetchUserProfile(lined.user_id, lined.token);
-                localStorage.setItem('currentUser', JSON.stringify(udata));
+                handleLoginProcess();
                 localStorage.setItem('isLogin', true);
                 setIsLoggedIn(true)
-                setCurrentUser(udata);
+
               }
             }
           })
-    }
+        }
 
   
   }
