@@ -7,6 +7,7 @@ import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocum
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index({isLoggedIn}) {
 
   //CHECK IS USER LOGIN DATABASE
@@ -19,7 +20,7 @@ function Index({isLoggedIn}) {
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessLogout, setIsProcessLogout] = useState(false);
   const navigate = useNavigate();
-  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
   const handleLogout = async()=>{
       if(isLoggedIn){
           console.log('init完成可處理登出')
