@@ -145,7 +145,7 @@ function Index({isLoggedIn}) {
   useEffect(()=>{
     checkUserLogin()
 
-  },[])
+  },[isLoggedIn,currentUser])
   
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
