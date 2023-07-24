@@ -111,33 +111,7 @@ function Index({}) {
           await liff.init({ liffId: liffID });
           if (!liff.isLoggedIn()) {
            return
-          } else{
-            const accessToken = liff.getAccessToken();
-            if(accessToken){
-              const profile = await liff.getProfile();
-              localStorage.setItem('lineProfile', JSON.stringify(profile));
-              const lined = await fetchLineLogin(profile);
-              localStorage.setItem('loginTokenData', JSON.stringify(lined));
-              const udata = await fetchUserProfile(lined.user_id, lined.token);
-              localStorage.setItem('currentUser', JSON.stringify(udata));
-              localStorage.setItem('isLogin', true);
-              setIsLoggedIn(true)
-              setCurrentUser(udata);
-            }
-          }
-        } else{
-          setCurrentUser(udata)
-        }
-
-      } catch (error){
-        console.error('Error initializing LIFF: ', error.message);
-      }
-    } else {
-        // 未找到登入資訊，執行其他操作或導向登入頁面
-        await liff.init({ liffId: liffID });
-        if (!liff.isLoggedIn()) {
-          return
-        } else{
+          } 
           const accessToken = liff.getAccessToken();
           if(accessToken){
             const profile = await liff.getProfile();
@@ -150,7 +124,33 @@ function Index({}) {
             setIsLoggedIn(true)
             setCurrentUser(udata);
           }
+          
+        } else{
+          setCurrentUser(udata)
         }
+
+      } catch (error){
+        console.error('Error initializing LIFF: ', error.message);
+      }
+    } else {
+        // 未找到登入資訊，執行其他操作或導向登入頁面
+        await liff.init({ liffId: liffID });
+        if (!liff.isLoggedIn()) {
+          return
+        } 
+        const accessToken = liff.getAccessToken();
+        if(accessToken){
+          const profile = await liff.getProfile();
+          localStorage.setItem('lineProfile', JSON.stringify(profile));
+          const lined = await fetchLineLogin(profile);
+          localStorage.setItem('loginTokenData', JSON.stringify(lined));
+          const udata = await fetchUserProfile(lined.user_id, lined.token);
+          localStorage.setItem('currentUser', JSON.stringify(udata));
+          localStorage.setItem('isLogin', true);
+          setIsLoggedIn(true)
+          setCurrentUser(udata);
+        }
+        
     }
 
   
