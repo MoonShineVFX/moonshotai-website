@@ -4,7 +4,7 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModul
 import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
-import liff from '@line/liff';
+
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
@@ -20,14 +20,15 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
-
+import liff from '@line/liff';
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Storage", display:true,data_name:"total_storages"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
-const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
 function Index() {
 
   const [images, setImages] = useState({});

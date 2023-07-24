@@ -11,12 +11,14 @@ import ReportModal from './ReportModal';
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
 ]
+
 function Orders() {
-  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
