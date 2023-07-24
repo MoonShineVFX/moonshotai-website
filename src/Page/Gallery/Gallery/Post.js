@@ -5,7 +5,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -67,6 +67,13 @@ function Post() {
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
             fetchGalleriesDetail(headers,id).then(gData=>{
               // console.log(gData)
+              if(gData === 401){
+                setTimeout(()=>{
+                  removeLocalStorageItem().then(data=>{
+                    window.location.reload();
+                  })
+                },500)
+              }
               setImageData(gData);
               // 
               fetchComments(gData).then(data=>{
@@ -98,10 +105,11 @@ function Post() {
               // console.log(data)
               setComments(data)
               setCommentsResults(data.results)
-              const isUserid = data.results.some((item,index)=>{
-                return item.author.id === currentUser.id
-              })
-              setIsHaveUserComment(isUserid)
+              // const isUserid = data.results.some((item,index)=>{
+              //   console.log(item)
+              //   return item.author.id === currentUser.id
+              // })
+              // setIsHaveUserComment(isUserid)
             })
           })
         }

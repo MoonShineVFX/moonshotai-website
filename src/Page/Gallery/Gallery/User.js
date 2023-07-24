@@ -5,7 +5,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
 import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal} from '../helpers/componentsHelper'
-import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
@@ -81,8 +81,15 @@ function User() {
         setCurrentUser(data.currentUser)
         let loginToken = data.loginToken
         let user = data.currentUser
-
+        if(data.isLogin){
           fetchUserFollowings(user.id,loginToken).then(followings =>{
+            if(followings === 401){
+              setTimeout(()=>{
+                removeLocalStorageItem().then(data=>{
+                  window.location.reload();
+                })
+              },500)
+            }
             const findFollowId = followings.some(item=>{
               return item.id === parseInt(id)
             })
@@ -92,15 +99,15 @@ function User() {
               setIsFollowed(false)
             }
           })
+        }
+
 
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
-
         fetchUserPublicImages(data.id, currentPage, pageSize).then(data=>{
-
           if(data === undefined) return
           setPublicImage(data)
           setPublicImageResults(data.results)

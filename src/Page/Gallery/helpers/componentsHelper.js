@@ -48,19 +48,19 @@ export const CallToLoginModal = ({closeModal})=>{
   }
   return (
     <div className=' fixed z-50 top-0 left-0 w-full'>
-      <div className='bg-black/50 w-full h-screen' onClick={handleClose}></div>
+      <div className='bg-black/60 w-full h-screen' onClick={handleClose}></div>
       <motion.div 
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className=' border-lime-500 border bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800  p-4 box-border text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-zinc-800 rounded-md  p-4 box-border text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
           <div className=' font-bold'>Message</div>
-          <div className='text-white/70'>Please sign in to use this feature</div>
+          <div className='text-white/70 text-xs'>Please sign in to use this feature</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <Link to='/profile' className=' bg-lime-700/50 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in right now</Link>
-            <button type="button" className='text-white/80' onClick={handleClose}>Maybe next time</button>
+            <Link to='/profile' className=' bg-lime-600/80 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in right now</Link>
+            <button type="button" className='text-white/50' onClick={handleClose}>Maybe next time</button>
           </div>
         </div>
 

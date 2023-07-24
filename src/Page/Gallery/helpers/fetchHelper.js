@@ -136,8 +136,14 @@ export const fetchUserFollowings =async (userid,token) =>{
     }
   };
   const response =await fetch(apiUrl+'users/'+userid+'/followings' ,requestOptions)
-  const data =await response.json()
-  return data
+  let status = response.status
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
     
 
 }
@@ -430,8 +436,14 @@ export const fetchGalleriesDetail = async (headers,id) => {
     headers:headers
   };
   const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
-  const data = await response.json()
-  return data
+  let status = response.status
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
 }
 /**
  * copy prompt galleries/<int:id>/prompt_copy

@@ -5,7 +5,7 @@ import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
+import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
@@ -180,6 +180,13 @@ function Index() {
           setCurrentHeaders(headers)
           handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
             console.log(d)
+            if(d === 401){
+              setTimeout(()=>{
+                removeLocalStorageItem().then(data=>{
+                  window.location.reload();
+                })
+              },500)
+            }
           })
           // refreshToken().then(data =>{
           // })

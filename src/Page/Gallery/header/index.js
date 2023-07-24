@@ -51,18 +51,20 @@ function Index({isLoggedIn}) {
         const accessToken = liff.getAccessToken();
         localStorage.setItem('isLogin', true);
         if (accessToken) {
-          const profile = await liff.getProfile();
-          localStorage.setItem('lineProfile', JSON.stringify(profile));
-          const lined = await fetchLineLogin(profile);
-          localStorage.setItem('loginTokenData', JSON.stringify(lined));
-          const udata = await fetchUserProfile(lined.user_id, lined.token);
-          localStorage.setItem('currentUser', JSON.stringify(udata));
+          console.log('ＯＫ可以做站內登入')
+          // const profile = await liff.getProfile();
+          // localStorage.setItem('lineProfile', JSON.stringify(profile));
+          // const lined = await fetchLineLogin(profile);
+          // localStorage.setItem('loginTokenData', JSON.stringify(lined));
+          // const udata = await fetchUserProfile(lined.user_id, lined.token);
+          // localStorage.setItem('currentUser', JSON.stringify(udata));
         } else {
           // 用戶未取得 accessToken，可能需要進行其他處理
         }
       } else {
         // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
-        console.log('用戶未登入');
+        console.log('用戶 未line 登入');
+        liff.login();
       }
     } catch (error) {
       console.error('Error handling user login: ', error);
@@ -214,7 +216,12 @@ function Index({isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={() => setIsOpen(!isOpen)}><MdLogin color="#88ad48"/>Sign in to</Link>
+                <div 
+                  className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3' 
+                  onClick={() => {
+                    handleLogin()
+                    setIsOpen(!isOpen)
+                    }}><MdLogin color="#88ad48"/>Sign in to</div>
               </div>
             }
             <div className='my-3 '>
