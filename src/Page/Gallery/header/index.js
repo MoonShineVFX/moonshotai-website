@@ -158,7 +158,7 @@ function Index({}) {
   
   }
   useEffect(()=>{
-    checkUserLogin()
+    // checkUserLogin()
 
   },[isLoggedIn,currentUser])
   
