@@ -101,7 +101,12 @@ function Index({}) {
         // 未找到登入資訊，執行其他操作或導向登入頁面
     }
   }
+  const [isCheckUserLoginExecuted, setIsCheckUserLoginExecuted] = useState(false);
   const checkUserLogin = async ()=>{
+    if (isCheckUserLoginExecuted) {
+      return;
+    }
+    setIsCheckUserLoginExecuted(true);
     const storedLoginTokenData = localStorage.getItem('loginTokenData');
     if(storedLoginTokenData){
       try{
@@ -155,6 +160,7 @@ function Index({}) {
 
   
   }
+
   useEffect(()=>{
     checkUserLogin()
 
