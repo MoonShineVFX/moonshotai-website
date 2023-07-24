@@ -241,13 +241,19 @@ export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,
       'Authorization': `Bearer ${token}`
     }
   };
+  
   if(uuid){
     const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
-    const data =await response.json()
-    return data
-    
+    let status = response.status
+    let data 
+    if(status === 401){
+      return 401
+    }else{
+      data = await response.json()
+      return data
+    }
   } else{
-
+    return 'user error'
   }
 
 }

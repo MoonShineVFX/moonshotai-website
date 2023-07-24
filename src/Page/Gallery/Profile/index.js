@@ -556,28 +556,31 @@ function Index() {
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           console.log('profilePage is login:', data.isLogin)
-          refreshToken().then(data =>{
+      
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
             setToken(data.token)
             setLineLoginData(data.token)
-            getSubscriptions(data.token).then(odata=>{
-              console.log(odata)
-              setSubsData(odata)
+            // getSubscriptions(data.token).then(odata=>{
+            //   console.log(odata)
+            //   setSubsData(odata)
+            // })
+            handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels).then((d)=>{
+              console.log(d)
             })
-            fetchUserProfile(data.user_id, data.token)
-                .then((data)=> {
-                  // console.log(data)
-                  setCurrentProfile(data)
-                  localStorage.setItem('currentUser', JSON.stringify(data));
-                })
+            // fetchUserProfile(data.user_id, data.token)
+            //     .then((data)=> {
+            //       // console.log(data)
+            //       setCurrentProfile(data)
+            //       localStorage.setItem('currentUser', JSON.stringify(data));
+            //     })
                   
-                .catch((error) => console.error(error));
+            //     .catch((error) => console.error(error));
             // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
-            handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
-              
 
-          })
+          // refreshToken().then(data =>{
+
+          // })
         }else{
           initializeLineLogin()
         }
