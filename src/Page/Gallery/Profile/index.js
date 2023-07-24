@@ -553,19 +553,19 @@ function Index() {
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
         let lineProfile = data.lineProfile
+        let loginToken = data.loginToken
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           console.log('profilePage is login:', data.isLogin)
       
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
             setCurrentHeaders(headers)
-            setToken(data.token)
-            setLineLoginData(data.token)
+            setToken(loginToken)
             // getSubscriptions(data.token).then(odata=>{
             //   console.log(odata)
             //   setSubsData(odata)
             // })
-            handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels).then((d)=>{
+            handleRenders(data.user_id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
               console.log(d)
             })
             // fetchUserProfile(data.user_id, data.token)
