@@ -8,11 +8,11 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
-function Index({isLoggedIn}) {
+function Index({}) {
 
   //CHECK IS USER LOGIN DATABASE
   const [currentUser, setCurrentUser] = useRecoilState(userState)
-  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   // const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const isLogin = useRecoilValue(isLoginState)
@@ -111,6 +111,8 @@ function Index({isLoggedIn}) {
               localStorage.setItem('loginTokenData', JSON.stringify(lined));
               const udata = await fetchUserProfile(lined.user_id, lined.token);
               localStorage.setItem('currentUser', JSON.stringify(udata));
+              localStorage.setItem('isLogin', true);
+              setIsLoggedIn(true)
               setCurrentUser(udata);
             }
           }
@@ -135,6 +137,8 @@ function Index({isLoggedIn}) {
             localStorage.setItem('loginTokenData', JSON.stringify(lined));
             const udata = await fetchUserProfile(lined.user_id, lined.token);
             localStorage.setItem('currentUser', JSON.stringify(udata));
+            localStorage.setItem('isLogin', true);
+            setIsLoggedIn(true)
             setCurrentUser(udata);
           }
         }
