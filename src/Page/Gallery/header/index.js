@@ -22,13 +22,15 @@ function Index({}) {
   const navigate = useNavigate();
 
   const handleLogout = async()=>{
-      if(isLoggedIn){
+    liff.init({liffId: liffID}) 
+      .then(() => {
+        if(liff.isLoggedIn()){
           console.log('init完成可處理登出')
-          setIsProcessLogout(true)
-          setLineProfile(null);
-          setToken(null);
-          
+          liff.logout();
           setTimeout(()=>{
+            setIsProcessLogout(true)
+            setLineProfile(null);
+            setToken(null);
             removeLocalStorageItem().then(data=>{
               console.log(data)
               if(data === 'finish'){
@@ -42,8 +44,14 @@ function Index({}) {
               console.log('error')
             })
           },500)
-        
-      }
+        }
+      })
+      .catch((err) => {
+        console.log('初始化失敗')
+      });
+    
+      
+
   }
   const handleLogin = async () => {
     try {
