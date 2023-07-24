@@ -52,12 +52,12 @@ function Index({isLoggedIn}) {
         localStorage.setItem('isLogin', true);
         if (accessToken) {
           console.log('ＯＫ可以做站內登入')
-          // const profile = await liff.getProfile();
-          // localStorage.setItem('lineProfile', JSON.stringify(profile));
-          // const lined = await fetchLineLogin(profile);
-          // localStorage.setItem('loginTokenData', JSON.stringify(lined));
-          // const udata = await fetchUserProfile(lined.user_id, lined.token);
-          // localStorage.setItem('currentUser', JSON.stringify(udata));
+          const profile = await liff.getProfile();
+          localStorage.setItem('lineProfile', JSON.stringify(profile));
+          const lined = await fetchLineLogin(profile);
+          localStorage.setItem('loginTokenData', JSON.stringify(lined));
+          const udata = await fetchUserProfile(lined.user_id, lined.token);
+          localStorage.setItem('currentUser', JSON.stringify(udata));
         } else {
           // 用戶未取得 accessToken，可能需要進行其他處理
         }
@@ -98,9 +98,9 @@ function Index({isLoggedIn}) {
         const userLoginData = JSON.parse(storedLoginTokenData)
         const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
         if(udata === 401){
-          liff.init({ liffId: 'YOUR_LIFF_APP_ID' });
-          if (liff.isLoggedIn()) {
-            liff.login();
+          liff.init({ liffId: liffID });
+          if (!liff.isLoggedIn()) {
+            // liff.login();
           } else{
             const accessToken = liff.getAccessToken();
             if(accessToken){
@@ -122,12 +122,27 @@ function Index({isLoggedIn}) {
       }
     } else {
         // 未找到登入資訊，執行其他操作或導向登入頁面
+        liff.init({ liffId: liffID });
+        if (!liff.isLoggedIn()) {
+          // liff.login();
+        } else{
+          const accessToken = liff.getAccessToken();
+          if(accessToken){
+            const profile = await liff.getProfile();
+            localStorage.setItem('lineProfile', JSON.stringify(profile));
+            const lined = await fetchLineLogin(profile);
+            localStorage.setItem('loginTokenData', JSON.stringify(lined));
+            const udata = await fetchUserProfile(lined.user_id, lined.token);
+            localStorage.setItem('currentUser', JSON.stringify(udata));
+            setCurrentUser(udata);
+          }
+        }
     }
 
   
   }
   useEffect(()=>{
-    checkUserForHeader()
+    checkUserLogin()
 
   },[])
   
