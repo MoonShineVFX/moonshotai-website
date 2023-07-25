@@ -19,65 +19,65 @@ function Index({}) {
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessLogout, setIsProcessLogout] = useState(false);
+  const [isLiffInitialized, setIsLiffInitialized] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async()=>{
     if (!isProcessLogout) {
       setIsProcessLogout(true);
-      try{
-        await liff.init({liffId: liffID}) 
-        console.log(liff.isLoggedIn())
-        if(liff.isLoggedIn()){
-            console.log('init完成可處理登出')
-            setIsProcessLogout(true)
-            setLineProfile(null);
-            setToken(null);
-            liff.logout();
-            removeLocalStorageItem().then(data=>{
-              console.log(data)
-              if(data === 'finish'){
-                setTimeout(()=>{
-                  if (window.location.pathname === '/gallery') {
-                    window.location.reload();
-                  } else {
-                    navigate('/gallery');
-                  }
-                },500)
-              }
-            }).catch(()=>{
-              console.log('error')
-            })
-          
-        }else{
-          setTimeout(()=>{
-            setIsProcessLogout(true)
-            setLineProfile(null);
-            setToken(null);
-            removeLocalStorageItem().then(data=>{
-              console.log(data)
-              if(data === 'finish'){
+      if (!isLiffInitialized) {
+        try{
+          await liff.init({liffId: liffID}) 
+          setIsLiffInitialized(true);
+        }catch (error) {
+          console.error('Error initializing LIFF: ', error.message);
+          setIsProcessLogout(false);
+          return;
+        }
+      }
+      if(liff.isLoggedIn()){
+          console.log('init完成可處理登出')
+          setIsProcessLogout(true)
+          setLineProfile(null);
+          setToken(null);
+          liff.logout();
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              setTimeout(()=>{
                 if (window.location.pathname === '/gallery') {
                   window.location.reload();
                 } else {
                   navigate('/gallery');
                 }
+              },2000)
+            }
+          }).catch(()=>{
+            console.log('error')
+          })
+        
+      }else{
+        setTimeout(()=>{
+          setIsProcessLogout(true)
+          setLineProfile(null);
+          setToken(null);
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              if (window.location.pathname === '/gallery') {
+                window.location.reload();
+              } else {
+                navigate('/gallery');
               }
-            }).catch(()=>{
-              console.log('error')
-            })
-          },500)
-        }
-      }catch{
-        setIsProcessLogout(false);
+            }
+          }).catch(()=>{
+            console.log('error')
+          })
+        },500)
       }
+      
     }        
  
-
-        
-
-
-    
-      
 
   }
 
