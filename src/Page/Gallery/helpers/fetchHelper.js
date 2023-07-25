@@ -233,7 +233,7 @@ export const userDelACollectionImage = async (id,token)=>{
   const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,currModels)=>{
+export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDate,currModels)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -242,7 +242,7 @@ export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,
     }
   };
   
-  const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
   console.log(status)
   let data 

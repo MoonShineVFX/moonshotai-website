@@ -551,6 +551,7 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let user = data.currentUser
         let lineProfile = data.lineProfile
         let loginToken = data.loginToken
         if(data.isLogin){
@@ -561,7 +562,7 @@ function Index() {
             //   console.log(odata)
             //   setSubsData(odata)
             // })
-            handleRenders(data.user_id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
+            handleRenders(user.id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
               console.log(d)
             })
             // fetchUserProfile(data.user_id, data.token)
