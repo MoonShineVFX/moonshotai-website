@@ -589,6 +589,11 @@ function Index() {
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
+  if(isLoggedIn === false){
+    return(
+      <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>您必須登入平台才可以繼續瀏覽。</div>
+    )
+  }
   return (
     <div >
       <AnimatePresence>
