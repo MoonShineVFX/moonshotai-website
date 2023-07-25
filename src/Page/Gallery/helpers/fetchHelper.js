@@ -242,20 +242,18 @@ export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,
     }
   };
   
-  if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
-    let status = response.status
-    let data 
-    if(status === 401){
-      return 401
-    }else{
-      data = await response.json()
-      console.log(data)
-      return data
-    }
-  } else{
-    return 'user error'
+  const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  let status = response.status
+  console.log(status)
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    console.log(data)
+    return data
   }
+  
 
 }
 export const fetchUserPublicImages =async (uuid,page,pageSize)=>{

@@ -59,7 +59,6 @@ function Index() {
   const [name,setName]= useState('')
 
   //CHECK IS USER LOGIN DATABASE
-  const [currentHeaders , setCurrentHeaders] = useState({})
   const [subsData, setSubsData] = useState({})
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -554,12 +553,9 @@ function Index() {
         setCurrentUser(data.currentUser)
         let lineProfile = data.lineProfile
         let loginToken = data.loginToken
-        let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
-          console.log('profilePage is login:', data.isLogin)
+            console.log('profilePage is login:', data.isLogin)
       
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-            setCurrentHeaders(headers)
             setToken(loginToken)
             // getSubscriptions(data.token).then(odata=>{
             //   console.log(odata)
