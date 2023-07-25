@@ -33,7 +33,7 @@ function Index({}) {
               console.log(data)
               if(data === 'finish'){
                 liff.logout();
-                
+
                 setTimeout(()=>{
                   if (window.location.pathname === '/gallery') {
                     window.location.reload();
@@ -157,7 +157,7 @@ function Index({}) {
   }
 
   useEffect(()=>{
-    checkUserLogin()
+    // checkUserLogin()
 
   },[])
   
