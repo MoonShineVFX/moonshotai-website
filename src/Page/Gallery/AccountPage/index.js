@@ -162,38 +162,39 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let user = data.currentUser
+        let loginToken = data.loginToken
         let lineProfile = data.lineProfile
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           console.log('profilePage is login:', data.isLogin)
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            setToken(data.token)
-            setLineLoginData(data.token)
-            getSubscriptions(data.token).then(odata=>{
+
+            // headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            // setCurrentHeaders(headers)
+            setToken(loginToken)
+            getSubscriptions(loginToken).then(odata=>{
               // console.log(odata)
               setSubsData(odata)
             })
-            fetchUserProfile(data.user_id, data.token)
-                .then((data)=> {
-                  // console.log(data)
-                  setCurrentProfile(data)
-                  localStorage.setItem('currentUser', JSON.stringify(data));
-                })
-                  
-                .catch((error) => console.error(error));
+            fetchUserProfile(user.id,loginToken).then((udata)=>{
+              if(udata === 401){
+                setCurrentUser({})
+              } else{
+                setCurrentUser(udata)
+              }
+            })
 
 
-          })
+          // refreshToken().then(data =>{
+          // })
         }else{
-          initializeLineLogin()
+          // initializeLineLogin()
         }
         
       })
 
     }else{
-      devLogin()
+      // devLogin()
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 

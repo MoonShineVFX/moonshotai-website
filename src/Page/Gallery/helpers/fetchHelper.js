@@ -54,6 +54,33 @@ export const useDevUserLogin = () =>{
   return [devLogin,isLogin,token]
 
 }
+export const handleLogin = async()=>{
+  try {
+    await liff.init({ liffId: liffID });
+    console.log(liff.isLoggedIn())
+    if (liff.isLoggedIn()) {
+      const accessToken = liff.getAccessToken();
+      localStorage.setItem('isLogin', true);
+      if (accessToken) {
+        console.log('ＯＫ可以做站內登入')
+        const profile = await liff.getProfile();
+        localStorage.setItem('lineProfile', JSON.stringify(profile));
+        const lined = await fetchLineLogin(profile);
+        localStorage.setItem('loginTokenData', JSON.stringify(lined));
+        const udata = await fetchUserProfile(lined.user_id, lined.token);
+        localStorage.setItem('currentUser', JSON.stringify(udata));
+      } else {
+        // 用戶未取得 accessToken，可能需要進行其他處理
+      }
+    } else {
+      // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
+      console.log('用戶 未line 登入');
+      liff.login();
+    }
+  } catch (error) {
+    console.error('Error handling user login: ', error);
+  }
+}
 export const refreshToken = async () =>{
   const storedLineProfile = localStorage.getItem('lineProfile');
   // console.log('refreshToken', storedLineProfile)
@@ -136,8 +163,14 @@ export const fetchUserFollowings =async (userid,token) =>{
     }
   };
   const response =await fetch(apiUrl+'users/'+userid+'/followings' ,requestOptions)
-  const data =await response.json()
-  return data
+  let status = response.status
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
     
 
 }
@@ -227,7 +260,7 @@ export const userDelACollectionImage = async (id,token)=>{
   const data =await response
   return data
 }
-export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,currModels)=>{
+export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDate,currModels)=>{
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -235,14 +268,18 @@ export const fetchUserImages =async (uuid,token,page,pageSize,startDate,endDate,
       'Authorization': `Bearer ${token}`
     }
   };
-  if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
-    const data =await response.json()
+  
+  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  let status = response.status
+  console.log(status)
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
     return data
-    
-  } else{
-
   }
+  
 
 }
 export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
@@ -330,8 +367,16 @@ export const fetchUserProfile = async (userid,token) =>{
   };
 
   const response = await fetch(apiUrl+'user_profile/'+userid ,requestOptions)
-  const data = await response.json()
-  return data
+  let data 
+  let status =  response.status
+  console.log(status)
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
+  
 }
 
 export const patchUserProfile = async (userid,token,items) =>{
@@ -422,8 +467,14 @@ export const fetchGalleriesDetail = async (headers,id) => {
     headers:headers
   };
   const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
-  const data = await response.json()
-  return data
+  let status = response.status
+  let data 
+  if(status === 401){
+    return 401
+  }else{
+    data = await response.json()
+    return data
+  }
 }
 /**
  * copy prompt galleries/<int:id>/prompt_copy

@@ -5,7 +5,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
 import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal} from '../helpers/componentsHelper'
-import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
@@ -76,12 +76,20 @@ function User() {
   useEffect(()=>{
     getStoredLocalData().then(data=>{
         setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
         let user = data.currentUser
-        refreshToken().then(tData =>{
-          setLineLoginData(tData.token)
-          fetchUserFollowings(user.id,tData.token).then(followings =>{
+        if(data.isLogin){
+          fetchUserFollowings(user.id,loginToken).then(followings =>{
+            if(followings === 401){
+              setTimeout(()=>{
+                removeLocalStorageItem().then(data=>{
+                  window.location.reload();
+                })
+              },500)
+            }
             const findFollowId = followings.some(item=>{
               return item.id === parseInt(id)
             })
@@ -91,23 +99,21 @@ function User() {
               setIsFollowed(false)
             }
           })
-        })
+        }
+
+
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   useEffect(()=>{
     fetchUser(id)
       .then(data => {
-        // console.log(data)
-        // console.log(id)
         fetchUserPublicImages(data.id, currentPage, pageSize).then(data=>{
-
           if(data === undefined) return
-          console.log(data)
           setPublicImage(data)
           setPublicImageResults(data.results)
         })
         setUserData(data);
-        // console.log(data)
+
   
       })
 
@@ -130,7 +136,7 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-12'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                <img src={userData.profile_image} alt="" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
 

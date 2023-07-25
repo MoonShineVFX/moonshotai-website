@@ -6,81 +6,168 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
-function Index({currentUser,isLoggedIn}) {
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData,handleLogin} from '../helpers/fetchHelper'
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+function Index({}) {
 
   //CHECK IS USER LOGIN DATABASE
-  // const [currentUser, setCurrentUser] = useRecoilState(userState)
-  // const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   // const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const isLogin = useRecoilValue(isLoginState)
   const [token, setToken] = useRecoilState(loginState)
   const [isOpen, setIsOpen] = useState(false);
   const [isProcessLogout, setIsProcessLogout] = useState(false);
+  const [isLiffInitialized, setIsLiffInitialized] = useState(false);
   const navigate = useNavigate();
-  const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
   const handleLogout = async()=>{
-      if(isLoggedIn){
+    if (!isProcessLogout) {
+      setIsProcessLogout(true);
+      if (!isLiffInitialized) {
+        try{
+          await liff.init({liffId: liffID}) 
+          setIsLiffInitialized(true);
+        }catch (error) {
+          console.error('Error initializing LIFF: ', error.message);
+          setIsProcessLogout(false);
+          return;
+        }
+      }
+      if(liff.isLoggedIn()){
           console.log('init完成可處理登出')
           setIsProcessLogout(true)
           setLineProfile(null);
           setToken(null);
-          
-          setTimeout(()=>{
-            removeLocalStorageItem().then(data=>{
-              console.log(data)
-              if(data === 'finish'){
+          liff.logout();
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              setTimeout(()=>{
                 if (window.location.pathname === '/gallery') {
                   window.location.reload();
                 } else {
                   navigate('/gallery');
                 }
-              }
-            }).catch(()=>{
-              console.log('error')
-            })
-          },500)
-        
-      }
-  }
-  const handleLogin = async()=>{
-    liff.init({liffId: liffID})
-    .then(function() {
-      if (liff.isLoggedIn()) {
-        const accessToken = liff.getAccessToken();
-        localStorage.setItem('isLogin', true);
-        if(accessToken){
-          liff.getProfile().then(profile=>{
-            localStorage.setItem('lineProfile', JSON.stringify(profile));
-
-            fetchLineLogin(profile)
-              .then((lined)=>{
-                localStorage.setItem('loginTokenData', JSON.stringify(lined));
-                fetchUserProfile(lined.user_id, lined.token)
-                  .then((udata)=>{
-                  localStorage.setItem('currentUser', JSON.stringify(udata));
-                  })
-                  .catch((error) => console.error(error));
-              })
-              .catch((error) => console.error(error));
+              },2000)
+            }
+          }).catch(()=>{
+            console.log('error')
           })
-        }else{
-          liff.login();
-        }
+        
+      }else{
+        setTimeout(()=>{
+          setIsProcessLogout(true)
+          setLineProfile(null);
+          setToken(null);
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              if (window.location.pathname === '/gallery') {
+                window.location.reload();
+              } else {
+                navigate('/gallery');
+              }
+            }
+          }).catch(()=>{
+            console.log('error')
+          })
+        },500)
       }
-    })
+      
+    }        
+ 
+
   }
-  // useEffect(()=>{
-  //   if (process.env.NODE_ENV === 'production') {
-  //     getStoredLocalData().then((localData)=>{
-  //       setIsLoggedIn(localData.isLogin)
-  //       setLineLoginToken(localData.loginToken)
-  //       setLineProfile(localData.lineProfile)
-  //       setCurrentUser(localData.currentUser)
-  //     })
-  //   }
-  // })
+
+  //針對頭像檢查
+  const checkUserForHeader = async()=>{
+    const storedLoginTokenData = localStorage.getItem('loginTokenData');
+    if(storedLoginTokenData){
+      try{
+        const userLoginData = JSON.parse(storedLoginTokenData)
+        const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
+        if(udata === 401){
+          setCurrentUser({})
+        } else{
+          setCurrentUser(udata)
+        }
+
+      } catch (error){
+        console.error('Error initializing LIFF: ', error.message);
+      }
+    } else {
+        // 未找到登入資訊，執行其他操作或導向登入頁面
+    }
+  }
+  
+  const [isCheckUserLoginExecuted, setIsCheckUserLoginExecuted] = useState(false);
+  const checkUserLogin = async ()=>{
+    if (isCheckUserLoginExecuted) {
+      return;
+    }
+    setIsCheckUserLoginExecuted(true);
+    const storedLoginTokenData = localStorage.getItem('loginTokenData');
+    if(storedLoginTokenData){
+      try{
+        const userLoginData = JSON.parse(storedLoginTokenData)
+        const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
+        if(udata === 401){
+          await liff.init({ liffId: liffID });
+          console.log(liff.isLoggedIn())
+          if (!liff.isLoggedIn()) {
+           return
+          } 
+          const accessToken = liff.getAccessToken();
+          if(accessToken){
+            const profile = await liff.getProfile();
+            localStorage.setItem('lineProfile', JSON.stringify(profile));
+            const lined = await fetchLineLogin(profile);
+            localStorage.setItem('loginTokenData', JSON.stringify(lined));
+            const udata = await fetchUserProfile(lined.user_id, lined.token);
+            localStorage.setItem('currentUser', JSON.stringify(udata));
+            localStorage.setItem('isLogin', true);
+            setIsLoggedIn(true)
+            setCurrentUser(udata);
+          }
+          
+        } else{
+          setCurrentUser(udata)
+        }
+
+      } catch (error){
+        console.error('Error initializing LIFF: ', error.message);
+      }
+    } else {
+        // 未找到登入資訊，執行其他操作或導向登入頁面
+        await liff.init({ liffId: liffID });
+        console.log(liff.isLoggedIn())
+        if (!liff.isLoggedIn()) {
+          return
+        } 
+        const accessToken = liff.getAccessToken();
+        if(accessToken){
+          const profile = await liff.getProfile();
+          localStorage.setItem('lineProfile', JSON.stringify(profile));
+          const lined = await fetchLineLogin(profile);
+          localStorage.setItem('loginTokenData', JSON.stringify(lined));
+          const udata = await fetchUserProfile(lined.user_id, lined.token);
+          localStorage.setItem('currentUser', JSON.stringify(udata));
+          localStorage.setItem('isLogin', true);
+          setIsLoggedIn(true)
+          setCurrentUser(udata);
+        }
+        
+    }
+
+  
+  }
+
+  useEffect(()=>{
+    checkUserLogin()
+
+  },[])
   
   return (
     <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
@@ -101,7 +188,7 @@ function Index({currentUser,isLoggedIn}) {
             
           </button>
       </div>
-      <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
+      <div className={`grow lg:grow-0 lg:flex lg:items-center hidden `}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' >Gallery</Link>
@@ -114,7 +201,7 @@ function Index({currentUser,isLoggedIn}) {
                 <Link to='/profile'  className='flex items-center gap-2' onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
@@ -122,7 +209,7 @@ function Index({currentUser,isLoggedIn}) {
             </div>
             
             :
-            <Link to='/profile'  className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <Link   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
           }
           <div className="block  ml-auto">
               <button
@@ -155,7 +242,7 @@ function Index({currentUser,isLoggedIn}) {
                 <Link to='/profile'  className='flex items-center gap-2'  onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
@@ -167,7 +254,12 @@ function Index({currentUser,isLoggedIn}) {
               </div>
               :
               <div className='border-b border-white/20 py-4'>
-                <Link to='/profile' className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3' onClick={() => setIsOpen(!isOpen)}><MdLogin color="#88ad48"/>Sign in to</Link>
+                <div 
+                  className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-600 flex items-center gap-3' 
+                  onClick={() => {
+                    handleLogin()
+                    setIsOpen(!isOpen)
+                    }}><MdLogin color="#88ad48"/>Sign in to</div>
               </div>
             }
             <div className='my-3 '>

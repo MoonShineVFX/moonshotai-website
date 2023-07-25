@@ -25,6 +25,7 @@
     "react-image-file-resizer": "^0.4.8",
     "react-masonry-css": "^1.0.16",
     "react-player": "^2.12.0",
+    "react-query": "^3.39.3",
     "react-responsive-masonry": "^2.1.7",
     "react-router-dom": "^6.9.0",
     "react-scripts": "5.0.1",

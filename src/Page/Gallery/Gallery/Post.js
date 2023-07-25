@@ -5,7 +5,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -56,18 +56,24 @@ function Post() {
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)
-        
+        setLineLoginData(localData.loginToken)
         setLineProfile(localData.lineProfile)
         setCurrentUser(localData.currentUser)
+        let loginToken = localData.loginToken
         let currentUser = localData.currentUser
         let headers = {'Content-Type': 'application/json'} 
         if(localData.isLogin){
           // const refreshTokenResult = refreshToken()
-          refreshToken().then(tData =>{
-            setLineLoginData(tData.token)
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${tData.token}` }
+            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
             fetchGalleriesDetail(headers,id).then(gData=>{
               // console.log(gData)
+              if(gData === 401){
+                setTimeout(()=>{
+                  removeLocalStorageItem().then(data=>{
+                    window.location.reload();
+                  })
+                },500)
+              }
               setImageData(gData);
               // 
               fetchComments(gData).then(data=>{
@@ -80,7 +86,7 @@ function Post() {
                   setIsHaveUserComment(isUserid)
                 })
             })
-            fetchUserCollections(currentUser.id,tData.token).then(collections=>{
+            fetchUserCollections(currentUser.id,loginToken).then(collections=>{
               const findCollectionId = collections.results.some((item)=>{
                 return item.id === parseInt(id)
               })
@@ -91,19 +97,19 @@ function Post() {
               }
             })
 
-          })
+  
         }else{
           fetchGalleriesDetail(headers,id).then(gdata=>{
-
             setImageData(gdata);
             fetchComments(gdata).then(data=>{
               // console.log(data)
               setComments(data)
               setCommentsResults(data.results)
-              const isUserid = data.results.some((item,index)=>{
-                return item.author.id === currentUser.id
-              })
-              setIsHaveUserComment(isUserid)
+              // const isUserid = data.results.some((item,index)=>{
+              //   console.log(item)
+              //   return item.author.id === currentUser.id
+              // })
+              // setIsHaveUserComment(isUserid)
             })
           })
         }
@@ -309,7 +315,7 @@ function Post() {
                   <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
                     <div className='w-7'>
                       <div className='pt-[100%] relative'>
-                        <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                        <img src={imageData?.author?.profile_image} alt="" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                       </div>
                     </div>
                     <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>

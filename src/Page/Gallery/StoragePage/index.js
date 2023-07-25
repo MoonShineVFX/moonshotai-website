@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle } from "react-icons/md";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare } from "react-icons/md";
 import { FaShareSquare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -201,11 +201,13 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
  
                     </div>
-                    <div className='text-white p-2'>
-                      <div className={'rounded-full p-2' + (display_home ?  ' bg-zinc-100 text-black' : ' bg-zinc-800 text-white' )} onClick={()=>{
-                        onHandleDisplayHome(image)
-                      }}> <MdModeEdit size={15}/></div>
+                    <div className='flex gap-4'>
+                      <div className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
+                        <MdRemoveCircle />移除留存
+                      </div>
+
                     </div>
+
                     <motion.div
                       className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
             
@@ -242,16 +244,14 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     </motion.div>
                     
                   </div>
-                  <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                  <div className=' bg-gradient-to-t from-zinc-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                     <div className='text-sm'>
                       {title ?title : created_at.substr(0,10)}
                     </div>
-                    <div className='flex gap-4'>
-                      <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdRemoveCircle />移除留存
-                      </div>
-
-
+                    <div className='text-white'>
+                      <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-lime-200 text-lime-900' : ' bg-white text-black' )} onClick={()=>{
+                        onHandleDisplayHome(image)
+                      }}> <MdIosShare size={18}/> 分享到藝廊</div>
                     </div>
 
                   </div>

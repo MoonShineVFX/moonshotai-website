@@ -5,7 +5,7 @@ import EditUserEmailForm from '../Components/EditUserEmailForm';
 import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
 import Footer from '../../Home/Footer';
@@ -95,7 +95,9 @@ function Index() {
       setIsNeedLogin(true)
       liff.init({liffId: liffID}).then(()=>{
         console.log('init完成可準備登入')
-        setTimeout(()=>{liff.login();},500)
+        if(!liff.isLoggedIn()){
+          setTimeout(()=>{liff.login();},500)
+        }
       })
     }
 
@@ -145,7 +147,6 @@ function Index() {
         // startLinePayFlow(pid)
 
         if(!currentUser.email){
-          console.log('234')
           setIsLoadingReq(false);
           setIsLoadingBlueReq(false);
           setTimeout(()=>{
@@ -155,7 +156,6 @@ function Index() {
           return
           // startLinePayFlow(pid)
         } else if(currentUser.email.length <= 0 || currentUser.email === null){
-          console.log('234')
           setIsLoadingReq(false);
           setIsLoadingBlueReq(false);
           setTimeout(()=>{
@@ -181,7 +181,9 @@ function Index() {
         setIsNeedLogin(true)
         liff.init({liffId: liffID}).then(()=>{
           console.log('init完成可準備登入')
-          setTimeout(()=>{liff.login();},500)
+          if(!liff.isLoggedIn()){
+            setTimeout(()=>{liff.login();},500)
+          }
         })
       }
   }
@@ -204,8 +206,9 @@ function Index() {
       console.log('尚未登入需要登入')
       setIsNeedLogin(true)
       liff.init({liffId: liffID}).then(()=>{
-        console.log('init完成可準備登入')
-        setTimeout(()=>{liff.login();},500)
+        if(!liff.isLoggedIn()){
+          setTimeout(()=>{liff.login();},500)
+        }
       })
     }
   }
@@ -228,8 +231,9 @@ function Index() {
             setReqError(true)
             setIsNeedLogin(true)
             liff.init({liffId: liffID}).then(()=>{
-              console.log('init完成可準備登入')
-              setTimeout(()=>{liff.login();},500)
+              if(!liff.isLoggedIn()){
+                setTimeout(()=>{liff.login();},500)
+              }
             })
             return
           }
@@ -282,7 +286,10 @@ function Index() {
             setIsNeedLogin(true)
             liff.init({liffId: liffID}).then(()=>{
               console.log('init完成可準備登入')
-              setTimeout(()=>{liff.login();},500)
+              if(!liff.isLoggedIn()){
+                setTimeout(()=>{liff.login();},500)
+              }
+
             })
             return
           }
@@ -310,11 +317,12 @@ function Index() {
         setCurrentUser(data.currentUser)
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
-          refreshToken().then(data =>{
+       
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
             setCurrentHeaders(headers)
-            setLineLoginData(data.token)
-          })
+          // setLineLoginData(data.token)
+          // refreshToken().then(data =>{
+          // })
         }
         
       })

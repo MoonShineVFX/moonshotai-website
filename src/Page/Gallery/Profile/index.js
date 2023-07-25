@@ -4,10 +4,11 @@ import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModul
 import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
-import liff from '@line/liff';
+
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
+import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,14 +21,15 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
-
+import liff from '@line/liff';
+const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Storage", display:true,data_name:"total_storages"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
-const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
 function Index() {
 
   const [images, setImages] = useState({});
@@ -58,7 +60,6 @@ function Index() {
   const [name,setName]= useState('')
 
   //CHECK IS USER LOGIN DATABASE
-  const [currentHeaders , setCurrentHeaders] = useState({})
   const [subsData, setSubsData] = useState({})
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -551,34 +552,35 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let user = data.currentUser
         let lineProfile = data.lineProfile
-        let headers = {'Content-Type': 'application/json'} 
+        let loginToken = data.loginToken
         if(data.isLogin){
-          console.log('profilePage is login:', data.isLogin)
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            setToken(data.token)
-            setLineLoginData(data.token)
-            getSubscriptions(data.token).then(odata=>{
-              console.log(odata)
-              setSubsData(odata)
+            console.log('profilePage is login:', data.isLogin)
+      
+            setToken(loginToken)
+            // getSubscriptions(data.token).then(odata=>{
+            //   console.log(odata)
+            //   setSubsData(odata)
+            // })
+            handleRenders(user.id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
+              console.log(d)
             })
-            fetchUserProfile(data.user_id, data.token)
-                .then((data)=> {
-                  // console.log(data)
-                  setCurrentProfile(data)
-                  localStorage.setItem('currentUser', JSON.stringify(data));
-                })
+            // fetchUserProfile(data.user_id, data.token)
+            //     .then((data)=> {
+            //       // console.log(data)
+            //       setCurrentProfile(data)
+            //       localStorage.setItem('currentUser', JSON.stringify(data));
+            //     })
                   
-                .catch((error) => console.error(error));
+            //     .catch((error) => console.error(error));
             // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
-            handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
-              
 
-          })
+          // refreshToken().then(data =>{
+
+          // })
         }else{
-          initializeLineLogin()
+          // initializeLineLogin()
         }
         
       })
@@ -588,6 +590,13 @@ function Index() {
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
+  if(isLoggedIn === false || !currentProfile ){
+    return <div className='text-white/70 text-xl    md:text-left md:text-3xl  mb-4  md:w-8/12 mx-auto'>
+       <Header />
+       <EmptyProfilePage />
+    </div>
+    
+  }
   return (
     <div >
       <AnimatePresence>

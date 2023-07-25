@@ -5,7 +5,7 @@ import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
 import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments} from '../helpers/fetchHelper'
+import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
@@ -172,18 +172,24 @@ function Index() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
           // const refreshTokenResult = refreshToken()
-
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-              console.log(d)
-            })
-            
+          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
+          setCurrentHeaders(headers)
+          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+            console.log(d)
+            if(d === 401){
+              setTimeout(()=>{
+                removeLocalStorageItem().then(data=>{
+                  window.location.reload();
+                })
+              },500)
+            }
           })
+          // refreshToken().then(data =>{
+          // })
         }else{
           handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
             console.log(d)
@@ -211,7 +217,7 @@ function Index() {
             {
               data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
             }
-            <div className='grid grid-cols-2 md:grid-cols-5 gap-4'>
+            <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
               {data.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
@@ -224,7 +230,7 @@ function Index() {
                         <img  
                           src={urls.thumb} alt={image?.description} 
                           data-id={id}
-                          className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
   
                         />
                       </div>
@@ -251,7 +257,7 @@ function Index() {
                     <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
                       <Link to={`/user/${author?.id}`}  className='w-8'>
                         <div className='pt-[100%] relative'>
-                          <img src={author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                          <img src={author?.profile_image} alt="" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
                         </div>
                       </Link>
 
@@ -270,6 +276,9 @@ function Index() {
 
 
             </div>
+            {loading && <div className='text-white/80 flex justify-center my-4 text-xs '>
+              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入中..</div> 
+            </div>}
           </div>
 
 
