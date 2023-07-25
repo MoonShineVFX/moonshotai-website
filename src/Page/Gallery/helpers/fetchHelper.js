@@ -57,6 +57,7 @@ export const useDevUserLogin = () =>{
 export const handleLogin = async()=>{
   try {
     await liff.init({ liffId: liffID });
+    console.log(liff.isLoggedIn())
     if (liff.isLoggedIn()) {
       const accessToken = liff.getAccessToken();
       localStorage.setItem('isLogin', true);

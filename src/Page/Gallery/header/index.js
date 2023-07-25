@@ -22,8 +22,9 @@ function Index({}) {
   const navigate = useNavigate();
 
   const handleLogout = async()=>{
-    liff.init({liffId: liffID}) 
-      .then(() => {
+        await liff.init({liffId: liffID}) 
+
+        console.log(liff.isLoggedIn())
         if(liff.isLoggedIn()){
             console.log('init完成可處理登出')
             setIsProcessLogout(true)
@@ -46,7 +47,6 @@ function Index({}) {
               console.log('error')
             })
           
-          
         }else{
           setTimeout(()=>{
             setIsProcessLogout(true)
@@ -66,10 +66,7 @@ function Index({}) {
             })
           },500)
         }
-      })
-      .catch((err) => {
-        console.log('初始化失敗')
-      });
+
     
       
 
@@ -109,6 +106,7 @@ function Index({}) {
         const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
         if(udata === 401){
           await liff.init({ liffId: liffID });
+          console.log(liff.isLoggedIn())
           if (!liff.isLoggedIn()) {
            return
           } 
@@ -135,6 +133,7 @@ function Index({}) {
     } else {
         // 未找到登入資訊，執行其他操作或導向登入頁面
         await liff.init({ liffId: liffID });
+        console.log(liff.isLoggedIn())
         if (!liff.isLoggedIn()) {
           return
         } 
