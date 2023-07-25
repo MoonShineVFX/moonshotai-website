@@ -182,7 +182,7 @@ function Index() {
         liff.init({liffId: liffID}).then(()=>{
           console.log('init完成可準備登入')
           if(!liff.isLoggedIn()){
-            setTimeout(()=>{liff.login({ redirectUri: "/price" });},500)
+            setTimeout(()=>{liff.login();},500)
           }
         })
       }
