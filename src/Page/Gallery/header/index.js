@@ -25,25 +25,27 @@ function Index({}) {
     liff.init({liffId: liffID}) 
       .then(() => {
         if(liff.isLoggedIn()){
-          console.log('init完成可處理登出')
-          liff.logout();
-          setTimeout(()=>{
+            console.log('init完成可處理登出')
             setIsProcessLogout(true)
             setLineProfile(null);
             setToken(null);
             removeLocalStorageItem().then(data=>{
               console.log(data)
               if(data === 'finish'){
-                if (window.location.pathname === '/gallery') {
-                  window.location.reload();
-                } else {
-                  navigate('/gallery');
-                }
+                liff.logout();
+                
+                setTimeout(()=>{
+                  if (window.location.pathname === '/gallery') {
+                    window.location.reload();
+                  } else {
+                    navigate('/gallery');
+                  }
+                },500)
               }
             }).catch(()=>{
               console.log('error')
             })
-          },500)
+          
           
         }else{
           setTimeout(()=>{
