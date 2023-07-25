@@ -188,7 +188,7 @@ function Index({}) {
             
           </button>
       </div>
-      <div className={`grow lg:grow-0 lg:flex lg:items-center hidden lg:block`}>
+      <div className={`grow lg:grow-0 lg:flex lg:items-center hidden `}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
           <Link to='/gallery' className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600' >Gallery</Link>
@@ -242,7 +242,7 @@ function Index({}) {
                 <Link to='/profile'  className='flex items-center gap-2'  onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
