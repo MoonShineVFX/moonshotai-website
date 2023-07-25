@@ -586,7 +586,7 @@ function Index() {
       })
 
     }else{
-      // devLogin()
+      devLogin()
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
