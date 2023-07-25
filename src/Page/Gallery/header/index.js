@@ -45,6 +45,24 @@ function Index({}) {
             })
           },500)
           
+        }else{
+          setTimeout(()=>{
+            setIsProcessLogout(true)
+            setLineProfile(null);
+            setToken(null);
+            removeLocalStorageItem().then(data=>{
+              console.log(data)
+              if(data === 'finish'){
+                if (window.location.pathname === '/gallery') {
+                  window.location.reload();
+                } else {
+                  navigate('/gallery');
+                }
+              }
+            }).catch(()=>{
+              console.log('error')
+            })
+          },500)
         }
       })
       .catch((err) => {
