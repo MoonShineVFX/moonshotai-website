@@ -6,7 +6,7 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData} from '../helpers/fetchHelper'
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData,handleLogin} from '../helpers/fetchHelper'
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index({}) {
 
@@ -72,32 +72,6 @@ function Index({}) {
       
 
   }
-  const handleLogin = async () => {
-    try {
-      await liff.init({ liffId: liffID });
-      if (liff.isLoggedIn()) {
-        const accessToken = liff.getAccessToken();
-        localStorage.setItem('isLogin', true);
-        if (accessToken) {
-          console.log('ＯＫ可以做站內登入')
-          const profile = await liff.getProfile();
-          localStorage.setItem('lineProfile', JSON.stringify(profile));
-          const lined = await fetchLineLogin(profile);
-          localStorage.setItem('loginTokenData', JSON.stringify(lined));
-          const udata = await fetchUserProfile(lined.user_id, lined.token);
-          localStorage.setItem('currentUser', JSON.stringify(udata));
-        } else {
-          // 用戶未取得 accessToken，可能需要進行其他處理
-        }
-      } else {
-        // 用戶未登入，可以進行其他處理，例如顯示登入按鈕
-        console.log('用戶 未line 登入');
-        liff.login();
-      }
-    } catch (error) {
-      console.error('Error handling user login: ', error);
-    }
-  };
 
   //針對頭像檢查
   const checkUserForHeader = async()=>{
@@ -119,6 +93,7 @@ function Index({}) {
         // 未找到登入資訊，執行其他操作或導向登入頁面
     }
   }
+  
   const [isCheckUserLoginExecuted, setIsCheckUserLoginExecuted] = useState(false);
   const checkUserLogin = async ()=>{
     if (isCheckUserLoginExecuted) {
