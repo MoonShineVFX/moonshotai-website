@@ -315,7 +315,7 @@ function Post() {
                   <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
                     <div className='w-7'>
                       <div className='pt-[100%] relative'>
-                        <img src={imageData?.author?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                        <img src={imageData?.author?.profile_image} alt="" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                       </div>
                     </div>
                     <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>

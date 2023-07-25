@@ -277,7 +277,6 @@ export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDat
     return 401
   }else{
     data = await response.json()
-    console.log(data)
     return data
   }
   

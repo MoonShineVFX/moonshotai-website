@@ -136,7 +136,7 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-12'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                <img src={userData.profile_image} alt="" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
 

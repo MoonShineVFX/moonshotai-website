@@ -201,7 +201,7 @@ function Index({}) {
                 <Link to='/profile'  className='flex items-center gap-2' onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
