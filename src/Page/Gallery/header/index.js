@@ -22,19 +22,20 @@ function Index({}) {
   const navigate = useNavigate();
 
   const handleLogout = async()=>{
+    if (!isProcessLogout) {
+      setIsProcessLogout(true);
+      try{
         await liff.init({liffId: liffID}) 
-
         console.log(liff.isLoggedIn())
         if(liff.isLoggedIn()){
             console.log('init完成可處理登出')
             setIsProcessLogout(true)
             setLineProfile(null);
             setToken(null);
+            liff.logout();
             removeLocalStorageItem().then(data=>{
               console.log(data)
               if(data === 'finish'){
-                liff.logout();
-
                 setTimeout(()=>{
                   if (window.location.pathname === '/gallery') {
                     window.location.reload();
@@ -66,6 +67,14 @@ function Index({}) {
             })
           },500)
         }
+      }catch{
+        setIsProcessLogout(false);
+      }
+    }        
+ 
+
+        
+
 
     
       
