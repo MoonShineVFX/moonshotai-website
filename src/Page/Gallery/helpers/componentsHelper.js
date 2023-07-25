@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import {motion} from 'framer-motion'
 import { MdContentCopy } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useForm,Controller } from 'react-hook-form';
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
 export const SharePostModal = ({closeModal})=>{
@@ -352,6 +352,38 @@ export const EmptyRenderPage = ()=>{
         <div>尚無圖片</div>
         開始用 Moonshot 創造第一張 AI 圖吧！
       </div>
+    </div>
+  )
+}
+export const EmptyProfilePage = ()=>{
+
+  const [countdown, setCountdown] = useState(5);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // 計時器回調函數
+      if (countdown > 0) {
+        // 如果倒數秒數大於 0，則繼續倒數
+        setCountdown(countdown - 1);
+      } else {
+        // 如果倒數秒數等於 0，則導向藝廊首頁
+        navigate('/gallery'); // 導向藝廊首頁路由，請根據您的路由配置調整路由路徑
+      }
+    }, 1000); // 計時器間隔為 1 秒
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [countdown, navigate]);
+  return(
+    <div className='flex flex-col text-sm justify-center items-center py-12 px-4'>
+      <div className='w-1/3 my-8'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      </div>
+      <div>在這個頁面您可以管理自己的AI作品。</div>
+      <div>您必須登入平台才可以繼續瀏覽。</div>
+      <div>請登入您的帳號。</div>
+      <div className='pt-10'>{countdown} 秒後自動回到藝廊首頁。</div>
     </div>
   )
 }
