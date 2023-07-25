@@ -170,24 +170,24 @@ function Orders() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
         let headers = {'Content-Type': 'application/json'} 
         if(data.isLogin){
-          refreshToken().then(data =>{
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            setCurrentHeaders(headers)
-            setLineLoginData(data.token)
-            getOrders(data.token).then(odata=>{
-              console.log(odata)
+
+            // headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            // setCurrentHeaders(headers)
+            // setLineLoginData(data.token)
+            getOrders(loginToken).then(odata=>{
               setOrders(odata)
             })
-            getSubscriptions(data.token).then(sdata=>{
-              console.log('subs',sdata)
+            getSubscriptions(loginToken).then(sdata=>{
               setSubscriptions(sdata)
             })
             getPlans().then(pdata=>{
               setPlans(pdata)
             })
-          })
+          // refreshToken().then(data =>{
+          // })
         }
         
       })
