@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import EditUserEmailForm from '../Components/EditUserEmailForm';
-import {LoadingCircle,DisableBuyButton,DisableInputInvite} from '../helpers/componentsHelper'
+import {LoadingCircle,DisableBuyButton,DisableInputInvite,CallToLoginModal} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
@@ -18,8 +18,10 @@ function Index() {
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [currentPlan, setCurrentPlan] = useState('')
   const [currentHeaders , setCurrentHeaders] = useState({})
 
+  const [ isLoginForPrice , setIsLoginForPrice] = useState(false)
   const [isNeddWithin5Days, setIsNeedWithin5Days]= useState(false)
   const [isOrdering,setIsOrdering] = useState(false)
   const [isLoadingReq, setIsLoadingReq] = useState(false);
@@ -30,6 +32,9 @@ function Index() {
   const [isNeedEmail, setIsNeedEmail] = useState(false);
   const [isSuccessSaveEmail, setIsSuccessSaveEmail] = useState(false);
   const [isReadyToPayPage, setIsReadyToPayPage,] = useState(false);
+  const [ flowMsg ,setFlowMsg] = useState('')
+  const [ selectPlanId ,setSelectPlanId] = useState(0)
+  const [ selectPayment ,setSelectPayment] = useState('')
 
   const [isInviteLoadingReq, setIsInviteLoadingReq] = useState(false);
   const [isInviteSuccess, setIsInviteSuccess] = useState(false);
@@ -93,12 +98,7 @@ function Index() {
     }else{
       console.log('尚未登入需要登入')
       setIsNeedLogin(true)
-      liff.init({liffId: liffID}).then(()=>{
-        console.log('init完成可準備登入')
-        if(!liff.isLoggedIn()){
-          setTimeout(()=>{liff.login();},500)
-        }
-      })
+      setIsLoginForPrice(true)
     }
 
   }
@@ -113,6 +113,9 @@ function Index() {
 
   }
   const handleSaveEditEmail = (data)=>{
+    setFlowMsg('')
+    console.log(selectPlanId)
+    console.log(selectPayment)
     console.log(data)
     patchUserEmail(currentUser.id,linLoginData,data)
       .then((data)=> {
@@ -124,9 +127,16 @@ function Index() {
                 setCurrentUser(data)
                 localStorage.setItem('currentUser', JSON.stringify(data));
                 setTimeout(()=>{
-                  setIsNeedEmail(false)
+                  // setIsNeedEmail(false)
                   setIsSuccessSaveEmail(true)
+                  setFlowMsg('資料確認。')
                 },600)
+                // STAND BY 這步驟會建立訂單 然後跳轉付款頁面
+                setTimeout(()=>{
+                  const payment = selectPayment === 'linepay' ? startLinePayFlow(selectPlanId) : startBluePayFlow(selectPlanId) ;
+                  console.log('go payment')
+                },500)
+
               })  
               .catch((error) => console.error(error));
           },1000)
@@ -138,53 +148,22 @@ function Index() {
   const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
   //按下按鈕錢 先驗證是否已登入，要求登入
   const handlePay =(pid,payment_type)=>{
-      
       if(isLoggedIn){
         console.log('已登入')
         console.log(currentUser)
-        setIsNeedEmail(false)
-        setIsCheckAccount(true)
+        setIsNeedEmail(true)
+        setIsCheckAccount(false)
         // startLinePayFlow(pid)
-
-        if(!currentUser.email){
-          setIsLoadingReq(false);
-          setIsLoadingBlueReq(false);
-          setTimeout(()=>{
-            setIsCheckAccount(false)
-            setIsNeedEmail(true)
-          },1200)
-          return
-          // startLinePayFlow(pid)
-        } else if(currentUser.email.length <= 0 || currentUser.email === null){
-          setIsLoadingReq(false);
-          setIsLoadingBlueReq(false);
-          setTimeout(()=>{
-            setIsCheckAccount(false)
-            setIsNeedEmail(true)
-          },1200)
-          return
-        }else{
-          setTimeout(()=>{
-            const payment = payment_type === 'linepay' ? startLinePayFlow(pid) : startBluePayFlow(pid) ;
-            console.log('go payment')
-          },500)
-
-          if(diffDays(currentUser.subscription_end_at)){
-            // setIsNeedWithin5Days(false)
-            // startLinePayFlow(pid)
-          }else{
-            // setIsNeedWithin5Days(true)
-          }
-        }
       }else{
         console.log('尚未登入需要登入')
         setIsNeedLogin(true)
-        liff.init({liffId: liffID}).then(()=>{
-          console.log('init完成可準備登入')
-          if(!liff.isLoggedIn()){
-            setTimeout(()=>{liff.login();},500)
-          }
-        })
+        setIsLoginForPrice(true)
+        // liff.init({liffId: liffID}).then(()=>{
+        //   console.log('init完成可準備登入')
+        //   if(!liff.isLoggedIn()){
+        //     setTimeout(()=>{liff.login();},500)
+        //   }
+        // })
       }
   }
   const handleBluePay = (pid) =>{
@@ -205,21 +184,29 @@ function Index() {
     }else{
       console.log('尚未登入需要登入')
       setIsNeedLogin(true)
-      liff.init({liffId: liffID}).then(()=>{
-        if(!liff.isLoggedIn()){
-          setTimeout(()=>{liff.login();},500)
-        }
-      })
+      setIsLoginForPrice(true)
+      // liff.init({liffId: liffID}).then(()=>{
+      //   if(!liff.isLoggedIn()){
+      //     setTimeout(()=>{liff.login();},500)
+      //   }
+      // })
     }
   }
 
   const startLinePayFlow = (pid)=>{
+    setTimeout(()=>{
+      setFlowMsg('正在建立訂單。')
+    },800)
 
     setIsOrdering(true)
     setIsLoadingReq(false);
     setReqError(false)
     postOrder(pid,linLoginData).then(odata=>{
       console.log('已建立訂單',odata)
+      setTimeout(()=>{
+        setFlowMsg('訂單建立完成。')
+      },1500)
+
       setIsOrdering(false)
       setIsLoadingReq(true)
       setTimeout(()=>{
@@ -240,8 +227,9 @@ function Index() {
           setIsCheckAccount(false)
           setIsReadyToPayPage(true)
           setTimeout(()=>{
+            setFlowMsg('送出訂單資訊，準備跳轉頁面。')
             window.location.href = url;
-          },500)
+          },1500)
 
         }).catch(e=>{console.log(e)})
       },500)
@@ -304,9 +292,9 @@ function Index() {
     setSelectedBlock(blockIndex);
   };
   const blocks = [
-    { title: '免費方案',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直/V','橫 /H'],advanced:[],daily_limit:'不限次數',storage:'100 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
-    { title: '開通推薦序號',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
-    { title: '進階方案',price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
+    { title: '免費方案',full_title:'MoonShot 體驗會員 5 天',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直/V','橫 /H'],advanced:[],daily_limit:'不限次數',storage:'100 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
+    { title: '開通推薦序號',full_title:'MoonShot 體驗會員 5 天',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
+    { title: '進階方案',full_title:'MoonShot 進階方案 30 天', price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
   ];
   //TODO no login many time
   useEffect(()=>{
@@ -330,7 +318,9 @@ function Index() {
   return (
     <div>
        <AnimatePresence>
-        {isNeedEmail && <EditUserEmailForm closeModal={()=>setIsNeedEmail(false)} handleSaveEditEmail={handleSaveEditEmail}/>  }
+        {isNeedEmail && <EditUserEmailForm closeModal={()=>setIsNeedEmail(false)} handleSaveEditEmail={handleSaveEditEmail} currentUser={currentUser} currentPlan={currentPlan} selectPayment={selectPayment} flowMsg={flowMsg}/>   }
+        {isLoginForPrice && <CallToLoginModal closeModal={()=>setIsLoginForPrice(false)}/>}
+
        </AnimatePresence>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
@@ -428,7 +418,12 @@ function Index() {
                           block.payment_line && <div>
                             <button 
                               className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
-                              onClick={()=>handlePay(block.plan_id,'linepay')}
+                              onClick={()=>{
+                                handlePay('linepay')
+                                setCurrentPlan(block.full_title)
+                                setSelectPlanId(block.plan_id)
+                                setSelectPayment('linepay')
+                              }}
                             >
                               <MdCreditCard size={20} />  Line pay <MdArrowRightAlt />
                               {isLoadingReq && <div className='text-xs'>等待回應...</div>}
@@ -442,7 +437,12 @@ function Index() {
                           !block.payment_blue && <div>
                             <button 
                               className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
-                              onClick={()=>handlePay(block.plan_id,'bluepay')}
+                              onClick={()=>{
+                                handlePay(block.plan_id,'bluepay')
+                                setCurrentPlan(block.full_title)
+                                setSelectPlanId(block.plan_id)
+                                setSelectPayment('bluepay')}
+                              }
                             >
                               <MdCreditCard size={20} />  藍新支付 <MdArrowRightAlt />
                               {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
@@ -450,13 +450,13 @@ function Index() {
                           
                           </div>
                         }
-                          <div className='text-sm text-yellow-500 mt-2'>
-                            {isNeedLogin&&  <div className='text-xs mt-1'>尚未登入，將引導至 Line 登入</div>}
-                            {isReqError && <div className='text-xs'>錯誤，需重新登入</div>}
-                            {isNeddWithin5Days &&   <div className='text-xs mt-1'>進階功能使用期限未到期，無法續購。</div>}
+                          <div className='text-sm text-center text-yellow-500 mt-2'>
+                            {isNeedLogin&&  <div className=''>尚未登入會員，無法執行。</div>}
+                            {isReqError && <div className=''>錯誤，需重新登入再試。</div>}
+                            {isNeddWithin5Days &&   <div className=''>進階功能使用期限未到期，無法續購。</div>}
                             {isCheckAccount &&<div>檢查帳號資料..</div>}
-                            {isNeedEmail &&<div>購買前需要填入Email..</div>}
-                            {isSuccessSaveEmail && <div>填寫資料儲存成功，請再點擊按鈕購買。</div>}
+                            {isNeedEmail &&<div>確認購買前需要的必要資料</div>}
+                            {isSuccessSaveEmail && <div>填寫資料儲存成功。</div>}
                             {isReadyToPayPage && <div>檢查完成，準備跳轉頁面..</div>}
                           </div>
 

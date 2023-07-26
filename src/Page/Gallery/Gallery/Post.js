@@ -159,7 +159,7 @@ function Post() {
       setIsLoginForComment(true)
      }else{
       if(isHaveUserComment){
-        toast('You have already commented on this image. You can edit it.', {
+        toast('請使用編輯的方式，編輯你的評論內容。', {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,

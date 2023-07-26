@@ -4,6 +4,7 @@ import { MdContentCopy } from "react-icons/md";
 import { Link,useNavigate } from "react-router-dom";
 import { useForm,Controller } from 'react-hook-form';
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
+import {handleLogin} from './fetchHelper'
 export const SharePostModal = ({closeModal})=>{
   const [ isCopied , setIsCopied ] = useState(false);
   const handleClose = ()=>{
@@ -53,14 +54,14 @@ export const CallToLoginModal = ({closeModal})=>{
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className='  bg-zinc-800 rounded-md  p-4 box-border text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-zinc-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
-          <div className=' font-bold'>Message</div>
-          <div className='text-white/70 text-xs'>Please sign in to use this feature</div>
+          <div className=' font-bold'>登入通知</div>
+          <div className='text-white/70 text-xs mt-1 mb-4'>當您要使用這些功能時，需要登入網站。</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <Link to='/profile' className=' bg-lime-600/80 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in right now</Link>
-            <button type="button" className='text-white/50' onClick={handleClose}>Maybe next time</button>
+            <div onClick={handleLogin} className=' bg-lime-600 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>現在登入</div>
+            <button type="button" className='text-white/50 text-sm' onClick={handleClose}>下次一定</button>
           </div>
         </div>
 
