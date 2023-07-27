@@ -449,6 +449,7 @@ export const fetchGalleries = async (headers,page,pageSize,startDate,endDate,cur
     headers:headers
   };
 
+
   const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
   let data 

@@ -209,7 +209,7 @@ function Index({}) {
             </div>
             
             :
-            <Link   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <div onClick={() => {handleLogin()}}   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</div>
           }
           <div className="block  ml-auto">
               <button

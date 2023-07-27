@@ -23,14 +23,21 @@ export const SharePostModal = ({closeModal})=>{
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className=' border-lime-500 border bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800  p-4 box-border text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-zinc-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
-          <div className='text-white/50'>Copy to Share</div>
-          <div className='my-3 relative'>
-            {isCopied && <div className='text-xs text-right my-1'>Copied!</div>}
-            <div className='p-2 bg-zinc-600 rounded-md flex items-center'>
-              {window.location.href} <button className='ml-5' onClick={handleCopyPrompt}><MdContentCopy /></button>
+          <div className='text-white'>作品頁面網址</div>
+          <div className='my-3 relative mx-2  mx-auto'>
+            <div className='flex justify-between mb-2'>
+            {isCopied && <div className='text-xs text-right'>Copied!</div>}
+            <button className='ml-auto' onClick={handleCopyPrompt}><MdContentCopy /></button>
+            </div>
+
+            <div className='text-xs p-2 bg-zinc-600 rounded-md  mx-auto'>
+              <div className='break-all '>
+                {window.location.href}
+              </div>
+
             </div>
           </div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>

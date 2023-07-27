@@ -12,6 +12,7 @@ import { FaHeart } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
 import EditCommentForm from '../Components/EditCommentForm';
+import { useQuery, useMutation } from 'react-query';
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useState(null)
@@ -22,10 +23,10 @@ function Post() {
   const currentLoginData = useRecoilValue(loginState)
   const isCurrentLogin = useRecoilValue(isLoginState)
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
-  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
-  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [lineProfile, setLineProfile] = useState({});
+  const [linLoginToken, setLineLoginToken] = useState('')
+  const [currentUser, setCurrentUser] = useState({})
   const [formStatus, setFormStatus] = useRecoilState(formStatusState);
   const [currentComment, setCurrentComment] = useRecoilState(commentDataState);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -38,6 +39,8 @@ function Post() {
   const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
 
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
+  const [currentHeaders , setCurrentHeaders] = useState({})
+
   const [totalPage, setTotalPage]= useState(0)
   const [pageSize, setPageSize] = useState(10)
   const navigate = useNavigate();
@@ -52,11 +55,11 @@ function Post() {
     //   navigate('/gallery'); // 导航到指定页面
     // }
   };
-  //TODO no login many time
+
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)
-        setLineLoginData(localData.loginToken)
+        setLineLoginToken(localData.loginToken)
         setLineProfile(localData.lineProfile)
         setCurrentUser(localData.currentUser)
         let loginToken = localData.loginToken
@@ -65,57 +68,61 @@ function Post() {
         if(localData.isLogin){
           // const refreshTokenResult = refreshToken()
             headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-            fetchGalleriesDetail(headers,id).then(gData=>{
-              // console.log(gData)
-              if(gData === 401){
-                setTimeout(()=>{
-                  removeLocalStorageItem().then(data=>{
-                    window.location.reload();
-                  })
-                },500)
-              }
-              setImageData(gData);
-              // 
-              fetchComments(gData).then(data=>{
-                  // console.log(data)
-                  setComments(data)
-                  setCommentsResults(data.results)
-                  const isUserid = data.results.some((item,index)=>{
-                    return item.author.id === currentUser.id
-                  })
-                  setIsHaveUserComment(isUserid)
-                })
-            })
-            fetchUserCollections(currentUser.id,loginToken).then(collections=>{
-              const findCollectionId = collections.results.some((item)=>{
-                return item.id === parseInt(id)
-              })
-              if(findCollectionId){
-                setIsCollected(true)
-              }else{
-                setIsCollected(false)
-              }
-            })
+            setCurrentHeaders(headers)
 
-  
         }else{
-          fetchGalleriesDetail(headers,id).then(gdata=>{
-            setImageData(gdata);
-            fetchComments(gdata).then(data=>{
-              // console.log(data)
-              setComments(data)
-              setCommentsResults(data.results)
-              // const isUserid = data.results.some((item,index)=>{
-              //   console.log(item)
-              //   return item.author.id === currentUser.id
-              // })
-              // setIsHaveUserComment(isUserid)
-            })
-          })
+
         }
 
       })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  },[setIsLoggedIn,setLineLoginToken,setLineProfile])
+  
+  const { data: galleryData, isLoading: isGalleryDataLoading, isError: isGalleryDataError } = useQuery(
+    ['galleryDetail', currentHeaders,id],
+    () => fetchGalleriesDetail(currentHeaders, id),
+    {
+      enabled: true, 
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (gData) => {
+        // 成功獲取數據後處理
+        setImageData(gData);
+        fetchComments(gData).then(data => {
+          setComments(data);
+          setCommentsResults(data.results);
+          const isUserid = data.results.some((item, index) => {
+            return item.author.id === currentUser.id;
+          });
+          setIsHaveUserComment(isUserid);
+        });
+      },
+    }
+  );
+  const { data: userCollection, isLoading: isUserCollectionLoading, isError: issUserCollectionError } = useQuery(
+    ['userCollections', currentUser,linLoginToken],
+    () => fetchUserCollections(currentUser.id, linLoginToken),
+    {
+      enabled: isLoggedIn === true, 
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (uData) => {
+        // 成功獲取數據後處理
+        const findCollectionId = uData.results.some((item)=>{
+          return item.id === parseInt(id)
+        })
+        if(findCollectionId){
+          setIsCollected(true)
+        }else{
+          setIsCollected(false)
+        }
+
+      },
+    }
+  );
+
+
 
 
   const handleCollection = ()=>{
@@ -126,7 +133,7 @@ function Post() {
     }else{
       // console.log(imageData)
       if(isCollected){
-        userDelACollectionImage(imageData.id,linLoginData)
+        userDelACollectionImage(imageData.id,linLoginToken)
           .then((data)=> {
             if(data.status===204){
               setIsCollected(false)
@@ -136,7 +143,7 @@ function Post() {
           })
           .catch((error) => console.error(error));
       }else{
-        userCollectionAImage(imageData,linLoginData)
+        userCollectionAImage(imageData,linLoginToken)
           .then((data)=> {
             if(data.status===200){
               setIsCollected(true)
@@ -174,7 +181,7 @@ function Post() {
         setCurrentComment(null)
         setIsCommentModal(true)
         setIsLoginForComment(false)
-        fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
+        fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginToken)
           .then((images)=> {
               setStorages(images)
               setStoragesResults(images.results)
@@ -188,7 +195,7 @@ function Post() {
   const handleEditComment = ()=>{
     setIsCommentModal(true)
     setIsLoginForComment(false)
-    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
+    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginToken)
       .then((images)=> {
           setStorages(images)
           setStoragesResults(images.results)
@@ -198,7 +205,7 @@ function Post() {
   }
   const handleSendComment= (data)=>{
     // console.log(data)
-    userPostCommentToImage(imageData,data,linLoginData)
+    userPostCommentToImage(imageData,data,linLoginToken)
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
@@ -215,7 +222,7 @@ function Post() {
   }
   const handleSaveEditComment = (id,data)=>{
     // console.log(id,data)
-    userPatchCommentToImage(id,data,linLoginData)
+    userPatchCommentToImage(id,data,linLoginToken)
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
@@ -231,7 +238,7 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSelectStorageImage = ()=>{
-    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
+    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginToken)
         .then((images)=> {
             setStorages(images)
             setStoragesResults(images.results)
@@ -248,7 +255,7 @@ function Post() {
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
-    fetchImageCopyPromptTime(imageData,linLoginData)
+    fetchImageCopyPromptTime(imageData,linLoginToken)
     setIsCopied(true)
   }
 

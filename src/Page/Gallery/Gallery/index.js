@@ -11,6 +11,7 @@ import { isLoginState,loginState, imageDataState,imageModalState,lineProfileStat
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
+import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -32,20 +33,54 @@ function Index() {
 
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
-  const [pageSize, setPageSize] = useState(14)
+  const [pageSize, setPageSize] = useState(12)
   const [startDate, setStartDate] = useState(moment().format('2022-01-01'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
 
-  const [data, setData] = useState(null)
+  // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
-  const [imageData, setImageData] = useRecoilState(imageDataState)
+  // const [imageData, setImageData] = useRecoilState(imageDataState)
   const [currentHeaders , setCurrentHeaders] = useState({})
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+  // 在此處檢查 localStorage 內的資料
+  useEffect(() => {
+    getStoredLocalData().then(data => {
+      setIsLoggedIn(data.isLogin);
+      setLineLoginData(data.loginToken);
+      setLineProfile(data.lineProfile);
+      setCurrentUser(data.currentUser);
+      let loginToken = data.loginToken
+      let headers = {'Content-Type': 'application/json'} 
+      setCurrentHeaders(headers)
+      if(data.isLogin){
+        headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
+        setCurrentHeaders(headers)
+      }
+    });
+  }, []);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
+    [ 'galleries',currentHeaders, startDate, currModels],
+    ({ pageParam = 1}) =>
+      fetchGalleries(currentHeaders, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("page");
+          return nextPage ? Number(nextPage) : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
 
 
@@ -86,16 +121,19 @@ function Index() {
     handleSelectModels(item.value)
   }
   const handleSelectDate = (value,date)=>{
+    console.log(date)
     setCurrentPage(1)
-    setPageSize(15)
+    setPageSize(12)
     setStartDate(date)
-    handleGalleries(currentHeaders,1,pageSize,date,endDate,currModels)
+    // refetch();
+    // handleGalleries(currentHeaders,1,pageSize,date,endDate,currModels)
   }
   const handleSelectModels = (value)=>{
     setCurrentPage(1)
-    setPageSize(15)
+    setPageSize(12)
     setCurrModels(value)
-    handleGalleries(currentHeaders,1,pageSize,startDate,endDate,value)
+    // refetch();
+    // handleGalleries(currentHeaders,1,pageSize,startDate,endDate,value)
   }
   // get galleries
   const handleGalleries = async (currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
@@ -117,15 +155,15 @@ function Index() {
         return 401
       }
       if(results.length === 0){
-        setData(results)
+        // setData(results)
         return 
       }
       setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
 
       if(pg === 1){
-        setData(results);
+        // setData(results);
       }else{
-        setData(prevImages => [...prevImages, ...results]);
+        // setData(prevImages => [...prevImages, ...results]);
         setCurrentPage(pg);
       }
         
@@ -150,7 +188,8 @@ function Index() {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
-          fetchMoreImages(); // 加載更多圖片
+          // fetchMoreImages(); // 加載更多圖片
+          fetchNextPage();
           setLastScrollTime(now);
         }
 
@@ -165,39 +204,39 @@ function Index() {
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
-    //TODO no login many time
-  useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let loginToken = data.loginToken
-        let headers = {'Content-Type': 'application/json'} 
-        if(data.isLogin){
-          // const refreshTokenResult = refreshToken()
-          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-          setCurrentHeaders(headers)
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-            console.log(d)
-            if(d === 401){
-              setTimeout(()=>{
-                removeLocalStorageItem().then(data=>{
-                  window.location.reload();
-                })
-              },500)
-            }
-          })
-          // refreshToken().then(data =>{
-          // })
-        }else{
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-            console.log(d)
-          })
-        }
+  // TODO no login many time
+  // useEffect(()=>{
+  //   getStoredLocalData().then(data=>{
+  //       setIsLoggedIn(data.isLogin)
+  //       setLineLoginData(data.loginToken)
+  //       setLineProfile(data.lineProfile)
+  //       setCurrentUser(data.currentUser)
+  //       let loginToken = data.loginToken
+  //       let headers = {'Content-Type': 'application/json'} 
+  //       if(data.isLogin){
+  //         // const refreshTokenResult = refreshToken()
+  //         headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
+  //         setCurrentHeaders(headers)
+  //         handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+  //           console.log(d)
+  //           if(d === 401){
+  //             setTimeout(()=>{
+  //               removeLocalStorageItem().then(data=>{
+  //                 window.location.reload();
+  //               })
+  //             },500)
+  //           }
+  //         })
+  //         // refreshToken().then(data =>{
+  //         // })
+  //       }else{
+  //         handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
+  //           console.log(d)
+  //         })
+  //       }
         
-      })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  //     })
+  // },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
   return (
     <div className='w-full '>
@@ -206,7 +245,7 @@ function Index() {
       <div className='w-11/12 md:w-9/12 mx-auto my-10'>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
 
-          {!data ? 
+          {!imageData ? 
             <LoadingLogoSpin />
           :
           <div>
@@ -215,10 +254,10 @@ function Index() {
               <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
             </div>
             {
-              data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
+              imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
             <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
-              {data.map((image,index)=>{
+              {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
                   <motion.div key={'gallery-'+index} 
@@ -276,8 +315,8 @@ function Index() {
 
 
             </div>
-            {loading && <div className='text-white/80 flex justify-center my-4 text-xs '>
-              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入中..</div> 
+            {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
             </div>}
           </div>
 
