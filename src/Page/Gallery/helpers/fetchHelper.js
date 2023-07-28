@@ -222,6 +222,7 @@ export const userStorageAImage =async (image,token) =>{
   };
   const response =await fetch(apiUrl+'images/'+image.id+'/storage', requestOptions)
   const data =await response
+  console.log(response.json())
   return data
 }
 export const userCollectionAImage =async (image,token) =>{
@@ -236,7 +237,7 @@ export const userCollectionAImage =async (image,token) =>{
   const data =await response
   return data
 }
-export const userDelAStorageImage = async (id,token)=>{
+export const userDelAStorageImage = async (image,token)=>{
   const requestOptions = {
     method: 'DELETE',
     headers: { 
@@ -244,7 +245,7 @@ export const userDelAStorageImage = async (id,token)=>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'images/'+id+'/storage', requestOptions)
+  const response =await fetch(apiUrl+'images/'+image.id+'/storage', requestOptions)
   const data =await response
   return data
 }
@@ -299,7 +300,7 @@ export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
   }
 
 }
-export const fetchUserStorages =async (userid,page,pageSize,token) =>{
+export const fetchUserStorages =async (userid,token,page,pageSize,) =>{
   const requestOptions = {
     method: 'GET',
     headers: { 

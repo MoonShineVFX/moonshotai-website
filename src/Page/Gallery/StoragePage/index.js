@@ -8,7 +8,7 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -167,18 +167,15 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           </div>
 
           {show && <ConfirmCancelMsg setShow={setShow} />  }
+
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
-          <ResponsiveMasonry
-            className=''
-            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-          >
-            <Masonry gutter={20}>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-16'>
             {imagesResults.map((image,index) => {
               const {id, urls, created_at, display_home, filename,title   } = image
               return (
-                <motion.div key={id} 
+                <motion.div key={'storage-'+id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
@@ -198,13 +195,13 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='p-2 ' onClick={()=>{
                       handleClick(id)
                     }}>
-                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+                      <button  className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></button>
  
                     </div>
                     <div className='flex gap-4'>
-                      <div className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
+                      <button  className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemoveCircle />移除留存
-                      </div>
+                      </button>
 
                     </div>
 
@@ -251,7 +248,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='text-white'>
                       <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-lime-200 text-lime-900' : ' bg-white text-black' )} onClick={()=>{
                         onHandleDisplayHome(image)
-                      }}> <MdIosShare size={18}/> 分享到藝廊</div>
+                      }}> <MdIosShare size={18}/></div>
                     </div>
 
                   </div>
@@ -260,8 +257,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
               )
 
             })}
-            </Masonry>
-          </ResponsiveMasonry>
+            </div>
 
         }
     </div>

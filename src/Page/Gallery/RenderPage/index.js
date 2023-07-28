@@ -25,7 +25,7 @@ const filterModelsDate = [
  ]
 
 
-function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels}) {
+function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -66,12 +66,12 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     
     if(image.is_storage === true) {
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      handleUpdate(image.id,newData)
-      handleRemoveStorage(image.id)
+      // handleUpdate(image.id,newData)
+      handleRemoveStorage(newData)
     }else {
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      handleUpdate(image.id,newData)
-      handleStorage(image)
+      // handleUpdate(image.id,newData)
+      handleStorage(newData)
     }
 
   }
@@ -175,6 +175,14 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
+      { isAddStorageLoading&& <motion.div 
+              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              initial={{ opacity: 0, y: -20,x:'-50%' }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              >
+                資料處理中
+              </motion.div>}
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
@@ -212,13 +220,13 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
                 <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <div className=' flex items-center  justify-center gap-1 ' >
+                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
                         <MdRemoveCircle /><span>移除留存</span>
-                      </div>
+                      </button>
                       :
-                      <div className='flex items-center  justify-center gap-1'>
+                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
                         <MdAddCircle /> <span>加入留存</span>
-                      </div>
+                      </button>
                     }
                 </div>
               </motion.div>

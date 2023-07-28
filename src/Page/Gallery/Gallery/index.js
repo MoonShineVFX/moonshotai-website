@@ -71,6 +71,7 @@ function Index() {
     {
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
+        console.log(lastPage)
         if (lastPage.next) {
           const url = new URL(lastPage.next);
           const nextPage = url.searchParams.get("page");
