@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
+import { FaShareSquare,FaShare } from "react-icons/fa";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -121,7 +122,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight +100  >= scrollHeight ) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -216,19 +217,29 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       {created_at.substr(0,10)}
                   </div>
                 </div>
+                <div className='flex gap-3'>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
+                      {
+                        is_storage ? 
+                        <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
+                          <MdRemoveCircle /><span>移除留存</span>
+                        </button>
+                        :
+                        <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
+                          <MdAddCircle /> <span>加入留存</span>
+                        </button>
+                      }
+                  </div>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1 bg-[#423EF5]/90   text-white' } onClick={()=>onHandleStorage(image)}>
 
-                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
-                    {
-                      is_storage ? 
-                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
-                        <MdRemoveCircle /><span>移除留存</span>
-                      </button>
-                      :
-                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
-                        <MdAddCircle /> <span>加入留存</span>
-                      </button>
-                    }
+                    <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
+                      <FaShare /> <span></span>
+                    </button>
+                      
+                  </div>
                 </div>
+
+
               </motion.div>
 
             )

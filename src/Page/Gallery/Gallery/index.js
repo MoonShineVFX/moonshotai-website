@@ -136,7 +136,7 @@ function Index() {
       setClientHeight(clientHeight);
       setScrollHeight(scrollHeight);
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight+100 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           // fetchMoreImages(); // 加載更多圖片
