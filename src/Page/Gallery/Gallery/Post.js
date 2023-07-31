@@ -48,9 +48,9 @@ function Post() {
   const handleBackClick = () => {
 
     if (document.referrer.includes(window.location.hostname)) {
-      navigate(-1); // 返回上一頁
+      navigate(-1); 
     } else {
-      navigate('/gallery'); // 導航到指定頁面
+      navigate(-1); 
     }
   };
 

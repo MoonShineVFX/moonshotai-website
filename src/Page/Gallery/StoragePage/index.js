@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare } from "react-icons/md";
-import { FaShareSquare } from "react-icons/fa";
+import { FaShareSquare,FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
@@ -200,7 +200,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     </div>
                     <div className='flex gap-4'>
                       <button  className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdRemoveCircle />移除留存
+                        <MdRemoveCircle />
                       </button>
 
                     </div>
@@ -246,9 +246,9 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       {title ?title : created_at.substr(0,10)}
                     </div>
                     <div className='text-white'>
-                      <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-lime-200 text-lime-900' : ' bg-white text-black' )} onClick={()=>{
+                      <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-[#423EF5]/90 text-white' : ' bg-white text-black' )} onClick={()=>{
                         onHandleDisplayHome(image)
-                      }}> <MdIosShare size={18}/></div>
+                      }}> <FaShare size={12}/></div>
                     </div>
 
                   </div>

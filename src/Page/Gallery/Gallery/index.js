@@ -124,12 +124,17 @@ function Index() {
     setPageSize(12)
     setCurrModels(value)
   }
-
+  const [scrollTop, setScrollTop] = useState(0);
+  const [clientHeight, setClientHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState(0);
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const handleScroll = () => {
     // 獲取頁面滾動相關信息
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      setScrollTop(scrollTop);
+      setClientHeight(clientHeight);
+      setScrollHeight(scrollHeight);
       // 檢查是否滾動到頁面底部
       if (scrollTop + clientHeight >= scrollHeight - 30) {
         const now = Date.now();
@@ -154,6 +159,18 @@ function Index() {
 
   return (
     <div className='w-full '>
+    
+
+      <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
+
+      
+        <div>scrollTop:{scrollTop} </div>
+        <div>clientHeight:{clientHeight} </div>
+        <div>scrollHeight:{scrollHeight}</div>
+      </div>
+        
+      
+     
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
 
       <div className='w-11/12 md:w-11/12 mx-auto my-10'>
