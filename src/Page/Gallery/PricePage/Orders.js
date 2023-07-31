@@ -8,10 +8,12 @@ import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOut
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
 import ReportModal from './ReportModal';
+import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
 const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
@@ -39,8 +41,67 @@ function Orders() {
   const [plans, setPlans] = useState(null)
 
   const [ reportMsg , setReportMsg ] = useState('')
-  
+  useEffect(()=>{
+    getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        let loginToken = data.loginToken
+        let headers = {'Content-Type': 'application/json'} 
+        if(data.isLogin){
 
+            // headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
+            // setCurrentHeaders(headers)
+            // setLineLoginData(data.token)
+            // getOrders(loginToken).then(odata=>{
+            //   setOrders(odata)
+            // })
+            // getSubscriptions(loginToken).then(sdata=>{
+            //   setSubscriptions(sdata)
+            // })
+            // getPlans().then(pdata=>{
+            //   setPlans(pdata)
+            // })
+          // refreshToken().then(data =>{
+          // })
+        }
+        
+      })
+  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  //FETCH ORDER
+  const { data: orderData, isLoading: isOrdersLoading, isError: isOrdersError } = useQuery(
+    ['orders', linLoginData],
+    () => getOrders(linLoginData),
+    {
+      enabled: linLoginData !== null,
+      onSuccess: (odata)=>{
+        setOrders(odata)
+      }
+    }
+  );
+  // FETCH SUBS
+  const { data: subsData, isLoading: isSubsLoading, isError: isSubsError } = useQuery(
+    ['subs', linLoginData],
+    () => getSubscriptions(linLoginData),
+    {
+      enabled: linLoginData !== null,
+      onSuccess: (sdata)=>{
+        setSubscriptions(sdata)
+      }
+    }
+  );
+  // FETCH PLAN 
+  const { data: PlansData, isLoading: isPlansLoading, isError: isPlansError } = useQuery(
+    ['subs', linLoginData],
+    () => getPlans(linLoginData),
+    {
+      enabled: linLoginData !== null,
+      onSuccess: (pdata)=>{
+        setPlans(pdata)
+      }
+    }
+  );
   const handleRefund = (sn)=>{
     console.log('click')
     if(isLoggedIn){
@@ -157,44 +218,10 @@ function Orders() {
   const handleMenuItemClick = (item) => {
     setSelectedItem(item);
   };
-  useEffect(()=>{
-    liff.init({liffId: liffID}).then(()=>{
-      console.log(liff.isLoggedIn())
 
-    })
-  },[])
-    //TODO no login many time
-  useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let loginToken = data.loginToken
-        let headers = {'Content-Type': 'application/json'} 
-        if(data.isLogin){
-
-            // headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            // setCurrentHeaders(headers)
-            // setLineLoginData(data.token)
-            getOrders(loginToken).then(odata=>{
-              setOrders(odata)
-            })
-            getSubscriptions(loginToken).then(sdata=>{
-              setSubscriptions(sdata)
-            })
-            getPlans().then(pdata=>{
-              setPlans(pdata)
-            })
-          // refreshToken().then(data =>{
-          // })
-        }
-        
-      })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
 
   
-  if(!orders){
+  if(!orders ){
     return(
       <div>
         <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>

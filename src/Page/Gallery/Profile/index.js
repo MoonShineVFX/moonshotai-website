@@ -128,7 +128,7 @@ function Index() {
   // FETCH Render IMAGE to PAGE 
   const { data: renderData, isLoading:isRenderDataLoading, fetchNextPage:fetchRenderNextPage, hasNextPage, isFetchingNextPage, isError:isRenderDataError, refetch:renderDataRefetch } = useInfiniteQuery(
     [ 'rendersData',currentUser,linLoginData, startDate, currModels],
-    ({ pageParam = 1}) =>
+    ({ pageParam }) =>
     fetchUserImages(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
       enabled: optionPage === 'Renders',
@@ -136,8 +136,8 @@ function Index() {
         // 檢查是否有下一頁
         if (lastPage.next) {
           const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("page");
-          return nextPage ? Number(nextPage) : undefined;
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
         }
         return undefined;
         }
@@ -148,7 +148,7 @@ function Index() {
   // FETCH Storage IMAGE to PAGE 
   const { data: storageData, isLoading:isStorageDataLoading, fetchNextPage:fetchStorageNextPage, hasNextPage:hasStorageNextPage, isFetchingNextPage:isFetchStorageNextPage, isError:isStorageDataError, refetch:storageDataRefetch } = useInfiniteQuery(
     [ 'storageData',currentUser,linLoginData, startDate, currModels],
-    ({ pageParam = 1}) =>
+    ({ pageParam }) =>
     fetchUserStorages(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
       enabled: optionPage === 'Storage',
@@ -156,8 +156,8 @@ function Index() {
         // 檢查是否有下一頁
         if (lastPage.next) {
           const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("page");
-          return nextPage ? Number(nextPage) : undefined;
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
         }
         return undefined;
         }
@@ -238,7 +238,7 @@ function Index() {
   // FETCH Collection IMAGE to PAGE 
   const { data: collectionData, isLoading:isCollectioDataLoading, fetchNextPage:fetchCollectioNextPage, hasNextPage:hasCollectioNextPage, isFetchingNextPage:isFetchCollectionNextPage, isError:isCollectioDataError, refetch:collectionDataRefetch } = useInfiniteQuery(
     [ 'collectionData',currentUser,linLoginData, startDate, currModels],
-    ({ pageParam = 1}) =>
+    ({ pageParam}) =>
     fetchUserCollections(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
       enabled: optionPage === 'Collections',
@@ -246,8 +246,8 @@ function Index() {
         // 檢查是否有下一頁
         if (lastPage.next) {
           const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("page");
-          return nextPage ? Number(nextPage) : undefined;
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
         }
         return undefined;
         }
@@ -259,7 +259,7 @@ function Index() {
   // FETCH Follow IMAGE to PAGE 
   const { data: followData, isLoading:isFollowDataLoading, fetchNextPage:fetchFollowNextPage, hasNextPage:hasFollowNextPage, isFetchingNextPage:isFetchFollowNextPage, isError:isFollowDataError, refetch:followDataRefetch } = useInfiniteQuery(
     [ 'followData',currentUser,linLoginData, startDate, currModels],
-    ({ pageParam = 1}) =>
+    ({ pageParam }) =>
     fetchUserFollowings(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
       enabled: optionPage === 'Following',
@@ -267,8 +267,8 @@ function Index() {
         // 檢查是否有下一頁
         if (lastPage.next) {
           const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("page");
-          return nextPage ? Number(nextPage) : undefined;
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
         }
         return undefined;
         }

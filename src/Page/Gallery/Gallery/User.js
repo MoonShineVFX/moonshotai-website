@@ -10,7 +10,7 @@ import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } fr
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
-import { useQuery, useMutation,useQueryClient } from 'react-query';
+import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
 function User() {
   const { id } = useParams();
   // const [userData, setUserData] = useState(null)
@@ -71,16 +71,25 @@ function User() {
       enabled: !!id, // 只有在 id 不為空時才啟用 useQuery
     }
   );
-  const { data: publicImageData, isLoading: isPublicImageLoading, isError: isPublicImageError } = useQuery(
+  const { data: publicImage, isLoading: isPublicImageLoading, isError: isPublicImageError } = useInfiniteQuery(
     ['publicImages', id, currentPage, pageSize],
-    () => fetchUserPublicImages(id, currentPage, pageSize),
+    ({ pageParam }) => fetchUserPublicImages(id, pageParam, pageSize),
     {
       enabled: !!id, // 只有在 id 不為空時才啟用 useQuery
-      onSuccess: (data)=>{
-        setPublicImageResults(data.results)
-      }
+        getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
     }
   );
+  const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  
   const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
     ['useFollowing', currentUser,linLoginToken],
     () => fetchUserFollowings(currentUser.id, linLoginToken),
@@ -205,11 +214,11 @@ function User() {
       </div>
       <div className='w-11/12 mx-auto my-10'>
 
-      {!publicImageResults ? 
+      {!publicImageData ? 
         <div className='text-white'>Loading</div> 
         :
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
-          {publicImageResults.map((image,index)=>{
+          {publicImageData.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
             return (
               <motion.div key={'gallery-'+index} 

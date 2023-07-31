@@ -46,14 +46,12 @@ function Post() {
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const handleBackClick = () => {
-    navigate('/gallery')
-    // const hasPreviousPage = navigate.length > 1;
-    // console.log(navigate.length)
-    // if (hasPreviousPage) {
-    //   navigate(-1); // 返回上一页
-    // } else {
-    //   navigate('/gallery'); // 导航到指定页面
-    // }
+
+    if (document.referrer.includes(window.location.hostname)) {
+      navigate(-1); // 返回上一頁
+    } else {
+      navigate('/gallery'); // 導航到指定頁面
+    }
   };
 
   useEffect(()=>{

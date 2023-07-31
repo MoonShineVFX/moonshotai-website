@@ -79,7 +79,6 @@ function Index() {
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
-  //TODO no login many time
   const initializeLineLogin = async () => {
     liff.init({
       liffId: liffID
@@ -121,7 +120,6 @@ function Index() {
       console.log(error);
     });
   }
-  //TODO no login many time
   const devLogin = ()=>{
     const profile ={
       displayName:  process.env.REACT_APP_NAME,

@@ -38,6 +38,7 @@ import Cooming from './Page/Gallery/Cooming';
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from "react-query/devtools";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -107,6 +108,7 @@ function App() {
       </Routes>
     </BrowserRouter>
     </RecoilRoot>
+    <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

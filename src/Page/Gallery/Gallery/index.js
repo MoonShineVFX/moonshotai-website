@@ -66,16 +66,15 @@ function Index() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
     [ 'galleries',currentHeaders, startDate, currModels],
-    ({ pageParam = 1}) =>
+    ({ pageParam }) =>
       fetchGalleries(currentHeaders, pageParam, pageSize, startDate, endDate, currModels),
     {
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
-        console.log(lastPage)
         if (lastPage.next) {
           const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("page");
-          return nextPage ? Number(nextPage) : undefined;
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
         }
         return undefined;
         }
@@ -85,14 +84,7 @@ function Index() {
 
 
 
-  const fetchMoreImages = () => {
-    if(currentPage >= totalPage || loading) {
-      return
-    } 
-    const nextPage = currentPage + 1;
-    handleGalleries(currentHeaders,nextPage,pageSize,startDate,endDate,currModels)
-    
-  }
+
   const onHandleSelectDate = (item)=>{
     // console.log(item)
     switch (item.value) {
@@ -126,59 +118,13 @@ function Index() {
     setCurrentPage(1)
     setPageSize(12)
     setStartDate(date)
-    // refetch();
-    // handleGalleries(currentHeaders,1,pageSize,date,endDate,currModels)
   }
   const handleSelectModels = (value)=>{
     setCurrentPage(1)
     setPageSize(12)
     setCurrModels(value)
-    // refetch();
-    // handleGalleries(currentHeaders,1,pageSize,startDate,endDate,value)
   }
-  // get galleries
-  const handleGalleries = async (currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
-    // console.log(currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)
-    setLoading(true);
-    try {
-      let ch = currentHeaders 
-      let pg = pageNum || currentPage 
-      let pgs = pageSizeNum || pageSize 
-      let s = sDate || startDate
-      let e = eDate || endDate
-      let m = cModels || currModels
-      // console.log(pg, pgs,s, e, m)
-      const images = await fetchGalleries(ch, pg, pgs,s, e, m);
-      const results = images.results;
 
-      if(images === 401){
-        // console.log('401')
-        return 401
-      }
-      if(results.length === 0){
-        // setData(results)
-        return 
-      }
-      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-
-      if(pg === 1){
-        // setData(results);
-      }else{
-        // setData(prevImages => [...prevImages, ...results]);
-        setCurrentPage(pg);
-      }
-        
-      
- 
-  
-      // setCurrentAuthor(images.results[0].author)
-    } catch (error) {
-      
-    } finally {
-      setLoading(false);
-    }
-
-  }
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const handleScroll = () => {
     // 獲取頁面滾動相關信息
@@ -188,7 +134,6 @@ function Index() {
       if (scrollTop + clientHeight >= scrollHeight - 30) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
-          console.log('go')
           // fetchMoreImages(); // 加載更多圖片
           fetchNextPage();
           setLastScrollTime(now);
@@ -205,45 +150,13 @@ function Index() {
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
   }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
-  // TODO no login many time
-  // useEffect(()=>{
-  //   getStoredLocalData().then(data=>{
-  //       setIsLoggedIn(data.isLogin)
-  //       setLineLoginData(data.loginToken)
-  //       setLineProfile(data.lineProfile)
-  //       setCurrentUser(data.currentUser)
-  //       let loginToken = data.loginToken
-  //       let headers = {'Content-Type': 'application/json'} 
-  //       if(data.isLogin){
-  //         // const refreshTokenResult = refreshToken()
-  //         headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-  //         setCurrentHeaders(headers)
-  //         handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-  //           console.log(d)
-  //           if(d === 401){
-  //             setTimeout(()=>{
-  //               removeLocalStorageItem().then(data=>{
-  //                 window.location.reload();
-  //               })
-  //             },500)
-  //           }
-  //         })
-  //         // refreshToken().then(data =>{
-  //         // })
-  //       }else{
-  //         handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-  //           console.log(d)
-  //         })
-  //       }
-        
-  //     })
-  // },[setIsLoggedIn,setLineLoginData,setLineProfile])
+
 
   return (
     <div className='w-full '>
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
 
-      <div className='w-11/12 md:w-9/12 mx-auto my-10'>
+      <div className='w-11/12 md:w-11/12 mx-auto my-10'>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
 
           {!imageData ? 

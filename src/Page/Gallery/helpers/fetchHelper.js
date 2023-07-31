@@ -154,7 +154,8 @@ export const fetchLineLogin = async (profile) =>{
   const data = await response.json()
   return data
 }
-export const fetchUserFollowings =async (userid,token) =>{
+export const fetchUserFollowings =async (userid,token,cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -162,7 +163,7 @@ export const fetchUserFollowings =async (userid,token) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'users/'+userid+'/followings' ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/followings?cursor='+ newCursor ,requestOptions)
   let status = response.status
   let data 
   if(status === 401){
@@ -261,7 +262,8 @@ export const userDelACollectionImage = async (id,token)=>{
   const data =await response
   return data
 }
-export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDate,currModels)=>{
+export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endDate,currModels)=>{
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -270,9 +272,8 @@ export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDat
     }
   };
   
-  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'cursor='+newCursor+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
-  console.log(status)
   let data 
   if(status === 401){
     return 401
@@ -283,7 +284,9 @@ export const fetchUserImages =async (userid,token,page,pageSize,startDate,endDat
   
 
 }
-export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
+export const fetchUserPublicImages =async (uuid,cursor,pageSize)=>{
+  let newCursor = cursor === undefined ? '' : cursor
+
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -291,7 +294,7 @@ export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
     }
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
     const data =await response.json()
     return data
     
@@ -300,7 +303,8 @@ export const fetchUserPublicImages =async (uuid,page,pageSize)=>{
   }
 
 }
-export const fetchUserStorages =async (userid,token,page,pageSize,) =>{
+export const fetchUserStorages =async (userid,token,cursor,pageSize,) =>{
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -308,13 +312,14 @@ export const fetchUserStorages =async (userid,token,page,pageSize,) =>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'users/'+userid+'/storages?'+'page='+page+'&page_size='+pageSize ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/storages?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
   const data =await response.json()
   return data
     
 
 }
-export const fetchUserCollections = async (userid,token) =>{
+export const fetchUserCollections = async (userid,token,cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -323,7 +328,7 @@ export const fetchUserCollections = async (userid,token) =>{
     }
   };
 
-  const response = await fetch(apiUrl+'users/'+userid+'/collections' ,requestOptions)
+  const response = await fetch(apiUrl+'users/'+userid+'/collections?cursor='+newCursor ,requestOptions)
   const data = await response.json()
   return data
 
@@ -370,7 +375,6 @@ export const fetchUserProfile = async (userid,token) =>{
   const response = await fetch(apiUrl+'user_profile/'+userid ,requestOptions)
   let data 
   let status =  response.status
-  console.log(status)
   if(status === 401){
     return 401
   }else{
@@ -443,15 +447,15 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * 
  * Galleries API
  */
-export const fetchGalleries = async (headers,page,pageSize,startDate,endDate,currModels) =>{
-  // console.log(headers)
+export const fetchGalleries = async (headers,cursor,pageSize,startDate,endDate,currModels) =>{
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers:headers
   };
 
 
-  const response = await fetch(apiUrl+'galleries?'+'page='+page+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  const response = await fetch(apiUrl+'galleries?'+'cursor='+newCursor+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
   let data 
   if(status === 401){
