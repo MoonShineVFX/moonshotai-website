@@ -1,7 +1,7 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare } from "react-icons/md";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare,MdRemove } from "react-icons/md";
 import { FaShareSquare,FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -130,7 +130,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight+100 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -198,10 +198,13 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       <button  className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></button>
  
                     </div>
-                    <div className='flex gap-4'>
-                      <button  className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdRemoveCircle />
+                    <div className='flex justify-end gap-1 p-1'>
+                      <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 ' onClick={()=>onHandleRemoveStorage(image)}>
+                        <MdRemove />
                       </button>
+                      <button className={'rounded-full p-2 flex  items-center ' + (display_home ?  ' bg-[#423EF5] text-white' : ' bg-white text-black' )} onClick={()=>{
+                        onHandleDisplayHome(image)
+                      }}> <FaShare size={12}/></button>
 
                     </div>
 
@@ -246,9 +249,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       {title ?title : created_at.substr(0,10)}
                     </div>
                     <div className='text-white'>
-                      <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-[#423EF5]/90 text-white' : ' bg-white text-black' )} onClick={()=>{
-                        onHandleDisplayHome(image)
-                      }}> <FaShare size={12}/></div>
+
                     </div>
 
                   </div>

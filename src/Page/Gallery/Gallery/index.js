@@ -161,13 +161,13 @@ function Index() {
     <div className='w-full '>
     
 
-      <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
+      {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
 
       
         <div>scrollTop:{scrollTop} </div>
         <div>clientHeight:{clientHeight} </div>
         <div>scrollHeight:{scrollHeight}</div>
-      </div>
+      </div> */}
         
       
      

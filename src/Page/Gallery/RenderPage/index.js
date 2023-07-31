@@ -2,8 +2,8 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { FaShareSquare,FaShare } from "react-icons/fa";
-import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown } from "react-icons/md";
+import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
+import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
@@ -201,13 +201,13 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' overflow-hidden relative'
+                className=' overflow-hidden relative border border-white/20 rounded-md '
               >
                 <div className='pt-[100%] relative'>
                   <img  
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
-                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full '
                     onClick={() => {
                       setImageData(image)
                       setIsShowImageModal(true)
@@ -217,23 +217,23 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       {created_at.substr(0,10)}
                   </div>
                 </div>
-                <div className='flex gap-3'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
-                      {
-                        is_storage ? 
-                        <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
-                          <MdRemoveCircle /><span>移除留存</span>
-                        </button>
-                        :
-                        <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
-                          <MdAddCircle /> <span>加入留存</span>
-                        </button>
-                      }
+                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1   text-black' + (is_storage ? ' bg-white ' : ' bg-white' )} onClick={()=>onHandleStorage(image)}>
+                    {
+                      is_storage ? 
+                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
+                        <MdRemove />
+                      </button>
+                      :
+                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
+                        <MdAdd  />
+                      </button>
+                    }
                   </div>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1 bg-[#423EF5]/90   text-white' } onClick={()=>onHandleStorage(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 bg-[#423EF5]   text-white' } onClick={()=>onHandleStorage(image)}>
 
-                    <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
-                      <FaShare /> <span></span>
+                    <button disabled={isAddStorageLoading}  className='flex items-center  justify-center'>
+                      <FaShare />
                     </button>
                       
                   </div>
