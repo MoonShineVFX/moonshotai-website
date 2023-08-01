@@ -170,7 +170,8 @@ function Index() {
   const queryClient = useQueryClient();
   const storageMutation = useMutation((updatedData) => {
     // 在此處呼叫 API 更新圖片內容
-    return userStorageAImage(updatedData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
+    console.log(updatedData.newData)
+    return userStorageAImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
   }, {
     // 定義更新成功後的行為
     onSuccess: (data, variables) => {
@@ -188,17 +189,15 @@ function Index() {
           });
         return
       }
-      console.log('updated ok')
-      // 手動更新資料
-      queryClient.setQueryData([ 'rendersData',currentUser,linLoginData, startDate, currModels], (prevData) => {
-        const newData = prevData.pages.map((page) => ({
-          ...page,
-          results: page.results.map((image) =>
-          image.id === variables.id ? { ...variables } : image
-          ),
-        }));
-        return { pages: newData };
-      });
+      renderDataRefetch()
+    
+      setIsShowDisplayFormModal(false);
+      
+      if(variables?.isDisplay?.status === 'on_Renderpage'){
+        console.log('on_Renderpage')
+        updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
+      }
+
       
     },
   });
@@ -206,33 +205,43 @@ function Index() {
   // REMOVE STORAGE Render data
     const unStorageMutation = useMutation((updatedData) => {
       // 在此處呼叫 API 更新圖片內容
-      return userDelAStorageImage(updatedData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
+      return userDelAStorageImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
     }, {
       // 定義更新成功後的行為
       onSuccess: (data, variables) => {
-        console.log(variables)
-        console.log('remove ok')
-        // 手動更新資料
-        queryClient.setQueryData([ 'rendersData',currentUser,linLoginData, startDate, currModels], (prevData) => {
-          const newData = prevData.pages.map((page) => ({
-            ...page,
-            results: page.results.map((image) =>
-            image.id === variables.id ? { ...variables } : image
-            ),
-          }));
-          return { pages: newData };
-        });
+        if(variables?.status  === 'on_Storagepage'){
+          storageDataRefetch()
+        }else{
+          renderDataRefetch()
+        }
+
+       
         
       },
     });
-  const handleStorage = (updatedData) => {
-    console.log(updatedData)
+  const handleStorage = (newData) => {
     // 呼叫更新函數
-    storageMutation.mutate(updatedData);
+    storageMutation.mutate({newData});
   };
-  const handleRemoveStorage = (updatedData)=>{
-    unStorageMutation.mutate(updatedData);
+  const handleRemoveStorage = (newData,status)=>{
+    unStorageMutation.mutate({newData,status});
   }
+
+  const updateImageMutation = useMutation((updatedData) =>{ 
+    userPatchAStorageImage(updatedData.image, linLoginData, updatedData.items)}, 
+    {
+      onSuccess: (data, variables) => {
+        // 執行更新成功後的操作
+        console.log(variables)
+        if(variables?.status === 'on_Renderpage'){
+          renderDataRefetch()
+        }else{
+          storageDataRefetch()
+        }
+        setIsShowDisplayFormModal(false);
+      },
+    });
+
 
   //
   // FETCH Collection IMAGE to PAGE 
@@ -430,20 +439,22 @@ function Index() {
    * start
    * */ 
   const handleSetStorageImage = (image,items,status) =>{
+    console.log(image.is_storage,status)
+    if(image.is_storage ===false){
+      console.log(image.is_storage)
+      const newData = { ...image, is_storage: !image.is_storage  }; 
+      storageMutation.mutate({newData,isDisplay:{ image, items, status }});
+      
+    }else{
+      updateImageMutation.mutate({ image, items, status });
+    }
 
-    userPatchAStorageImage(image.id,token,items)
-      .then((data)=>{
-        const newData = { ...image, ...items  }; 
-        handleStorageUpdate(image.id,newData)
-        if(status === 'before'){
-          setIsShowDisplayFormModal(false)
-        }else{
-          setIsShowFormModal(false)
-        }
-      })
-      .catch((error) => console.error(error));
   }
+
+
+
   const handleDisplayHome = (id,items)=>{
+    console.log(items)
     userPatchDisplayHome(id,token,items)
       .then((data)=>{
         console.log('display home update')
@@ -526,7 +537,7 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels} isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading}/>;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading}/>;
       case 'Storage':
         return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
       case 'Collections':

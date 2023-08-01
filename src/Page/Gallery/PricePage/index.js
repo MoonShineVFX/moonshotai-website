@@ -293,8 +293,8 @@ function Index() {
   };
   const blocks = [
     { title: '免費方案',full_title:'MoonShot 體驗會員 5 天',price:'Free',days:'',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直/V','橫 /H'],advanced:[],daily_limit:'不限次數',storage:'100 張', bgColor: 'white',payment_blue:false,payment_line:false,invite_input:false },
-    { title: '開通推薦序號',full_title:'MoonShot 體驗會員 5 天',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
-    { title: '進階方案',full_title:'MoonShot 進階方案 30 天', price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 steps:1-50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
+    { title: '開通推薦序號',full_title:'MoonShot 體驗會員 5 天',price:'Free', days:'5', basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 /steps:1-50'],daily_limit:'不限次數',storage:'300 張' ,payment_blue:false,payment_line:false,invite_input:true},
+    { title: '進階方案',full_title:'MoonShot 進階方案 30 天', price:'TWD 99 元', days:'30',basic:['插畫 CT','寫實 PR','漫畫 CM','寫實人像 PC','參考 R','翻譯 TL','直 /V','橫 /H'],advanced:['修改 I','固定 O','骨架 P','放大 /ext','大圖 /hr','中圖 /mr', '調整步數 /steps:1-50'],daily_limit:'不限次數',storage:'300 張',payment_blue:true ,payment_line:true,invite_input:false,plan_id:1},
   ];
   //TODO no login many time
   useEffect(()=>{

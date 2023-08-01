@@ -14,7 +14,7 @@ function CommandDoc() {
     {display_name:"放大",name:"/ext"},
     {display_name:"大圖",name:"/hr"},
     {display_name:"中圖",name:"/mr"},
-    {display_name:"調整步數",name:"steps:1-50"},
+    {display_name:"調整步數",name:"/steps:1-50"},
     {display_name:"直圖",name:"/V"},
     {display_name:"橫圖",name:"/H"},
     {display_name:"負面詞",name:"--"},

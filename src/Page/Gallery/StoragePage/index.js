@@ -39,11 +39,9 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     console.log(image)
     if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)
     {
-      console.log('yes')
       setShow(true)
     }else{   
-      console.log('no')
-      handleRemoveStorage(image.id)
+      handleRemoveStorage(image,'on_Storagepage')
     }
 
     // remove後應更新使用者擁有數量
@@ -100,7 +98,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
         >
           <div className='flex flex-col items-center gap-3'>
             <div><MdErrorOutline size={26} /></div>
-            This image is assigned a banner or avatar.
+              這張圖片正在使用中，被指定為頭像或banner,請先取消指定，再進行操作。
             <button className='  py-1 px-2 rounded-md bg-[#4c5a13]' onClick={handleClose}>OK</button>
           </div>
 

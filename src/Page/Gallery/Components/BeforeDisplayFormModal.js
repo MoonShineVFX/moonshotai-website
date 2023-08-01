@@ -19,7 +19,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       display_home:data.display_home ||false
 
     }
-    handleSetStorageImage(image,items,'before')
+    handleSetStorageImage(image,items,'on_Renderpage')
   };
   const modalVariants = {
     close: { opacity: 0, },
@@ -47,7 +47,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='grid grid-cols-2 gap-2'>
             <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/50 font-normal my-2'>*Title(required)</label>
+              <label htmlFor="name" className='text-white/50 font-normal my-2'>*標題(必填)</label>
               <Controller
                 name="title"
                 control={control}
@@ -60,7 +60,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             </div>
           </div>
           <div className='flex flex-col  '>
-            <label htmlFor="bio" className='text-white/50 font-normal my-2'>Description</label>
+            <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
             <Controller
               name="description"
               control={control}

@@ -223,7 +223,7 @@ export const userStorageAImage =async (image,token) =>{
   };
   const response =await fetch(apiUrl+'images/'+image.id+'/storage', requestOptions)
   const data =await response
-  console.log(response.json())
+  // console.log(response.json())
   return data
 }
 export const userCollectionAImage =async (image,token) =>{
@@ -415,7 +415,7 @@ export const patchUserEmail = async (userid,token,items) =>{
  * Images API
  */
 //修改保留區圖片資料 (需攜帶JWT 作者本人才能存取)
-export const userPatchAStorageImage = async(imgid,token,items)=>{
+export const userPatchAStorageImage = async(img,token,items)=>{
   const requestOptions = {
     method: 'PATCH',
     headers: { 
@@ -424,7 +424,7 @@ export const userPatchAStorageImage = async(imgid,token,items)=>{
     },
     body: JSON.stringify(items)
   };
-  const response = await fetch(apiUrl+'storage_images/'+imgid, requestOptions)
+  const response = await fetch(apiUrl+'storage_images/'+img.id, requestOptions)
   const data = await response
   return data
 }

@@ -6,7 +6,7 @@ import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
@@ -32,9 +32,9 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   // console.log('renderpage',imagesResults)
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterDateItem[1])
-
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -63,6 +63,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
       setOpenItems([...openItems, id]);
     }
   };
+
   const onHandleStorage = (image) =>{
     
     if(image.is_storage === true) {
@@ -74,6 +75,15 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
       // handleUpdate(image.id,newData)
       handleStorage(newData)
     }
+
+  }
+  const onHandleDisplayHome = (image)=>{
+    console.log(image)
+    const items = {
+      display_home:!image.display_home
+    }
+    setIsShowDisplayFormModal(true)
+    setImageData(image)
 
   }
 
@@ -218,7 +228,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   </div>
                 </div>
                 <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1   text-black' + (is_storage ? ' bg-white ' : ' bg-white' )} onClick={()=>onHandleStorage(image)}>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1   ' + (is_storage ? '  bg-white text-[#423EF5] ' : ' bg-white text-[#423EF5]' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
                       <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
@@ -230,9 +240,10 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       </button>
                     }
                   </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 bg-[#423EF5]   text-white' } onClick={()=>onHandleStorage(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 ' + (display_home ? ' bg-[#423EF5]   text-white   ' : '   bg-white text-[#423EF5]' ) } onClick={()=>onHandleDisplayHome(image)}>
 
-                    <button disabled={isAddStorageLoading}  className='flex items-center  justify-center'>
+                    <button 
+                      disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
                       <FaShare />
                     </button>
                       

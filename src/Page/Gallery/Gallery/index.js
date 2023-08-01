@@ -12,6 +12,11 @@ import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from "swiper";
+// Import Swiper styles
+import 'swiper/css';
+import "swiper/css/pagination";
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -24,6 +29,9 @@ const filterModelsDate = [
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
+ ]
+ const bannerData = [
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood01.png"}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -173,7 +181,32 @@ function Index() {
      
       <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
 
-      <div className='w-11/12 md:w-11/12 mx-auto my-10'>
+      <div className='w-11/12 md:w-11/12 mx-auto my-6'>
+        <div>
+          <Swiper
+          spaceBetween={1}
+          slidesPerView={1}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }} 
+          modules={[Pagination,Autoplay]}
+          className='w-full'
+          >
+          {
+            bannerData?.map((item)=>{
+              
+              return(
+                <SwiperSlide>
+                  <div>
+                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="" className=' rounded-md' />
+                  </div>
+                </SwiperSlide>
+              )
+            })
+          }  
+          </Swiper>
+          </div>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
 
           {!imageData ? 
