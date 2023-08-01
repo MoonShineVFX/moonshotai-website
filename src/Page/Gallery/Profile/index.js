@@ -53,7 +53,7 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(12)
+  const [pageSize, setPageSize] = useState(19)
   const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
@@ -165,7 +165,6 @@ function Index() {
   );
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
-
   // ADD  Render data to STORAGE
   const queryClient = useQueryClient();
   const storageMutation = useMutation((updatedData) => {
@@ -237,7 +236,10 @@ function Index() {
           renderDataRefetch()
         }else{
           storageDataRefetch()
+
         }
+
+        
         setIsShowDisplayFormModal(false);
       },
     });
@@ -439,8 +441,9 @@ function Index() {
    * start
    * */ 
   const handleSetStorageImage = (image,items,status) =>{
-    console.log(image.is_storage,status)
-    if(image.is_storage ===false){
+    console.log(image)
+    // console.log(image.is_storage,status)
+    if(!image.is_storage){
       console.log(image.is_storage)
       const newData = { ...image, is_storage: !image.is_storage  }; 
       storageMutation.mutate({newData,isDisplay:{ image, items, status }});
@@ -539,7 +542,7 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading}/>;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} />;
       case 'Following':

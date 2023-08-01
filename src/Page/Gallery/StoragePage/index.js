@@ -5,16 +5,17 @@ import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline
 import { FaShareSquare,FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [profilePage, setProfilePage] = useRecoilState(profilePageState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -54,12 +55,15 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     }
   };
   const onHandleDisplayHome = (image)=>{
-   
+    console.log(image)
     const items = {
       display_home:!image.display_home
     }
     setIsShowDisplayFormModal(true)
-    setImageData(image)
+    const newData = { ...image, is_storage: true };
+    setImageData(newData)
+    setProfilePage('on_Storagepage')
+
     // if(image.display_home === true){
     //   const newData = { ...image, display_home: !image.display_home  }; 
     //   handleStorageUpdate(image.id,newData)
@@ -163,7 +167,15 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
             <div className='text-xs text-white/50'>免費會員可留存 100 張圖片，進階會員可留存 300 張圖片</div>
 
           </div>
-
+          { isStorageDataLoading&& <motion.div 
+              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              initial={{ opacity: 0, y: -20,x:'-50%' }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              >
+                資料處理中
+              </motion.div>
+          }
           {show && <ConfirmCancelMsg setShow={setShow} />  }
 
           {!imagesResults ?

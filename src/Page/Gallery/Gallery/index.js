@@ -77,6 +77,7 @@ function Index() {
     ({ pageParam }) =>
       fetchGalleries(currentHeaders, pageParam, pageSize, startDate, endDate, currModels),
     {
+      enabled:true,
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {

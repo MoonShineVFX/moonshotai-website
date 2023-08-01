@@ -1,12 +1,13 @@
 import React,{useState} from 'react'
 import { useForm,Controller } from 'react-hook-form';
 import {motion,AnimatePresence} from 'framer-motion'
-import { beforeDisplayModalState, imageDataState } from '../atoms/galleryAtom';
+import { beforeDisplayModalState, imageDataState,profilePageState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle } from "react-icons/md";
 function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
+  const profilePage = useRecoilValue(profilePageState)
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
@@ -19,7 +20,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       display_home:data.display_home ||false
 
     }
-    handleSetStorageImage(image,items,'on_Renderpage')
+    handleSetStorageImage(image,items,profilePage)
   };
   const modalVariants = {
     close: { opacity: 0, },

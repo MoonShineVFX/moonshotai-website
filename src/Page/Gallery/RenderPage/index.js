@@ -6,7 +6,7 @@ import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
 import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
@@ -32,6 +32,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [profilePage, setProfilePage] = useRecoilState(profilePageState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   // console.log('renderpage',imagesResults)
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterDateItem[1])
@@ -84,6 +85,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
     }
     setIsShowDisplayFormModal(true)
     setImageData(image)
+    setProfilePage('on_Renderpage')
 
   }
 
@@ -193,7 +195,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
               exit={{ opacity: 0, y: -20 }}
               >
                 資料處理中
-              </motion.div>}
+              </motion.div>
+      }
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>

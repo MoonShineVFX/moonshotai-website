@@ -43,6 +43,7 @@ function Index({}) {
           setLineProfile(null);
           setToken(null);
           liff.logout();
+          queryClient.clear();
           removeLocalStorageItem().then(data=>{
             console.log(data)
             if(data === 'finish'){
@@ -63,6 +64,7 @@ function Index({}) {
           setIsProcessLogout(true)
           setLineProfile(null);
           setToken(null);
+          queryClient.clear();
           removeLocalStorageItem().then(data=>{
             console.log(data)
             if(data === 'finish'){
