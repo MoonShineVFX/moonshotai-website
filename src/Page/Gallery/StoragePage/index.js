@@ -209,10 +209,10 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
  
                     </div>
                     <div className='flex justify-end gap-1 p-1'>
-                      <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 ' onClick={()=>onHandleRemoveStorage(image)}>
+                      <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemove />
                       </button>
-                      <button className={'rounded-full p-2 flex  items-center ' + (display_home ?  ' bg-[#423EF5] text-white' : ' bg-white text-black' )} onClick={()=>{
+                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-zinc-800 text-white/80' : ' bg-white text-zinc-800' )} onClick={()=>{
                         onHandleDisplayHome(image)
                       }}> <FaShare size={12}/></button>
 

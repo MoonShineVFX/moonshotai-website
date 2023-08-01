@@ -231,7 +231,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   </div>
                 </div>
                 <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1   ' + (is_storage ? '  bg-white text-[#423EF5] ' : ' bg-white text-[#423EF5]' )} onClick={()=>onHandleStorage(image)}>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-zinc-800  ' : '   bg-zinc-800 text-white' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
                       <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
@@ -243,7 +243,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       </button>
                     }
                   </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 ' + (display_home ? ' bg-[#423EF5]   text-white   ' : '   bg-white text-[#423EF5]' ) } onClick={()=>onHandleDisplayHome(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-zinc-800 text-white/80   ' : '   bg-white text-zinc-800' ) } onClick={()=>onHandleDisplayHome(image)}>
 
                     <button 
                       disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
