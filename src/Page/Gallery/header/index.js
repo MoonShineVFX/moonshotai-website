@@ -115,12 +115,12 @@ function Index({}) {
       try {
         const userLoginData = JSON.parse(storedLoginTokenData);
         // 使用 react-query 來執行 fetchUserProfile API
-        await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
+        const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
           fetchUserProfile(userLoginData.user_id, userLoginData.token)
         );
 
         // 其他邏輯...
-        // setCurrentUser(udata);
+        setCurrentUser(udata);
       } catch (error) {
         console.error('Error initializing LIFF: ', error.message);
       }
@@ -139,9 +139,13 @@ function Index({}) {
         localStorage.setItem('loginTokenData', JSON.stringify(lined));
 
         // 使用 react-query 來執行 fetchUserProfile API
-        await queryClient.fetchQuery(['userProfile', lined.user_id, lined.token], () =>
+        const udata = await queryClient.fetchQuery(['userProfile', lined.user_id, lined.token], () =>
           fetchUserProfile(lined.user_id, lined.token)
         );
+        localStorage.setItem('currentUser', JSON.stringify(udata));
+        localStorage.setItem('isLogin', true);
+        setIsLoggedIn(true)
+        setCurrentUser(udata);
 
         // 其他邏輯...
         // setCurrentUser(udata);
