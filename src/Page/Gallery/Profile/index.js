@@ -233,9 +233,27 @@ function Index() {
         // 執行更新成功後的操作
         console.log(variables)
         if(variables?.status === 'on_Renderpage'){
-          renderDataRefetch()
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id ? { ...image,...variables.items} : image
+              ),
+            }));
+            return { pages: newData };
+          });
         }else{
-          storageDataRefetch()
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id ? { ...image,...variables.items} : image
+              ),
+            }));
+            return { pages: newData };
+          });
 
         }
 
