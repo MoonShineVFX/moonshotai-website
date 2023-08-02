@@ -431,3 +431,13 @@ export const EmptyFollowPage = ()=>{
     </div>
   )
 }
+
+export const TitleWithLimit = ({ title, maxLength }) => {
+  // 如果 title 的長度大於 maxLength，則截斷並加上省略號
+  const validTitle = title || "";
+  const truncatedTitle = validTitle.length > maxLength
+    ? `${validTitle.slice(0, maxLength)}...`
+    : validTitle;
+
+  return <h1>{truncatedTitle}</h1>;
+};

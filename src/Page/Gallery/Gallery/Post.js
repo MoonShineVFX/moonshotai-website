@@ -6,7 +6,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin,TitleWithLimit} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
@@ -302,7 +302,7 @@ function Post() {
                 <img 
                   data-id= {imageData?.id}
                   src={imageData?.urls?.regular} 
-                  alt={imageData?.id} 
+                  alt={imageData?.title} 
                   className="w-full" />
               </div>
               <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-zinc-700 '>
@@ -332,13 +332,13 @@ function Post() {
             <div className=' flex justify-between items-center'>
               <div>
                 <div className='text-xl text-white font-semibold' data-id={imageData?.id}>
-                  {imageData?.title}
+                <TitleWithLimit title={imageData?.title} />
                 </div>
                 <div className=' flex items-center space-x-3 my-2'>
                   <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
                     <div className='w-7'>
                       <div className='pt-[100%] relative'>
-                        <img src={imageData?.author?.profile_image} alt="" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                        <img src={imageData?.author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                       </div>
                     </div>
                     <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>
@@ -397,7 +397,7 @@ function Post() {
                             <div className='flex items-center gap-2'>
                               <div className='w-8'>
                                 <div className='pt-[100%] relative'>
-                                  <img src={author.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                                  <img src={author.profile_image} alt="user avatar" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
                                 </div>
                               </div>
                               <div className='text-white'>{author?.name}</div>

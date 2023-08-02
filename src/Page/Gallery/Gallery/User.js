@@ -4,7 +4,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal,TitleWithLimit} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
@@ -165,7 +165,7 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-12'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
 
@@ -217,8 +217,9 @@ function User() {
                 <Link to={`/post/${id}`} className=' relative' >
                   <div className='pt-[100%] relative'>
                     <img  
-                      src={urls.thumb} alt={image?.description} 
+                      src={urls.thumb} alt={title} 
                       data-id={id}
+   
                       className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                 
                     />
@@ -234,7 +235,7 @@ function User() {
 
 
                   <div className='flex flex-col'>
-                    <div className='text-base font-bold'>{title} </div>
+                    <div className='text-base font-bold'><TitleWithLimit title={title} maxLength={12}/> </div>
                     {/* <div className='text-xs text-white/50'>{author?.name}</div> */}
                   </div>
                 </div>

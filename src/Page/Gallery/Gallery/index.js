@@ -4,7 +4,7 @@ import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
-import {LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin,TitleWithLimit} from '../helpers/componentsHelper'
 import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
@@ -194,7 +194,7 @@ function Index() {
               return(
                 <SwiperSlide>
                   <div>
-                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="" className=' rounded-md' />
+                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md' />
                   </div>
                 </SwiperSlide>
               )
@@ -226,6 +226,7 @@ function Index() {
                     <Link to={`/post/${id}`} className=' relative group' >
                       <div className='pt-[100%] relative  overflow-hidden rounded-md'>
                         <img  
+                          alt={title}
                           src={urls.thumb} alt={image?.description} 
                           data-id={id}
                           className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full  hover:scale-110 transition '
@@ -255,12 +256,12 @@ function Index() {
                     <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
                       <Link to={`/user/${author?.id}`}  className='w-8'>
                         <div className='pt-[100%] relative'>
-                          <img src={author?.profile_image} alt="" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                          <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
                         </div>
                       </Link>
 
                       <div className='flex flex-col'>
-                        <div className='text-base font-bold'>{title} </div>
+                        <div className='text-base font-bold '><TitleWithLimit title={title} maxLength={12}/> </div>
                         <div className='text-xs text-white/50'>{author?.name}</div>
                       </div>
                     </div>
