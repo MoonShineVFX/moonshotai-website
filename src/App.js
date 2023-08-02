@@ -1,15 +1,16 @@
 
 import React,{useEffect} from 'react'
 import { BrowserRouter , Routes, Route} from 'react-router-dom';
-
-import Home from './Page/Home'
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+//
 import HomeLayout from './Page/Lyaouts/HomeLayout';
 import HomeV3 from './Page/Home_v3'
 
-
+//
 import Camera from './Page/Camera'
 
+//
 import DocLayout from './Page/Lyaouts/DocLayout';
 import QuickStart from './Page/DocPage/QuickStart';
 import UserDoc from './Page/DocPage/UserDoc';
@@ -18,9 +19,9 @@ import CommandDoc from './Page/DocPage/CommandDoc';
 import RefundDoc from './Page/DocPage/RefundDoc';
 import Terms from './Page/DocPage/Terms';
 import Policy from './Page/DocPage/Policy';
-// import Docs from './Page/Docs'
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+
+//
+import GalleryLayout from './Page/Lyaouts/GalleryLayout';
 import Gallery from './Page/Gallery/Gallery';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
@@ -37,7 +38,16 @@ import Notfound from './Page/Home/Notfound';
 import Cooming from './Page/Gallery/Cooming';
 import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
-
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from "react-query/devtools";
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect:false,
+    },
+  },
+})
 function App() {
   useEffect(() => {
     AOS.init();
@@ -55,39 +65,46 @@ function App() {
   }, []);
 
   return (
+    <QueryClientProvider client={queryClient}>
     <RecoilRoot>
     <BrowserRouter>
       <Routes> 
         <Route path="*" element={<Notfound />} />
 
-
-
-        <Route path='/'  element={<HomeLayout/>}>
-          {/* <Route path="/" element={<Home />} /> */}
+        {/* <Route path='/'  element={<HomeLayout/>}>
           <Route path="/" element={<HomeV3 />} />
 
-        </Route>
-
+        </Route> */}
         
         <Route path="/camera" element={<Camera />} />
+        
+        <Route path="/" element={<GalleryLayout/> }>
+          <Route path="" element={<HomeV3 />} />
+          <Route path="gallery" element={<Gallery />} />
+          <Route path="post/:id" element={<Post />} />
+          <Route path="user/:id" element={<User />} />
+          <Route path="price" element={<Price />} />
+          <Route path="profile" element={<Profile />} />
 
-        <Route path="/docs" element={<DocLayout/> }>
-          <Route path="" element={<QuickStart />}/>
-          <Route path="account" element={<UserDoc />}/>
-          <Route path="faq" element={<FaqDoc />}/>
-          <Route path="command" element={<CommandDoc />}/>
-          <Route path="refunds" element={<RefundDoc />}/>
-          <Route path="terms" element={<Terms />} />
-          <Route path="policy" element={<Policy />} />
+          <Route path="/docs" element={<DocLayout/> }>
+            <Route path="" element={<QuickStart />}/>
+            <Route path="account" element={<UserDoc />}/>
+            <Route path="faq" element={<FaqDoc />}/>
+            <Route path="command" element={<CommandDoc />}/>
+            <Route path="refunds" element={<RefundDoc />}/>
+            <Route path="terms" element={<Terms />} />
+            <Route path="policy" element={<Policy />} />
+          </Route>
         </Route>
 
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/post/:id" element={<Post />} />
-        <Route path="/user/:id" element={<User />} />
+
+
+        {/* <Route path="/gallery" element={<Gallery />} /> */}
+        {/* <Route path="/post/:id" element={<Post />} /> */}
+        {/* <Route path="/user/:id" element={<User />} /> */}
         {/* <Route path="/work" element={<Profile />} /> */}
         <Route path="/account" element={<Account />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/price" element={<Price />} />
+
         <Route path="/confirm/:id" element={<Confirm />} />
         <Route path="/cancel/:id" element={<Cancel />} />
         <Route path="/orders" element={<Orders />} />
@@ -98,6 +115,8 @@ function App() {
       </Routes>
     </BrowserRouter>
     </RecoilRoot>
+    <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 };
 

@@ -11,6 +11,12 @@ import { isLoginState,loginState, imageDataState,imageModalState,lineProfileStat
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
+import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay } from "swiper";
+// Import Swiper styles
+import 'swiper/css';
+import "swiper/css/pagination";
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -24,6 +30,9 @@ const filterModelsDate = [
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
  ]
+ const bannerData = [
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood01.png"}
+ ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -32,31 +41,54 @@ function Index() {
 
   const [totalPage, setTotalPage]= useState(0)
   const [currentPage, setCurrentPage]= useState(1)
-  const [pageSize, setPageSize] = useState(14)
+  const [pageSize, setPageSize] = useState(12)
   const [startDate, setStartDate] = useState(moment().format('2022-01-01'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
 
-  const [data, setData] = useState(null)
+  // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
-  const [imageData, setImageData] = useRecoilState(imageDataState)
-  const [currentHeaders , setCurrentHeaders] = useState({})
+  const [isInitialized, setIsInitialized] = useState(false);
+  // const [imageData, setImageData] = useRecoilState(imageDataState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+  // 在此處檢查 localStorage 內的資料
+  useEffect(() => {
+    getStoredLocalData().then(data => {
+      setIsLoggedIn(data.isLogin);
+      setLineLoginData(data.loginToken);
+      setLineProfile(data.lineProfile);
+      setCurrentUser(data.currentUser);
+      setIsInitialized(true);
+
+    });
+  }, [setLineLoginData,setCurrentUser]);
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
+    [ 'galleries',linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled:isInitialized && (linLoginData !== null || isLoggedIn !== null),
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
 
 
-  const fetchMoreImages = () => {
-    if(currentPage >= totalPage || loading) {
-      return
-    } 
-    const nextPage = currentPage + 1;
-    handleGalleries(currentHeaders,nextPage,pageSize,startDate,endDate,currModels)
-    
-  }
+
   const onHandleSelectDate = (item)=>{
     // console.log(item)
     switch (item.value) {
@@ -86,71 +118,32 @@ function Index() {
     handleSelectModels(item.value)
   }
   const handleSelectDate = (value,date)=>{
+    console.log(date)
     setCurrentPage(1)
-    setPageSize(15)
+    setPageSize(12)
     setStartDate(date)
-    handleGalleries(currentHeaders,1,pageSize,date,endDate,currModels)
   }
   const handleSelectModels = (value)=>{
     setCurrentPage(1)
-    setPageSize(15)
+    setPageSize(12)
     setCurrModels(value)
-    handleGalleries(currentHeaders,1,pageSize,startDate,endDate,value)
   }
-  // get galleries
-  const handleGalleries = async (currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
-    // console.log(currentHeaders,pageNum,pageSizeNum,sDate,eDate,cModels)
-    setLoading(true);
-    try {
-      let ch = currentHeaders 
-      let pg = pageNum || currentPage 
-      let pgs = pageSizeNum || pageSize 
-      let s = sDate || startDate
-      let e = eDate || endDate
-      let m = cModels || currModels
-      // console.log(pg, pgs,s, e, m)
-      const images = await fetchGalleries(ch, pg, pgs,s, e, m);
-      const results = images.results;
-
-      if(images === 401){
-        // console.log('401')
-        return 401
-      }
-      if(results.length === 0){
-        setData(results)
-        return 
-      }
-      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-
-      if(pg === 1){
-        setData(results);
-      }else{
-        setData(prevImages => [...prevImages, ...results]);
-        setCurrentPage(pg);
-      }
-        
-      
- 
-  
-      // setCurrentAuthor(images.results[0].author)
-    } catch (error) {
-      
-    } finally {
-      setLoading(false);
-    }
-
-  }
+  const [scrollTop, setScrollTop] = useState(0);
+  const [clientHeight, setClientHeight] = useState(0);
+  const [scrollHeight, setScrollHeight] = useState(0);
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const handleScroll = () => {
     // 獲取頁面滾動相關信息
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      setScrollTop(scrollTop);
+      setClientHeight(clientHeight);
+      setScrollHeight(scrollHeight);
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight+300 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
-          console.log('go')
-          fetchMoreImages(); // 加載更多圖片
+          fetchNextPage();
           setLastScrollTime(now);
         }
 
@@ -164,49 +157,54 @@ function Index() {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
-  }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
-    //TODO no login many time
-  useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let loginToken = data.loginToken
-        let headers = {'Content-Type': 'application/json'} 
-        if(data.isLogin){
-          // const refreshTokenResult = refreshToken()
-          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-          setCurrentHeaders(headers)
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-            console.log(d)
-            if(d === 401){
-              setTimeout(()=>{
-                removeLocalStorageItem().then(data=>{
-                  window.location.reload();
-                })
-              },500)
-            }
-          })
-          // refreshToken().then(data =>{
-          // })
-        }else{
-          handleGalleries(headers,currentPage,pageSize,startDate,endDate,currModels).then((d)=>{
-            console.log(d)
-          })
-        }
-        
-      })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+
 
   return (
     <div className='w-full '>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+    
 
-      <div className='w-11/12 md:w-9/12 mx-auto my-10'>
+      {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
+
+      
+        <div>scrollTop:{scrollTop} </div>
+        <div>clientHeight:{clientHeight} </div>
+        <div>scrollHeight:{scrollHeight}</div>
+      </div> */}
+        
+      
+     
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
+
+      <div className='w-11/12 md:w-11/12 mx-auto my-6'>
+        <div>
+          <Swiper
+          spaceBetween={1}
+          slidesPerView={1}
+          loop={true}
+          pagination={{
+            clickable: true,
+          }} 
+          modules={[Pagination,Autoplay]}
+          className='w-full'
+          >
+          {
+            bannerData?.map((item)=>{
+              
+              return(
+                <SwiperSlide>
+                  <div>
+                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="" className=' rounded-md' />
+                  </div>
+                </SwiperSlide>
+              )
+            })
+          }  
+          </Swiper>
+          </div>
           <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
 
-          {!data ? 
+          {!imageData ? 
             <LoadingLogoSpin />
           :
           <div>
@@ -215,27 +213,27 @@ function Index() {
               <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
             </div>
             {
-              data.length === 0 && <div className='text-white/60'>這個選擇下目前沒有圖片。</div>
+              imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
             <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
-              {data.map((image,index)=>{
+              {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                     className='  overflow-hidden relative'
                   >
-                    <Link to={`/post/${id}`} className=' relative' >
-                      <div className='pt-[100%] relative'>
+                    <Link to={`/post/${id}`} className=' relative group' >
+                      <div className='pt-[100%] relative  overflow-hidden rounded-md'>
                         <img  
                           src={urls.thumb} alt={image?.description} 
                           data-id={id}
-                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full  hover:scale-110 transition '
   
                         />
                       </div>
 
-                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
+                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2 md:opacity-0 md:group-hover:opacity-100 transition duration-700'>
                         <div className='flex items-center space-x-2'>
                           <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
                           <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
@@ -276,8 +274,8 @@ function Index() {
 
 
             </div>
-            {loading && <div className='text-white/80 flex justify-center my-4 text-xs '>
-              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入中..</div> 
+            {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
             </div>}
           </div>
 

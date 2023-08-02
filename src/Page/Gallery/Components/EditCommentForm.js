@@ -67,7 +67,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
         exit={{ opacity: 0, y: -20 }}
         className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
-          <div className='text-xl text-center font-bold'>{formStatus === 'ADD' ? 'New Comment' : 'Edit Comment'}</div>
+          <div className='text-lg text-center font-bold my-2'>{formStatus === 'ADD' ? '新增評論' : '修改評論'}</div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className='flex flex-col  '>
               <Controller
@@ -76,16 +76,16 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
                 defaultValue={comment && JSON.parse(comment?.text).text}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <textarea {...field} cols="20" rows="5" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' placeholder="Comment"></textarea>
+                  <textarea {...field} cols="20" rows="5" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' placeholder="在這裡輸入內容"></textarea>
                 )}
               />
 
             
             </div>
             <div className='flex flex-col items-end text-sm'>
-              <button type="button" className='mt-2 text-sm text-white/80 bg-lime-600 py-1 px-2 rounded-md' onClick={handleSelectStorageImage}>Add a Image</button>
+              {/* <button type="button" className='mt-2 text-sm text-white/80 bg-lime-600 py-1 px-2 rounded-md' onClick={handleSelectStorageImage}>加入</button> */}
               <div  className='w-full text-white/80 bg-zinc-600 py-1 px-2 rounded-md my-2' >
-                <div >Your storage images ({selectedImages.length } / 3)</div>
+                <div className='text-xs'>你近期的圖片 ({selectedImages.length } / 3) 張可選</div>
                 <div className=' grid grid-cols-4 gap-1 mt-2 max-h-64 overflow-y-auto'>
                   {storagesResults.length>0 &&
                     storagesResults.map((item,index)=>{
@@ -111,14 +111,14 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
               </div>
 
             </div>
-            <div className='mt-6 flex gap-3 justify-start text-md'>
+            <div className='mt-6 flex gap-3 justify-start text-sm'>
               {
                 formStatus === 'EDIT' ? 
-                <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Edit Comment <input type="hidden" value="EDIT"  {...register('method')}/></button>
+                <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>儲存評論 <input type="hidden" value="EDIT"  {...register('method')}/></button>
                 :
-                <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Send Comment <input type="hidden" value="ADD"  {...register('method')}/></button>
+                <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>儲存評論 <input type="hidden" value="ADD"  {...register('method')}/></button>
               }
-              <button type="button" className='text-white/80' onClick={handleClose}>Cancel</button>
+              <button type="button" className='text-white/80' onClick={handleClose}>取消</button>
             </div>
           </form>
       </motion.div>

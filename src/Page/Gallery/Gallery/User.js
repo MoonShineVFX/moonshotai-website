@@ -10,21 +10,25 @@ import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } fr
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
+import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
 function User() {
   const { id } = useParams();
-  const [userData, setUserData] = useState(null)
-  const [publicImage, setPublicImage] = useState([])
+  // const [userData, setUserData] = useState(null)
+  // const [publicImage, setPublicImage] = useState([])
   const [publicImageResults, setPublicImageResults] = useState([])
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
-  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
+  const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [ isLoginForFollow , setIsLoginForFollow] = useState(false)
+  const [currentHeaders , setCurrentHeaders] = useState({})
+
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
-  const [pageSize, setPageSize] = useState(50)
+  const [pageSize, setPageSize] = useState(20)
   const [isFollowed ,setIsFollowed] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false);
   const navigate = useNavigate();
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -38,33 +42,105 @@ function User() {
       navigate('/gallery'); // 导航到指定页面
     }
   };
-  const handleFollow = ()=>{
+  useEffect(()=>{
+    getStoredLocalData().then(localData=>{
+      setIsLoggedIn(localData.isLogin)
+      setLineLoginToken(localData.loginToken)
+      setLineProfile(localData.lineProfile)
+      setCurrentUser(localData.currentUser)
+      setIsInitialized(true);
+  
+    })
+  },[setIsLoggedIn,setLineLoginToken,setLineProfile])
+
+  const { data: userData, isLoading: isUserLoading, isError: isUserError } = useQuery(
+    ['user', id],
+    () => fetchUser(id),
+    {
+      enabled: !!id, // 只有在 id 不為空時才啟用 useQuery
+    }
+  );
+  const { data: publicImage, isLoading: isPublicImageLoading, isError: isPublicImageError } = useInfiniteQuery(
+    ['publicImages', id, currentPage, pageSize],
+    ({ pageParam }) => fetchUserPublicImages(id, pageParam, pageSize),
+    {
+      enabled: isInitialized && (!!id || isLoggedIn !== null), // 只有在 id 不為空時才啟用 useQuery
+        getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  
+  const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
+    ['useFollowing', currentUser,linLoginToken],
+    () => fetchUserFollowings(currentUser.id, linLoginToken),
+    {
+      enabled: isLoggedIn === true, 
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (results) => {
+        // 成功獲取數據後處理
+        const findFollowId = results.some((item)=>{
+          return item.id === parseInt(id)
+        })
+        if(findFollowId){
+          setIsFollowed(true)
+        }else{
+          setIsFollowed(false)
+        }
+
+      },
+    }
+  );
+
+  const followMutation = useMutation((userData) => userFollowAUser(userData, linLoginToken));
+  const unfollowMutation = useMutation((userData) => userUnFollowAUser(userData, linLoginToken));
+  const queryClient = useQueryClient();
+  const handleFollow = async ()=>{
+
     console.log('click')
     if(!isLoggedIn){
      console.log(isLoggedIn)
+
      setIsLoginForFollow(true)
     }else{
       if(isFollowed){
-        userUnFollowAUser(userData,linLoginData)
-          .then((data)=> {
-            if(data.status===204){
-              setIsFollowed(false)
-              setUserData({...userData, total_followers: userData.total_followers-1 })
-            }
-          })
-        .catch((error) => console.error(error));
+        try {
+          const response = await unfollowMutation.mutateAsync(userData);
+          if (response.status === 204) {
+            setIsFollowed(false);
+            queryClient.setQueryData(['user', id], (prevData) => ({
+              ...prevData,
+              total_followers: prevData.total_followers - 1,
+            }));
+          }
+        } catch (error) {
+          console.error(error);
+        }
         
 
       }else{
-        userFollowAUser(userData,linLoginData)
-          .then((data)=> {
-            // console.log(data)
-            if(data.status===200){
-              setIsFollowed(true)
-              setUserData({...userData, total_followers: userData.total_followers+1 })
-            }
-          })
-          .catch((error) => console.error(error));
+        try {
+          const response = await followMutation.mutateAsync(userData);
+          if (response.status === 200) {
+            setIsFollowed(true);
+            queryClient.setQueryData(['user', id], (prevData) => ({
+              ...prevData,
+              total_followers: prevData.total_followers + 1,
+            }));
+          }
+        } catch (error) {
+          console.error(error);
+        }
       }
 
       setIsLoginForFollow(false)
@@ -72,53 +148,6 @@ function User() {
     }
     
   }
-  //TODO no login many time
-  useEffect(()=>{
-    getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let loginToken = data.loginToken
-        let user = data.currentUser
-        if(data.isLogin){
-          fetchUserFollowings(user.id,loginToken).then(followings =>{
-            if(followings === 401){
-              setTimeout(()=>{
-                removeLocalStorageItem().then(data=>{
-                  window.location.reload();
-                })
-              },500)
-            }
-            const findFollowId = followings.some(item=>{
-              return item.id === parseInt(id)
-            })
-            if(findFollowId){
-              setIsFollowed(true)
-            }else{
-              setIsFollowed(false)
-            }
-          })
-        }
-
-
-      })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
-  useEffect(()=>{
-    fetchUser(id)
-      .then(data => {
-        fetchUserPublicImages(data.id, currentPage, pageSize).then(data=>{
-          if(data === undefined) return
-          setPublicImage(data)
-          setPublicImageResults(data.results)
-        })
-        setUserData(data);
-
-  
-      })
-
-
-  },[])
 
   if (!userData) {
     return (
@@ -127,7 +156,7 @@ function User() {
   }
   return (
     <div>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
@@ -174,11 +203,11 @@ function User() {
       </div>
       <div className='w-11/12 mx-auto my-10'>
 
-      {!publicImageResults ? 
+      {!publicImageData ? 
         <div className='text-white'>Loading</div> 
         :
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
-          {publicImageResults.map((image,index)=>{
+          {publicImageData.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
             return (
               <motion.div key={'gallery-'+index} 

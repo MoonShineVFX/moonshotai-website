@@ -1,20 +1,21 @@
 import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare } from "react-icons/md";
-import { FaShareSquare } from "react-icons/fa";
+import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare,MdRemove } from "react-icons/md";
+import { FaShareSquare,FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,handleStorageUpdate,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage}) {
+function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [profilePage, setProfilePage] = useRecoilState(profilePageState)
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -39,11 +40,9 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     console.log(image)
     if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)
     {
-      console.log('yes')
       setShow(true)
     }else{   
-      console.log('no')
-      handleRemoveStorage(image.id)
+      handleRemoveStorage(image,'on_Storagepage')
     }
 
     // remove後應更新使用者擁有數量
@@ -56,12 +55,15 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     }
   };
   const onHandleDisplayHome = (image)=>{
-   
+    console.log(image)
     const items = {
       display_home:!image.display_home
     }
     setIsShowDisplayFormModal(true)
-    setImageData(image)
+    const newData = { ...image, is_storage: true };
+    setImageData(newData)
+    setProfilePage('on_Storagepage')
+
     // if(image.display_home === true){
     //   const newData = { ...image, display_home: !image.display_home  }; 
     //   handleStorageUpdate(image.id,newData)
@@ -100,7 +102,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
         >
           <div className='flex flex-col items-center gap-3'>
             <div><MdErrorOutline size={26} /></div>
-            This image is assigned a banner or avatar.
+              這張圖片正在使用中，被指定為頭像或banner,請先取消指定，再進行操作。
             <button className='  py-1 px-2 rounded-md bg-[#4c5a13]' onClick={handleClose}>OK</button>
           </div>
 
@@ -130,7 +132,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight+300 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -165,20 +167,25 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
             <div className='text-xs text-white/50'>免費會員可留存 100 張圖片，進階會員可留存 300 張圖片</div>
 
           </div>
-
+          { isStorageDataLoading&& <motion.div 
+              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              initial={{ opacity: 0, y: -20,x:'-50%' }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              >
+                資料處理中
+              </motion.div>
+          }
           {show && <ConfirmCancelMsg setShow={setShow} />  }
+
           {!imagesResults ?
           <div className='text-white'>Loading</div> 
           : 
-          <ResponsiveMasonry
-            className=''
-            columnsCountBreakPoints={{350: 1, 750: 2, 900: 4,1700:5}}
-          >
-            <Masonry gutter={20}>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
             {imagesResults.map((image,index) => {
               const {id, urls, created_at, display_home, filename,title   } = image
               return (
-                <motion.div key={id} 
+                <motion.div key={'storage-'+id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                   className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
@@ -198,13 +205,16 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='p-2 ' onClick={()=>{
                       handleClick(id)
                     }}>
-                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+                      <button  className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></button>
  
                     </div>
-                    <div className='flex gap-4'>
-                      <div className=' flex items-center gap-1  text-sm bg-zinc-800/60  rounded-full   px-3 py-2 mr-1' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdRemoveCircle />移除留存
-                      </div>
+                    <div className='flex justify-end gap-1 p-1'>
+                      <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
+                        <MdRemove />
+                      </button>
+                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-zinc-800 text-white/80' : ' bg-white text-zinc-800' )} onClick={()=>{
+                        onHandleDisplayHome(image)
+                      }}> <FaShare size={12}/></button>
 
                     </div>
 
@@ -249,9 +259,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       {title ?title : created_at.substr(0,10)}
                     </div>
                     <div className='text-white'>
-                      <div className={'rounded-md p-2 px-3 flex  items-center gap-2' + (display_home ?  ' bg-lime-200 text-lime-900' : ' bg-white text-black' )} onClick={()=>{
-                        onHandleDisplayHome(image)
-                      }}> <MdIosShare size={18}/> 分享到藝廊</div>
+
                     </div>
 
                   </div>
@@ -260,10 +268,13 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
               )
 
             })}
-            </Masonry>
-          </ResponsiveMasonry>
+
+            </div>
 
         }
+        {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+            <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+          </div>}
     </div>
   )
 }

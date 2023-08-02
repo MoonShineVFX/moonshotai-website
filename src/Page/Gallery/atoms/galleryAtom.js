@@ -42,6 +42,10 @@ export const imageDataState = atom({
   key: 'imageDataState',
   default: null,
 });
+export const profilePageState = atom({
+  key: 'profilePageState',
+  default: null,
+});
 
 export const imageByIdSelector = selector({
   key: 'imageByIdSelector',

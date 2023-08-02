@@ -7,7 +7,9 @@ import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocum
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData,handleLogin} from '../helpers/fetchHelper'
+import { useQuery, useQueryClient } from 'react-query';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+
 function Index({}) {
 
   //CHECK IS USER LOGIN DATABASE
@@ -41,6 +43,7 @@ function Index({}) {
           setLineProfile(null);
           setToken(null);
           liff.logout();
+          queryClient.clear();
           removeLocalStorageItem().then(data=>{
             console.log(data)
             if(data === 'finish'){
@@ -61,6 +64,7 @@ function Index({}) {
           setIsProcessLogout(true)
           setLineProfile(null);
           setToken(null);
+          queryClient.clear();
           removeLocalStorageItem().then(data=>{
             console.log(data)
             if(data === 'finish'){
@@ -101,76 +105,63 @@ function Index({}) {
         // 未找到登入資訊，執行其他操作或導向登入頁面
     }
   }
-  
   const [isCheckUserLoginExecuted, setIsCheckUserLoginExecuted] = useState(false);
-  const checkUserLogin = async ()=>{
+  const queryClient = useQueryClient();
+  const checkUserLogin = async () => {
     if (isCheckUserLoginExecuted) {
       return;
     }
     setIsCheckUserLoginExecuted(true);
     const storedLoginTokenData = localStorage.getItem('loginTokenData');
-    if(storedLoginTokenData){
-      try{
-        const userLoginData = JSON.parse(storedLoginTokenData)
-        const udata = await fetchUserProfile(userLoginData.user_id, userLoginData.token);
-        if(udata === 401){
-          await liff.init({ liffId: liffID });
-          console.log(liff.isLoggedIn())
-          if (!liff.isLoggedIn()) {
-           return
-          } 
-          const accessToken = liff.getAccessToken();
-          if(accessToken){
-            const profile = await liff.getProfile();
-            localStorage.setItem('lineProfile', JSON.stringify(profile));
-            const lined = await fetchLineLogin(profile);
-            localStorage.setItem('loginTokenData', JSON.stringify(lined));
-            const udata = await fetchUserProfile(lined.user_id, lined.token);
-            localStorage.setItem('currentUser', JSON.stringify(udata));
-            localStorage.setItem('isLogin', true);
-            setIsLoggedIn(true)
-            setCurrentUser(udata);
-          }
-          
-        } else{
-          setCurrentUser(udata)
-        }
+    if (storedLoginTokenData) {
+      try {
+        const userLoginData = JSON.parse(storedLoginTokenData);
+        // 使用 react-query 來執行 fetchUserProfile API
+        const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
+          fetchUserProfile(userLoginData.user_id, userLoginData.token)
+        );
 
-      } catch (error){
+        // 其他邏輯...
+        setCurrentUser(udata);
+      } catch (error) {
         console.error('Error initializing LIFF: ', error.message);
       }
     } else {
-        // 未找到登入資訊，執行其他操作或導向登入頁面
-        await liff.init({ liffId: liffID });
-        console.log(liff.isLoggedIn())
-        if (!liff.isLoggedIn()) {
-          return
-        } 
-        const accessToken = liff.getAccessToken();
-        if(accessToken){
-          const profile = await liff.getProfile();
-          localStorage.setItem('lineProfile', JSON.stringify(profile));
-          const lined = await fetchLineLogin(profile);
-          localStorage.setItem('loginTokenData', JSON.stringify(lined));
-          const udata = await fetchUserProfile(lined.user_id, lined.token);
-          localStorage.setItem('currentUser', JSON.stringify(udata));
-          localStorage.setItem('isLogin', true);
-          setIsLoggedIn(true)
-          setCurrentUser(udata);
-        }
-        
+      // 未找到登入資訊，執行其他操作或導向登入頁面
+      await liff.init({ liffId: liffID });
+      console.log(liff.isLoggedIn());
+      if (!liff.isLoggedIn()) {
+        return;
+      }
+      const accessToken = liff.getAccessToken();
+      if (accessToken) {
+        const profile = await liff.getProfile();
+        localStorage.setItem('lineProfile', JSON.stringify(profile));
+        const lined = await fetchLineLogin(profile);
+        localStorage.setItem('loginTokenData', JSON.stringify(lined));
+
+        // 使用 react-query 來執行 fetchUserProfile API
+        const udata = await queryClient.fetchQuery(['userProfile', lined.user_id, lined.token], () =>
+          fetchUserProfile(lined.user_id, lined.token)
+        );
+        localStorage.setItem('currentUser', JSON.stringify(udata));
+        localStorage.setItem('isLogin', true);
+        setIsLoggedIn(true)
+        setCurrentUser(udata);
+
+        // 其他邏輯...
+        // setCurrentUser(udata);
+      }
     }
-
+  };
   
-  }
-
   useEffect(()=>{
     checkUserLogin()
 
-  },[])
+  },[queryClient])
   
   return (
-    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
+    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-zinc-800 z-50 flex flex-row flex-wrap 
    justify-between '>
       <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
           <a href='/' className='font-black w-24 lg:w-32'>
@@ -209,7 +200,7 @@ function Index({}) {
             </div>
             
             :
-            <Link   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</Link>
+            <div onClick={() => {handleLogin()}}   className=' cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>Sign in</div>
           }
           <div className="block  ml-auto">
               <button
@@ -233,7 +224,6 @@ function Index({}) {
               <div className='text-3xl font-black  lg:w-32'>
                 <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
               </div>
-              <div className='lg:text-xl'>Gallery</div>
           </div>
           <div className='my-7 flex flex-col text-white/90 justify-between '>
             { 

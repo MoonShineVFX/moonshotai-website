@@ -2,10 +2,11 @@ import React, { useState, useEffect }  from 'react'
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import {motion,AnimatePresence} from 'framer-motion'
 import { FiHeart } from "react-icons/fi";
-import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown } from "react-icons/md";
+import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
+import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { imageFormModalState, imageDataState,imageModalState } from '../atoms/galleryAtom';
+import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
@@ -25,15 +26,16 @@ const filterModelsDate = [
  ]
 
 
-function Index({title,images,imagesResults,handleUpdate,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels}) {
+function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [profilePage, setProfilePage] = useRecoilState(profilePageState)
+  const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   // console.log('renderpage',imagesResults)
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterDateItem[1])
-
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -62,17 +64,28 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       setOpenItems([...openItems, id]);
     }
   };
+
   const onHandleStorage = (image) =>{
     
     if(image.is_storage === true) {
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      handleUpdate(image.id,newData)
-      handleRemoveStorage(image.id)
+      // handleUpdate(image.id,newData)
+      handleRemoveStorage(newData)
     }else {
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      handleUpdate(image.id,newData)
-      handleStorage(image)
+      // handleUpdate(image.id,newData)
+      handleStorage(newData)
     }
+
+  }
+  const onHandleDisplayHome = (image)=>{
+    console.log(image)
+    const items = {
+      display_home:!image.display_home
+    }
+    setIsShowDisplayFormModal(true)
+    setImageData(image)
+    setProfilePage('on_Renderpage')
 
   }
 
@@ -121,7 +134,7 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight >= scrollHeight - 30) {
+      if (scrollTop + clientHeight +300  >= scrollHeight ) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')
@@ -175,6 +188,15 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
+      { isAddStorageLoading&& <motion.div 
+              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              initial={{ opacity: 0, y: -20,x:'-50%' }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              >
+                資料處理中
+              </motion.div>
+      }
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
@@ -186,19 +208,19 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-          <div className='grid grid-cols-3 md:grid-cols-4 gap-3 pb-16'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                className=' overflow-hidden relative'
+                className=' overflow-hidden relative border border-white/20 rounded-md '
               >
                 <div className='pt-[100%] relative'>
                   <img  
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
-                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full '
                     onClick={() => {
                       setImageData(image)
                       setIsShowImageModal(true)
@@ -208,26 +230,43 @@ function Index({title,images,imagesResults,handleUpdate,handleCollection,handleS
                       {created_at.substr(0,10)}
                   </div>
                 </div>
-
-                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white' + (is_storage ? ' bg-zinc-500 ' : ' bg-zinc-700' )} onClick={()=>onHandleStorage(image)}>
+                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-zinc-800  ' : '   bg-zinc-800 text-white' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <div className=' flex items-center  justify-center gap-1 ' >
-                        <MdRemoveCircle /><span>移除留存</span>
-                      </div>
+                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
+                        <MdRemove />
+                      </button>
                       :
-                      <div className='flex items-center  justify-center gap-1'>
-                        <MdAddCircle /> <span>加入留存</span>
-                      </div>
+                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
+                        <MdAdd  />
+                      </button>
                     }
+                  </div>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-zinc-800 text-white/80   ' : '   bg-white text-zinc-800' ) } onClick={()=>onHandleDisplayHome(image)}>
+
+                    <button 
+                      disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
+                      <FaShare />
+                    </button>
+                      
+                  </div>
                 </div>
+
+
               </motion.div>
 
             )
 
           })}
+
           </div>
+          
+          
       }
+      {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+      </div>}
     
 
     </div>

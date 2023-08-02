@@ -7,12 +7,10 @@ function SubscriptionsList({subData,plans,currentUser}) {
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
 
-  console.log(plans)
   const SelecPlans = ({id})=>{
     const newData = plans.filter(item=>{
       return item.id === id
     })
-    console.log(newData[0])
     return(
       <div>{newData[0]?.name}</div>
     )

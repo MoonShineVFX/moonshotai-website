@@ -1,12 +1,13 @@
 import React,{useState} from 'react'
 import { useForm,Controller } from 'react-hook-form';
 import {motion,AnimatePresence} from 'framer-motion'
-import { beforeDisplayModalState, imageDataState } from '../atoms/galleryAtom';
+import { beforeDisplayModalState, imageDataState,profilePageState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle } from "react-icons/md";
 function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
+  const profilePage = useRecoilValue(profilePageState)
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
@@ -19,7 +20,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       display_home:data.display_home ||false
 
     }
-    handleSetStorageImage(image,items,'before')
+    handleSetStorageImage(image,items,profilePage)
   };
   const modalVariants = {
     close: { opacity: 0, },
@@ -47,7 +48,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='grid grid-cols-2 gap-2'>
             <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/50 font-normal my-2'>*Title(required)</label>
+              <label htmlFor="name" className='text-white/50 font-normal my-2'>*標題(必填)</label>
               <Controller
                 name="title"
                 control={control}
@@ -60,7 +61,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             </div>
           </div>
           <div className='flex flex-col  '>
-            <label htmlFor="bio" className='text-white/50 font-normal my-2'>Description</label>
+            <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
             <Controller
               name="description"
               control={control}
@@ -94,10 +95,11 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                           : ''
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
-                    <span className="ml-2 text-sm font-medium text-white/80">
-                      Show in Gallery
-                    </span>
+
                   </label>
+                  <span className="flex items-center text-xs font-medium text-white/80">
+                      分享圖片到藝廊
+                  </span>
                 </div>
               )}
             />
@@ -109,7 +111,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               defaultValue={image?.is_user_nsfw}
               render={({ field }) => (
                 <div className="flex mt-4 ">
-                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                  <label className="flex  relative items-center  mr-5 cursor-pointer">
                     <input
                       type="checkbox"
                       className="sr-only peer"
@@ -123,20 +125,22 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                           : ''
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
-                    <span className="ml-2 text-sm font-medium text-white/80">
-                      Add NSFW tag
-                    </span>
+
                   </label>
+                  <span className="flex items-center text-xs font-medium text-white/80">
+                      啟用成人內容標籤
+                  </span>
+
                 </div>
               )}
             />
           </div>
           
-          <div className='mt-6 flex gap-3 justify-center text-md'>
-            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Save</button>
+          <div className='mt-6 flex gap-3 justify-center text-sm'>
+            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>儲存送出</button>
             <button type="button" className='text-white/80' onClick={()=>{
               setIsShowDisplayFormModal(false)
-            }}>Cancel</button>
+            }}>取消</button>
           </div>
 
         </form>

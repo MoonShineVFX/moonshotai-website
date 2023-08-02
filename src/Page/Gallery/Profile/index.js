@@ -22,6 +22,8 @@ import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
 import liff from '@line/liff';
+import { useQuery, useInfiniteQuery,queryClient,useMutation,useQueryClient } from 'react-query';
+import { upperFirst } from 'lodash';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
@@ -51,10 +53,11 @@ function Index() {
   const [currentPage, setCurrentPage]= useState(1)
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(27)
+  const [pageSize, setPageSize] = useState(19)
   const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
+  const [optionPage,setOptionPage] = useState('Renders')
 
   const [isEdit , setIsEdit] = useState(false)
   const [name,setName]= useState('')
@@ -93,6 +96,237 @@ function Index() {
       },
     },
   };
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'production') {
+      // initializeLineLogin()
+      getStoredLocalData().then(data=>{
+        setIsLoggedIn(data.isLogin)
+        setLineLoginData(data.loginToken)
+        setLineProfile(data.lineProfile)
+        setCurrentUser(data.currentUser)
+        let user = data.currentUser
+        let lineProfile = data.lineProfile
+        let loginToken = data.loginToken
+        if(data.isLogin){
+            console.log('profilePage is login:', data.isLogin)
+            setToken(loginToken)
+            // handleRenders(user.id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
+            //   console.log(d)
+            // })
+
+        }else{
+          // initializeLineLogin()
+        }
+        
+      })
+
+    }else{
+      devLogin()
+    }
+  }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
+
+  // FETCH Render IMAGE to PAGE 
+  const { data: renderData, isLoading:isRenderDataLoading, fetchNextPage:fetchRenderNextPage, hasNextPage, isFetchingNextPage, isError:isRenderDataError, refetch:renderDataRefetch } = useInfiniteQuery(
+    [ 'rendersData',currentUser,linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+    fetchUserImages(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: optionPage === 'Renders',
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const renderImages = renderData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  
+  // FETCH Storage IMAGE to PAGE 
+  const { data: storageData, isLoading:isStorageDataLoading, fetchNextPage:fetchStorageNextPage, hasNextPage:hasStorageNextPage, isFetchingNextPage:isFetchStorageNextPage, isError:isStorageDataError, refetch:storageDataRefetch } = useInfiniteQuery(
+    [ 'storageData',currentUser,linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+    fetchUserStorages(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: optionPage === 'Storage',
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  // ADD  Render data to STORAGE
+  const queryClient = useQueryClient();
+  const storageMutation = useMutation((updatedData) => {
+    // 在此處呼叫 API 更新圖片內容
+    console.log(updatedData.newData)
+    return userStorageAImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
+  }, {
+    // 定義更新成功後的行為
+    onSuccess: (data, variables) => {
+      console.log(variables)
+      if(data.message === "You have reached the storage limits"){
+        toast('留存圖片已到達可用上限。', {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          });
+        return
+      }
+      renderDataRefetch()
+    
+      setIsShowDisplayFormModal(false);
+      
+      if(variables?.isDisplay?.status === 'on_Renderpage'){
+        console.log('on_Renderpage')
+        updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
+      }
+
+      
+    },
+  });
+
+  // REMOVE STORAGE Render data
+    const unStorageMutation = useMutation((updatedData) => {
+      // 在此處呼叫 API 更新圖片內容
+      return userDelAStorageImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
+    }, {
+      // 定義更新成功後的行為
+      onSuccess: (data, variables) => {
+        if(variables?.status  === 'on_Storagepage'){
+          storageDataRefetch()
+        }else{
+          renderDataRefetch()
+        }
+
+       
+        
+      },
+    });
+  const handleStorage = (newData) => {
+    // 呼叫更新函數
+    storageMutation.mutate({newData});
+  };
+  const handleRemoveStorage = (newData,status)=>{
+    unStorageMutation.mutate({newData,status});
+  }
+
+  const updateImageMutation = useMutation((updatedData) =>{ 
+    userPatchAStorageImage(updatedData.image, linLoginData, updatedData.items)}, 
+    {
+      onSuccess: (data, variables) => {
+        // 執行更新成功後的操作
+        console.log(variables)
+        if(variables?.status === 'on_Renderpage'){
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id ? { ...image,...variables.items} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }else{
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id ? { ...image,...variables.items} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+
+        }
+
+        
+        setIsShowDisplayFormModal(false);
+      },
+    });
+
+
+  //
+  // FETCH Collection IMAGE to PAGE 
+  const { data: collectionData, isLoading:isCollectioDataLoading, fetchNextPage:fetchCollectioNextPage, hasNextPage:hasCollectioNextPage, isFetchingNextPage:isFetchCollectionNextPage, isError:isCollectioDataError, refetch:collectionDataRefetch } = useInfiniteQuery(
+    [ 'collectionData',currentUser,linLoginData, startDate, currModels],
+    ({ pageParam}) =>
+    fetchUserCollections(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: optionPage === 'Collections',
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const collectionImages = collectionData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  //
+  // FETCH Follow IMAGE to PAGE 
+  const { data: followData, isLoading:isFollowDataLoading, fetchNextPage:fetchFollowNextPage, hasNextPage:hasFollowNextPage, isFetchingNextPage:isFetchFollowNextPage, isError:isFollowDataError, refetch:followDataRefetch } = useInfiniteQuery(
+    [ 'followData',currentUser,linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+    fetchUserFollowings(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: optionPage === 'Following',
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const followImages = followData?.pages?.flatMap((pageData) => pageData) ?? [];
+
+  // Todo updateUserMutation
+  const updateUserMutation = useMutation((updatedData) =>{ 
+    patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
+   {
+      onSuccess: (data, variables) => { 
+        console.log(variables)
+        queryClient.setQueryData( (prevData) => {
+          console.log(prevData)
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+            image.id === variables.image.id ? { ...image,...variables.items} : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      },  
+    })
+  //TODO STORAGE: SHARE / EDIT AVATAR / REMOVE 
+  //TODO COLLECTION:  REMOVE
+  //TODO FOLLOW: UNFOLLOW
+
   const switchIcons = (name)=>{
     switch (name) {
       case 'Renders':
@@ -118,49 +352,7 @@ function Index() {
   const handleModalClose = () => {
     setSelectedImage(null);
   };
-    //TODO no login many time
-  const initializeLineLogin = async () => {
-    liff.init({
-      liffId: liffID
-    }).then(function() {
-      console.log('LIFF init');
-      if (liff.isLoggedIn()) {
-        const accessToken = liff.getAccessToken();
-        setIsLoggedIn(true)
-        localStorage.setItem('isLogin', true);
-        // console.log("getAccessToken", accessToken);
-        if(accessToken){
 
-          liff.getProfile().then(profile=>{
-            // console.log(profile)
-            setLineProfile(profile)
-            localStorage.setItem('lineProfile', JSON.stringify(profile));
-            fetchLineLogin(profile)
-              .then((data)=> {
-                setToken(data.token)
-                localStorage.setItem('loginTokenData', JSON.stringify(data));
-                fetchUserProfile(data.user_id, data.token)
-                  .then((data)=> {
-                    // console.log(data)
-                    setCurrentProfile(data)
-                    localStorage.setItem('currentUser', JSON.stringify(data));
-                  })
-                    
-                  .catch((error) => console.error(error));
-                handleRenders(profile.userId,data.token,1,pageSize,startDate,endDate,currModels)
-              })
-              .catch((error) => console.error(error));
-              
-          }).catch(err => console.log(err))
-        }
-      } else {
-        console.log('not yet login')
-        liff.login();
-      }
-    }).catch(function(error) {
-      console.log(error);
-    });
-  }
  
   const devLogin = ()=>{
     const profile ={
@@ -187,71 +379,15 @@ function Index() {
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
-        handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
+        // handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
         // handleRenders(profile.userId ,data.token)
 
 
       })
       .catch((error) => console.error(error));
   }
-  //給 Render Page
-  const handleRenders = async (userId,token,pageNum,pageSizeNum,sDate,eDate,cModels)=>{
-    setLoading(true);
-    try {
-      let ID = userId || currentProfile.uid
-      let TK = token || linLoginData
-      let pg = pageNum || currentPage 
-      let pgs = pageSizeNum || pageSize 
-      let s = sDate || startDate
-      let e = eDate || endDate
-      let m = cModels || currModels
-      console.log(pg, pgs,s, e, m)
-      const images = await fetchUserImages(ID, TK, pg, pgs,s, e, m);
-      const results = images.results;
-      // console.log(images)
-      if(results.length === 0){
-        setImagesResults(results)
-        return
-      }
-      setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-      setCurrentAuthor(images.results[0].author)
+  // const storageMutation = useMutation((image) => userStorageAImage(image, token));
 
-      if(pg === 1){
-        setImagesResults(results)
-      }else{
-        setImagesResults(prevImages => [...prevImages, ...results]);
-        setCurrentPage(pg);
-      }
-
-    } catch (error) {
-      
-    } finally {
-      setLoading(false);
-    }
-
-  }
-  const handleStorage = (image) =>{
-    userStorageAImage(image,token)
-      .then((data)=>{
-        if(data.message === "You have reached the storage limits"){
-          toast('留存圖片已到達可用上限。', {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "dark",
-            });
-          return
-        }
-        setTimeout(()=>{
-          setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages+1});
-        },600)
-      })
-      .catch((error) => console.error(error));
-  }
   const handleCollection = (image) =>{
     userCollectionAImage(image,token)
       .then((data)=> {
@@ -265,19 +401,20 @@ function Index() {
     const items={
       profile_banner_id:id
     }
-    patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> {
-        if(data.status === 200){
-          setTimeout(()=>{
-            fetchUserProfile(currentProfile.id, token)
-              .then((data)=> {
-                // console.log(data)
-                setCurrentProfile(data)})
-              .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
+    updateUserMutation.mutate({ items });
+    // patchUserProfile(currentProfile.id,token,items)
+    //   .then((data)=> {
+    //     if(data.status === 200){
+    //       setTimeout(()=>{
+    //         fetchUserProfile(currentProfile.id, token)
+    //           .then((data)=> {
+    //             // console.log(data)
+    //             setCurrentProfile(data)})
+    //           .catch((error) => console.error(error));
+    //       },1000)
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
 
 
   }
@@ -285,19 +422,20 @@ function Index() {
     const items={
       profile_image_id:id
     }
-    patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> {
-        if(data.status === 200){
-          setTimeout(()=>{
-            fetchUserProfile(currentProfile.id, token)
-              .then((data)=> {
-                // console.log(data)
-                setCurrentProfile(data)})
-              .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
+    updateUserMutation.mutate({ items });
+    // patchUserProfile(currentProfile.id,token,items)
+    //   .then((data)=> {
+    //     if(data.status === 200){
+    //       setTimeout(()=>{
+    //         fetchUserProfile(currentProfile.id, token)
+    //           .then((data)=> {
+    //             // console.log(data)
+    //             setCurrentProfile(data)})
+    //           .catch((error) => console.error(error));
+    //       },1000)
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
   }
   const handleSetName = ()=>{
     const items={
@@ -340,46 +478,30 @@ function Index() {
    * start
    * */ 
   const handleSetStorageImage = (image,items,status) =>{
+    console.log(image)
+    // console.log(image.is_storage,status)
+    if(!image.is_storage){
+      console.log(image.is_storage)
+      const newData = { ...image, is_storage: !image.is_storage  }; 
+      storageMutation.mutate({newData,isDisplay:{ image, items, status }});
+      
+    }else{
+      updateImageMutation.mutate({ image, items, status });
+    }
 
-    userPatchAStorageImage(image.id,token,items)
-      .then((data)=>{
-        const newData = { ...image, ...items  }; 
-        handleStorageUpdate(image.id,newData)
-        if(status === 'before'){
-          setIsShowDisplayFormModal(false)
-        }else{
-          setIsShowFormModal(false)
-        }
-      })
-      .catch((error) => console.error(error));
   }
+
+
+
   const handleDisplayHome = (id,items)=>{
+    console.log(items)
     userPatchDisplayHome(id,token,items)
       .then((data)=>{
         console.log('display home update')
       })
       .catch((error) => console.error(error));
   }
-  const handleRemoveStorage = (id)=>{
-    userDelAStorageImage(id,token)
-      .then((data)=> {
-        if(data.status === 200 || data.status === 204){
-          setTimeout(()=>{
 
-            // change currentUser collections 
-            setCurrentProfile({...currentProfile, total_storages: currentProfile.total_storages-1});
-
-            fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
-            .then((images)=> {
-                setStorages(images)
-                setStoragesResults(images.results)
-            })
-            .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
-  }
   const handleRemoveCollection = (id)=>{
     userDelACollectionImage(id,token)
       .then((data)=> {
@@ -431,168 +553,53 @@ function Index() {
       return updatedData;
     });
   }
-  /**
-   * Storage API 
-   * End
-   * */ 
-  const handleUpdate = (id, newData) => {
-    // 找到要更新的資料並進行更新
-    setImagesResults(prevData => {
-      const index = prevData.findIndex(item => item.id === id);
-      if (index === -1) {
-        // 如果沒找到物件 返回原本的狀態
-        return prevData;
-      }
-      const updatedData = [...prevData];
-      updatedData[index] = {...updatedData[index], ...newData};
-      return updatedData;
-    });
-  };
 
-  
 
-  // useEffect(() => {
-  //   handleOptionChange(currentDropDownItem);
-  // }, [currentPage]);
   const toggleDropdown = () => {
     setIsDropDownOpen(!isDropDownOpen);
   };
   const handleOptionChange = async (item) => {
     setCurrentPage(1)
     setPageSize(15)
-    switch (item.title) {
-      case 'Renders':
-        handleRenders(currentProfile.id,token,1,pageSize,startDate,endDate,currModels)
-        break;
-      case 'Storage':
-        fetchUserStorages(currentProfile.id,currentStoragePage,pageSize,token)
-          .then((images)=> {
-              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-              setStorages(images)
-              setStoragesResults(images.results)
-          })
-          .catch((error) => console.error(error));
-        break;
-      case 'Collections':
-        fetchUserCollections(currentProfile.id,token)
-          .then((images)=> {
-              setTotalPage(parseInt((images.count + pageSize - 1) / pageSize))
-              setCollections(images)
-              setCollectionsResults(images.results)
-          })
-          .catch((error) => console.error(error));
-        break;
-      case 'Following':
-        fetchUserFollowings(currentProfile.id,token)
-          .then((folloings)=> {
-              setFollows(folloings)
-              setFollowsResults(folloings)
-          })
-          .catch((error) => console.error(error));
-        break;
-      default: return null;
-    }
+    setOptionPage(item.title)
   };
-  const renderComponent =  () => {
-    switch (currentDropDownItem.title) {
-      case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={imagesResults} handleStorage={handleStorage} handleCollection={handleCollection}  handleUpdate={handleUpdate} currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchMoreImages} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels} />;
-      case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storagesResults} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchMoreStorageImages} currentStoragePage={currentStoragePage} totalPage={totalPage} />;
-      case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionsResults} handleRemoveCollection={handleRemoveCollection} />;
-      case 'Following':
-        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followsResults} handleUnfollow={handleUnfollow}/>;
-      default: return null;
-    }
-  }
-  
-  const fetchMoreImages = () => {
-    if(currentPage >= totalPage || loading) {
-      return
-    } 
-    const nextPage = currentPage + 1;
-    handleRenders(currentProfile.id,token,nextPage,pageSize,startDate,endDate,currModels)
-  }
   const handleSelectDate = (value,date)=>{
     setCurrentPage(1)
     setPageSize(15)
     setStartDate(date)
-    handleRenders(currentProfile.id,token,1,pageSize,date,endDate,currModels)
   }
   const handleSelectModels = (value)=>{
     console.log(value)
     setCurrentPage(1)
     setPageSize(15)
     setCurrModels(value)
-    handleRenders(currentProfile.id,token,1,pageSize,startDate,endDate,value)
   }
-  const fetchMoreStorageImages = () => {
-    if(currentPage >= totalPage) {
-      console.log('stop')
-      return
-    } 
-    const nextPage = currentPage + 1;
-    fetchUserStorages(currentProfile.id,nextPage,pageSize,token)
-      .then(data=>{
-        setStoragesResults(prevImages => [...prevImages, ...data.results]);
-        setCurrentStoragePage(nextPage);
-      })
+  const renderComponent =  () => {
+    switch (currentDropDownItem.title) {
+      case 'Renders':
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
+      case 'Storage':
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} />;
+      case 'Collections':
+        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
+      case 'Following':
+        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followImages} handleUnfollow={handleUnfollow}/>;
+      default: return null;
+    }
   }
+  
+
+
 
 
 
   //LISTEN  LOGIN IF not LINE INIT
-  //TODO no login many time
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      // initializeLineLogin()
-      getStoredLocalData().then(data=>{
-        setIsLoggedIn(data.isLogin)
-        setLineLoginData(data.loginToken)
-        setLineProfile(data.lineProfile)
-        setCurrentUser(data.currentUser)
-        let user = data.currentUser
-        let lineProfile = data.lineProfile
-        let loginToken = data.loginToken
-        if(data.isLogin){
-            console.log('profilePage is login:', data.isLogin)
-      
-            setToken(loginToken)
-            // getSubscriptions(data.token).then(odata=>{
-            //   console.log(odata)
-            //   setSubsData(odata)
-            // })
-            handleRenders(user.id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
-              console.log(d)
-            })
-            // fetchUserProfile(data.user_id, data.token)
-            //     .then((data)=> {
-            //       // console.log(data)
-            //       setCurrentProfile(data)
-            //       localStorage.setItem('currentUser', JSON.stringify(data));
-            //     })
-                  
-            //     .catch((error) => console.error(error));
-            // fetchUserImages(lineProfile.userId , currentPage, pageSize,data.token)
 
-          // refreshToken().then(data =>{
 
-          // })
-        }else{
-          // initializeLineLogin()
-        }
-        
-      })
-
-    }else{
-      devLogin()
-    }
-  }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
   if(isLoggedIn === false || !currentProfile ){
     return <div className='text-white/70 text-xl    md:text-left md:text-3xl  mb-4  md:w-8/12 mx-auto'>
-       <Header />
+
        <EmptyProfilePage />
     </div>
     
@@ -610,7 +617,7 @@ function Index() {
       </AnimatePresence>
       <ToastContainer />
 
-      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
+      {/* <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/> */}
 
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
@@ -668,6 +675,7 @@ function Index() {
               <div className='mb-1'>{switchIcons(item.title)}</div> 
 
               <div >{item.title} </div>
+              
             </div>
           )
         })}

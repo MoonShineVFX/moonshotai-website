@@ -4,14 +4,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { imageDataState,imageByIdSelector,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
+import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
+import moment from 'moment';
 import EditCommentForm from '../Components/EditCommentForm';
+import { useQuery, useMutation,useInfiniteQuery } from 'react-query';
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useState(null)
@@ -22,10 +24,10 @@ function Post() {
   const currentLoginData = useRecoilValue(loginState)
   const isCurrentLogin = useRecoilValue(isLoginState)
 
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
-  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
-  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [lineProfile, setLineProfile] = useState({});
+  const [linLoginToken, setLineLoginToken] = useState('')
+  const [currentUser, setCurrentUser] = useState({})
   const [formStatus, setFormStatus] = useRecoilState(formStatusState);
   const [currentComment, setCurrentComment] = useRecoilState(commentDataState);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -38,84 +40,103 @@ function Post() {
   const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
 
   const [currentStoragePage, setCurrentStoragePage]= useState(1)
+  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
+  const [currModels, setCurrModels] = useState('all')
+  const [currentHeaders , setCurrentHeaders] = useState({})
+
   const [totalPage, setTotalPage]= useState(0)
-  const [pageSize, setPageSize] = useState(10)
+  const [pageSize, setPageSize] = useState(12)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const handleBackClick = () => {
-    navigate('/gallery')
-    // const hasPreviousPage = navigate.length > 1;
-    // console.log(navigate.length)
-    // if (hasPreviousPage) {
-    //   navigate(-1); // 返回上一页
-    // } else {
-    //   navigate('/gallery'); // 导航到指定页面
-    // }
+
+    if (document.referrer.includes(window.location.hostname)) {
+      navigate(-1); 
+    } else {
+      navigate(-1); 
+    }
   };
-  //TODO no login many time
+
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)
-        setLineLoginData(localData.loginToken)
+        setLineLoginToken(localData.loginToken)
         setLineProfile(localData.lineProfile)
         setCurrentUser(localData.currentUser)
-        let loginToken = localData.loginToken
-        let currentUser = localData.currentUser
-        let headers = {'Content-Type': 'application/json'} 
-        if(localData.isLogin){
-          // const refreshTokenResult = refreshToken()
-            headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-            fetchGalleriesDetail(headers,id).then(gData=>{
-              // console.log(gData)
-              if(gData === 401){
-                setTimeout(()=>{
-                  removeLocalStorageItem().then(data=>{
-                    window.location.reload();
-                  })
-                },500)
-              }
-              setImageData(gData);
-              // 
-              fetchComments(gData).then(data=>{
-                  // console.log(data)
-                  setComments(data)
-                  setCommentsResults(data.results)
-                  const isUserid = data.results.some((item,index)=>{
-                    return item.author.id === currentUser.id
-                  })
-                  setIsHaveUserComment(isUserid)
-                })
-            })
-            fetchUserCollections(currentUser.id,loginToken).then(collections=>{
-              const findCollectionId = collections.results.some((item)=>{
-                return item.id === parseInt(id)
-              })
-              if(findCollectionId){
-                setIsCollected(true)
-              }else{
-                setIsCollected(false)
-              }
-            })
+        setIsInitialized(true);
 
-  
-        }else{
-          fetchGalleriesDetail(headers,id).then(gdata=>{
-            setImageData(gdata);
-            fetchComments(gdata).then(data=>{
-              // console.log(data)
-              setComments(data)
-              setCommentsResults(data.results)
-              // const isUserid = data.results.some((item,index)=>{
-              //   console.log(item)
-              //   return item.author.id === currentUser.id
-              // })
-              // setIsHaveUserComment(isUserid)
-            })
-          })
-        }
 
       })
-  },[setIsLoggedIn,setLineLoginData,setLineProfile])
+  },[setIsLoggedIn,setLineLoginToken,setLineProfile])
+  
+  const { data: galleryData, isLoading: isGalleryDataLoading, isError: isGalleryDataError } = useQuery(
+    ['galleryDetail',linLoginToken,id],
+    () => fetchGalleriesDetail(linLoginToken, id),
+    {
+      enabled:isInitialized && (linLoginToken !== null || isLoggedIn !== null),
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (gData) => {
+        // 成功獲取數據後處理
+        setImageData(gData);
+        fetchComments(gData).then(data => {
+          setComments(data);
+          setCommentsResults(data.results);
+          const isUserid = data.results.some((item, index) => {
+            return item.author.id === currentUser.id;
+          });
+          setIsHaveUserComment(isUserid);
+        });
+      },
+    }
+  );
+  const { data: userCollection, isLoading: isUserCollectionLoading, isError: issUserCollectionError } = useQuery(
+    ['userCollections', currentUser,linLoginToken],
+    () => fetchUserCollections(currentUser.id, linLoginToken),
+    {
+      enabled: isLoggedIn === true, 
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (uData) => {
+        // 成功獲取數據後處理
+        const findCollectionId = uData.results.some((item)=>{
+          return item.id === parseInt(id)
+        })
+        if(findCollectionId){
+          setIsCollected(true)
+        }else{
+          setIsCollected(false)
+        }
+
+      },
+    }
+  );
+  // FETCH Storage IMAGE to PAGE 
+  const { data: storageData, isLoading:isStorageDataLoading, fetchNextPage:fetchStorageNextPage, hasNextPage:hasStorageNextPage, isFetchingNextPage:isFetchStorageNextPage, isError:isStorageDataError, refetch:storageDataRefetch } = useInfiniteQuery(
+    [ 'storageData',currentUser],
+    ({ pageParam }) =>
+    fetchUserStorages(currentUser.id, linLoginToken, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: isCommentModal,
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+
+
 
 
   const handleCollection = ()=>{
@@ -126,7 +147,7 @@ function Post() {
     }else{
       // console.log(imageData)
       if(isCollected){
-        userDelACollectionImage(imageData.id,linLoginData)
+        userDelACollectionImage(imageData.id,linLoginToken)
           .then((data)=> {
             if(data.status===204){
               setIsCollected(false)
@@ -136,7 +157,7 @@ function Post() {
           })
           .catch((error) => console.error(error));
       }else{
-        userCollectionAImage(imageData,linLoginData)
+        userCollectionAImage(imageData,linLoginToken)
           .then((data)=> {
             if(data.status===200){
               setIsCollected(true)
@@ -151,6 +172,8 @@ function Post() {
   }
 
 
+
+
   const handleComment = (item)=>{
     // console.log('click')
     // console.log(isHaveUserComment)
@@ -159,7 +182,7 @@ function Post() {
       setIsLoginForComment(true)
      }else{
       if(isHaveUserComment){
-        toast('You have already commented on this image. You can edit it.', {
+        toast('請使用編輯的方式，編輯你的評論內容。', {
           position: "bottom-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -174,13 +197,13 @@ function Post() {
         setCurrentComment(null)
         setIsCommentModal(true)
         setIsLoginForComment(false)
-        fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
-          .then((images)=> {
-              setStorages(images)
-              setStoragesResults(images.results)
-              // console.log(images)
-          })
-          .catch((error) => console.error(error));
+        // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
+        //   .then((images)=> {
+        //       setStorages(images)
+        //       setStoragesResults(images.results)
+        //       // console.log(images)
+        //   })
+        //   .catch((error) => console.error(error));
       }
 
      }
@@ -188,17 +211,17 @@ function Post() {
   const handleEditComment = ()=>{
     setIsCommentModal(true)
     setIsLoginForComment(false)
-    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
-      .then((images)=> {
-          setStorages(images)
-          setStoragesResults(images.results)
-          // console.log(images)
-      })
-      .catch((error) => console.error(error));
+    // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
+    //   .then((images)=> {
+    //       setStorages(images)
+    //       setStoragesResults(images.results)
+    //       // console.log(images)
+    //   })
+    //   .catch((error) => console.error(error));
   }
   const handleSendComment= (data)=>{
     // console.log(data)
-    userPostCommentToImage(imageData,data,linLoginData)
+    userPostCommentToImage(imageData,data,linLoginToken)
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
@@ -215,7 +238,7 @@ function Post() {
   }
   const handleSaveEditComment = (id,data)=>{
     // console.log(id,data)
-    userPatchCommentToImage(id,data,linLoginData)
+    userPatchCommentToImage(id,data,linLoginToken)
       .then(data=>{
         setIsCommentModal(false)
         fetchComments(imageData).then(data=>{
@@ -231,7 +254,7 @@ function Post() {
       .catch((error) => console.error(error));
   }
   const handleSelectStorageImage = ()=>{
-    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginData)
+    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginToken)
         .then((images)=> {
             setStorages(images)
             setStoragesResults(images.results)
@@ -248,7 +271,7 @@ function Post() {
   const handleCopyPrompt=(model,prompt,negative_prompt)=>{
     const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
-    fetchImageCopyPromptTime(imageData,linLoginData)
+    fetchImageCopyPromptTime(imageData,linLoginToken)
     setIsCopied(true)
   }
 
@@ -260,12 +283,12 @@ function Post() {
 
   return (
     <div>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
       <AnimatePresence>
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
       {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
-      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={storagesResults} handleSelectStorageImage={handleSelectStorageImage}/>}
+      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={storageImages} handleSelectStorageImage={handleSelectStorageImage}/>}
       </AnimatePresence>
       <ToastContainer />
 
