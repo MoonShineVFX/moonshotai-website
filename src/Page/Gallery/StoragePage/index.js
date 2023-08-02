@@ -132,7 +132,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     
       const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight+100 >= scrollHeight) {
+      if (scrollTop + clientHeight+300 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           console.log('go')

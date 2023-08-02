@@ -305,7 +305,24 @@ function Index() {
   );
   const followImages = followData?.pages?.flatMap((pageData) => pageData) ?? [];
 
-
+  // Todo updateUserMutation
+  const updateUserMutation = useMutation((updatedData) =>{ 
+    patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
+   {
+      onSuccess: (data, variables) => { 
+        console.log(variables)
+        queryClient.setQueryData( (prevData) => {
+          console.log(prevData)
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+            image.id === variables.image.id ? { ...image,...variables.items} : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      },  
+    })
   //TODO STORAGE: SHARE / EDIT AVATAR / REMOVE 
   //TODO COLLECTION:  REMOVE
   //TODO FOLLOW: UNFOLLOW
@@ -384,19 +401,20 @@ function Index() {
     const items={
       profile_banner_id:id
     }
-    patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> {
-        if(data.status === 200){
-          setTimeout(()=>{
-            fetchUserProfile(currentProfile.id, token)
-              .then((data)=> {
-                // console.log(data)
-                setCurrentProfile(data)})
-              .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
+    updateUserMutation.mutate({ items });
+    // patchUserProfile(currentProfile.id,token,items)
+    //   .then((data)=> {
+    //     if(data.status === 200){
+    //       setTimeout(()=>{
+    //         fetchUserProfile(currentProfile.id, token)
+    //           .then((data)=> {
+    //             // console.log(data)
+    //             setCurrentProfile(data)})
+    //           .catch((error) => console.error(error));
+    //       },1000)
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
 
 
   }
@@ -404,19 +422,20 @@ function Index() {
     const items={
       profile_image_id:id
     }
-    patchUserProfile(currentProfile.id,token,items)
-      .then((data)=> {
-        if(data.status === 200){
-          setTimeout(()=>{
-            fetchUserProfile(currentProfile.id, token)
-              .then((data)=> {
-                // console.log(data)
-                setCurrentProfile(data)})
-              .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
+    updateUserMutation.mutate({ items });
+    // patchUserProfile(currentProfile.id,token,items)
+    //   .then((data)=> {
+    //     if(data.status === 200){
+    //       setTimeout(()=>{
+    //         fetchUserProfile(currentProfile.id, token)
+    //           .then((data)=> {
+    //             // console.log(data)
+    //             setCurrentProfile(data)})
+    //           .catch((error) => console.error(error));
+    //       },1000)
+    //     }
+    //   })
+    //   .catch((error) => console.error(error));
   }
   const handleSetName = ()=>{
     const items={
@@ -580,7 +599,7 @@ function Index() {
 
   if(isLoggedIn === false || !currentProfile ){
     return <div className='text-white/70 text-xl    md:text-left md:text-3xl  mb-4  md:w-8/12 mx-auto'>
-       <Header />
+
        <EmptyProfilePage />
     </div>
     
