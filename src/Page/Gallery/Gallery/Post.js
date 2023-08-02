@@ -265,7 +265,7 @@ function Post() {
 
   return (
     <div>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
       <AnimatePresence>
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}

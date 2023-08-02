@@ -167,7 +167,7 @@ function User() {
   }
   return (
     <div>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>

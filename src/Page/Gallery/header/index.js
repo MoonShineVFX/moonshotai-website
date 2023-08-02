@@ -224,7 +224,6 @@ function Index({}) {
               <div className='text-3xl font-black  lg:w-32'>
                 <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="" className='w-full'/>
               </div>
-              <div className='lg:text-xl'>Gallery</div>
           </div>
           <div className='my-7 flex flex-col text-white/90 justify-between '>
             { 

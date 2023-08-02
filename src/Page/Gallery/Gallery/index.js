@@ -180,7 +180,7 @@ function Index() {
         
       
      
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
 
       <div className='w-11/12 md:w-11/12 mx-auto my-6'>
         <div>
@@ -229,17 +229,17 @@ function Index() {
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                     className='  overflow-hidden relative'
                   >
-                    <Link to={`/post/${id}`} className=' relative' >
-                      <div className='pt-[100%] relative'>
+                    <Link to={`/post/${id}`} className=' relative group' >
+                      <div className='pt-[100%] relative  overflow-hidden rounded-md'>
                         <img  
                           src={urls.thumb} alt={image?.description} 
                           data-id={id}
-                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full  hover:scale-110 transition '
   
                         />
                       </div>
 
-                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2'>
+                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2 md:opacity-0 md:group-hover:opacity-100 transition duration-700'>
                         <div className='flex items-center space-x-2'>
                           <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
                           <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
