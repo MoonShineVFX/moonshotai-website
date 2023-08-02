@@ -598,7 +598,7 @@ function Index() {
       </AnimatePresence>
       <ToastContainer />
 
-      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
+      {/* <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/> */}
 
       <div className='lg:w-10/12 mx-auto lg:my-10'>
 
@@ -656,6 +656,7 @@ function Index() {
               <div className='mb-1'>{switchIcons(item.title)}</div> 
 
               <div >{item.title} </div>
+              
             </div>
           )
         })}

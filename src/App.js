@@ -84,6 +84,7 @@ function App() {
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />
           <Route path="price" element={<Price />} />
+          <Route path="profile" element={<Profile />} />
 
           <Route path="/docs" element={<DocLayout/> }>
             <Route path="" element={<QuickStart />}/>
@@ -103,7 +104,7 @@ function App() {
         {/* <Route path="/user/:id" element={<User />} /> */}
         {/* <Route path="/work" element={<Profile />} /> */}
         <Route path="/account" element={<Account />} />
-        <Route path="/profile" element={<Profile />} />
+
         <Route path="/confirm/:id" element={<Confirm />} />
         <Route path="/cancel/:id" element={<Cancel />} />
         <Route path="/orders" element={<Orders />} />

@@ -161,7 +161,7 @@ function Index({}) {
   },[queryClient])
   
   return (
-    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-white/10 z-50 flex flex-row flex-wrap 
+    <div className='  top-0 text-white lg:border-b border-[#3c4756] p-3 w-full  bg-zinc-800 z-50 flex flex-row flex-wrap 
    justify-between '>
       <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
           <a href='/' className='font-black w-24 lg:w-32'>
