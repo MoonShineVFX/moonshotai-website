@@ -50,7 +50,6 @@ function Index() {
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   // const [imageData, setImageData] = useRecoilState(imageDataState)
-  const [currentHeaders , setCurrentHeaders] = useState({})
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -62,20 +61,14 @@ function Index() {
       setLineLoginData(data.loginToken);
       setLineProfile(data.lineProfile);
       setCurrentUser(data.currentUser);
-      let loginToken = data.loginToken
-      let headers = {'Content-Type': 'application/json'} 
-      setCurrentHeaders(headers)
-      if(data.isLogin){
-        headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-        setCurrentHeaders(headers)
-      }
+
     });
   }, []);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
-    [ 'galleries',currentHeaders, startDate, currModels],
+    [ 'galleries', startDate, currModels],
     ({ pageParam }) =>
-      fetchGalleries(currentHeaders, pageParam, pageSize, startDate, endDate, currModels),
+      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
       enabled:true,
       getNextPageParam: (lastPage, pages) =>{
@@ -148,7 +141,6 @@ function Index() {
       if (scrollTop + clientHeight+100 >= scrollHeight) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
-          // fetchMoreImages(); // 加載更多圖片
           fetchNextPage();
           setLastScrollTime(now);
         }
@@ -163,7 +155,7 @@ function Index() {
       // 在組件卸載時移除滾動事件監聽器
       window.removeEventListener('scroll', debouncedHandleScroll);
     };
-  }, [currentHeaders,currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
 
   return (

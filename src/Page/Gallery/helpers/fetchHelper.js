@@ -447,11 +447,11 @@ export const userPatchDisplayHome = async(imgid,token,items)=>{
  * 
  * Galleries API
  */
-export const fetchGalleries = async (headers,cursor,pageSize,startDate,endDate,currModels) =>{
+export const fetchGalleries = async (token,cursor,pageSize,startDate,endDate,currModels) =>{
   let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
-    headers:headers
+    headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
   };
 
 
@@ -467,10 +467,10 @@ export const fetchGalleries = async (headers,cursor,pageSize,startDate,endDate,c
 
 }
 
-export const fetchGalleriesDetail = async (headers,id) => {
+export const fetchGalleriesDetail = async (token,id) => {
   const requestOptions = {
     method: 'GET',
-    headers:headers
+    headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
   };
   const response = await fetch(apiUrl+'galleries/'+id ,requestOptions)
   let status = response.status

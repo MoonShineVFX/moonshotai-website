@@ -388,7 +388,7 @@ function Index() {
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
                     <span className="ml-2 text-sm font-medium text-white/80">
-                      啟用顯示包含成人內容
+                      啟用顯示成人內容請確認已年滿18歲。
                     </span>
                   </label>
                 </div>

@@ -71,13 +71,10 @@ function App() {
       <Routes> 
         <Route path="*" element={<Notfound />} />
 
-
-
         {/* <Route path='/'  element={<HomeLayout/>}>
           <Route path="/" element={<HomeV3 />} />
 
         </Route> */}
-
         
         <Route path="/camera" element={<Camera />} />
         
@@ -87,7 +84,7 @@ function App() {
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />
           <Route path="price" element={<Price />} />
-          
+
           <Route path="/docs" element={<DocLayout/> }>
             <Route path="" element={<QuickStart />}/>
             <Route path="account" element={<UserDoc />}/>

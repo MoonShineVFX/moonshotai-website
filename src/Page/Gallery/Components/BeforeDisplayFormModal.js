@@ -95,10 +95,11 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                           : ''
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
-                    <span className="ml-2 text-sm font-medium text-white/80">
-                      Show in Gallery
-                    </span>
+
                   </label>
+                  <span className="flex items-center text-xs font-medium text-white/80">
+                      分享圖片到藝廊
+                  </span>
                 </div>
               )}
             />
@@ -110,7 +111,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               defaultValue={image?.is_user_nsfw}
               render={({ field }) => (
                 <div className="flex mt-4 ">
-                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
+                  <label className="flex  relative items-center  mr-5 cursor-pointer">
                     <input
                       type="checkbox"
                       className="sr-only peer"
@@ -124,20 +125,22 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                           : ''
                       } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
                     ></div>
-                    <span className="ml-2 text-sm font-medium text-white/80">
-                      Add NSFW tag
-                    </span>
+
                   </label>
+                  <span className="flex items-center text-xs font-medium text-white/80">
+                      啟用成人內容標籤
+                  </span>
+
                 </div>
               )}
             />
           </div>
           
-          <div className='mt-6 flex gap-3 justify-center text-md'>
-            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>Save</button>
+          <div className='mt-6 flex gap-3 justify-center text-sm'>
+            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>儲存送出</button>
             <button type="button" className='text-white/80' onClick={()=>{
               setIsShowDisplayFormModal(false)
-            }}>Cancel</button>
+            }}>取消</button>
           </div>
 
         </form>
