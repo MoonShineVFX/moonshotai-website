@@ -86,17 +86,20 @@ function App() {
           <Route path="gallery" element={<Gallery />} />
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />
+          <Route path="price" element={<Price />} />
+          
+          <Route path="/docs" element={<DocLayout/> }>
+            <Route path="" element={<QuickStart />}/>
+            <Route path="account" element={<UserDoc />}/>
+            <Route path="faq" element={<FaqDoc />}/>
+            <Route path="command" element={<CommandDoc />}/>
+            <Route path="refunds" element={<RefundDoc />}/>
+            <Route path="terms" element={<Terms />} />
+            <Route path="policy" element={<Policy />} />
+          </Route>
         </Route>
 
-        <Route path="/docs" element={<DocLayout/> }>
-          <Route path="" element={<QuickStart />}/>
-          <Route path="account" element={<UserDoc />}/>
-          <Route path="faq" element={<FaqDoc />}/>
-          <Route path="command" element={<CommandDoc />}/>
-          <Route path="refunds" element={<RefundDoc />}/>
-          <Route path="terms" element={<Terms />} />
-          <Route path="policy" element={<Policy />} />
-        </Route>
+
 
         {/* <Route path="/gallery" element={<Gallery />} /> */}
         {/* <Route path="/post/:id" element={<Post />} /> */}
@@ -104,7 +107,6 @@ function App() {
         {/* <Route path="/work" element={<Profile />} /> */}
         <Route path="/account" element={<Account />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/price" element={<Price />} />
         <Route path="/confirm/:id" element={<Confirm />} />
         <Route path="/cancel/:id" element={<Cancel />} />
         <Route path="/orders" element={<Orders />} />

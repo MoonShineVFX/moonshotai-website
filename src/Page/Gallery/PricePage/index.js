@@ -322,7 +322,7 @@ function Index() {
         {isLoginForPrice && <CallToLoginModal closeModal={()=>setIsLoginForPrice(false)}/>}
 
        </AnimatePresence>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
+      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
   
         <div className="max-w-md mx-auto mb-14 text-center">
