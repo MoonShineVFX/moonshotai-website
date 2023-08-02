@@ -28,6 +28,7 @@ function User() {
   const [totalPage, setTotalPage]= useState(1)
   const [pageSize, setPageSize] = useState(20)
   const [isFollowed ,setIsFollowed] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false);
   const navigate = useNavigate();
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -47,19 +48,7 @@ function User() {
       setLineLoginToken(localData.loginToken)
       setLineProfile(localData.lineProfile)
       setCurrentUser(localData.currentUser)
-      let loginToken = localData.loginToken
-      let currentUser = localData.currentUser
-      let headers = {'Content-Type': 'application/json'} 
-      if(localData.isLogin){
-        // const refreshTokenResult = refreshToken()
-          headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${loginToken}` }
-          setCurrentHeaders(headers)
-  
-  
-  
-      }else{
-  
-      }
+      setIsInitialized(true);
   
     })
   },[setIsLoggedIn,setLineLoginToken,setLineProfile])
@@ -75,7 +64,7 @@ function User() {
     ['publicImages', id, currentPage, pageSize],
     ({ pageParam }) => fetchUserPublicImages(id, pageParam, pageSize),
     {
-      enabled: !!id, // 只有在 id 不為空時才啟用 useQuery
+      enabled: isInitialized && (!!id || isLoggedIn !== null), // 只有在 id 不為空時才啟用 useQuery
         getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {

@@ -26,7 +26,7 @@ const filterModelsDate = [
  ]
 
 
-function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading}) {
+function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -208,7 +208,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-16'>
+          <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,is_storage   } = image
             return (
@@ -259,8 +259,14 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
             )
 
           })}
+
           </div>
+          
+          
       }
+      {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+      </div>}
     
 
     </div>

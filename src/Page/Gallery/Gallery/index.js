@@ -49,6 +49,7 @@ function Index() {
 
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
+  const [isInitialized, setIsInitialized] = useState(false);
   // const [imageData, setImageData] = useRecoilState(imageDataState)
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -61,16 +62,17 @@ function Index() {
       setLineLoginData(data.loginToken);
       setLineProfile(data.lineProfile);
       setCurrentUser(data.currentUser);
+      setIsInitialized(true);
 
     });
-  }, []);
+  }, [setLineLoginData,setCurrentUser]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
-    [ 'galleries', startDate, currModels],
+    [ 'galleries',linLoginData, startDate, currModels],
     ({ pageParam }) =>
       fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
-      enabled:true,
+      enabled:isInitialized && (linLoginData !== null || isLoggedIn !== null),
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {

@@ -7,7 +7,7 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
 
-function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage}) {
+function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -53,7 +53,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-16'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,title   } = image
             return (
@@ -94,6 +94,9 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
           </div>
 
       }
+      {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
+        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+      </div>}
     </div>
   )
 }

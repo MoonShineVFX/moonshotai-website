@@ -49,6 +49,7 @@ function Post() {
   const [pageSize, setPageSize] = useState(12)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const handleBackClick = () => {
 
     if (document.referrer.includes(window.location.hostname)) {
@@ -64,16 +65,17 @@ function Post() {
         setLineLoginToken(localData.loginToken)
         setLineProfile(localData.lineProfile)
         setCurrentUser(localData.currentUser)
+        setIsInitialized(true);
 
 
       })
   },[setIsLoggedIn,setLineLoginToken,setLineProfile])
   
   const { data: galleryData, isLoading: isGalleryDataLoading, isError: isGalleryDataError } = useQuery(
-    ['galleryDetail',id],
+    ['galleryDetail',linLoginToken,id],
     () => fetchGalleriesDetail(linLoginToken, id),
     {
-      enabled: true, 
+      enabled:isInitialized && (linLoginToken !== null || isLoggedIn !== null),
       onError: () => {
         // 發生錯誤時處理
       },

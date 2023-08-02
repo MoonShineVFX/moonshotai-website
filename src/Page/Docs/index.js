@@ -22,7 +22,6 @@ function Index() {
   ]
   return (
     <div className=''>
-      <Header />
       <div className=' justify-start items-start text-white w-10/12 md:w-8/12 mx-auto pt-20'>
         <div className='   md:w-1/4  md:p-10 fixed bg-black w-full'>
           <div className=' font-bold '>Documentation</div>
