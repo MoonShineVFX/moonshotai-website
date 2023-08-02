@@ -118,11 +118,29 @@ function Index({}) {
         const userLoginData = JSON.parse(storedLoginTokenData);
         // 使用 react-query 來執行 fetchUserProfile API
         const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
-          fetchUserProfile(userLoginData.user_id, userLoginData.token)
-        );
+          fetchUserProfile(userLoginData.user_id, userLoginData.token),
 
-        // 其他邏輯...
-        setCurrentUser(udata);
+        );
+        if (udata === 401) {
+          queryClient.clear();
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              if (window.location.pathname === '/gallery') {
+                window.location.reload();
+              } else {
+                navigate('/gallery');
+              }
+            }
+          }).catch(()=>{
+            console.log('error')
+          })
+        }else{
+          // 其他邏輯...
+          setCurrentUser(udata);
+        }
+
+
       } catch (error) {
         console.error('Error initializing LIFF: ', error.message);
       }
@@ -144,13 +162,27 @@ function Index({}) {
         const udata = await queryClient.fetchQuery(['userProfile', lined.user_id, lined.token], () =>
           fetchUserProfile(lined.user_id, lined.token)
         );
-        localStorage.setItem('currentUser', JSON.stringify(udata));
-        localStorage.setItem('isLogin', true);
-        setIsLoggedIn(true)
-        setCurrentUser(udata);
-
-        // 其他邏輯...
-        // setCurrentUser(udata);
+        if (udata === 401) {
+          queryClient.clear();
+          removeLocalStorageItem().then(data=>{
+            console.log(data)
+            if(data === 'finish'){
+              if (window.location.pathname === '/gallery') {
+                window.location.reload();
+              } else {
+                navigate('/gallery');
+              }
+            }
+          }).catch(()=>{
+            console.log('error')
+          })
+        }else{
+          // 其他邏輯...
+          localStorage.setItem('currentUser', JSON.stringify(udata));
+          localStorage.setItem('isLogin', true);
+          setIsLoggedIn(true)
+          setCurrentUser(udata);
+        }
       }
     }
   };
