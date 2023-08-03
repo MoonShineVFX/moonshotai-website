@@ -52,7 +52,6 @@ function Post() {
   const [isInitialized, setIsInitialized] = useState(false);
   const handleBackClick = () => {
     const savedPageUrl = getCookieValue("pageUrl");
-    console.log(savedPageUrl)
 
     if (savedPageUrl !== null &&savedPageUrl.includes(window.location.hostname)) {
       navigate(-1); 
