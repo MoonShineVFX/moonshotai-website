@@ -6,7 +6,7 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin,TitleWithLimit} from '../helpers/componentsHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { IoCopyOutline } from "react-icons/io5";
@@ -51,11 +51,13 @@ function Post() {
   const [isGoingBack, setIsGoingBack] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
   const handleBackClick = () => {
+    const savedPageUrl = getCookieValue("pageUrl");
+    console.log(savedPageUrl)
 
-    if (document.referrer.includes(window.location.hostname)) {
+    if (savedPageUrl !== null &&savedPageUrl.includes(window.location.hostname)) {
       navigate(-1); 
     } else {
-      navigate(-1); 
+      navigate('/gallery'); 
     }
   };
 
@@ -329,13 +331,13 @@ function Post() {
           </div>
 
           <div className='w-full md:w-full p-4 '> 
-            <div className=' flex justify-between items-center'>
-              <div>
-                <div className='text-xl text-white font-semibold' data-id={imageData?.id}>
+            <div className=' flex justify-between items-center flex-wrap'>
+              <div className='text-xl text-white font-semibold w-full my-2' data-id={imageData?.id}>
                 <TitleWithLimit title={imageData?.title} />
-                </div>
+              </div>
+              <div>
                 <div className=' flex items-center space-x-3 my-2'>
-                  <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2'>
+                  <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2' onClick={recordPageUrl}>
                     <div className='w-7'>
                       <div className='pt-[100%] relative'>
                         <img src={imageData?.author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
@@ -343,7 +345,6 @@ function Post() {
                     </div>
                     <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>
                   </Link>
-
                 </div>
               </div>
 
@@ -352,33 +353,53 @@ function Post() {
 
 
 
-
-
-
-
-          
-            <div className='w-full md:w-full flex flex-col justify-end  relative pb-20 pt-2'>
+            <div className='w-full md:w-full flex flex-col justify-end  relative pb-12 pt-'>
               
-              <div className='text-white font-bold my-3 pt-5'>Prompt</div>
+              <div className='text-white/70 font-bold my-3 pt-5'>Prompt 提示詞</div>
               <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-                <div className='p-3'>{imageData?.prompt}</div>
+                <div className='p-3 text-sm'>{imageData?.prompt}</div>
               </div>
-              <div className='text-white font-bold my-3 pt-5'>Negative prompt</div>
+              <div className='text-white/70 font-bold my-3 pt-5'>Negative prompt 反向提示詞</div>
               <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
               <div className='p-3'>{imageData?.negative_prompt}</div>
               </div>
-              <div className='mt-5'>
-                <div className='text-white font-bold my-1'>Model: <span className='whitespace-normal break-words font-normal'> {getWordFromLetter(imageData?.model)}</span> </div>
-                <div className='text-white font-bold my-1'>Steps:<span className='whitespace-normal break-words font-normal'> {imageData?.steps}</span></div>
-                <div className='text-white font-bold my-1'>Sampler_index:<span className='whitespace-normal break-words font-normal'> {imageData?.sampler_index}</span></div>
-                <div className='text-white font-bold my-1'>Cfg_scale:<span className='whitespace-normal break-words font-normal'> {imageData?.cfg_scale}</span></div>
-                <div className='text-white font-bold my-1'>Seed:<span className='whitespace-normal break-words font-normal'> {imageData?.seed}</span></div>
+              <div className='mt-5 grid gap-4 grid-cols-2'>
+                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                  <div className='text-white/70'>Model</div>
+                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                    <div className='p-2'>{getWordFromLetter(imageData?.model)} </div>
+                  </span>
+                </div>
+                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                  <div className='text-white/70'>Steps</div>
+                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                    <div className='p-2'>{imageData?.steps}</div>
+                  </span>
+                </div>
+                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                  <div className='text-white/70'>Sampler_index</div>
+                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                    <div className='p-2'>{imageData?.sampler_index}</div>
+                  </span>
+                </div>
+                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                  <div className='text-white/70'>Cfg_scale</div>
+                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                    <div className='p-2'>{imageData?.cfg_scale}</div>
+                  </span>
+                </div>
+                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                  <div className='text-white/70'>Seed</div>
+                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                    <div className='p-2'>{imageData?.seed}</div>
+                  </span>
+                </div>
               </div>
               {imageData?.description && 
-                <div className='my-'>
-                  <div className='text-white font-bold my-1 '>Description:</div>
-                  <div className='relative whitespace-normal break-words '>
-                    <div className=''>{imageData?.description}</div>
+                <div className='my- border-b border-white/30 pb-6 pt-6'>
+                  <div className='text-white/70 font-bold my-1 '>Description</div>
+                  <div className=' relative rounded-md whitespace-normal break-words '>
+                    <div className='p-2'>{imageData?.description}</div>
                   </div>
                 </div>
               }

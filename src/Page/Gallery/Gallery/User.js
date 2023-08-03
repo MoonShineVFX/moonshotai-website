@@ -4,9 +4,9 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal,TitleWithLimit} from '../helpers/componentsHelper'
+import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook } from "react-icons/md";
+import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook,MdRemove,MdAdd,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
@@ -35,11 +35,12 @@ function User() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
   const handleBackClick = () => {
-    const hasPreviousPage = navigate.length > 1;
-    if (hasPreviousPage) {
-      navigate(-1); // 返回上一页
+    const savedPageUrl = getCookieValue("pageUrl");
+
+    if (savedPageUrl !== null &&savedPageUrl.includes(window.location.hostname)) {
+      navigate(-1); 
     } else {
-      navigate('/gallery'); // 导航到指定页面
+      navigate('/gallery'); 
     }
   };
   useEffect(()=>{
@@ -160,31 +161,30 @@ function User() {
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
-
-      <div className='flex flex-col relative text-white mx-5 mt-10'>
+      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-zinc-700 '>
+        <MdKeyboardArrowLeft size={32} />
+      </button>
+      <div className='flex flex-col justify-center items-center gap-1 relative text-white mx-5 mt-'>
+    
           <div className='flex items-center justify-between'>
-            <div className='w-12'>
+            <div className='w-20'>
               <div className='pt-[100%] relative'>
                 <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
               </div>
             </div>
-
-            <div className='ml-auto' >
-              {parseInt(id) === currentUser?.id ? '' : 
-                <div onClick={handleFollow}>
-                {
-                  isFollowed ? 
-                  <button className='bg-zinc-600 text-white/90 px-3 py-1 text-sm '>Following</button>
-                  : 
-                  <button className='bg-lime-600 text-white/90 px-3 py-1 text-sm '>Follow</button>
-                }
-                </div>
-              }
-
-            </div>
           </div>
-          <div className='flex items-center  space-x-2 mt-3'>
-            <div className='text-white whitespace-nowrap'>{userData?.name} </div>
+          <div className='flex items-center  space-x-2 mt-2'>
+            <div className='text-white whitespace-nowrap text-lg'>{userData?.name} </div>
+          </div>
+          <div className=' text-xs text-white/80'>
+            {userData?.bio}  
+          </div>
+          <div className='flex text-xs  space-x-3 my-2'>
+            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_photos}</span> renders</div>
+            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
+            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
+          </div>
+          <div className='flex items-center  space-x-4 mt-2'>
             {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
             {userData?.facebook_id && <a href={userData?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
             {userData?.instagram_id && <a href={userData?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
@@ -192,13 +192,19 @@ function User() {
             {userData?.twitter_id && <a href={userData?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter color='#359bf0' /></a> }
             {userData?.discord_id && <a href={userData?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
           </div>
-          <div className='flex text-xs  space-x-3 '>
-            <div><span className='text-sm'>{userData?.total_photos}</span> renders</div>
-            <div><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
-            <div><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
-          </div>
-          <div className=' text-xs'>
-            {userData?.bio}  
+
+          <div className='mt-3' >
+            {parseInt(id) === currentUser?.id ? '' : 
+              <div onClick={handleFollow}>
+              {
+                isFollowed ? 
+                <button className='flex items-center gap-1 bg-zinc-600/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
+                : 
+                <button className='flex items-center gap-1 bg-lime-600 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
+              }
+              </div>
+            }
+
           </div>
       </div>
       <div className='w-11/12 mx-auto my-10'>
@@ -214,7 +220,7 @@ function User() {
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                 className='  overflow-hidden relative'
               >
-                <Link to={`/post/${id}`} className=' relative' >
+                <Link to={`/post/${id}`} className=' relative' onClick={recordPageUrl} >
                   <div className='pt-[100%] relative'>
                     <img  
                       src={urls.thumb} alt={title} 
