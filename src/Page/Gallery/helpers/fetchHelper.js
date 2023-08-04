@@ -2,7 +2,7 @@
 import liff from '@line/liff';
 import { loginState,isLoginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-
+import { useMutation } from 'react-query';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
 
@@ -744,19 +744,33 @@ export const fetchUserGifts =async (token,cursor) =>{
     
 }
 
-//退費
-export const postOpen_gift =async (gift_id,token) =>{
+//open gift
+// export const postOpen_gift =async (gift_id,token) =>{
+//   const requestOptions = {
+//     method: 'POST',
+//     headers: { 
+//       'Content-Type': 'application/json',
+//       'Authorization': `Bearer ${token}`
+//     },
+//     body: JSON.stringify({ 
+//       gift_record_id:  gift_id,
+//     })
+//   };
+//   const response =await fetch(apiUrl+'open_gift', requestOptions)
+//   const data =await response.json()
+//   return data
+// }
+export const postOpenGiftMutation = (mutaionData) => {
   const requestOptions = {
     method: 'POST',
-    headers: { 
+    headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${mutaionData.linLoginData}`,
     },
-    body: JSON.stringify({ 
-      gift_record_id:  gift_id,
-    })
+    body: JSON.stringify({
+      gift_record_id: mutaionData.gift_id,
+    }),
   };
-  const response =await fetch(apiUrl+'open_gift', requestOptions)
-  const data =await response.json()
-  return data
-}
+
+  return fetch(apiUrl + 'open_gift', requestOptions).then((response) => response.json());
+};
