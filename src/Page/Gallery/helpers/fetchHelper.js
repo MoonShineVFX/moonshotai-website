@@ -727,3 +727,36 @@ export const postRefund_surveys =async (items,token) =>{
   const data =await response.json()
   return data
 }
+
+//gifts
+export const fetchUserGifts =async (token,cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'my_gifts' ,requestOptions)
+  const data =await response.json()
+  return data
+    
+}
+
+//退費
+export const postOpen_gift =async (gift_id,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ 
+      gift_record_id:  gift_id,
+    })
+  };
+  const response =await fetch(apiUrl+'open_gift', requestOptions)
+  const data =await response.json()
+  return data
+}

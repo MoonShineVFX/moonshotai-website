@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpen_gift} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
@@ -12,11 +12,13 @@ import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-que
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
+import GiftsList from './GiftsList';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 
 const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
+  // {id:3,title:'禮物箱'},
 ]
 
 function Orders() {
@@ -38,6 +40,7 @@ function Orders() {
 
   const [orders, setOrders] = useState(null)
   const [subscriptions, setSubscriptions] = useState(null)
+  const [gifts, setGifts] = useState(null)
   const [plans, setPlans] = useState(null)
 
   const [ reportMsg , setReportMsg ] = useState('')
@@ -49,24 +52,7 @@ function Orders() {
         setCurrentUser(data.currentUser)
         let loginToken = data.loginToken
         let headers = {'Content-Type': 'application/json'} 
-        if(data.isLogin){
 
-            // headers = {'Content-Type': 'application/json' ,'Authorization': `Bearer ${data.token}` }
-            // setCurrentHeaders(headers)
-            // setLineLoginData(data.token)
-            // getOrders(loginToken).then(odata=>{
-            //   setOrders(odata)
-            // })
-            // getSubscriptions(loginToken).then(sdata=>{
-            //   setSubscriptions(sdata)
-            // })
-            // getPlans().then(pdata=>{
-            //   setPlans(pdata)
-            // })
-          // refreshToken().then(data =>{
-          // })
-        }
-        
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
   //FETCH ORDER
@@ -102,6 +88,17 @@ function Orders() {
       }
     }
   );
+    //FETCH GIFT
+    const { data: giftsData, isLoading: isGiftsLoading, isError: isGiftsError } = useQuery(
+      ['gifts', linLoginData],
+      () => fetchUserGifts(linLoginData),
+      {
+        enabled: linLoginData !== null,
+        onSuccess: (gdata)=>{
+          setGifts(gdata)
+        }
+      }
+    );
   const handleRefund = (sn)=>{
     console.log('click')
     if(isLoggedIn){
@@ -237,6 +234,7 @@ function Orders() {
   }
   const reversedData = orders?.slice().reverse();
   const reversedSubData = subscriptions?.slice().reverse();
+  const reversedGiftData = gifts;
   return (
     <div>
       <AnimatePresence>
@@ -249,7 +247,7 @@ function Orders() {
             menuItems.map((item,index)=>{
               return(
                 <div 
-                  className={'pb-2 '+ (selectedItem?.id === item.id ? ' font-bold text-white border-b ' : 'font-normal text-white/80')}
+                  className={'pb-2 cursor-pointer '+ (selectedItem?.id === item.id ? ' font-bold text-white border-b ' : 'font-normal text-white/80')}
                   key={item.id} 
                   onClick={() => handleMenuItemClick(item)}>{item.title}</div>
               )
@@ -260,6 +258,7 @@ function Orders() {
         <div>
           {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
           {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans} currentUser={currentUser}/>}
+          {selectedItem.title === '禮物箱' && <GiftsList giftData={reversedGiftData} currentUser={currentUser}/>}
         </div>
       )}
 
