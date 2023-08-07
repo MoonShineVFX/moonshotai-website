@@ -203,7 +203,6 @@ function Index() {
   }
   return (
     <div className='text-white'>
-      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
 
       <div className='md:w-8/12 mx-auto'>
         <div className='mx-4 my-4 '>

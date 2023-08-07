@@ -33,6 +33,8 @@ import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
 import Orders from './Page/Gallery/PricePage/Orders';
+
+import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
 import Notfound from './Page/Home/Notfound';
 import Cooming from './Page/Gallery/Cooming';
@@ -80,11 +82,20 @@ function App() {
         
         <Route path="/" element={<GalleryLayout/> }>
           <Route path="" element={<HomeV3 />} />
-          <Route path="gallery" element={<Gallery />} />
+
+          <Route path="/" element={<GalleryHomePageLayout/> }>
+            <Route path="gallery" element={<Gallery />} />
+            <Route path="campaign" element={<Gallery />} />
+          </Route>
+ 
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />
           <Route path="price" element={<Price />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="account" element={<Account />} />
+          <Route path="confirm/:id" element={<Confirm />} />
+          <Route path="cancel/:id" element={<Cancel />} />
+          <Route path="orders" element={<Orders />} />
 
           <Route path="/docs" element={<DocLayout/> }>
             <Route path="" element={<QuickStart />}/>
@@ -103,11 +114,9 @@ function App() {
         {/* <Route path="/post/:id" element={<Post />} /> */}
         {/* <Route path="/user/:id" element={<User />} /> */}
         {/* <Route path="/work" element={<Profile />} /> */}
-        <Route path="/account" element={<Account />} />
+        
 
-        <Route path="/confirm/:id" element={<Confirm />} />
-        <Route path="/cancel/:id" element={<Cancel />} />
-        <Route path="/orders" element={<Orders />} />
+
         <Route path="/come" element={<Cooming />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}

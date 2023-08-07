@@ -232,7 +232,6 @@ function Orders() {
   if(!orders ){
     return(
       <div>
-        <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
         <main className="max-w-6xl mx-auto pt-10 pb-10 px-8 text-white">
         <div className=''>
     
@@ -251,7 +250,6 @@ function Orders() {
       <AnimatePresence>
         {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} is_surveyed={currentOrder.is_surveyed} /> }
       </AnimatePresence>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
        <div className='text-white text-lg flex gap-3'>
         {

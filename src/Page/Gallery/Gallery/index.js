@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/md";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Header from '../header'
@@ -162,54 +162,33 @@ function Index() {
 
   return (
     <div className='w-full '>
-    
-
       {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
-
-      
         <div>scrollTop:{scrollTop} </div>
         <div>clientHeight:{clientHeight} </div>
         <div>scrollHeight:{scrollHeight}</div>
       </div> */}
         
-      
-     
-      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
-
-      <div className='w-11/12 md:w-11/12 mx-auto my-6'>
-        <div>
-          <Swiper
-          spaceBetween={1}
-          slidesPerView={1}
-          loop={true}
-          pagination={{
-            clickable: true,
-          }} 
-          modules={[Pagination,Autoplay]}
-          className='w-full'
-          >
-          {
-            bannerData?.map((item)=>{
-              
-              return(
-                <SwiperSlide>
-                  <div>
-                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md' />
-                  </div>
-                </SwiperSlide>
-              )
-            })
-          }  
-          </Swiper>
-          </div>
-          <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
-
+      <div className=''>
           {!imageData ? 
             <LoadingLogoSpin />
           :
           <div>
-            <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
-              <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
+            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full overflow-y-auto '>
+                <div className='flex  space-x-2'>
+                  {
+                    filterModelsDate.map((item,index)=>{
+                      return(
+                        <button 
+                        key={item.title} 
+                        className={`px-3 py-2 text-sm font-semibold  rounded-md hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                        onClick={()=>{
+                          onHandleSelectModels(item)
+                        }}
+                      ><span className='  whitespace-nowrap'>{item.title}</span> </button>
+                      )
+                    })
+                  }
+                </div>
               <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
             </div>
             {

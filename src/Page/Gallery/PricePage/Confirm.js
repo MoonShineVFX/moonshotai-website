@@ -15,7 +15,6 @@ function Confirm() {
   const navigate = useNavigate();
   return (
     <div>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <div className='flex flex-col relative text-white mx-5 mt-10 items-center'>
         <div className='w-1/5 mx-auto '>
           <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
