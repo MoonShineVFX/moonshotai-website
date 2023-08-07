@@ -173,23 +173,26 @@ function Index() {
             <LoadingLogoSpin />
           :
           <div>
-            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full overflow-y-auto '>
-                <div className='flex  space-x-2'>
-                  {
-                    filterModelsDate.map((item,index)=>{
-                      return(
-                        <button 
-                        key={item.title} 
-                        className={`px-3 py-2 text-sm font-semibold  rounded-md hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
-                        onClick={()=>{
-                          onHandleSelectModels(item)
-                        }}
-                      ><span className='  whitespace-nowrap'>{item.title}</span> </button>
-                      )
-                    })
-                  }
+            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full  overflow-hidden  '>
+                <div className='flex space-x-2  overflow-x-auto scrollbar scrollbar-thin scrollbar-none min-w-full  w-[1200px] '>
+                  <div className='flex  space-x-2'>
+                    {
+                      filterModelsDate.map((item,index)=>{
+                        return(
+                          <button 
+                          key={item.title} 
+                          className={`px-3 py-2 text-sm font-semibold  rounded-md hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                          onClick={()=>{
+                            onHandleSelectModels(item)
+                          }}
+                        ><span className='  whitespace-nowrap'>{item.title}</span> </button>
+                        )
+                      })
+                    }
+                  </div>
+                  <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
                 </div>
-              <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+
             </div>
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
