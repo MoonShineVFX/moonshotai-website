@@ -18,7 +18,7 @@ import { Pagination, Autoplay } from "swiper";
 import 'swiper/css';
 import "swiper/css/pagination";
 const filterDateItem = [
-  {title:'24 小時',type:'時間區間',command:'days',value:'1'},
+  {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
   {title:'30 天', type:'時間區間',command:'days',value:'30'},
   {title:'全部',type:'時間區間',command:'days',value:'all'}
@@ -173,15 +173,15 @@ function Index() {
             <LoadingLogoSpin />
           :
           <div>
-            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full  overflow-hidden  '>
-                <div className='flex space-x-2  overflow-x-auto scrollbar scrollbar-thin scrollbar-none min-w-full  w-[1200px] '>
-                  <div className='flex  space-x-2'>
+            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full   '>
+                <div className='flex space-x-2  overflow-x-auto scrollbar scrollbar-thin scrollbar-none   '>
+                  <div className='flex  space-x-3'>
                     {
                       filterModelsDate.map((item,index)=>{
                         return(
                           <button 
                           key={item.title} 
-                          className={`px-3 py-2 text-sm font-semibold  rounded-md hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
                           onClick={()=>{
                             onHandleSelectModels(item)
                           }}
@@ -190,8 +190,10 @@ function Index() {
                       })
                     }
                   </div>
-                  <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+
                 </div>
+                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+           
 
             </div>
             {
