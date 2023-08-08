@@ -745,21 +745,6 @@ export const fetchUserGifts =async (token,cursor) =>{
 }
 
 //open gift
-// export const postOpen_gift =async (gift_id,token) =>{
-//   const requestOptions = {
-//     method: 'POST',
-//     headers: { 
-//       'Content-Type': 'application/json',
-//       'Authorization': `Bearer ${token}`
-//     },
-//     body: JSON.stringify({ 
-//       gift_record_id:  gift_id,
-//     })
-//   };
-//   const response =await fetch(apiUrl+'open_gift', requestOptions)
-//   const data =await response.json()
-//   return data
-// }
 export const postOpenGiftMutation = (mutaionData) => {
   const requestOptions = {
     method: 'POST',
@@ -773,4 +758,37 @@ export const postOpenGiftMutation = (mutaionData) => {
   };
 
   return fetch(apiUrl + 'open_gift', requestOptions).then((response) => response.json());
+};
+
+// GET /campaigns 取得活動列表
+export const fetchCampaigns =async (cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'campaigns' ,requestOptions)
+  const data =await response.json()
+  return data
+    
+}
+
+// POST storage_images/<int:id>/campaigns 幫圖片加活動
+export const postImgtoCampaignMutation = (mutaionData) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${mutaionData.linLoginData}`,
+    },
+    body: JSON.stringify({
+      campaign_id: mutaionData.campaign_id,
+      link:mutaionData.link
+    }),
+  };
+
+  return fetch(apiUrl + 'campaigns', requestOptions).then((response) => response.json());
 };

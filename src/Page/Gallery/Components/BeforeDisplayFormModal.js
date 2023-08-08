@@ -4,10 +4,11 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { beforeDisplayModalState, imageDataState,profilePageState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle } from "react-icons/md";
-function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage}) {
+function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
   const profilePage = useRecoilValue(profilePageState)
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
@@ -25,6 +26,15 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
   const modalVariants = {
     close: { opacity: 0, },
     open: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+  console.log(campaignsData)
+  const handleActivityClick = (activityId) => {
+    console.log(activityId)
+    if (selectedActivityId === activityId) {
+      setSelectedActivityId(null); // 取消勾選
+    } else {
+      setSelectedActivityId(activityId);
+    }
   };
 
   return (
@@ -63,17 +73,53 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           <div className='flex flex-col  '>
             <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
             <Controller
-              name="description"
-              control={control}
-              defaultValue={image?.description}
-              rules={{ required: false }}
-              render={({ field }) => (
-                <textarea {...field} cols="20" rows="3" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400' placeholder="Description,Notes"></textarea>
-              )}
-            />
+                name="title"
+                control={control}
+                defaultValue={image?.title}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400 ' />
+                )}
+              />
+
 
            
           </div>
+          <div className='flex flex-col'>
+              <label htmlFor="name" className='text-white/50 font-normal my-2'>可參與的活動</label>
+              <ul>
+              {campaignsData.map(item => (
+                <li key={item.id}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedActivityId === item.id}
+                      onChange={() => handleActivityClick(item.id)}
+                    />
+                    {item.name}
+                  </label>
+
+                  <div className='text-white/70 font-normal my-2'>已勾選的活動</div>
+                  <div className='text-white/50 font-normal my-2'>如該活動有外連網址可以於下方填入。</div>
+                  {selectedActivityId === item.id && item.has_link && (
+                    <div className="mt-2">
+                     
+                      <div>
+                        <label htmlFor="url" className='text-white/90 font-normal my-2'>"{item.name}"的推廣網址</label>
+                        <input
+                          type="text"
+                          id="url"
+                          value=""
+                          className='bg-zinc-700 rounded-md py-2 px-2 w-full text-sm focus:outline-lime-400 '
+                        />
+                      </div>
+
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+            </div>
           <div className='flex flex-col  mt-4 '>
             <Controller
               name="display_home"
