@@ -8,6 +8,30 @@
     font-family: 'Mulish', sans-serif;
   }
 }
+@layer utilities {
+  @variants responsive {
+      .masonry {
+          column-gap: 1.5em;
+          column-count: 2;
+      }
+      .masonry-sm {
+          column-gap: 1em;
+          column-count: 3;
+      }
+      .masonry-md {
+          column-gap: 1.5em;
+          column-count: 4;
+      }
+      .masonry-lg {
+        column-gap: 1.5em;
+        column-count: 5;
+    }
+      .break-inside {
+          break-inside: avoid;
+      }
+
+  }
+}
 body{
   background: #000;
   padding-bottom: constant(safe-area-inset-bottom);
