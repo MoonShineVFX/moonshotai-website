@@ -23,7 +23,7 @@ export const SharePostModal = ({closeModal})=>{
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className='  bg-zinc-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-zinc-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 md:w-auto overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
           <div className='text-white'>作品頁面網址</div>

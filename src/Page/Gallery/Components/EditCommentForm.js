@@ -59,13 +59,13 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
   }, [comment]);
 
   return (
-    <div className='fixed z-50 bottom-0 left-0 w-full'>
+    <div className='fixed z-50 bottom-0 left-0 w-full '>
       <div className='bg-black/50 w-full h-screen' onClick={handleClose}></div>
       <motion.div 
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 md:w-2/5 overflow-y-auto max-h-[85vh]'
       >
           <div className='text-lg text-center font-bold my-2'>{formStatus === 'ADD' ? '新增評論' : '修改評論'}</div>
           <form onSubmit={handleSubmit(onSubmit)}>
