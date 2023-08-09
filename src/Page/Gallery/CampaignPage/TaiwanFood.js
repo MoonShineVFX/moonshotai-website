@@ -1,8 +1,23 @@
 import React,{useEffect,useState} from 'react'
-
+import { Pagination, Autoplay,Navigation } from "swiper";
+import { Swiper, SwiperSlide,useSwiper } from 'swiper/react';
+import { MdNavigateNext,MdNavigateBefore } from "react-icons/md";
+// Import Swiper styles
+import 'swiper/css';
+import "swiper/css/pagination";
+import 'swiper/css/navigation';
+const bannerData = [
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/01.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/02.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/03.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/04.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/05.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/06.jpg"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/stepimg/07.jpg"},
+ ]
 const TaiwanFood = () => {
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-  
+  const swiper = useSwiper();
   const handleResize = () => {
     setIsMobileWidth(window.innerWidth <= 420);
   };
@@ -40,7 +55,37 @@ const TaiwanFood = () => {
             <h2 className='text-xl font-bold my-3 '>如何使用指令？</h2>
             <p>​​➊ 對話框中輸入「/台灣美食」</p>
             <p>➋ 點擊圖片按鈕即可獲得指令！</p>
+            <div className='w-full max-w-[512px] relative'>
+              <Swiper
+                spaceBetween={1}
+                slidesPerView={1}
+                loop={true}
+                modules={[Autoplay,Navigation]}
+                navigation={true}
+                className='w-full'
+                autoplay={{
+                  delay: 5000,
+                }}
+              >
+              {
+                bannerData?.map((item,index)=>{
+                  return(
+                    <SwiperSlide key={'tf'+index}>s
+                        <img src={item.url} alt="slide" className=' aspect-square object-cover ' />
+                    </SwiperSlide>
+                  )
+                })
+              }  
+              <div className='flex w-full justify-between  z-50 top-0 '>
+                <button className=' bg-black' onClick={()=> swiper.slidesPerv()}><MdNavigateBefore size={30} /></button>
+                <button className=' bg-black' onClick={()=> swiper.slideNext()}><MdNavigateNext size={30}/></button>
+              </div>
+  
+              </Swiper>
+
+            </div>
           </div>
+          
         </div>
 
 

@@ -15,9 +15,9 @@ const AsusNFT = () => {
   })
   return (
     <div className='pb-20'>
-      <div className='w-10/12 mx-auto flex justify-center my-8 '>
+      <a href="https://asusmeta.co/nft_plaza/event" target="_blank" className='w-10/12 mx-auto flex justify-center my-8 '>
         <img src="https://resource.moonshine.tw/msweb/moonshotai/campaign/asus_nft/asusnft_banner.png" alt="banner" className='max-w-full'/>
-      </div>
+      </a>
 
       <div className="text-white flex flex-col justify-center md:items-center px-10 md:px-4 py-2">
         <h1 className='text-2xl md:text-4xl  font-bold my-2'>ASUS NFT Battle</h1>

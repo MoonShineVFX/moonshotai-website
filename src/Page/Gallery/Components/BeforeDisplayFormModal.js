@@ -85,21 +85,23 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
            
           </div>
-          <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/50 font-normal my-2'>可參與的活動</label>
+          <div className='flex flex-col border border-white/60 rounded-md m-4 p-2 hidden'>
+              <label htmlFor="name" className='text-white/80 font-normal my-2'>可參與的活動</label>
               <ul>
               {campaignsData.map(item => (
                 <li key={item.id}>
-                  <label>
+                  <label className='bg-zinc-700  border p-2 flex items-center block '>
                     <input
                       type="checkbox"
                       checked={selectedActivityId === item.id}
                       onChange={() => handleActivityClick(item.id)}
+                      className="peer relative appearance-none w-5 h-5 border rounded-md focus:outline-none checked:bg-zinc-100 hover:ring after:content-[] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-[url('https://moonshine.b-cdn.net/msweb/moonshotai/web_icons/checked-svg.svg')]
+                      "
                     />
                     {item.name}
                   </label>
 
-                  <div className='text-white/70 font-normal my-2'>已勾選的活動</div>
+                  <div className='text-white/80 font-normal my-2'>已勾選的活動</div>
                   <div className='text-white/50 font-normal my-2'>如該活動有外連網址可以於下方填入。</div>
                   {selectedActivityId === item.id && item.has_link && (
                     <div className="mt-2">
