@@ -297,14 +297,14 @@ function Post() {
       <div className='text-white'>Loading</div> 
       :
       <>
-        <div className="w-full md:w-10/12  space-x-0  md:space-x-10 mx-auto  text-white relative flex flex-col md:flex-row">
-          <div className="flex flex-col  justify-center items-center md:justify-start md:mt-10  w-full relative">
-              <div className='w-full'>
+        <div className="w-full md:w-12/12  space-x-0  md:space-x-10 mx-auto  text-white relative flex flex-col md:flex-row">
+          <div className="flex flex-col  justify-center items-center md:justify-start  max-w-full md:py-6 max-h-[100vh] relative ">
+              <div className='w-full  '>
                 <img 
                   data-id= {imageData?.id}
                   src={imageData?.urls?.regular} 
                   alt={imageData?.title} 
-                  className="w-full" />
+                  className="w-[100vw] h-full max-h-[80vh] object-contain" />
               </div>
               <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-zinc-700 '>
               <MdKeyboardArrowLeft size={32} />
@@ -329,7 +329,7 @@ function Post() {
               </div>
           </div>
 
-          <div className='w-full md:w-full p-4 '> 
+          <div className='w-full md:basis-[480px] md:w-full p-4 '> 
             <div className=' flex justify-between items-center flex-wrap'>
               <div className='text-xl text-white font-semibold w-full my-2' data-id={imageData?.id}>
                 <TitleWithLimit title={imageData?.title} />
