@@ -2,7 +2,6 @@ import React,{useEffect,useState} from 'react'
 
 const AsusNFT = () => {
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-  const resourceURL = 'https:/resource.moonshine.tw'
   const handleResize = () => {
     setIsMobileWidth(window.innerWidth <= 420);
   };
@@ -17,7 +16,7 @@ const AsusNFT = () => {
   return (
     <div className='pb-20'>
       <div className='w-10/12 mx-auto flex justify-center my-8 '>
-        <img src={resourceURL+"/msweb/moonshotai/campaign/asus_nft/asusnft_banner.png"} alt="" className='max-w-full'/>
+        <img src="https://resource.moonshine.tw/msweb/moonshotai/campaign/asus_nft/asusnft_banner.png" alt="banner" className='max-w-full'/>
       </div>
 
       <div className="text-white flex flex-col justify-center md:items-center px-10 md:px-4 py-2">

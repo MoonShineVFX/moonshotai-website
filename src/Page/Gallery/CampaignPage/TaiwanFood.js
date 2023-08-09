@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 
 const TaiwanFood = () => {
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-  const resourceURL = 'https:/resource.moonshine.tw'
+  
   const handleResize = () => {
     setIsMobileWidth(window.innerWidth <= 420);
   };
@@ -17,7 +17,7 @@ const TaiwanFood = () => {
   return (
     <div className='pb-20'>
       <div className='w-2/3 mx-auto flex justify-center my-8 '>
-        <img src={resourceURL+"/msweb/moonshotai/campaign/taiwanfood/taiwanfood_banner_2k.png" }alt="" className='max-w-full'/>
+        <img src="https://resource.moonshine.tw/msweb/moonshotai/campaign/taiwanfood/taiwanfood_banner_2k.png" alt="banner" className='max-w-full'/>
       </div>
 
       <div className="text-white flex flex-col justify-center md:items-center px-10 md:px-4 py-2">
