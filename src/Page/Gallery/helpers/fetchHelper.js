@@ -2,7 +2,7 @@
 import liff from '@line/liff';
 import { loginState,isLoginState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-
+import { useMutation } from 'react-query';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
 
@@ -744,19 +744,51 @@ export const fetchUserGifts =async (token,cursor) =>{
     
 }
 
-//退費
-export const postOpen_gift =async (gift_id,token) =>{
+//open gift
+export const postOpenGiftMutation = (mutaionData) => {
   const requestOptions = {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${mutaionData.linLoginData}`,
+    },
+    body: JSON.stringify({
+      gift_record_id: mutaionData.gift_id,
+    }),
+  };
+
+  return fetch(apiUrl + 'open_gift', requestOptions).then((response) => response.json());
+};
+
+// GET /campaigns 取得活動列表
+export const fetchCampaigns =async (cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
+
+  const requestOptions = {
+    method: 'GET',
     headers: { 
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify({ 
-      gift_record_id:  gift_id,
-    })
+    }
   };
-  const response =await fetch(apiUrl+'open_gift', requestOptions)
+  const response =await fetch(apiUrl+'campaigns' ,requestOptions)
   const data =await response.json()
   return data
+    
 }
+
+// POST storage_images/<int:id>/campaigns 幫圖片加活動
+export const postImgtoCampaignMutation = (mutaionData) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${mutaionData.linLoginData}`,
+    },
+    body: JSON.stringify({
+      campaign_id: mutaionData.campaign_id,
+      link:mutaionData.link
+    }),
+  };
+
+  return fetch(apiUrl + 'campaigns', requestOptions).then((response) => response.json());
+};

@@ -64,12 +64,12 @@ function SubscriptionsList({subData,plans,currentUser}) {
 
     <div>
       <div className='text-sm text-white/80'>{subData.length} items</div>
-      <div>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-6'>
       {
           subData.map((item,index)=>{
             const{created_at,current_plan,days,id,invitation,is_active,refund_at,start_at,user,who_invite,gift_id,gift_name}=item
             return(
-              <div className='text-white border my-6 p-3 border-zinc-400 rounded-md' key={'orders'+index}>
+              <div className='text-white border p-3 border-zinc-400 rounded-md' key={'orders'+index}>
                 <div className=' space-y-3'>
 
 

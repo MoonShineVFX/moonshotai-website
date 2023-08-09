@@ -23,7 +23,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
   return (
     <div className='text-white'>
       <div className='text-sm text-white/80'>{orderData.length} items</div>
-      <div>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-6'>
       {
           orderData.map((item,index)=>{
             const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status,is_surveyed}=item

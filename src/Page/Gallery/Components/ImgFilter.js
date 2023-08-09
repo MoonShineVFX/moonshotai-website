@@ -1,5 +1,5 @@
 import React, { useState, useEffect }  from 'react'
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown,MdAccessTime } from "react-icons/md";
 import {motion,AnimatePresence} from 'framer-motion'
 function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterItems[defaultIndex])
@@ -35,13 +35,13 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
     )
   }
 return ( 
-    <div className=' relative  '>
+    <div className=' relative   '>
       <div 
-        className='text-white rounded-md bg-zinc-700 px-3 py-2 flex justify-between items-center min-w-[110px]'
+        className='text-white px-2 py-2 bg-zinc-700  rounded-full flex  justify-center items-center min-w-[70px]'
         onClick={toggleDropdown}
       >
-        <div className=' absolute text-xs -top-4 left-1'>{currentFilterDateItem.type}</div>
-       <span className=' rounded-xl px-2 py-0 mr-1 text-xs'>{currentFilterDateItem.title}</span>  <MdKeyboardArrowDown size={20}/>
+        <div className=' absolute text-xs -top-4 left-1 hidden'>{currentFilterDateItem.type}</div>
+        <MdAccessTime size={18}/><span className=' rounded-xl px-0 ml-1 text-xs'>{currentFilterDateItem.title} </span> 
       </div>
         <motion.div
           className={`fixed w-full h-screen top-0 left-0 bg-black/30 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
@@ -51,7 +51,7 @@ return (
           onClick={toggleDropdown}
         ></motion.div>
         <motion.div 
-          className={`text-white  absolute rounded-lg bg-[#444] my-2 w-full  border-white/20 z-30 ` }
+          className={`text-white  absolute rounded-lg bg-[#444] my-2 w-full  border-white/20 z-30  ` }
           variants={dropdownVariants}
           initial="closed"
           animate={isDropDownOpen ? 'open' : 'closed'}
@@ -60,7 +60,7 @@ return (
             return(
               <div 
                 key={item.title} 
-                className='hover:bg-[#555] px-4 py-3 text-xs rounded-lg'
+                className='hover:bg-[#555] px-2 py-3 text-xs rounded-lg'
                 onClick={()=>{
                   handleClickOption(item)
                 }}

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdNotInterested,MdOutlineNewReleases,MdModeComment } from "react-icons/md";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import Header from '../header'
 import {LoadingLogoFly,LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
 import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
@@ -12,13 +11,9 @@ import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from "swiper";
-// Import Swiper styles
-import 'swiper/css';
-import "swiper/css/pagination";
+import Masonry from 'react-masonry-css';
 const filterDateItem = [
-  {title:'24 小時',type:'時間區間',command:'days',value:'1'},
+  {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
   {title:'30 天', type:'時間區間',command:'days',value:'30'},
   {title:'全部',type:'時間區間',command:'days',value:'all'}
@@ -31,7 +26,7 @@ const filterModelsDate = [
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
  ]
  const bannerData = [
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood01.png"}
+  {url:"https://resource.moonshine.tw/msweb/moonshotai/gallery_banner/taiwanfood01.png"}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -162,74 +157,66 @@ function Index() {
 
   return (
     <div className='w-full '>
-    
-
       {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
-
-      
         <div>scrollTop:{scrollTop} </div>
         <div>clientHeight:{clientHeight} </div>
         <div>scrollHeight:{scrollHeight}</div>
       </div> */}
         
-      
-     
-      {/* <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/> */}
-
-      <div className='w-11/12 md:w-11/12 mx-auto my-6'>
-        <div>
-          <Swiper
-          spaceBetween={1}
-          slidesPerView={1}
-          loop={true}
-          pagination={{
-            clickable: true,
-          }} 
-          modules={[Pagination,Autoplay]}
-          className='w-full'
-          >
-          {
-            bannerData?.map((item)=>{
-              
-              return(
-                <SwiperSlide>
-                  <div>
-                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md' />
-                  </div>
-                </SwiperSlide>
-              )
-            })
-          }  
-          </Swiper>
-          </div>
-          <div className='text-white text-xl  mb-3 font-bold'>Explore Image</div>
-
+      <div className=''>
           {!imageData ? 
             <LoadingLogoSpin />
           :
           <div>
-            <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
-              <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
-              <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+            <div className='flex items-center mt-6 mb-4 gap-2  justify-between w-full   '>
+                <div className='flex space-x-2  overflow-x-auto scrollbar scrollbar-thin scrollbar-none   '>
+                  <div className='flex  space-x-3'>
+                    {
+                      filterModelsDate.map((item,index)=>{
+                        return(
+                          <button 
+                          key={item.title} 
+                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                          onClick={()=>{
+                            onHandleSelectModels(item)
+                          }}
+                        ><span className='  whitespace-nowrap'>{item.title}</span> </button>
+                        )
+                      })
+                    }
+                  </div>
+
+                </div>
+                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+           
+
             </div>
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
-            <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
+           <Masonry
+              breakpointCols={{
+                default: 5,
+                1024: 4,
+                500: 2,
+              }}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
               {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
-                    className='  overflow-hidden relative'
+                    className='  overflow-hidden relative  mb-5'
                   >
                     <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
-                      <div className='pt-[100%] relative  overflow-hidden rounded-md'>
+                      <div className=' relative overflow-hidden   rounded-md'>
                         <img  
                           alt={title}
                           src={urls.thumb}
                           data-id={id}
-                          className='aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full  hover:scale-110 transition duration-300 '
+                          className=' object-cover w-full hover:scale-110 transition duration-300 '
   
                         />
                       </div>
@@ -253,7 +240,7 @@ function Index() {
 
 
 
-                    <div className='text-sm  flex items-center mt-3  space-x-3 w-full   text-white'>
+                    <div className='text-sm  flex items-center mt-2 space-x-3 w-full   text-white'>
                       <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
                         <div className='pt-[100%] relative'>
                           <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
@@ -274,7 +261,7 @@ function Index() {
                 })}
 
 
-            </div>
+            </Masonry>
             {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
               <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
             </div>}

@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpen_gift} from '../helpers/fetchHelper'
+import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpenGiftMutation} from '../helpers/fetchHelper'
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
@@ -18,7 +18,7 @@ const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
-  // {id:3,title:'禮物箱'},
+  {id:3,title:'禮物箱'},
 ]
 
 function Orders() {
@@ -88,17 +88,27 @@ function Orders() {
       }
     }
   );
-    //FETCH GIFT
-    const { data: giftsData, isLoading: isGiftsLoading, isError: isGiftsError } = useQuery(
-      ['gifts', linLoginData],
-      () => fetchUserGifts(linLoginData),
-      {
-        enabled: linLoginData !== null,
-        onSuccess: (gdata)=>{
-          setGifts(gdata)
-        }
+  //FETCH GIFT
+  const { data: giftsData, isLoading: isGiftsLoading, isError: isGiftsError, refetch: refetchGifts } = useQuery(
+    ['gifts', linLoginData],
+    () => fetchUserGifts(linLoginData),
+    {
+      enabled: linLoginData !== null,
+      onSuccess: (gdata)=>{
+        setGifts(gdata)
       }
-    );
+    }
+  );
+  const [currentlyUpdatingGiftId, setCurrentlyUpdatingGiftId] = useState(null);
+  const { mutate, isLoading: isMutationLoading, isError } = useMutation(postOpenGiftMutation,{
+    onSuccess:()=>{
+      refetchGifts()
+      setCurrentlyUpdatingGiftId(null)
+    }
+  });
+  const handleOpenGift =(gift_id)=>{
+    mutate({ gift_id, linLoginData });
+  }
   const handleRefund = (sn)=>{
     console.log('click')
     if(isLoggedIn){
@@ -217,11 +227,11 @@ function Orders() {
   };
 
 
+
   
   if(!orders ){
     return(
       <div>
-        <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
         <main className="max-w-6xl mx-auto pt-10 pb-10 px-8 text-white">
         <div className=''>
     
@@ -240,7 +250,6 @@ function Orders() {
       <AnimatePresence>
         {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} is_surveyed={currentOrder.is_surveyed} /> }
       </AnimatePresence>
-      <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
        <div className='text-white text-lg flex gap-3'>
         {
@@ -258,7 +267,7 @@ function Orders() {
         <div>
           {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
           {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans} currentUser={currentUser}/>}
-          {selectedItem.title === '禮物箱' && <GiftsList giftData={reversedGiftData} currentUser={currentUser}/>}
+          {selectedItem.title === '禮物箱' && <GiftsList giftData={reversedGiftData} currentUser={currentUser} handleOpenGift={handleOpenGift} isMutationLoading={isMutationLoading} setCurrentlyUpdatingGiftId={setCurrentlyUpdatingGiftId} currentlyUpdatingGiftId={currentlyUpdatingGiftId} />}
         </div>
       )}
 

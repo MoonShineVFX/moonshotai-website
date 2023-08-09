@@ -23,6 +23,7 @@ import Policy from './Page/DocPage/Policy';
 //
 import GalleryLayout from './Page/Lyaouts/GalleryLayout';
 import Gallery from './Page/Gallery/Gallery';
+import CampaignGallery from './Page/Gallery/Gallery/CampaignGallery';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
 import Work from './Page/Gallery/Profile';
@@ -33,6 +34,11 @@ import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
 import Orders from './Page/Gallery/PricePage/Orders';
+
+import TaiwanFood from './Page/Gallery/CampaignPage/TaiwanFood';
+import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
+
+import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
 import Notfound from './Page/Home/Notfound';
 import Cooming from './Page/Gallery/Cooming';
@@ -80,11 +86,23 @@ function App() {
         
         <Route path="/" element={<GalleryLayout/> }>
           <Route path="" element={<HomeV3 />} />
-          <Route path="gallery" element={<Gallery />} />
+
+          <Route path="/" element={<GalleryHomePageLayout/> }>
+            <Route path="gallery" element={<Gallery />} />
+            <Route path="campaign" element={<CampaignGallery />} />
+          </Route>
+
+          <Route path="taiwanfood" element={<TaiwanFood />} />
+          <Route path="asusnft" element={<AsusNFT />} />
+ 
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />
           <Route path="price" element={<Price />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="account" element={<Account />} />
+          <Route path="confirm/:id" element={<Confirm />} />
+          <Route path="cancel/:id" element={<Cancel />} />
+          <Route path="orders" element={<Orders />} />
 
           <Route path="/docs" element={<DocLayout/> }>
             <Route path="" element={<QuickStart />}/>
@@ -103,11 +121,9 @@ function App() {
         {/* <Route path="/post/:id" element={<Post />} /> */}
         {/* <Route path="/user/:id" element={<User />} /> */}
         {/* <Route path="/work" element={<Profile />} /> */}
-        <Route path="/account" element={<Account />} />
+        
 
-        <Route path="/confirm/:id" element={<Confirm />} />
-        <Route path="/cancel/:id" element={<Cancel />} />
-        <Route path="/orders" element={<Orders />} />
+
         <Route path="/come" element={<Cooming />} />
 
         {/* <Route path="/storages" element={<Storages />} /> */}

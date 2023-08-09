@@ -202,12 +202,11 @@ function Index() {
   );
   }
   return (
-    <div className='text-white'>
-      <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/>
-
-      <div className='md:w-8/12 mx-auto'>
-        <div className='mx-4 my-4 '>
-          <div className='text-center font-bold'>您的帳號資料</div>
+    <div className='text-white pb-10 '>
+      <div className='text-center font-bold mt-6'>您的帳號資料</div>
+      <div className='md:w-10/12 mx-auto flex flex-col md:flex-row'>
+        <div className='mx-4 my-4 md:w-full'>
+         
           <div className='text-lime-500'>個人資料</div>
           
           <div>
@@ -246,7 +245,7 @@ function Index() {
           </div>
     
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-6'>
+        <form onSubmit={handleSubmit(onSubmit)} className='mx-4 my-6 md:w-full'>
             <div className='grid grid-cols-2 gap-2'>
               <div className='flex flex-col'>
                 <label htmlFor="name" className='text-white/70 my-2 text-xs'>顯示名稱</label>

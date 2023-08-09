@@ -7,7 +7,7 @@ import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -33,7 +33,6 @@ const dropDownManuItem = [
 ]
 
 function Index() {
-
   const [images, setImages] = useState({});
   const [imagesResults, setImagesResults] = useState([]);
   const [storages, setStorages] = useState({});
@@ -323,9 +322,25 @@ function Index() {
         });
       },  
     })
-  //TODO STORAGE: SHARE / EDIT AVATAR / REMOVE 
-  //TODO COLLECTION:  REMOVE
-  //TODO FOLLOW: UNFOLLOW
+  // FETCH Campaigns to PAGE 
+  const { data: campaignData, isLoading:isCampaignDataLoading, fetchNextPage:fetchCampaignNextPage, hasNextPage: hasCampaignNextPage, isFetchingNextPage:isFetchingCampaignNextPage, isError:isCampaignDataError, refetch:campaignDataRefetch } = useInfiniteQuery(
+    [ 'campaignData'],
+    ({ pageParam }) =>
+    fetchCampaigns(),
+    {
+      enabled: isShowBeforeDisplayModal,
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const campaigns = campaignData?.pages?.flatMap((pageData) => pageData) ?? [];
 
   const switchIcons = (name)=>{
     switch (name) {
@@ -379,14 +394,12 @@ function Index() {
             localStorage.setItem('currentUser', JSON.stringify(data));
           })
           .catch((error) => console.error(error));
-        // handleRenders(data.user_id ,data.token,1,pageSize,startDate,endDate,currModels)
-        // handleRenders(profile.userId ,data.token)
+
 
 
       })
       .catch((error) => console.error(error));
   }
-  // const storageMutation = useMutation((image) => userStorageAImage(image, token));
 
   const handleCollection = (image) =>{
     userCollectionAImage(image,token)
@@ -402,40 +415,12 @@ function Index() {
       profile_banner_id:id
     }
     updateUserMutation.mutate({ items });
-    // patchUserProfile(currentProfile.id,token,items)
-    //   .then((data)=> {
-    //     if(data.status === 200){
-    //       setTimeout(()=>{
-    //         fetchUserProfile(currentProfile.id, token)
-    //           .then((data)=> {
-    //             // console.log(data)
-    //             setCurrentProfile(data)})
-    //           .catch((error) => console.error(error));
-    //       },1000)
-    //     }
-    //   })
-    //   .catch((error) => console.error(error));
-
-
   }
   const handleSetAvatar = (id)=>{
     const items={
       profile_image_id:id
     }
     updateUserMutation.mutate({ items });
-    // patchUserProfile(currentProfile.id,token,items)
-    //   .then((data)=> {
-    //     if(data.status === 200){
-    //       setTimeout(()=>{
-    //         fetchUserProfile(currentProfile.id, token)
-    //           .then((data)=> {
-    //             // console.log(data)
-    //             setCurrentProfile(data)})
-    //           .catch((error) => console.error(error));
-    //       },1000)
-    //     }
-    //   })
-    //   .catch((error) => console.error(error));
   }
   const handleSetName = ()=>{
     const items={
@@ -611,7 +596,7 @@ function Index() {
           )}
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
-        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage}/>)}
+        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} campaignsData={campaigns}/>)}
         {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
