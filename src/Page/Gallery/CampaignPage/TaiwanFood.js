@@ -55,13 +55,16 @@ const TaiwanFood = () => {
             <h2 className='text-xl font-bold my-3 '>如何使用指令？</h2>
             <p>​​➊ 對話框中輸入「/台灣美食」</p>
             <p>➋ 點擊圖片按鈕即可獲得指令！</p>
-            <div className='w-full max-w-[512px] relative'>
+            <div className='md:w-full w-4/5 mx-auto mt-10 max-w-[512px] relative'>
               <Swiper
                 spaceBetween={1}
                 slidesPerView={1}
                 loop={true}
                 modules={[Autoplay,Navigation]}
-                navigation={true}
+                navigation={{
+                  nextEl: ".slidenext",
+                  prevEl: ".slideprev"
+                }}
                 className='w-full'
                 autoplay={{
                   delay: 5000,
@@ -70,15 +73,15 @@ const TaiwanFood = () => {
               {
                 bannerData?.map((item,index)=>{
                   return(
-                    <SwiperSlide key={'tf'+index}>s
+                    <SwiperSlide key={'tf'+index}>
                         <img src={item.url} alt="slide" className=' aspect-square object-cover ' />
                     </SwiperSlide>
                   )
                 })
               }  
-              <div className='flex w-full justify-between  z-50 top-0 '>
-                <button className=' bg-black' onClick={()=> swiper.slidesPerv()}><MdNavigateBefore size={30} /></button>
-                <button className=' bg-black' onClick={()=> swiper.slideNext()}><MdNavigateNext size={30}/></button>
+              <div className='flex w-full justify-between  z-50 top-1/2 -translate-y-[70%] absolute px-4'>
+                <button className='slideprev bg-white/80 text-black/80 rounded-full border border-black/30' ><MdNavigateBefore size={33} /></button>
+                <button className='slidenext bg-white/80 text-black/80 rounded-full border border-black/30' ><MdNavigateNext size={33}/></button>
               </div>
   
               </Swiper>
