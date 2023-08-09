@@ -31,7 +31,7 @@ const TaiwanFood = () => {
   })
   return (
     <div className='pb-20'>
-      <div className='w-2/3 mx-auto flex justify-center my-8 '>
+      <div className='w-10/12 md:w-2/3 mx-auto flex justify-center my-8 '>
         <img src="https://resource.moonshine.tw/msweb/moonshotai/campaign/taiwanfood/taiwanfood_banner_2k.png" alt="banner" className='max-w-full'/>
       </div>
 
