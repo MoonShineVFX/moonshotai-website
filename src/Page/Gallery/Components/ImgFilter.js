@@ -37,11 +37,11 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
 return ( 
     <div className=' relative   '>
       <div 
-        className='text-white px-2 py-2 bg-zinc-700  rounded-full flex justify-between items-center min-w-[80px]'
+        className='text-white px-2 py-2 bg-zinc-700  rounded-full flex  justify-center items-center min-w-[70px]'
         onClick={toggleDropdown}
       >
         <div className=' absolute text-xs -top-4 left-1 hidden'>{currentFilterDateItem.type}</div>
-        <MdAccessTime size={20}/><span className=' rounded-xl px-2 py- mr-1 text-xs'>{currentFilterDateItem.title} </span> 
+        <MdAccessTime size={18}/><span className=' rounded-xl px-0 ml-1 text-xs'>{currentFilterDateItem.title} </span> 
       </div>
         <motion.div
           className={`fixed w-full h-screen top-0 left-0 bg-black/30 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
@@ -60,7 +60,7 @@ return (
             return(
               <div 
                 key={item.title} 
-                className='hover:bg-[#555] px-4 py-3 text-xs rounded-lg'
+                className='hover:bg-[#555] px-2 py-3 text-xs rounded-lg'
                 onClick={()=>{
                   handleClickOption(item)
                 }}
