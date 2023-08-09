@@ -202,10 +202,10 @@ function Index() {
   );
   }
   return (
-    <div className='text-white'>
+    <div className='text-white pb-10 '>
 
-      <div className='md:w-8/12 mx-auto'>
-        <div className='mx-4 my-4 '>
+      <div className='md:w-8/12 mx-auto flex'>
+        <div className='mx-4 my-4 w-full'>
           <div className='text-center font-bold'>您的帳號資料</div>
           <div className='text-lime-500'>個人資料</div>
           

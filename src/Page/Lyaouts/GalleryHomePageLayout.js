@@ -10,10 +10,10 @@ import 'swiper/css/effect-fade';
 import "swiper/css/pagination";
 
 const bannerData = [
-  {url:"https://resource.moonshine.tw/msweb/moonshotai/gallery_banner/asusnft2880.png",path:'/asusnft'},
-  {url:"https://resource.moonshine.tw/msweb/moonshotai/gallery_banner/taiwanfood01.png",path:'/taiwanfood'},
+  {url:"/msweb/moonshotai/gallery_banner/asusnft2880.png",path:'/asusnft'},
+  {url:"/msweb/moonshotai/gallery_banner/taiwanfood01.png",path:'/taiwanfood'},
  ]
-
+ const resourceURL = 'https:/resource.moonshine.tw'
  const pageLinkItems = [
   {title:'Gallery',path:'/gallery'},
   {title:'Campaign',path:'/campaign'},
@@ -40,7 +40,7 @@ const GalleryHomePageLayout = () => {
               return(
                 <SwiperSlide>
                   <Link to={item.path}>
-                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md' />
+                    <img src={window.innerWidth <= 450 ? resourceURL+item.url+'?width=400' : resourceURL+item.url} alt="slide" className=' rounded-md' />
                   </Link>
                 </SwiperSlide>
               )
