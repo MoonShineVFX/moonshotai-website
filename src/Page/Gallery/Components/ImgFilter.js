@@ -37,7 +37,7 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
 return ( 
     <div className=' relative   '>
       <div 
-        className='text-white px-2 py-2 bg-zinc-700  rounded-full flex justify-between items-center min-w-[90px]'
+        className='text-white px-2 py-2 bg-zinc-700  rounded-full flex justify-between items-center min-w-[80px]'
         onClick={toggleDropdown}
       >
         <div className=' absolute text-xs -top-4 left-1 hidden'>{currentFilterDateItem.type}</div>

@@ -11,11 +11,7 @@ import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Autoplay } from "swiper";
-// Import Swiper styles
-import 'swiper/css';
-import "swiper/css/pagination";
+import Masonry from 'react-masonry-css';
 const filterDateItem = [
   {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -198,7 +194,15 @@ function Index() {
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
-            <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
+           <Masonry
+              breakpointCols={{
+                default: 5,
+                1024: 4,
+                500: 2,
+              }}
+              className="my-masonry-grid"
+              columnClassName="my-masonry-grid_column"
+            >
               {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                 return (
@@ -212,7 +216,7 @@ function Index() {
                           alt={title}
                           src={urls.thumb}
                           data-id={id}
-                          className=' aspect-square object-cover  hover:scale-110 transition duration-300 '
+                          className=' object-cover w-full hover:scale-110 transition duration-300 '
   
                         />
                       </div>
@@ -257,7 +261,7 @@ function Index() {
                 })}
 
 
-            </div>
+            </Masonry>
             {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
               <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
             </div>}
