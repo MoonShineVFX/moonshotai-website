@@ -26,7 +26,7 @@ function Cancel() {
         <div className='text-sm mt-12 mb-2'></div>
         {/* <div className=' text-white/70 my-1 '>訂單號碼:{id}</div> */}
         <button
-          className='my-4 p-2 px-4 text-white/90 bg-zinc-600 rounded-sm text-sm ' onClick={()=>{
+          className='my-4 p-2 px-4 text-white/90 bg-gray-600 rounded-sm text-sm ' onClick={()=>{
           navigate('/price');}}
         >回到 Price</button>
       </div>

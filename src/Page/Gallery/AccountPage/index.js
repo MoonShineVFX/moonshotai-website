@@ -211,7 +211,7 @@ function Index() {
           
           <div>
             <div className='text-white/70 my-2 text-xs'>會員狀態</div>
-            <div className='flex items-center gap-1 border-b border-zinc-700 pb-2 text-white/80'>  
+            <div className='flex items-center gap-1 border-b border-gray-700 pb-2 text-white/80'>  
               <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          
               {currentProfile.is_subscribed && 
                 <div htmlFor="name" className='text-sm '>至 {moment(currentProfile.subscription_end_at).format('YYYY-MM-DD HH:mm') }</div>
@@ -255,7 +255,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.name}
                   rules={{ required: true }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="Name" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="Name" className='bg-gray-900 border border-gray-700  rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               </div>
@@ -269,7 +269,7 @@ function Index() {
                 defaultValue={currentProfile && currentProfile.email}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="email" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="email" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -281,7 +281,7 @@ function Index() {
                 defaultValue={currentProfile && currentProfile.bio}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="Short bio about 20-70 characters" className='bg-zinc-900 border border-zinc-700  rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="Short bio about 20-70 characters" className='bg-gray-900 border border-gray-700  rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -295,7 +295,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.portfolio_url}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="portfolio url" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="portfolio url" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               </div>
@@ -307,7 +307,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.facebook_id}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="facebookId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="facebookId" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               </div>
@@ -319,7 +319,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.instagram_id}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="instagramId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="instagramId" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               
@@ -332,7 +332,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.linkedin_id}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="linkedinId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="linkedinId" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               
@@ -345,7 +345,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.discord_id}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="discordId" className='bg-zinc-900 border border-zinc-7000 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="discordId" className='bg-gray-900 border border-gray-7000 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               
@@ -358,7 +358,7 @@ function Index() {
                   defaultValue={currentProfile && currentProfile.twitter_id}
                   rules={{ required: false }}
                   render={({ field }) => (
-                    <input {...field} type="text" placeholder="twitterId" className='bg-zinc-900 border border-zinc-700 rounded-md py-2 px-2 text-sm' />
+                    <input {...field} type="text" placeholder="twitterId" className='bg-gray-900 border border-gray-700 rounded-md py-2 px-2 text-sm' />
                   )}
                 />
               

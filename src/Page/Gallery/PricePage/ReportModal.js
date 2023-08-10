@@ -112,7 +112,7 @@ function ReportModal({handleReport,reportMsg,isRefundLoading,is_surveyed}) {
                                   
                                     <div 
                                       onClick={() => field.onChange(option.id)}
-                                      className={`cursor-pointer b p-1 px-3 ${field.value === option.id ? 'bg-gray-700 border border-white/60' : 'bg-zinc-700'}`}>
+                                      className={`cursor-pointer b p-1 px-3 ${field.value === option.id ? 'bg-gray-700 border border-white/60' : 'bg-gray-700'}`}>
                                       <label  >
                                         <input type="radio" value={option.id} {...field} className=' hidden' />
                                         <span >
@@ -134,7 +134,7 @@ function ReportModal({handleReport,reportMsg,isRefundLoading,is_surveyed}) {
                               defaultValue=""
                               rules={{ required: false }}
                               render={({ field }) => (
-                                <textarea rows="4" {...field} className='w-full bg-zinc-700'></textarea>
+                                <textarea rows="4" {...field} className='w-full bg-gray-700'></textarea>
                               )}
                             />
                           </div>

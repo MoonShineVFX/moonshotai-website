@@ -7,7 +7,7 @@ import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaignMutation } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -191,10 +191,10 @@ function Index() {
     
       setIsShowDisplayFormModal(false);
       
-      if(variables?.isDisplay?.status === 'on_Renderpage'){
-        console.log('on_Renderpage')
-        updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
-      }
+      // if(variables?.isDisplay?.status === 'on_Renderpage'){
+      //   console.log('on_Renderpage')
+      //   updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
+      // }
 
       
     },
@@ -213,8 +213,6 @@ function Index() {
           renderDataRefetch()
         }
 
-       
-        
       },
     });
   const handleStorage = (newData) => {
@@ -255,8 +253,6 @@ function Index() {
           });
 
         }
-
-        
         setIsShowDisplayFormModal(false);
       },
     });
@@ -458,22 +454,49 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+
   /**
    * Storage API 
    * start
    * */ 
-  const handleSetStorageImage = (image,items,status) =>{
+  const handleSetStorageImage = async(image,items,status) =>{
     console.log(image)
+    console.log(items.activities.length > 0)
     // console.log(image.is_storage,status)
     if(!image.is_storage){
-      console.log(image.is_storage)
+      // console.log(image.is_storage)
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      storageMutation.mutate({newData,isDisplay:{ image, items, status }});
-      
+      try{
+        await storageMutation.mutateAsync({newData});
+      } catch (error){
+        console.error('Storage mutation failed:', error);
+        return;
+      }
+      try {
+        await updateImageMutation.mutateAsync({ image, items, status });
+      } catch (error) {
+        console.error('Image update failed:', error);
+      }
+      if(items.activities.length > 0){
+        //TODO mapImageToCampaign
+      }
     }else{
       updateImageMutation.mutate({ image, items, status });
+      if(items.activities.length > 0){
+        //TODO mapImageToCampaign
+      }
     }
 
+  }
+  const mapImageToCampaign = async(data)=>{
+    for (const item of data) {
+      try {
+        await postImgtoCampaignMutation.mutateAsync({ data: item });
+      } catch (error) {
+        console.error('Error mapping image to campaign:', error);
+        // 處理錯誤，比如顯示一個錯誤訊息給使用者
+      }
+    }
   }
 
 
@@ -574,10 +597,6 @@ function Index() {
   }
   
 
-
-
-
-
   //LISTEN  LOGIN IF not LINE INIT
 
 
@@ -671,7 +690,7 @@ function Index() {
             return(
               <div 
                 key={item.title} 
-                className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
+                className='bg-gray-700 hover:bg-gray-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
                 onClick={()=>{
                   setCurrentDropDownItem(item)
                   handleOptionChange(item)

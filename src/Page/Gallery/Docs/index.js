@@ -89,7 +89,7 @@ function Index() {
           ><FaChevronDown /></button>
           <div>Documentation</div> 
         </div>
-        <div className={`   md:w-1/5 md:h-screen  md:p-10 absolute bg-zinc-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
+        <div className={`   md:w-1/5 md:h-screen  md:p-10 absolute bg-gray-800 w-full z-50 top-14 left-0 ${isOpen ? ' opacity-100' : 'hidden opacity-0'}`}> 
           
           <ul className=' border-l border-white/50 p-5 tracking-wide leading-loose text-normal text-white/50'>
             {
@@ -207,7 +207,7 @@ function Index() {
                 <div className='mt-2 mb-8 leading-9 text-white/70'>
                 <table class="border-collapse border border-slate-400 w-full">
                   <thead>
-                    <tr className='bg-zinc-600 '>
+                    <tr className='bg-gray-600 '>
                       <th className='border border-slate-300 p-2'>功能</th>
                       <th className='border border-slate-300 p-2'>指令</th>
                     </tr>

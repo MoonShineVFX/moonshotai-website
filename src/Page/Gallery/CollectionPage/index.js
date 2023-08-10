@@ -95,7 +95,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
 
       }
       {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+        <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
       </div>}
     </div>
   )

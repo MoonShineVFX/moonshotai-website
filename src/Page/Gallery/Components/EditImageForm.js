@@ -33,7 +33,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-gray-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='text-center font-bold'>Image detail</div>
         <div className='text-xs my-3 flex flex-col justify-center items-center text-white/70'>
@@ -53,7 +53,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
                 defaultValue={image?.title}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="title" className='bg-gray-700 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -66,7 +66,7 @@ function EditImageForm({userData,handleEdit,handleSetUserProfile,handleSetStorag
               defaultValue={image?.description}
               rules={{ required: false }}
               render={({ field }) => (
-                <textarea {...field} cols="20" rows="5" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' placeholder="Description,Notes"></textarea>
+                <textarea {...field} cols="20" rows="5" className='bg-gray-700 rounded-md py-2 px-2 text-sm' placeholder="Description,Notes"></textarea>
               )}
             />
 

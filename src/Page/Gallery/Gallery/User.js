@@ -161,7 +161,7 @@ function User() {
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
-      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-zinc-700 '>
+      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-gray-700 '>
         <MdKeyboardArrowLeft size={32} />
       </button>
       <div className='flex flex-col justify-center items-center gap-1 relative text-white mx-5 mt-'>
@@ -169,7 +169,7 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-20'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/>
               </div>
             </div>
           </div>
@@ -198,7 +198,7 @@ function User() {
               <div onClick={handleFollow}>
               {
                 isFollowed ? 
-                <button className='flex items-center gap-1 bg-zinc-600/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
+                <button className='flex items-center gap-1 bg-gray-600/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
                 : 
                 <button className='flex items-center gap-1 bg-lime-600 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
               }

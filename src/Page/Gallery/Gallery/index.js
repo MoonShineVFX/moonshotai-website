@@ -176,7 +176,7 @@ function Index() {
                         return(
                           <button 
                           key={item.title} 
-                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-gray-200 text-black' : ' bg-gray-700 text-white'}`}
                           onClick={()=>{
                             onHandleSelectModels(item)
                           }}
@@ -263,7 +263,7 @@ function Index() {
 
             </Masonry>
             {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+              <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
             </div>}
           </div>
 

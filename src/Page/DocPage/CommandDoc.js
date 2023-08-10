@@ -61,7 +61,7 @@ function CommandDoc() {
         <div className='mt-2 mb-8 leading-9 text-white/70'>
           <table class="border-collapse border border-slate-400 w-full">
             <thead>
-              <tr className='bg-zinc-600 '>
+              <tr className='bg-gray-600 '>
                 <th className='border border-slate-300 p-2'>功能</th>
                 <th className='border border-slate-300 p-2'>指令</th>
               </tr>

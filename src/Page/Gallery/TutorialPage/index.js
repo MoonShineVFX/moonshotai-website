@@ -46,12 +46,12 @@ function Index() {
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
                   </div>
                 </div>
 
-                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white  bg-zinc-700 relative' } >
+                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white  bg-gray-700 relative' } >
 
                       <div className='flex items-center  justify-center gap-1'>
                         <MdAddCircle /> <span>加入留存</span>
@@ -73,12 +73,12 @@ function Index() {
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
                   </div>
                 </div>
 
-                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white  bg-zinc-500 relative' } >
+                <div className={'  flex items-center  justify-center text-xs rounded-full  p-2 w-full mt-1   text-white  bg-gray-500 relative' } >
 
                       <div className='flex items-center  justify-center gap-1'>
                         <MdRemoveCircle /> <span>移除留存</span>
@@ -113,18 +113,18 @@ function Index() {
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
                   </div>
                 </div>
 
                 <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
                     <div className='p-2 ' >
-                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+                      <div className='rounded-full bg-gray-800/80 p-2'><MdMoreVert size={15} /></div>
  
                     </div>
                     <div className='text-white p-2'>
-                      <div className={'rounded-full p-2 bg-zinc-800 text-white'}> <MdModeEdit size={15}/></div>
+                      <div className={'rounded-full p-2 bg-gray-800 text-white'}> <MdModeEdit size={15}/></div>
                     </div>
                 </div>
 
@@ -159,18 +159,18 @@ function Index() {
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
                   </div>
                 </div>
 
                 <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
                     <div className='p-2 ' >
-                      <div className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></div>
+                      <div className='rounded-full bg-gray-800/80 p-2'><MdMoreVert size={15} /></div>
  
                     </div>
                     <div className='text-white p-2'>
-                      <div className={'rounded-full p-2 bg-zinc-800 text-white'}> <MdModeEdit size={15}/></div>
+                      <div className={'rounded-full p-2 bg-gray-800 text-white'}> <MdModeEdit size={15}/></div>
                     </div>
                 </div>
 

@@ -206,7 +206,7 @@ function Index({}) {
   }, []);
   
   return (
-    <div className='  top-0 text-white lg:border-b border-[#3c4756] py-2 px-8 w-full  bg-zinc-800 z-50 flex flex-row flex-wrap 
+    <div className='  top-0 text-white lg:border-b border-[#3c4756] py-2 px-8 w-full  bg-gray-900 z-50 flex flex-row flex-wrap 
    justify-between '>
       <div className=' items-center  text-white mr-6 gap-2 pt-1 flex lg:flex'>
           <a href='/' className='font-black w-24 lg:w-32'>
@@ -227,8 +227,8 @@ function Index({}) {
       <div className={`grow lg:grow-0 lg:flex lg:items-center hidden `}>
         
         <div className='flex gap-5 items-center  my-5 md:my-0 '>
-          <Link to='/gallery' className=' cursor-pointer px-5 py-2 font-bold text-zinc-200    hover:text-zinc-100' >Gallery</Link>
-          <Link to='/price' className=' cursor-pointer px-5 py-2 font-bold text-zinc-200   hover:text-zinc-100'>Price</Link>
+          <Link to='/gallery' className=' cursor-pointer px-5 py-2 font-bold text-gray-200    hover:text-gray-100' >Gallery</Link>
+          <Link to='/price' className=' cursor-pointer px-5 py-2 font-bold text-gray-200   hover:text-gray-100'>Price</Link>
 
           <div className='bg-white/30 w-[1px] h-full'></div>
           {
@@ -237,7 +237,7 @@ function Index({}) {
                 <Link to='/profile'  className='flex items-center gap-2' onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
@@ -245,12 +245,12 @@ function Index({}) {
             </div>
             
             :
-            <div onClick={() => {handleLogin()}}   className=' cursor-pointer px-5 py-2 font-bold text-zinc-200   hover:text-zinc-100'>Sign in</div>
+            <div onClick={() => {handleLogin()}}   className=' cursor-pointer px-5 py-2 font-bold text-gray-200   hover:text-gray-100'>Sign in</div>
           }
           <div className="block  ml-auto">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center px-3 py-2 font-semibold text-zinc-200   hover:text-zinc-100"
+                className="flex items-center px-3 py-2 font-semibold text-gray-200   hover:text-gray-100"
               >
                 <div className={`fill-current h-3 w-3 ${isOpen ? "hidden" : "block"}`}><FaBars /></div>
                 <div className={`fill-current h-3 w-3 ${isOpen ? "block" : "hidden"}`}><FaTimes /></div>
@@ -277,20 +277,20 @@ function Index({}) {
                 <Link to='/profile'  className='flex items-center gap-2'  onClick={() => setIsOpen(!isOpen)}>
                   <div className='w-12'>
                     <div className='pt-[100%] relative'>
-                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400 aspect-square'/>
+                      <img src={currentUser?.profile_image} alt="" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400 aspect-square'/>
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
                 </Link>
 
                 <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
-                  <button className='my-4 py-1  border border-zinc-500 rounded-md w-full'> Sign Out</button>
+                  <button className='my-4 py-1  border border-gray-500 rounded-md w-full'> Sign Out</button>
                 </div>
               </div>
               :
               <div className='border-b border-white/20 py-4'>
                 <div 
-                  className='px-2 py-2 cursor-pointer  rounded-md hover:bg-zinc-800 flex items-center gap-3' 
+                  className='px-2 py-2 cursor-pointer  rounded-md hover:bg-gray-800 flex items-center gap-3' 
                   onClick={() => {
                     handleLogin()
                     setIsOpen(!isOpen)
@@ -300,7 +300,7 @@ function Index({}) {
             <div className='my-3 '>
               <Link 
                 to='/' 
-                className='p-2 cursor-pointer  hover:bg-zinc-800  flex items-center gap-3 '
+                className='p-2 cursor-pointer  hover:bg-gray-800  flex items-center gap-3 '
                 onClick={()=>setIsOpen(false)}
                 
               >
@@ -310,20 +310,20 @@ function Index({}) {
               <Link 
                 to='/gallery' 
                 onClick={()=>setIsOpen(false)}
-                className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                   <MdDashboard color="#88ad48" size={20}/> Gallery
               </Link>
               <Link 
                 to='/price' 
                 onClick={()=>setIsOpen(false)}
-                className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                   <MdStar color="#88ad48" size={20}/> Price
               </Link>
 
               <Link 
                 to='/docs' 
                 onClick={()=>setIsOpen(false)}
-                className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                   <MdDocumentScanner color="#88ad48" size={20}/> Documents
               </Link>
 
@@ -333,7 +333,7 @@ function Index({}) {
               <Link 
                 to='/profile' 
                 onClick={()=>setIsOpen(false)}
-                className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                   <MdViewModule color="#88ad48" size={20}/> Profile 
               </Link>
               {
@@ -342,13 +342,13 @@ function Index({}) {
                 <Link 
                   to='/account' 
                   onClick={()=>setIsOpen(false)}
-                  className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                  className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                     <MdAccountBox color="#88ad48" size={20}/> Account 
                 </Link>
                 <Link 
                   to='/orders' 
                   onClick={()=>setIsOpen(false)}
-                  className='p-2 cursor-pointer rounded-md hover:bg-zinc-800  flex items-center gap-3'>
+                  className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                     <MdAssignment color="#88ad48" size={20}/> Orders
                 </Link>
               </>

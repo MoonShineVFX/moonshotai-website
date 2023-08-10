@@ -67,7 +67,7 @@ function Section2_ver2() {
                 <div
                   key={'m'+index} 
                   onClick={()=>{handleClick(item.mode,index)}}
-                  className={' hover:bg-white hover:text-black   w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentDataIndex === index ? ' text-black bg-white'  : ' text-white/70 bg-zinc-700' )}
+                  className={' hover:bg-white hover:text-black   w-1/3 rounded-t-2xl text-center p-2  cursor-pointer ' + (currentDataIndex === index ? ' text-black bg-white'  : ' text-white/70 bg-gray-700' )}
                 >{item.title}</div>
               )
             })

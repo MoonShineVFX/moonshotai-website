@@ -98,7 +98,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           initial={{ opacity: 0, y: -20 ,x:'-50%'}}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-32 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[25vh]'
+          className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-gray-800 rounded-lg p-4 box-border text-white fixed top-32 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[25vh]'
         >
           <div className='flex flex-col items-center gap-3'>
             <div><MdErrorOutline size={26} /></div>
@@ -168,7 +168,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
           </div>
           { isStorageDataLoading&& <motion.div 
-              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
               initial={{ opacity: 0, y: -20,x:'-50%' }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -205,14 +205,14 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='p-2 ' onClick={()=>{
                       handleClick(id)
                     }}>
-                      <button  className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></button>
+                      <button  className='rounded-full bg-gray-800/80 p-2'><MdMoreVert size={15} /></button>
  
                     </div>
                     <div className='flex justify-end gap-1 p-1'>
                       <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemove />
                       </button>
-                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-zinc-800 text-white/80' : ' bg-white text-zinc-800' )} onClick={()=>{
+                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
                         onHandleDisplayHome(image)
                       }}> <FaShare size={12}/></button>
 
@@ -254,7 +254,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     </motion.div>
                     
                   </div>
-                  <div className=' bg-gradient-to-t from-zinc-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                  <div className=' bg-gradient-to-t from-gray-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                     <div className='text-sm'>
                       {title ?title : created_at.substr(0,10)}
                     </div>
@@ -273,7 +273,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
         }
         {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-            <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+            <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
           </div>}
     </div>
   )

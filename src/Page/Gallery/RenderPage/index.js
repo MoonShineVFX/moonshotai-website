@@ -189,7 +189,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
       { isAddStorageLoading&& <motion.div 
-              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
               initial={{ opacity: 0, y: -20,x:'-50%' }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -210,7 +210,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,is_storage   } = image
+            const {id, urls, created_at, display_home, filename,is_storage,title   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -226,12 +226,12 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       setIsShowImageModal(true)
                     }} 
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
-                      {created_at.substr(0,10)}
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
+                    {title ? title : created_at.substr(0,10)} 
                   </div>
                 </div>
                 <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-zinc-800  ' : '   bg-zinc-800 text-white' )} onClick={()=>onHandleStorage(image)}>
+                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-gray-800  ' : '   bg-gray-800 text-white' )} onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
                       <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
@@ -243,7 +243,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       </button>
                     }
                   </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-zinc-800 text-white/80   ' : '   bg-white text-zinc-800' ) } onClick={()=>onHandleDisplayHome(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-gray-800 text-white/80   ' : '   bg-white text-gray-800' ) } onClick={()=>onHandleDisplayHome(image)}>
 
                     <button 
                       disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
@@ -265,7 +265,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
           
       }
       {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+        <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
       </div>}
     
 

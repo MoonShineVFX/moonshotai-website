@@ -28,7 +28,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
           orderData.map((item,index)=>{
             const{invoice_number,paid_at,payment_type,serial_number,plan_history,refund_at,status,is_surveyed}=item
             return(
-              <div className='text-white border my-6 p-3 border-zinc-400 rounded-md' key={'orders'+index}>
+              <div className='text-white border my-6 p-3 border-gray-400 rounded-md' key={'orders'+index}>
                 <div className=' space-y-3'>
                   <div>
                     <div className='text-xs opacity-70'>支付方式</div>

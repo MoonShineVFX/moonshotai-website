@@ -53,7 +53,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-gray-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='text-center font-bold'>您的帳號資料</div>
         <div >
@@ -61,7 +61,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
         
           <div>
             <div className='text-white/50 my-2 text-xs'>會員狀態</div>
-            <div className='flex items-center gap-1 border-b border-zinc-600 pb-2 text-white/80'>  
+            <div className='flex items-center gap-1 border-b border-gray-600 pb-2 text-white/80'>  
               <div>{userData.is_subscribed  ? '進階' : 'FREE'}   </div>          
               {userData.is_subscribed && 
                 <div htmlFor="name" className='text-sm '>至 {moment(userData.subscription_end_at).format('YYYY-MM-DD HH:mm') }</div>
@@ -96,7 +96,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.name}
                 rules={{ required: true }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="Name" className='bg-zinc-900 border border-zinc-600  rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="Name" className='bg-gray-900 border border-gray-600  rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -110,7 +110,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
               defaultValue={userData && userData.email}
               rules={{ required: false }}
               render={({ field }) => (
-                <input {...field} type="text" placeholder="email" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                <input {...field} type="text" placeholder="email" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
               )}
             />
           </div>
@@ -122,7 +122,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
               defaultValue={userData && userData.bio}
               rules={{ required: false }}
               render={({ field }) => (
-                <input {...field} type="text" placeholder="Short bio about 20-50 characters" className='bg-zinc-900 border border-zinc-600  rounded-md py-2 px-2 text-sm' />
+                <input {...field} type="text" placeholder="Short bio about 20-50 characters" className='bg-gray-900 border border-gray-600  rounded-md py-2 px-2 text-sm' />
               )}
             />
           </div>
@@ -136,7 +136,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.portfolio_url}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="portfolio url" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="portfolio url" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -148,7 +148,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.facebook_id}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="facebookId" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="facebookId" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             </div>
@@ -160,7 +160,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.instagram_id}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="instagramId" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="instagramId" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             
@@ -173,7 +173,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.linkedin_id}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="linkedinId" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="linkedinId" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             
@@ -186,7 +186,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.discord_id}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="discordId" className='bg-zinc-900 border border-zinc-6000 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="discordId" className='bg-gray-900 border border-gray-6000 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             
@@ -199,7 +199,7 @@ function EditUserForm({userData,handleEdit,handleSetUserProfile}) {
                 defaultValue={userData && userData.twitter_id}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="twitterId" className='bg-zinc-900 border border-zinc-600 rounded-md py-2 px-2 text-sm' />
+                  <input {...field} type="text" placeholder="twitterId" className='bg-gray-900 border border-gray-600 rounded-md py-2 px-2 text-sm' />
                 )}
               />
             

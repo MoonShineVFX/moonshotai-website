@@ -30,7 +30,7 @@ function RefundDoc() {
           </div>
           <table className="border-collapse border border-slate-400 w-full my-4 ">
             <thead>
-              <tr className='bg-zinc-600 '>
+              <tr className='bg-gray-600 '>
                 <th className='border border-slate-300 p-2'>功能</th>
                 <th className='border border-slate-300 p-2'>指令</th>
               </tr>

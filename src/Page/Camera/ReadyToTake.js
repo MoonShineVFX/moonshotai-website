@@ -350,7 +350,7 @@ function ReadyToTake({handleBackClick}) {
       <div className="flex flex-row  justify-center gap-7 my-4  p-2 rounded-xl items-center landscape:w-1/3 landscape:flex-row ">
         {/* <ImagePreview image={image} /> */}
           <div 
-            className="flex items-center gap-3  rounded-full bg-zinc-600 p-5 "
+            className="flex items-center gap-3  rounded-full bg-gray-600 p-5 "
             onClick={() => {
               if (camera.current) {
                 const result = camera.current.switchCamera();
@@ -360,7 +360,7 @@ function ReadyToTake({handleBackClick}) {
             
           > <MdCameraswitch size={24}/> </div>
           <div 
-            className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-zinc-300/50"
+            className="flex items-center gap-3  rounded-full bg-white p-5 shadow-lg shadow-gray-300/50"
             onClick={() => {
               if (camera.current) {
                 const photo = camera.current.takePhoto();

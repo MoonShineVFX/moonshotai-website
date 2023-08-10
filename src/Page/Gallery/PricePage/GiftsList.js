@@ -11,7 +11,7 @@ const GiftsList = ({giftData,handleOpenGift,isMutationLoading,currentlyUpdatingG
         giftData.map((item,index)=>{
           const {id,created_at, expired_at, is_used,name,used_at}= item
           return(
-            <div className='text-white border  p-4 border-zinc-400/0 bg-zinc-800 rounded-md ' key={'gifts'+index}>
+            <div className='text-white border  p-4 border-gray-400/0 bg-gray-800 rounded-md ' key={'gifts'+index}>
               <div className='flex justify-between'>
                 <div>
                   <div className='text-xs opacity-70'> {moment(created_at).format('YYYY-MM-DD')}</div>
@@ -49,7 +49,7 @@ const GiftsList = ({giftData,handleOpenGift,isMutationLoading,currentlyUpdatingG
                     領取禮物
                   </button>
                   :
-                  <button disabled className={' py-2 px-4 text-sm rounded-md bg-zinc-700 text-white/80 '}>已領取</button>
+                  <button disabled className={' py-2 px-4 text-sm rounded-md bg-gray-700 text-white/80 '}>已領取</button>
                 }
                 <div className='ml-4'>
                   <div className='text-xs opacity-70'>兌換日</div>
