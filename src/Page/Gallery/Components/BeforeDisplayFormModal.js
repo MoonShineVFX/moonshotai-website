@@ -4,6 +4,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { beforeDisplayModalState, imageDataState,profilePageState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle } from "react-icons/md";
+import { Button } from "@material-tailwind/react";
 function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
@@ -73,36 +74,32 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           <div className='flex flex-col  '>
             <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
             <Controller
-                name="title"
+                name="description"
                 control={control}
-                defaultValue={image?.title}
-                rules={{ required: true }}
+                defaultValue={image?.description}
+                rules={{ required: false }}
                 render={({ field }) => (
-                  <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400 ' />
+                  <textarea {...field} cols="20" rows="3" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400' placeholder="Description,Notes"></textarea>
                 )}
               />
-
-
-           
           </div>
           <div className='flex flex-col border border-white/60 rounded-md m-4 p-2 hidden'>
               <label htmlFor="name" className='text-white/80 font-normal my-2'>可參與的活動</label>
-              <ul>
+              <ul className='flex flex-wrap space-y-1 '>
               {campaignsData.map(item => (
-                <li key={item.id}>
-                  <label className='bg-zinc-700  border p-2 flex items-center block '>
+                <li key={item.id} className='w-full bg-zinc-700 p-2 rounded-md'>
+                  <label className=' p-2 flex items-center '>
                     <input
                       type="checkbox"
                       checked={selectedActivityId === item.id}
                       onChange={() => handleActivityClick(item.id)}
-                      className="peer relative appearance-none w-5 h-5 border rounded-md focus:outline-none checked:bg-zinc-100 hover:ring after:content-[] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-[url('https://moonshine.b-cdn.net/msweb/moonshotai/web_icons/checked-svg.svg')]
+                      className="peer relative appearance-none w-5 h-5 border rounded-full focus:outline-none checked:bg-blue-600 hover:ring after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-[url('https://moonshine.b-cdn.net/msweb/moonshotai/web_icons/checked-svg.svg')]
                       "
                     />
-                    {item.name}
+                    <div className='ml-2 font-semibold'>{item.name}</div>
                   </label>
 
-                  <div className='text-white/80 font-normal my-2'>已勾選的活動</div>
-                  <div className='text-white/50 font-normal my-2'>如該活動有外連網址可以於下方填入。</div>
+                  <div className='text-white/50 text-xs font-normal my-2'>如該活動有外連網址可以於下方填入。</div>
                   {selectedActivityId === item.id && item.has_link && (
                     <div className="mt-2">
                      
@@ -185,7 +182,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
           </div>
           
           <div className='mt-6 flex gap-3 justify-center text-sm'>
-            <button type="submit" className='  py-1 px-2 rounded-md bg-[#4c5a13]'>儲存送出</button>
+            <Button type="submit" className='bg-[#4c5a13] '>儲存送出</Button>
             <button type="button" className='text-white/80' onClick={()=>{
               setIsShowDisplayFormModal(false)
             }}>取消</button>
