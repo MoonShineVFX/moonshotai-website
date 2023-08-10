@@ -792,3 +792,19 @@ export const postImgtoCampaignMutation = (mutaionData) => {
 
   return fetch(apiUrl + 'campaigns', requestOptions).then((response) => response.json());
 };
+
+// GET /campaigns 取得活動所屬圖片列表
+export const fetchCampaignImages =async (campaign_id,cursor) =>{
+  let newCursor = cursor === undefined ? '' : cursor
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'campaigns/'+campaign_id+'/images' ,requestOptions)
+  const data =await response.json()
+  return data
+    
+}
