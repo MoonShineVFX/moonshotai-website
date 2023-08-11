@@ -96,7 +96,7 @@ function CampaignGallery() {
                   imageResults[index].data.results.map((image) => {
                     const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                     return (
-                      <motion.div key={'gallery-'+index} 
+                      <motion.div key={'campGallery-'+index} 
                         variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                         className='  overflow-hidden relative  mb-5'
                       >
