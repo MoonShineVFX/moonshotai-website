@@ -161,7 +161,7 @@ function User() {
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
-      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-gray-700 '>
+      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-gray-900 '>
         <MdKeyboardArrowLeft size={32} />
       </button>
       <div className='flex flex-col justify-center items-center gap-1 relative text-white mx-5 mt-'>
@@ -198,9 +198,9 @@ function User() {
               <div onClick={handleFollow}>
               {
                 isFollowed ? 
-                <button className='flex items-center gap-1 bg-gray-600/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
+                <button className='flex items-center gap-1 bg-gray-700/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
                 : 
-                <button className='flex items-center gap-1 bg-lime-600 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
+                <button className='flex items-center gap-1 bg-light-green-700 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
               }
               </div>
             }

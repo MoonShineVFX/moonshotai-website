@@ -777,20 +777,21 @@ export const fetchCampaigns =async (cursor) =>{
 }
 
 // POST storage_images/<int:id>/campaigns 幫圖片加活動
-export const postImgtoCampaignMutation = (mutaionData) => {
+export const postImgtoCampaign= (imgid,items,token) => {
+  console.log(items)
   const requestOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${mutaionData.linLoginData}`,
+      'Authorization': `Bearer ${token}`,
     },
     body: JSON.stringify({
-      campaign_id: mutaionData.campaign_id,
-      link:mutaionData.link
+      campaign_id: items.campaign_id,
+      link:items.link
     }),
   };
 
-  return fetch(apiUrl + 'campaigns', requestOptions).then((response) => response.json());
+  return fetch(apiUrl +'/storage_images/'+imgid +'/campaigns', requestOptions).then((response) => response.json());
 };
 
 // GET /campaigns 取得活動所屬圖片列表

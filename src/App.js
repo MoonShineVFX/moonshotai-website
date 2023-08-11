@@ -24,6 +24,7 @@ import Policy from './Page/DocPage/Policy';
 import GalleryLayout from './Page/Lyaouts/GalleryLayout';
 import Gallery from './Page/Gallery/Gallery';
 import CampaignGallery from './Page/Gallery/Gallery/CampaignGallery';
+import CampaignList from './Page/Gallery/Gallery/CampaignList';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
 import Profile from './Page/Gallery/Profile';
 import Work from './Page/Gallery/Profile';
@@ -90,6 +91,7 @@ function App() {
           <Route path="/" element={<GalleryHomePageLayout/> }>
             <Route path="gallery" element={<Gallery />} />
             <Route path="campaign" element={<CampaignGallery />} />
+            <Route path="campaign/:id"  element={<CampaignList />} />
           </Route>
 
           <Route path="taiwanfood" element={<TaiwanFood />} />

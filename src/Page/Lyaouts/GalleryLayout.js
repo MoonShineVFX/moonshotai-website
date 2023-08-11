@@ -7,7 +7,6 @@ import Footer from '../Home_v3/Footer';
 const GalleryLayout = () => {
   const [stickyClass, setStickyClass] = useState(false);
   const stickNavbar = () => {
-    console.log('scroll')
     if (window !== undefined) {
       let windowHeight = window.scrollY;
       windowHeight > 200 ? setStickyClass(true) : setStickyClass(false);

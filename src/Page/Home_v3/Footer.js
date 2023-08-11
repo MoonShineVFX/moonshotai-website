@@ -4,7 +4,6 @@ import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } fro
 function Footer() {
   const [stickyClass, setStickyClass] = useState(false);
   const stickNavbar = () => {
-    console.log('scroll')
     if (window !== undefined) {
       let windowHeight = window.scrollY;
       windowHeight > 200 ? setStickyClass(true) : setStickyClass(false);

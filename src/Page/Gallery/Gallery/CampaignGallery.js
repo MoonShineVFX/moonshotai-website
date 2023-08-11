@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
+import { Link } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
+
+import {fetchGalleries,getStoredLocalData,fetchCampaigns,fetchCampaignImages} from '../helpers/fetchHelper'
 
 import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import {LoadingLogoFly,LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
+import { Button } from "@material-tailwind/react";
 import moment from 'moment';
-import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
+import { useQuery, useInfiniteQuery,QueryClient,useQueries } from 'react-query';
 function CampaignGallery() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -22,6 +27,8 @@ function CampaignGallery() {
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
+
+  const [ campaignsData , setCampaignsData] = useState([])
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -37,42 +44,121 @@ function CampaignGallery() {
 
     });
   }, [setLineLoginData,setCurrentUser]);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage,isLoading, isError, refetch } = useInfiniteQuery(
-    [ 'galleries',linLoginData, startDate, currModels],
+  //FETCH campaigns LIST
+  const { data:campaigns, isLoading:isCampaignsLoading, isError:isCampaignsError, refetch:campaignsRefetch } = useQuery(
+    [ 'campaigns'],
     ({ pageParam }) =>
-      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+      fetchCampaigns(),
     {
-      enabled:isInitialized && (linLoginData !== null || isLoggedIn !== null),
-      getNextPageParam: (lastPage, pages) =>{
-        // 檢查是否有下一頁
-        if (lastPage.next) {
-          const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("cursor");
-          return nextPage ? nextPage : undefined;
-        }
-        return undefined;
-        }
+     onSuccess:(data)=>{
+      setCampaignsData(data)
+
+     }
     }
   );
-  const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  // Define an array of query keys for images of all campaigns
+  const imageQueries = campaignsData?.map((campaign) => ({
+    queryKey: ['campImages', campaign.id],
+    queryFn: () => fetchCampaignImages(campaign.id), // Replace with your API call to fetch images by campaignId
+    config: {
+      enabled: true, // Fetch images for all campaigns immediately
+    },
+  }));
+  const imageResults = useQueries(imageQueries);
 
 
-  if(isLoading){
-    return(
-      <LoadingLogoSpin />
-    )
+
+  if (isCampaignsLoading) {
+    return <LoadingLogoSpin />;
   }
+
+  if (isCampaignsError) {
+    return <div>Error: Campaigns data could not be loaded</div>;
+  }
+
+
   return (
-    <div className='w-full '>
-       <div className='text-white'>Campaign title Here </div>
-      {
-        imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
-      }
-      <div className='grid grid-cols-2 md:grid-cols-5 gap-4 my-4'>
-        <motion.div 
-          variants={imageVariants} initial="hidden" animate="visible" 
-          className='text-white'>Campaign images Here</motion.div>
-      </div>
+    <div className='w-full text-white'>
+
+      <ul>
+        {campaignsData.map((campaign, index) => (
+          <li key={campaign.id}>
+            <div>
+              <div className='flex justify-between items-end'>
+                <h3 className='text-lg font-semibold text-white/80'>{campaign.name}</h3>
+                <Link to={`/campaign/${campaign.id}`} className='text-sm text-white/60 hover:text-white'>
+                 觀看更多
+                </Link>
+              </div>
+
+              <div  className='grid grid-cols-2 md:grid-cols-4 gap-4 my-4'>
+                {imageResults[index].data?.results.length > 0 ? (
+                  imageResults[index].data.results.map((image) => {
+                    const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                    return (
+                      <motion.div key={'gallery-'+index} 
+                        variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
+                        className='  overflow-hidden relative  mb-5'
+                      >
+                        <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
+                          <div className=' relative overflow-hidden   rounded-md'>
+                            <img  
+                              alt={title}
+                              src={urls.thumb}
+                              data-id={id}
+                              className=' aspect-square object-cover w-full hover:scale-110 transition duration-300 '
+      
+                            />
+                          </div>
+    
+                          <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2 md:opacity-0 md:group-hover:opacity-100 transition duration-700'>
+                            <div className='flex items-center space-x-2'>
+                              <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
+                              <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
+                            </div>
+    
+                            <div className='text-red-300'>
+                              {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
+                            </div>
+    
+    
+                          </div>
+                          <div>
+                            
+                          </div>
+                        </Link>
+    
+    
+    
+                        <div className='text-sm  flex items-center mt-2 space-x-3 w-full   text-white'>
+                          <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
+                            <div className='pt-[100%] relative'>
+                              <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                            </div>
+                          </Link>
+    
+                          <div className='flex flex-col'>
+                            <div className='text-base font-bold '><TitleWithLimit title={title} maxLength={12}/> </div>
+                            <div className='text-xs text-white/50'>{author?.name}</div>
+                          </div>
+                        </div>
+    
+    
+    
+                      </motion.div>
+    
+                    )
+                  })
+                ) : (
+                  <li className='text-white/40 text-sm' >這個活動還沒有人參與.</li>
+                )}
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      
     </div>
   )
 }

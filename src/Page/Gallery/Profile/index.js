@@ -7,7 +7,7 @@ import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaignMutation } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -479,22 +479,33 @@ function Index() {
       }
       if(items.activities.length > 0){
         //TODO mapImageToCampaign
+        mapImageToCampaign(image.id,items.activities)
       }
     }else{
       updateImageMutation.mutate({ image, items, status });
       if(items.activities.length > 0){
         //TODO mapImageToCampaign
+        console.log('執行參加活凳')
+        mapImageToCampaign(image.id,items.activities)
       }
     }
 
   }
-  const mapImageToCampaign = async(data)=>{
-    for (const item of data) {
+
+  //TODO 延遲執行避免出錯
+  const mapImageToCampaign = async(imgid,data)=>{
+    const delay = 1000; // 延遲時間，以毫秒為單位，這裡設定為1秒
+    for (const [index, items] of data.entries()) {
       try {
-        await postImgtoCampaignMutation.mutateAsync({ data: item });
+        await postImgtoCampaign(imgid, items, linLoginData);
       } catch (error) {
         console.error('Error mapping image to campaign:', error);
         // 處理錯誤，比如顯示一個錯誤訊息給使用者
+      }
+
+      if (index < data.length - 1) {
+        // 不是最後一個項目，執行時間延遲
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }

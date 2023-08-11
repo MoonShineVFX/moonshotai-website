@@ -1,7 +1,9 @@
 import React, { useState, useEffect }  from 'react'
 import { MdKeyboardArrowDown,MdAccessTime } from "react-icons/md";
 import {motion,AnimatePresence} from 'framer-motion'
-function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
+import { Button } from "@material-tailwind/react";
+import { Icon } from '../helpers/componentsHelper';
+function ImgFilter({filterItems,defaultIndex,onHandleSelect,icon}) {
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterItems[defaultIndex])
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const dropdownVariants = {
@@ -36,13 +38,18 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect}) {
   }
 return ( 
     <div className=' relative   '>
-      <div 
-        className='text-white px-2 py-2 bg-gray-700  rounded-full flex  justify-center items-center min-w-[70px]'
+      <Button className="flex items-center gap-1 rounded-full px-3 py-2" onClick={toggleDropdown}>
+        <Icon nameIcon={icon} propsIcon={{ size: 20 }} /> 
+        {currentFilterDateItem.title}
+      </Button>
+
+      {/* <div 
+        className='text-white px-2 py-2 bg-gray-800  rounded-full flex  justify-center items-center min-w-[70px]'
         onClick={toggleDropdown}
       >
         <div className=' absolute text-xs -top-4 left-1 hidden'>{currentFilterDateItem.type}</div>
         <MdAccessTime size={18}/><span className=' rounded-xl px-0 ml-1 text-xs'>{currentFilterDateItem.title} </span> 
-      </div>
+      </div> */}
         <motion.div
           className={`fixed w-full h-screen top-0 left-0 bg-black/30 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
           variants={dropdownVariants}

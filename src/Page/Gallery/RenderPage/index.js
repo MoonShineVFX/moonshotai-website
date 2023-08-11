@@ -199,8 +199,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
       }
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
-        <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
-        <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
+        <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels} icon="MdPhotoSizeSelectActual"/>
+        <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate} icon="MdAccessTime"/>
       </div>
       {
         imagesResults.length === 0 && <div className='text-white/60'>沒有圖片。</div>

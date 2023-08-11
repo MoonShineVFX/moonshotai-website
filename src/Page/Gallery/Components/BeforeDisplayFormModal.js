@@ -84,7 +84,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             </div>
           </div>
           <div className='flex flex-col  '>
-            <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
+            <label  className='text-white/50 font-normal my-2'>簡介</label>
             <Controller
                 name="description"
                 control={control}
@@ -107,70 +107,70 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               </label>
               
               <ul className='grid grid-cols-1 gap-3 '>
-              {campaignsData.map((item,index) => (
-                <li key={item.id} className='w-full'>
-                  <div className='bg-gray-800  rounded-md flex items-center justify-between pr-3'>
-                    <Checkbox
-                      checked={selectedActivityIds.includes(item.id)}
-                      onChange={() => handleActivityClick(item.id)}
-                      color="light-green"
-                      className="rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
-
-                      label={
-                        <div className='flex items-center justify-between w-full '>
-                          <Typography color="white" className=' text-sm font-semibold '>
-                            {item.name} 
-                          </Typography>
-
-                        </div>  
-                      }
-                      labelProps={{
-                        className:'flex'
-                      }}
-
-                    />
-                    {selectedActivityIds.includes(item.id) && <Chip size="sm" color="green" value="參加" className='bg-light-green-600 ml-' />}
-
-                  </div>
-                  {selectedActivityIds.includes(item.id) && item.has_link && (
-                    <div className="mt-1">
-                        <Controller
-                          name={`activities[${index}].campaign_id`}
-                          control={control}
-                          defaultValue={item?.id}
-                          render={({ field }) => (
-                            <input {...field} 
-                              type="text" 
-                              hidden
-                              
-                            />
-                          )}
-                        />
-                        <Controller
-                          name={`activities[${index}].link`}
-                          control={control}
-                          defaultValue={item?.link}
-                          rules={{ required: false }}
-                          render={({ field }) => (
-                            <Input {...field} 
-                              type="text" 
-                              color="white" 
-                              label="推廣網址"
-                            />
-                          )}
-                        />
-                        <Typography
-                          variant="small"
-                          className="mt-2 flex items-center gap-1 font-normal text-gray-300"
-                        >
-                          <MdInfo />
-                          
-                          請輸入活動的外連網址如果有。
+              {campaignsData.map((item,index) => {
+                const isChecked = image.campaigns && image.campaigns.includes(item.id);
+                return(
+                  <li key={item.id} className='w-full'>
+                    <div className='bg-gray-800  rounded-md flex items-center justify-start px-0 w-full'>
+                      <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full pl-3 '>
+                        {selectedActivityIds.includes(item.id) && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
+                        <Typography color="white" className=' text-sm font-semibold '>
+                          {item.name} 
                         </Typography>
+
+                      </label>  
+                      <Checkbox
+                        id={'aa'+item.name}
+                        defaultChecked={isChecked||selectedActivityIds.includes(item.id)}
+                        onChange={() => handleActivityClick(item.id)}
+                        color="light-green"
+                        className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
+
+                      />
+    
+                      
+
                     </div>
-                  )}
-                </li>
-              ))}
+                    {(isChecked||selectedActivityIds.includes(item.id)) && item.has_link && (
+                      <div className="mt-1">
+                          <Controller
+                            name={`activities[${index}].campaign_id`}
+                            control={control}
+                            defaultValue={item?.id}
+                            render={({ field }) => (
+                              <input {...field} 
+                                type="text" 
+                                hidden
+                                
+                              />
+                            )}
+                          />
+                          <Controller
+                            name={`activities[${index}].link`}
+                            control={control}
+                            defaultValue={item?.link}
+                            rules={{ required: false }}
+                            render={({ field }) => (
+                              <Input {...field} 
+                                type="url" 
+                                color="white" 
+                                label="推廣網址"
+                              />
+                            )}
+                          />
+                          <Typography
+                            variant="small"
+                            className="mt-2 flex items-center gap-1 font-normal text-gray-300"
+                          >
+                            <MdInfo />
+                            
+                            請輸入活動的外連網址如果有。
+                          </Typography>
+                      </div>
+                    )}
+                  </li>
+                )}
+              )}
             </ul>
           </div>
           <div className='flex flex-col  mt-4 '>

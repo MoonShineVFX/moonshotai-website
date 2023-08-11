@@ -80,7 +80,7 @@ function Index() {
     }
   );
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
+console.log(imageData)
 
 
 
@@ -176,7 +176,7 @@ function Index() {
                         return(
                           <button 
                           key={item.title} 
-                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-gray-200 text-black' : ' bg-gray-700 text-white'}`}
+                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-gray-200 text-black' : ' bg-gray-800 text-white'}`}
                           onClick={()=>{
                             onHandleSelectModels(item)
                           }}
@@ -187,7 +187,7 @@ function Index() {
                   </div>
 
                 </div>
-                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate} icon="MdAccessTime"/>
            
 
             </div>

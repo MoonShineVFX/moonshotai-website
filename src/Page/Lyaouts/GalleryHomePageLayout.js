@@ -48,7 +48,7 @@ const GalleryHomePageLayout = () => {
           }  
           </Swiper>
       </div>
-      <div className='text-white text-xl  mb-3 font-bold flex space-x-6 hidden'>
+      <div className='text-white text-xl  mb-3 font-bold flex space-x-6'>
         {
           pageLinkItems.map((item)=>{
             return(

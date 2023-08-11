@@ -5,6 +5,8 @@ import { Link,useNavigate } from "react-router-dom";
 import { useForm,Controller } from 'react-hook-form';
 import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
 import {handleLogin} from './fetchHelper'
+import loadable from "@loadable/component"
+import { IconBaseProps, IconType } from "react-icons/lib"
 export const SharePostModal = ({closeModal})=>{
   const [ isCopied , setIsCopied ] = useState(false);
   const handleClose = ()=>{
@@ -469,3 +471,15 @@ export const deletePageUrlCookie = () => {
   document.cookie = "pageUrl=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
   console.log("Page URL cookie deleted.");
 };
+
+
+//ICON PROPS
+export const Icon = ({nameIcon, propsIcon}) =>{
+  const lib = nameIcon.replace(/([a-z0-9])([A-Z])/g, '$1 $2').split(" ")[0].toLocaleLowerCase();
+  const ElementIcon: IconType = loadable(() => import(`react-icons/${lib}/index.js`), {
+
+    resolveComponent: (el) => el[nameIcon]
+
+  });
+  return <ElementIcon {...propsIcon} />
+}
