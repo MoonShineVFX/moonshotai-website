@@ -7,8 +7,8 @@ function ImageSingleModal() {
   const [isShowModal, setIsShowModal] = useRecoilState(imageModalState)
   const image = useRecoilValue(imageDataState)
   const [ isCopied , setIsCopied ] = useState(false);
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
+  const handleCopyPrompt=(prompt,negative_prompt)=>{
+    const text = prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
@@ -77,7 +77,7 @@ function ImageSingleModal() {
         <div className='flex left-0 gap-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-gray-800'>
           <button 
             className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-            onClick={()=>handleCopyPrompt(image.model,image.prompt,image.negative_prompt)}
+            onClick={()=>handleCopyPrompt(image.prompt,image.negative_prompt)}
             >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
           <button className="  bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:bg-gray-700" onClick={()=>{
             setIsShowModal(false)

@@ -269,8 +269,8 @@ function Post() {
      
   }
   
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
+  const handleCopyPrompt=(prompt,negative_prompt)=>{
+    const text = prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
     fetchImageCopyPromptTime(imageData,linLoginToken)
     setIsCopied(true)
@@ -451,7 +451,7 @@ function Post() {
           <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-gray-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-              onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
+              onClick={()=>handleCopyPrompt(imageData.prompt,imageData.negative_prompt)}
               >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
 
 
