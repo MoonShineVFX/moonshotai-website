@@ -4,6 +4,8 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { beforeDisplayModalState, imageDataState,profilePageState,loginState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle,MdInfo } from "react-icons/md";
+import { FaTimes } from "react-icons/fa";
+
 import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
   TabsHeader,
   TabsBody,
@@ -287,9 +289,8 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                               <Checkbox
                                 id={'aa'+item.campaign_name}
                                 onChange={() => handleIsExistedisClick(item.id,item.campaign_id)}
-                                color="light-green"
+                                color="red"
                                 className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
-
                               />
 
             
