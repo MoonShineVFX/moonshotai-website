@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHome,MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
+import { MdHome,MdDashboard,MdLogin,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,getStoredLocalData,handleLogin} from '../helpers/fetchHelper'
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
 import {deletePageUrlCookie} from '../helpers/componentsHelper'
 import { useQuery, useQueryClient } from 'react-query';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID

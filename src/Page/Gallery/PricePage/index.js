@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import Header from '../header'
 import EditUserEmailForm from '../Components/EditUserEmailForm';
-import {LoadingCircle,DisableBuyButton,DisableInputInvite,CallToLoginModal} from '../helpers/componentsHelper'
+import {CallToLoginModal} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
-import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
+import {getStoredLocalData,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile} from '../helpers/fetchHelper'
+import { MdDoneOutline,MdOutlineTrendingFlat,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
-import Footer from '../../Home/Footer';
-import { HmacSHA256 } from 'crypto-js';
-import { Base64 } from 'js-base64';
 import moment from 'moment';
 import liff from '@line/liff';
 function Index() {
@@ -19,7 +15,6 @@ function Index() {
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentPlan, setCurrentPlan] = useState('')
-  const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [ isLoginForPrice , setIsLoginForPrice] = useState(false)
   const [isNeddWithin5Days, setIsNeedWithin5Days]= useState(false)

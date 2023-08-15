@@ -32,7 +32,7 @@ const TaiwanFood = () => {
   return (
     <div className='pb-20'>
       <div className='w-10/12 md:w-2/3 mx-auto flex justify-center my-8 '>
-        <img src="https://resource.moonshine.tw/msweb/moonshotai/campaign/taiwanfood/taiwanfood_banner_2k.png" alt="banner" className='max-w-full'/>
+        <img src="https://moonshine.b-cdn.net/msweb/moonshotai/campaign/taiwanfood/taiwanfood_banner_2k.png" alt="banner" className='max-w-full'/>
       </div>
 
       <div className="text-white flex flex-col justify-center md:items-center px-10 md:px-4 py-2">

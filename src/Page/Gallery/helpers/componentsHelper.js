@@ -1,12 +1,12 @@
 import { useState,useEffect } from 'react';
 import {motion} from 'framer-motion'
 import { MdContentCopy } from "react-icons/md";
-import { Link,useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm,Controller } from 'react-hook-form';
-import { MdDoneOutline,MdDone,MdOutlineTrendingFlat } from "react-icons/md";
+import { MdOutlineTrendingFlat } from "react-icons/md";
 import {handleLogin} from './fetchHelper'
 import loadable from "@loadable/component"
-import { IconBaseProps, IconType } from "react-icons/lib"
+import { IconType } from "react-icons/lib"
 export const SharePostModal = ({closeModal})=>{
   const [ isCopied , setIsCopied ] = useState(false);
   const handleClose = ()=>{
@@ -179,7 +179,7 @@ export const DisableInputInvite = () =>{
   )
 }
 export const InputInvite = () =>{
-  const { control,register, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit } = useForm({
     name:''
   });
   const onSubmit = (data) => {

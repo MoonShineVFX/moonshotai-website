@@ -1,7 +1,6 @@
 import React,{useEffect} from 'react'
 import { Outlet} from 'react-router-dom';
 
-import MainNavbar from '../Home_v3/Navbar';
 import Navbar from '../DocPage/Navbar';
 import { useLocation } from 'react-router-dom';
 function DocLayout() {

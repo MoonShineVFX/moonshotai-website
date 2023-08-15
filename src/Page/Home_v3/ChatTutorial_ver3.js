@@ -1,41 +1,16 @@
 import React,{useState,useEffect} from 'react'
-import { workitems,workitems2,workitems3,ver2LineItem } from '../../Components/ItemData'
-import { TextSteoMode1,ImageStepModeV3,EtcMode,TextSteoMode1V3 } from '../../Components/StepModeItems';
-import { AnimatePresence,motion } from "framer-motion";
-import { MdKeyboardArrowLeft,MdVerifiedUser } from "react-icons/md";
+import { ver2LineItem } from '../../Components/ItemData'
+import { ImageStepModeV3,TextSteoMode1V3 } from '../../Components/StepModeItems';
 
 function ChatTutorial_ver3() {
   const [data,setData] = useState(ver2LineItem[0])
   const [currentDataIndex , setCurrentDataIndex] = useState(0)
-  const [currentItem , setCurrentItem] = useState(0)
   const [mode,setMode] = useState('text')
-  const [title,setTitle] = useState('')
-  const [currentStep, setCurrentStep] = useState(0);
   const handleClick = (mode,index) =>{
     setCurrentDataIndex(index)
     setMode(mode)
     setData(ver2LineItem[index])
   }
-  const handleClickStep = (mode,step,index)=>{
-    
-    setCurrentStep(step)
-    
-
-  }
-  const menuitems = [
-    {
-      id:1,
-      title:"以字生圖",
-      mode:'text',
-      slogan:"你可以\n讓 Moonshot 幫你畫圖"
-    },
-    {
-      id:2,
-      title:"以圖生圖",
-      mode:'image',
-      slogan:"也可以\n利用參考圖來延伸做畫"
-    }
-  ]
 
 
   return (

@@ -1,10 +1,7 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart } from "react-icons/fi";
-import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
-import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
-import {getWordFromLetter} from '../helpers/fetchHelper'
+import {motion} from 'framer-motion'
+import { FaShare } from "react-icons/fa";
+import { MdAdd,MdRemove } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
@@ -40,30 +37,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-  const dropdownVariants = {
-    open: {
-      opacity: 1,
-      display:'block',
-      transition: {
-        duration: 0.2,
-      },
-    },
-    closed: {
-      opacity: 0,
-      display:'none',
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
 
-  const handleClick = (id) => {
-    if (openItems.includes(id)) {
-      setOpenItems(openItems.filter((item) => item !== id));
-    } else {
-      setOpenItems([...openItems, id]);
-    }
-  };
+
 
   const onHandleStorage = (image) =>{
     
@@ -79,10 +54,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   }
   const onHandleDisplayHome = (image)=>{
-    console.log(image)
-    const items = {
-      display_home:!image.display_home
-    }
+
     setIsShowDisplayFormModal(true)
     setImageData(image)
     setProfilePage('on_Renderpage')
@@ -91,12 +63,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   const onHandleCollection = (image) =>{
     handleCollection(image)
-    // if(image.is_storage === true) return
-    // const newData = { ...image, is_storage: !image.is_storage  }; 
-    // handleUpdate(image.id,newData)
   }
   const onHandleSelectDate = (item)=>{
-    // console.log(item)
     switch (item.value) {
       case '1':
         const oneDayAgo = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -210,7 +178,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,is_storage,title   } = image
+            const {id, urls, created_at, display_home,is_storage,title   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}

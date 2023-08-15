@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } from "react-icons/fa";
+import { FaFacebook,FaInstagram,FaYoutube } from "react-icons/fa";
 
 function Footer() {
   const [stickyClass, setStickyClass] = useState(false);

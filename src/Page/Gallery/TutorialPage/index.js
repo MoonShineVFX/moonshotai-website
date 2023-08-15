@@ -1,6 +1,6 @@
 import React from 'react'
 import { MdClose,MdAddCircle,MdAdsClick,MdRemoveCircle,MdMoreVert,MdModeEdit } from "react-icons/md";
-import {motion,AnimatePresence} from 'framer-motion'
+import {motion} from 'framer-motion'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from "swiper";
 // Import Swiper styles
@@ -45,6 +45,7 @@ function Index() {
                   <img  
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    alt="img"
                   />
                   <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
@@ -72,6 +73,7 @@ function Index() {
                   <img  
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    alt="img"
                   />
                   <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
@@ -112,6 +114,7 @@ function Index() {
                   <img  
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    alt="img"
                   />
                   <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     
@@ -158,6 +161,7 @@ function Index() {
                   <img  
                     src='https://images.moonshot.today/static/134b17f/456883438323761330_1.jpg' 
                     className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                    alt="img"
                   />
                   <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
                     

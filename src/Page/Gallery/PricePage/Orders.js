@@ -3,12 +3,11 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpenGiftMutation} from '../helpers/fetchHelper'
-import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdAttachMoney,MdArrowRightAlt } from "react-icons/md";
+import {getStoredLocalData,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpenGiftMutation} from '../helpers/fetchHelper'
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
 import ReportModal from './ReportModal';
-import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
+import { useQuery, useMutation } from 'react-query';
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';

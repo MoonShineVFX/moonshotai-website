@@ -1,8 +1,7 @@
 import React,{useState} from 'react'
 import { Link } from "react-router-dom";
 import { FaBars,FaTimes } from "react-icons/fa";
-import { MdHomeFilled,MdDashboard,MdLogin, MdAssignmentInd,MdStar,MdDocumentScanner,MdAssignment } from "react-icons/md";
-import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } from "react-icons/fa";
+import { FaTwitter,FaYoutube } from "react-icons/fa";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   return (

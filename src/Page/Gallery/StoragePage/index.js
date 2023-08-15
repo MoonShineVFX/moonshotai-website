@@ -1,15 +1,13 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare,MdRemove } from "react-icons/md";
-import { FaShareSquare,FaShare } from "react-icons/fa";
+import {motion} from 'framer-motion'
+import { MdMoreVert,MdErrorOutline,MdRemove } from "react-icons/md";
+import { FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage}) {
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -183,7 +181,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
             {imagesResults.map((image,index) => {
-              const {id, urls, created_at, display_home, filename,title   } = image
+              const {id, urls, created_at, display_home,title   } = image
               return (
                 <motion.div key={'storage-'+id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}

@@ -4,9 +4,9 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook,MdRemove,MdAdd,MdCheck } from "react-icons/md";
+import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
@@ -15,14 +15,12 @@ function User() {
   const { id } = useParams();
   // const [userData, setUserData] = useState(null)
   // const [publicImage, setPublicImage] = useState([])
-  const [publicImageResults, setPublicImageResults] = useState([])
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [ isLoginForFollow , setIsLoginForFollow] = useState(false)
-  const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)

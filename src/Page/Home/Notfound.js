@@ -1,16 +1,8 @@
 import React,{useEffect} from 'react'
 import { useNavigate } from 'react-router-dom';
-import {motion,AnimatePresence} from 'framer-motion'
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../Gallery/atoms/galleryAtom';
 import { MdArrowRightAlt } from "react-icons/md";
-import Header from '../Gallery/header'
 function Notfound() {
-  const [imageData, setImageData] = useRecoilState(imageDataState)
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
-  const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
-  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
-  const [currentUser, setCurrentUser] = useRecoilState(userState)
+
   const navigate = useNavigate();
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -21,7 +13,6 @@ function Notfound() {
   }, [navigate]);
   return (
       <div>
-        <Header currentUser={currentUser} isLoggedIn={isLoggedIn}/>
         <div className='flex flex-col relative text-white mx-5 mt-10'>
           <div className='text-xl text-white mx-5   p-4 rounded-md '>
             <div className='w-1/3 mx-auto animate-pulse opacity-25'>
