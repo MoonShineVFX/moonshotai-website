@@ -7,7 +7,7 @@ import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -75,6 +75,7 @@ function Index() {
   const isShowImageModal = useRecoilValue(imageModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
+
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -255,7 +256,76 @@ function Index() {
         }
         setIsShowDisplayFormModal(false);
       },
-    });
+  });
+
+
+
+  //POST IMAGE campaigns
+  const postImgtoCampaignMutation = useMutation((updatedData)=>{
+    postImgtoCampaign(updatedData.imgid, updatedData.items, linLoginData)
+    },
+    {
+      onSuccess: (data, variables) => {
+        if(variables?.status === 'on_Renderpage'){
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }else{
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+
+        }
+      }
+    }
+  )
+  //DEL  IMAGE campaigns
+  const removeImgtoCampaignMutation = useMutation((updatedData)=>{
+    removeImgtoCampaign(updatedData.imgid, updatedData.items, linLoginData)
+    },
+    {
+      onSuccess: (data, variables) => {
+        if(variables?.status === 'on_Renderpage'){
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: image.campaigns.filter((campaign) => campaign !== variables.items.campaign_id)} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }else{
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+
+        }
+      }
+    }
+  )
 
 
   //
@@ -459,9 +529,8 @@ function Index() {
    * Storage API 
    * start
    * */ 
-  const handleSetStorageImage = async(image,items,status) =>{
+  const handleSetStorageImage = async(image,items,status,add_activities,remove_activities) =>{
     console.log(image)
-    console.log(items.activities.length > 0)
     // console.log(image.is_storage,status)
     if(!image.is_storage){
       // console.log(image.is_storage)
@@ -477,27 +546,52 @@ function Index() {
       } catch (error) {
         console.error('Image update failed:', error);
       }
-      if(items.activities.length > 0){
+      if(add_activities.length > 0){
         //TODO mapImageToCampaign
-        mapImageToCampaign(image.id,items.activities)
+        mapImageToCampaign(image.id,add_activities,status)
+      }
+      if(remove_activities.length>0){
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
       updateImageMutation.mutate({ image, items, status });
-      if(items.activities.length > 0){
+      if(add_activities.length > 0){
         //TODO mapImageToCampaign
         console.log('執行參加活凳')
-        mapImageToCampaign(image.id,items.activities)
+        mapImageToCampaign(image.id,add_activities,status)
+      }
+      if(remove_activities.length>0){
+        console.log('here')
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }
 
   }
 
   //TODO 延遲執行避免出錯
-  const mapImageToCampaign = async(imgid,data)=>{
+  const mapImageToCampaign = async(imgid,data,status)=>{
     const delay = 1000; // 延遲時間，以毫秒為單位，這裡設定為1秒
     for (const [index, items] of data.entries()) {
+      console.log(items)
       try {
-        await postImgtoCampaign(imgid, items, linLoginData);
+        await postImgtoCampaignMutation.mutate({imgid, items, status});
+      } catch (error) {
+        console.error('Error mapping image to campaign:', error);
+        // 處理錯誤，比如顯示一個錯誤訊息給使用者
+      }
+
+      if (index < data.length - 1) {
+        // 不是最後一個項目，執行時間延遲
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+  const mapImageToRemoveCampaign = async(imgid,data,status)=>{
+    const delay = 1000; // 延遲時間，以毫秒為單位，這裡設定為1秒
+    for (const [index, items] of data.entries()) {
+      console.log(items)
+      try {
+        await removeImgtoCampaignMutation.mutate({imgid, items, status});
       } catch (error) {
         console.error('Error mapping image to campaign:', error);
         // 處理錯誤，比如顯示一個錯誤訊息給使用者

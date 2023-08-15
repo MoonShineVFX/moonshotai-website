@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
-import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm,MdKeyboardArrowRight } from "react-icons/md";
 
 import {fetchGalleries,getStoredLocalData,fetchCampaigns,fetchCampaignImages} from '../helpers/fetchHelper'
 
@@ -59,7 +59,7 @@ function CampaignGallery() {
   // Define an array of query keys for images of all campaigns
   const imageQueries = campaignsData?.map((campaign) => ({
     queryKey: ['campImages', campaign.id],
-    queryFn: () => fetchCampaignImages(campaign.id), // Replace with your API call to fetch images by campaignId
+    queryFn: () => fetchCampaignImages(campaign.id,7), // Replace with your API call to fetch images by campaignId
     config: {
       enabled: true, // Fetch images for all campaigns immediately
     },
@@ -85,27 +85,28 @@ function CampaignGallery() {
           <li key={campaign.id}>
             <div>
               <div className='flex justify-between items-end'>
-                <h3 className='text-lg font-semibold text-white/80'>{campaign.name}</h3>
+                <h3 className='text-lg font-semibold text-white/80 flex  items-center'>{campaign.name} <MdKeyboardArrowRight className='ml-4'/></h3>
                 <Link to={`/campaign/${campaign.id}`} className='text-sm text-white/60 hover:text-white'>
                  觀看更多
                 </Link>
               </div>
 
-              <div  className='grid grid-cols-2 md:grid-cols-4 gap-4 my-4'>
+              <div  className='grid grid-cols-2 md:grid-cols-6 gap-4 my-4'>
                 {imageResults[index].data?.results.length > 0 ? (
                   imageResults[index].data.results.map((image) => {
-                    const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                    const { id: campaignId } = campaign;
+                    const {id:imageId, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                     return (
-                      <motion.div key={'campGallery-'+index} 
+                      <motion.div key={`campGallery-${campaignId}-${imageId}`} 
                         variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                         className='  overflow-hidden relative  mb-5'
                       >
-                        <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
+                        <Link to={`/post/${imageId}`} className=' relative group' onClick={recordPageUrl}>
                           <div className=' relative overflow-hidden   rounded-md'>
                             <img  
                               alt={title}
                               src={urls.thumb}
-                              data-id={id}
+                              data-id={imageId}
                               className=' aspect-square object-cover w-full hover:scale-110 transition duration-300 '
       
                             />

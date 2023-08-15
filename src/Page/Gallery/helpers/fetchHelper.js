@@ -776,6 +776,18 @@ export const fetchCampaigns =async (cursor) =>{
     
 }
 
+// 圖片id 取得圖片參加活動紀錄(image_campaign)列表
+export const getImgInCampaign= (image,token) => {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  };
+
+  return fetch(apiUrl +'storage_images/'+image.id +'/campaigns', requestOptions).then((response) => response.json());
+};
 // POST storage_images/<int:id>/campaigns 幫圖片加活動
 export const postImgtoCampaign= (imgid,items,token) => {
   console.log(items)
@@ -791,12 +803,26 @@ export const postImgtoCampaign= (imgid,items,token) => {
     }),
   };
 
-  return fetch(apiUrl +'/storage_images/'+imgid +'/campaigns', requestOptions).then((response) => response.json());
+  return fetch(apiUrl +'storage_images/'+imgid +'/campaigns', requestOptions).then((response) => response.json());
+};
+export const removeImgtoCampaign= (imgid,items,token) => {
+  console.log(items)
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  };
+
+  return fetch(apiUrl +'image_campaigns/'+items.id, requestOptions).then((response) => response.status);
 };
 
+
+
 // GET /campaigns 取得活動所屬圖片列表
-export const fetchCampaignImages =async (campaign_id,cursor) =>{
-  let newCursor = cursor === undefined ? '' : cursor
+export const fetchCampaignImages =async (campaign_id,page_size) =>{
+  console.log(page_size)
 
   const requestOptions = {
     method: 'GET',
@@ -804,7 +830,7 @@ export const fetchCampaignImages =async (campaign_id,cursor) =>{
       'Content-Type': 'application/json',
     }
   };
-  const response =await fetch(apiUrl+'campaigns/'+campaign_id+'/images' ,requestOptions)
+  const response =await fetch(apiUrl+'campaigns/'+campaign_id+'/images?page_size='+page_size ,requestOptions)
   const data =await response.json()
   return data
     

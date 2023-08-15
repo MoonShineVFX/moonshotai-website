@@ -189,13 +189,13 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
       { isAddStorageLoading&& <motion.div 
-              className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
-              initial={{ opacity: 0, y: -20,x:'-50%' }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              >
-                資料處理中
-              </motion.div>
+          className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+          initial={{ opacity: 0, y: -20,x:'-50%' }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          >
+            資料處理中
+          </motion.div>
       }
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
