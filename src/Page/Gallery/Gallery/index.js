@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
@@ -12,6 +12,7 @@ import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
 import Masonry from 'react-masonry-css';
+import InfiniteScroll from 'react-infinite-scroll-component';
 const filterDateItem = [
   {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -77,7 +78,6 @@ function Index() {
     }
   );
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
-console.log(imageData)
 
 
 
@@ -120,19 +120,20 @@ console.log(imageData)
     setPageSize(12)
     setCurrModels(value)
   }
+  const containerRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [clientHeight, setClientHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const handleScroll = () => {
     // 獲取頁面滾動相關信息
-    
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      const container = containerRef.current;
+      const { scrollTop, clientHeight, scrollHeight } = container;
       setScrollTop(scrollTop);
       setClientHeight(clientHeight);
       setScrollHeight(scrollHeight);
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight+300 >= scrollHeight) {
+      if (scrollHeight - scrollTop <= clientHeight * 1.2) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           fetchNextPage();
@@ -141,15 +142,16 @@ console.log(imageData)
 
       }
   };
-  const debouncedHandleScroll = debounce(handleScroll, 500);
-  useEffect(() => {
-    // 監聽滾動事件
-    window.addEventListener('scroll', debouncedHandleScroll);
-    return () => {
-      // 在組件卸載時移除滾動事件監聽器
-      window.removeEventListener('scroll', debouncedHandleScroll);
-    };
-  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  // const debouncedHandleScroll = debounce(handleScroll, 500);
+  
+  // useEffect(() => {
+  //   // 監聽滾動事件
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => {
+  //     // 在組件卸載時移除滾動事件監聽器
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
 
   return (
@@ -191,7 +193,13 @@ console.log(imageData)
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
-           <Masonry
+            <InfiniteScroll
+              dataLength={imageData ? imageData.length:0}
+              next={()=>fetchNextPage()}
+              hasMore={hasNextPage}
+              loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
+            >
+                         <Masonry
               breakpointCols={{
                 default: 5,
                 1024: 4,
@@ -259,9 +267,11 @@ console.log(imageData)
 
 
             </Masonry>
-            {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-              <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
-            </div>}
+
+
+            </InfiniteScroll>
+
+
           </div>
 
 

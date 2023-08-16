@@ -76,7 +76,7 @@ function App() {
     <RecoilRoot>
     <BrowserRouter>
       <Routes> 
-        <Route path="*" element={<Notfound />} />
+       
 
         {/* <Route path='/'  element={<HomeLayout/>}>
           <Route path="/" element={<HomeV3 />} />
@@ -86,9 +86,11 @@ function App() {
         <Route path="/camera" element={<Camera />} />
         
         <Route path="/" element={<GalleryLayout/> }>
+          <Route path="*" element={<Notfound />} />
           <Route path="" element={<HomeV3 />} />
 
           <Route path="/" element={<GalleryHomePageLayout/> }>
+
             <Route path="gallery" element={<Gallery />} />
             <Route path="campaign" element={<CampaignGallery />} />
             <Route path="campaign/:id"  element={<CampaignList />} />

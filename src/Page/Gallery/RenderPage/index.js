@@ -8,6 +8,7 @@ import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+import { IconButton } from "@material-tailwind/react";
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -199,16 +200,16 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   </div>
                 </div>
                 <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-gray-800  ' : '   bg-gray-800 text-white' )} onClick={()=>onHandleStorage(image)}>
+                  <div className='' onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
-                        <MdRemove />
-                      </button>
+                      <IconButton color="green" disabled={isRemoveStorageLoading}>
+                        <MdAdd />
+                      </IconButton>
                       :
-                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
-                        <MdAdd  />
-                      </button>
+                      <IconButton color="red" disabled={isAddStorageLoading}>
+                        <MdRemove />
+                      </IconButton>
                     }
                   </div>
                   <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-gray-800 text-white/80   ' : '   bg-white text-gray-800' ) } onClick={()=>onHandleDisplayHome(image)}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
-import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm,MdKeyboardArrowRight } from "react-icons/md";
+import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm,MdKeyboardArrowRight,MdArrowOutward } from "react-icons/md";
 
 import {fetchGalleries,getStoredLocalData,fetchCampaigns,fetchCampaignImages} from '../helpers/fetchHelper'
 
@@ -85,13 +85,13 @@ function CampaignGallery() {
           <li key={campaign.id}>
             <div>
               <div className='flex justify-between items-end'>
-                <h3 className='text-lg font-semibold text-white/80 flex  items-center'>{campaign.name} <MdKeyboardArrowRight className='ml-4'/></h3>
-                <Link to={`/campaign/${campaign.id}`} className='text-sm text-white/60 hover:text-white'>
-                 觀看更多
+                <h3 className='text-sm font-semibold text-white/80 flex  items-center'>{campaign.name} <MdKeyboardArrowRight className='ml-4'/></h3>
+                <Link to={`/campaign/${campaign.id}`} className='text-sm text-white/60 '>
+                 <Button variant="outlined"  className='p-1 opacity-40 flex items-center gap-1' color="white" > 觀看更多  <MdArrowOutward/></Button>
                 </Link>
               </div>
 
-              <div  className='grid grid-cols-2 md:grid-cols-6 gap-4 my-4'>
+              <div  className='grid grid-cols-2 md:grid-cols-7 gap-4 my-4'>
                 {imageResults[index].data?.results.length > 0 ? (
                   imageResults[index].data.results.map((image) => {
                     const { id: campaignId } = campaign;
@@ -129,18 +129,16 @@ function CampaignGallery() {
                           </div>
                         </Link>
     
-    
-    
-                        <div className='text-sm  flex items-center mt-2 space-x-3 w-full   text-white'>
-                          <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
-                            <div className='pt-[100%] relative'>
-                              <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
-                            </div>
-                          </Link>
-    
-                          <div className='flex flex-col'>
-                            <div className='text-base font-bold '><TitleWithLimit title={title} maxLength={12}/> </div>
+                        <div className='flex flex-col mt-2'>
+                          <div className='text-base font-light '><TitleWithLimit title={title} maxLength={12}/> </div>
+                          <div className='text-sm  flex items-center space-x-3 w-full mt-1   text-white'>
+                            <Link to={`/user/${author?.id}`}  className='w-6' onClick={recordPageUrl}>
+                              <div className='pt-[100%] relative'>
+                                <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                              </div>
+                            </Link>
                             <div className='text-xs text-white/50'>{author?.name}</div>
+                            
                           </div>
                         </div>
     
