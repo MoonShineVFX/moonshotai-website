@@ -76,7 +76,6 @@ function User() {
     }
   );
   const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
-    console.log(publicImageData)
   
   const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
     ['useFollowing', currentUser,linLoginToken],
@@ -106,9 +105,7 @@ function User() {
   const queryClient = useQueryClient();
   const handleFollow = async ()=>{
 
-    console.log('click')
     if(!isLoggedIn){
-     console.log(isLoggedIn)
 
      setIsLoginForFollow(true)
     }else{

@@ -6,7 +6,7 @@ import { FaBars,FaTimes } from "react-icons/fa";
 import { MdHome,MdDashboard,MdLogin,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
-import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
+import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,handleLogin,fetchUserProfileData} from '../helpers/fetchHelper'
 import {deletePageUrlCookie} from '../helpers/componentsHelper'
 import { useQuery, useQueryClient } from 'react-query';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
@@ -118,10 +118,11 @@ function Index({}) {
       try {
         const userLoginData = JSON.parse(storedLoginTokenData);
         // 使用 react-query 來執行 fetchUserProfile API
-        const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
-          fetchUserProfile(userLoginData.user_id, userLoginData.token),
+        // const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
+        //   fetchUserProfile(userLoginData.user_id, userLoginData.token),
 
-        );
+        // );
+        const udata = await fetchUserProfileData(userLoginData.user_id, userLoginData.token, queryClient);
         if (udata === 401) {
           queryClient.clear();
           removeLocalStorageItem().then(data=>{

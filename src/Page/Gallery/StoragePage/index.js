@@ -7,13 +7,28 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
-function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage}) {
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+  IconButton,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage,handleRemoveFromStorage}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const [profilePage, setProfilePage] = useRecoilState(profilePageState)
+  const [open, setOpen] = React.useState(false);
+  const [currentItem, setCurrentItem] = React.useState({});
+  const handleOpen = () => setOpen(!open);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -45,6 +60,10 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
     // remove後應更新使用者擁有數量
   }
+  const onHandleRemoveFormStorage = (image) =>{
+    handleRemoveFromStorage(image,'on_Storagepage')
+    setOpen(!open)
+  }
   const handleClick = (id) => {
     if (openItems.includes(id)) {
       setOpenItems(openItems.filter((item) => item !== id));
@@ -62,18 +81,6 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
     setImageData(newData)
     setProfilePage('on_Storagepage')
 
-    // if(image.display_home === true){
-    //   const newData = { ...image, display_home: !image.display_home  }; 
-    //   handleStorageUpdate(image.id,newData)
-    //   handleDisplayHome(image.id,items)
-
-    // }else{
-    //   setIsShowDisplayFormModal(true)
-    //   setImageData(image)
-    //   // const newData = { ...image, display_home: !image.display_home  }; 
-    //   // handleStorageUpdate(image.id,newData)
-    //   // handleDisplayHome(image.id,items)
-    // }
   }
   const onHandleSetBanner = (id)=>{
     handleSetBanner(id)
@@ -160,6 +167,36 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
   }
   return (
     <div >
+            <Dialog
+              open={open}
+              size={"xs"}
+              handler={handleOpen}
+              animate={{
+                mount: { scale: 1, y: 0 },
+                unmount: { scale: 0.9, y: -100 },
+              }}
+              className='bg-gray-900'
+            >
+              <DialogHeader className='text-lg text-white/80'>是否要刪除發佈這張貼圖</DialogHeader>
+              <DialogBody 
+          
+                className=' text-white '>
+                刪除發佈，不會直接性的刪除這張圖片，是將這張圖片從分享藝廊區移除。
+              </DialogBody>
+              <DialogFooter className='border-t border-gray-600'>
+                <Button
+                  variant="text"
+                  color="red"
+                  onClick={handleOpen}
+                  className="mr-1"
+                >
+                  <span>取消</span>
+                </Button>
+                <Button variant="gradient" color="" onClick={()=>onHandleRemoveFormStorage(currentItem)}>
+                  <span>確認</span>
+                </Button>
+              </DialogFooter>
+            </Dialog>
           <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
             {title}   {renderLimitImage(totalImage,limitImage)} 
             <div className='text-xs text-white/50'>免費會員可留存 100 張圖片，進階會員可留存 300 張圖片</div>
@@ -198,61 +235,35 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                       }} 
                     />
                   </div>
-                  
+
                   <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 
-                    <div className='p-2 ' onClick={()=>{
-                      handleClick(id)
-                    }}>
-                      <button  className='rounded-full bg-gray-800/80 p-2'><MdMoreVert size={15} /></button>
- 
-                    </div>
-                    <div className='flex justify-end gap-1 p-1'>
-                      <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
+
+                    <Menu>
+                      <MenuHandler >
+                        <IconButton className="rounded-full mt-1 ml-1">
+                          <MdMoreVert size={15} />
+                        </IconButton>
+                      </MenuHandler>
+                      <MenuList>
+                        <MenuItem onClick={()=>onHandleSetBanner(id)}>設定為背景</MenuItem>
+                        <MenuItem onClick={()=>onHandleSetAvatar(id)}>設定為頭像</MenuItem>
+                        <MenuItem onClick={()=> {handleOpen(); setCurrentItem(image); }}>刪除發佈</MenuItem>
+                        <MenuItem onClick={()=> {onHandleDisplayHome(image); }}>編輯內容</MenuItem>
+                      </MenuList>
+                    </Menu>
+                    <div className='flex justify-end gap-1 p-1 hidden'>
+                      <button disabled  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemove />
                       </button>
-                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
+                      <button disabled className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
                         onHandleDisplayHome(image)
                       }}> <FaShare size={12}/></button>
 
                     </div>
 
-                    <motion.div
-                      className={`absolute w-full h-screen top-0 left-0 bg-black/60 -z-0 ${openItems.includes(id) ? ' ' : ' hidden'}` }
-            
-                      onClick={()=>{
-                        handleClick(id)
-                      }}
-                    ></motion.div>
-                    <motion.div 
-                      className={`text-white  absolute top-10  w-auto  rounded-lg bg-[#444] p-2 mt-2  border-white/20 z-30` }
-                      variants={dropdownVariants}
-                      initial="closed"
-                      animate={openItems.includes(id) ? 'open' : 'closed'}
-                    >
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
-                        onClick={()=>{
-                          handleClick(id)
-                          onHandleSetBanner(id)
-                        }}
-                      >設定為背景</div>      
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
-                        onClick={()=>{
-                          handleClick(id)
-                          onHandleSetAvatar(id)
-                        }}
-                      >設定為頭像</div>    
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'>
-                        刪除
-                      </div>   
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg '
-                        onClick={()=>{
-                          handleClick(id)
-                          setIsShowFormModal(true)
-                          setImageData(image)
-                          onHandleEditImageDetail(image)
-                        }}
-                      >編輯</div>              
-                    </motion.div>
+
+
+
                     
                   </div>
                   <div className=' bg-gradient-to-t from-gray-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>

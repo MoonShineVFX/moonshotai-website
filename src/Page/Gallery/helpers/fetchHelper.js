@@ -1,10 +1,10 @@
 
 import liff from '@line/liff';
-import { loginState,isLoginState, userState} from '../atoms/galleryAtom';
 import {   useRecoilState } from 'recoil';
+import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
+import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
-
 
 /**
  * Login
@@ -382,6 +382,12 @@ export const fetchUserProfile = async (userid,token) =>{
   }
   
 }
+//ReactQuery
+export const fetchUserProfileData = async (userId, token, queryClient) => {
+  return await queryClient.fetchQuery(['userProfile', userId, token], () =>
+    fetchUserProfile(userId, token)
+  );
+};
 
 export const patchUserProfile = async (userid,token,items) =>{
   const requestOptions = {
@@ -396,6 +402,36 @@ export const patchUserProfile = async (userid,token,items) =>{
   const data = await response
   return data
 }
+export const useUpdateUserMutation = () => {
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
+  const queryClient = useQueryClient();
+  const updateUserMutation = useMutation((updatedData) =>{ 
+    patchUserProfile(updatedData.currentProfile.id,updatedData.linLoginData,updatedData.items)}, 
+   {
+      onSuccess: async(data, variables) => { 
+        // const udata =  await fetchUserProfileData(variables.currentProfile.id, variables.linLoginData, queryClient);
+        // setCurrentUser(udata);
+        // console.log(variables)
+        queryClient.setQueryData(['userProfile',variables.currentProfile.id, variables.linLoginData], (prevData) => {
+          console.log(prevData)
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+            image.id === variables.image.id ? { ...image,...variables.items} : image
+            ),
+          }));
+          return { pages: newData };
+        });
+
+        await queryClient.invalidateQueries(['userProfile', variables.currentProfile.id, variables.linLoginData]);
+      },  
+    })
+  return updateUserMutation;
+}
+
+
+
+
 export const patchUserEmail = async (userid,token,items) =>{
   const requestOptions = {
     method: 'PATCH',
