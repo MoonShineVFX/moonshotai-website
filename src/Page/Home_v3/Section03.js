@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import { MdArticle,MdLaunch } from "react-icons/md";
+import { MdLaunch } from "react-icons/md";
 
 function Section03() {
   const mediumRssFeed = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@ai_72180"

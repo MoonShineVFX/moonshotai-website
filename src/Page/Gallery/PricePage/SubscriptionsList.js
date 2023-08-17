@@ -69,7 +69,7 @@ function SubscriptionsList({subData,plans,currentUser}) {
           subData.map((item,index)=>{
             const{created_at,current_plan,days,id,invitation,is_active,refund_at,start_at,user,who_invite,gift_id,gift_name}=item
             return(
-              <div className='text-white border p-3 border-zinc-400 rounded-md' key={'orders'+index}>
+              <div className='text-white border p-3 border-gray-400 rounded-md' key={'orders'+index}>
                 <div className=' space-y-3'>
 
 

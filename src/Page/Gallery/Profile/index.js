@@ -1,13 +1,13 @@
 import React, { useState, useEffect }  from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdKeyboardArrowDown, MdMoreHoriz, MdMoreVert,MdDone,MdClear,MdViewModule,MdCollections,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
+import { MdKeyboardArrowDown, MdMoreVert,MdViewModule,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
 import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,21 +21,15 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
-import liff from '@line/liff';
-import { useQuery, useInfiniteQuery,queryClient,useMutation,useQueryClient } from 'react-query';
-import { upperFirst } from 'lodash';
-const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
+import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
-  {title:"Storage", display:true,data_name:"total_storages"},
+  {title:"Posts", display:true,data_name:"total_storages"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
 
 function Index() {
-  const [images, setImages] = useState({});
-  const [imagesResults, setImagesResults] = useState([]);
-  const [storages, setStorages] = useState({});
   const [storagesResults, setStoragesResults] = useState([]);
   const [collections, setCollections] = useState({});
   const [collectionsResults, setCollectionsResults] = useState([]);
@@ -75,6 +69,7 @@ function Index() {
   const isShowImageModal = useRecoilValue(imageModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
+
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -191,10 +186,10 @@ function Index() {
     
       setIsShowDisplayFormModal(false);
       
-      if(variables?.isDisplay?.status === 'on_Renderpage'){
-        console.log('on_Renderpage')
-        updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
-      }
+      // if(variables?.isDisplay?.status === 'on_Renderpage'){
+      //   console.log('on_Renderpage')
+      //   updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
+      // }
 
       
     },
@@ -213,8 +208,6 @@ function Index() {
           renderDataRefetch()
         }
 
-       
-        
       },
     });
   const handleStorage = (newData) => {
@@ -255,11 +248,78 @@ function Index() {
           });
 
         }
-
-        
         setIsShowDisplayFormModal(false);
       },
-    });
+  });
+
+
+
+  //POST IMAGE campaigns
+  const postImgtoCampaignMutation = useMutation((updatedData)=>{
+    postImgtoCampaign(updatedData.imgid, updatedData.items, linLoginData)
+    },
+    {
+      onSuccess: (data, variables) => {
+        if(variables?.status === 'on_Renderpage'){
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }else{
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+
+        }
+      }
+    }
+  )
+  //DEL  IMAGE campaigns
+  const removeImgtoCampaignMutation = useMutation((updatedData)=>{
+    removeImgtoCampaign(updatedData.imgid, updatedData.items, linLoginData)
+    },
+    {
+      onSuccess: (data, variables) => {
+        if(variables?.status === 'on_Renderpage'){
+          // renderDataRefetch()
+          queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: image.campaigns.filter((campaign) => campaign !== variables.items.campaign_id)} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }else{
+          // storageDataRefetch()
+          queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.imgid ? { ...image, campaigns: [...image.campaigns, variables.items.campaign_id]} : image
+              ),
+            }));
+            return { pages: newData };
+          });
+
+        }
+      }
+    }
+  )
 
 
   //
@@ -347,7 +407,7 @@ function Index() {
       case 'Renders':
         return <MdViewModule size={15} />
         break;
-      case 'Storage':
+      case 'Posts':
         return <MdImage size={15}/>
         break;
       case 'Collections':
@@ -458,22 +518,80 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+
   /**
    * Storage API 
    * start
    * */ 
-  const handleSetStorageImage = (image,items,status) =>{
+  const handleSetStorageImage = async(image,items,status,add_activities,remove_activities) =>{
     console.log(image)
     // console.log(image.is_storage,status)
     if(!image.is_storage){
-      console.log(image.is_storage)
+      // console.log(image.is_storage)
       const newData = { ...image, is_storage: !image.is_storage  }; 
-      storageMutation.mutate({newData,isDisplay:{ image, items, status }});
-      
+      try{
+        await storageMutation.mutateAsync({newData});
+      } catch (error){
+        console.error('Storage mutation failed:', error);
+        return;
+      }
+      try {
+        await updateImageMutation.mutateAsync({ image, items, status });
+      } catch (error) {
+        console.error('Image update failed:', error);
+      }
+      if(add_activities.length > 0){
+        // mapImageToCampaign(image.id,add_activities,status)
+      }
+      if(remove_activities.length>0){
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+      }
     }else{
       updateImageMutation.mutate({ image, items, status });
+      if(add_activities.length > 0){
+        // mapImageToCampaign(image.id,add_activities,status)
+      }
+      if(remove_activities.length>0){
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+      }
     }
 
+  }
+
+  //TODO 延遲執行避免出錯
+  const mapImageToCampaign = async(imgid,data,status)=>{
+    const delay = 1000; // 延遲時間，以毫秒為單位，這裡設定為1秒
+    for (const [index, items] of data.entries()) {
+      console.log(items)
+      try {
+        await postImgtoCampaignMutation.mutate({imgid, items, status});
+      } catch (error) {
+        console.error('Error mapping image to campaign:', error);
+        // 處理錯誤，比如顯示一個錯誤訊息給使用者
+      }
+
+      if (index < data.length - 1) {
+        // 不是最後一個項目，執行時間延遲
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+  }
+  const mapImageToRemoveCampaign = async(imgid,data,status)=>{
+    const delay = 1000; // 延遲時間，以毫秒為單位，這裡設定為1秒
+    for (const [index, items] of data.entries()) {
+      console.log(items)
+      try {
+        await removeImgtoCampaignMutation.mutate({imgid, items, status});
+      } catch (error) {
+        console.error('Error mapping image to campaign:', error);
+        // 處理錯誤，比如顯示一個錯誤訊息給使用者
+      }
+
+      if (index < data.length - 1) {
+        // 不是最後一個項目，執行時間延遲
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
   }
 
 
@@ -562,21 +680,17 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos} images={images} imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
       case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'} images={storages} imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} />;
       case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} images={collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
+        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
       case 'Following':
         return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followImages} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }
   
-
-
-
-
 
   //LISTEN  LOGIN IF not LINE INIT
 
@@ -671,7 +785,7 @@ function Index() {
             return(
               <div 
                 key={item.title} 
-                className='bg-zinc-700 hover:bg-zinc-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
+                className='bg-gray-700 hover:bg-gray-500 text-white rounded-full py-2 px-4 cursor-pointer md:w-auto'
                 onClick={()=>{
                   setCurrentDropDownItem(item)
                   handleOptionChange(item)

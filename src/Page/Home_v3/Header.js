@@ -1,9 +1,7 @@
-import React,{useEffect,useState,useRef} from 'react'
-import * as THREE from 'three'
-import HALO from 'vanta/src/vanta.halo'
+import React from 'react'
+
 function Header({executeScroll}) {
-  const [vantaEffect, setVantaEffect] = useState(0)
-  const vantaRef = useRef(null)
+
 
   return (
     <div className='text-white py-10 md:w-8/12 mx-auto' >

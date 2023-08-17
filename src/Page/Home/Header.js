@@ -46,7 +46,7 @@ function Header() {
     <div className='flex flex-col md:flex-row'>
 
       <div className='w-full md:w-1/2 h-[70vh] md:h-screen text-white relative flex items-center justify-center overflow-hidden drop-shadow-2xl bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#49531F]   to-black-600 ' ref={vantaRef}>
-        <div className='text-white font-semibold  text-lg absolute top-0 md:left-0 z-50 flex gap-5 bg-zinc-700 rounded-b-xl p-1'>
+        <div className='text-white font-semibold  text-lg absolute top-0 md:left-0 z-50 flex gap-5 bg-gray-700 rounded-b-xl p-1'>
           <Link to="/gallery" class="rounded-full  py-2 px-5 text-base " > Gallery </Link>
           <Link to="/price" class="rounded-full  py-2 px-5 text-base" > Price  </Link>
           <Link to="/profile" class="rounded-full py-2 px-5 text-base" > Sign In  </Link>
@@ -93,18 +93,18 @@ function Header() {
                   Moonshot Line
                 </div> 
               </a>
-              <div className='text-sm text-zinc-300 mt-2'>按此加入好友</div> 
+              <div className='text-sm text-gray-300 mt-2'>按此加入好友</div> 
             </div>
 
-            <div className='text-zinc-300'>或</div>
+            <div className='text-gray-300'>或</div>
             <div className='w-1/3'><img src={process.env.PUBLIC_URL+'/images/moonshotqr_b.png'} alt="" className='max-w-full min-w-[80px]' /></div>
           </div>
-          <div className='text-sm text-zinc-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
+          <div className='text-sm text-gray-400 mt-12 hidden'>*立即加入 MoonShot Line 好友，內有說明引導使用。</div>
 
         </motion.div>
         <div className=' absolute mx-auto bottom-5 left-0 right-0 flex-col items-center hidden md:flex'>
           <div className='scroll-down '></div>
-          <div className='text-xs text-zinc-400'>往下看更多介紹</div>
+          <div className='text-xs text-gray-400'>往下看更多介紹</div>
         </div>
         
         

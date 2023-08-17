@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import Header from '../header'
 import EditUserEmailForm from '../Components/EditUserEmailForm';
-import {LoadingCircle,DisableBuyButton,DisableInputInvite,CallToLoginModal} from '../helpers/componentsHelper'
+import {CallToLoginModal} from '../helpers/componentsHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,refreshToken,fetchLinePayRequest,testLinePay,checkUserLiffLoginStatus,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile,handleLogin} from '../helpers/fetchHelper'
-import { MdDoneOutline,MdDone,MdOutlineTrendingFlat,MdPayment,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
+import {getStoredLocalData,postOrder,paymentLinePay,paymentNewebPay,paymentInviteSerial,patchUserEmail,fetchUserProfile} from '../helpers/fetchHelper'
+import { MdDoneOutline,MdOutlineTrendingFlat,MdCreditCard,MdOutlineCircle,MdCheckCircle,MdArrowRightAlt } from "react-icons/md";
 import { useForm,Controller } from 'react-hook-form';
-import Footer from '../../Home/Footer';
-import { HmacSHA256 } from 'crypto-js';
-import { Base64 } from 'js-base64';
 import moment from 'moment';
 import liff from '@line/liff';
 function Index() {
@@ -19,7 +15,6 @@ function Index() {
   const [linLoginData, setLineLoginData] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [currentPlan, setCurrentPlan] = useState('')
-  const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [ isLoginForPrice , setIsLoginForPrice] = useState(false)
   const [isNeddWithin5Days, setIsNeedWithin5Days]= useState(false)
@@ -320,29 +315,29 @@ function Index() {
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
   
         <div className="max-w-md mx-auto mb-14 text-center">
-          <h1 className="text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">恣意想、任意玩</h1>
+          <h1 className="text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-t_lime-300 to-t_lime-600">恣意想、任意玩</h1>
           <p className="text-lg text-gray-300 font-medium">進階功能無限使用<br /> 加速算圖以及更多的儲存空間！</p>
           <div className='text-white hidden'>
-            <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div>  <div className='text-lg font-bold'>無使用次數限制</div> <div className='text-white/70'>問答、修改、固定、骨架、放大。</div></div> </div>
-            <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加速算圖</div> <div className='text-white/70'>與免費用戶相比更少的等待時間。</div></div></div>
-            <div className='flex items-center text-left gap-4 bg-zinc-800 p-3 my-5 rounded-md'> <span className='text-lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加大儲存空間</div> <div className='text-white/70'> 增加個人儲存數量至 300 張。</div> </div> </div>
+            <div className='flex items-center text-left gap-4 bg-gray-800 p-3 my-5 rounded-md'> <span className='text-t_lime-400'><MdDoneOutline /></span><div>  <div className='text-lg font-bold'>無使用次數限制</div> <div className='text-white/70'>問答、修改、固定、骨架、放大。</div></div> </div>
+            <div className='flex items-center text-left gap-4 bg-gray-800 p-3 my-5 rounded-md'> <span className='text-t_lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加速算圖</div> <div className='text-white/70'>與免費用戶相比更少的等待時間。</div></div></div>
+            <div className='flex items-center text-left gap-4 bg-gray-800 p-3 my-5 rounded-md'> <span className='text-t_lime-400'><MdDoneOutline /></span><div> <div className='text-lg font-bold'>加大儲存空間</div> <div className='text-white/70'> 增加個人儲存數量至 300 張。</div> </div> </div>
           </div>
         </div>
-        <h1 className="text-center text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">方案選擇</h1>
-        <div >
+        <h1 className="text-center text-4xl mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-t_lime-300 to-t_lime-600">方案選擇</h1>
+        <div>
           {blocks.map((block, index) => {
           
           return(
             <motion.div
               key={index}
               className={`text-left px-3 py-5 my-5 rounded-md ${
-                selectedBlock === index ? 'border-lime-400 border-2 bg-zinc-800' : 'bg-zinc-800  '
+                selectedBlock === index ? 'border-t_lime-400 border-2 bg-gray-800' : 'bg-gray-800  '
               }`}
               onClick={() => handleBlockClick(index)}
               
             >
               <div className='flex items-center gap-4 '>
-                <span className='text-lime-400'>{selectedBlock === index ? <MdCheckCircle /> :<MdOutlineCircle/> }</span>
+                <span className='text-t_lime-400'>{selectedBlock === index ? <MdCheckCircle /> :<MdOutlineCircle/> }</span>
                 <div className='flex justify-between items-center w-full'>
                   <div className={'text-lg font-bold  text-white'}>{block.title}</div>
                   <div className={'text-sm   text-white'}>{block.price} {block.days.length>0 ? <span className=''> / {block.days} 天</span>  : '' }</div>
@@ -374,7 +369,7 @@ function Index() {
                             },
                           },}}
                 >
-                  <div className='my-2 text-lime-500'>基本功能</div>
+                  <div className='my-2 text-t_lime-500'>基本功能</div>
                   
                   <ul className=' list-disc pl-4 grid grid-cols-2'>
                   {
@@ -386,7 +381,7 @@ function Index() {
                   }
                   </ul>
                   {block.advanced.length>0 && <div>
-                    <div className='my-2 text-lime-500'>進階功能</div>
+                    <div className='my-2 text-t_lime-500'>進階功能</div>
                     <ul className=' list-disc pl-4 grid grid-cols-2'>
                     {
                       block.advanced.map((item,index)=>{
@@ -397,11 +392,11 @@ function Index() {
                     }
                     </ul>
                   </div> }
-                  <div className='my-2 text-lime-500'>每日算圖限制</div>
+                  <div className='my-2 text-t_lime-500'>每日算圖限制</div>
                   <div>
                     {block.daily_limit}
                   </div>
-                  <div className='my-2 text-lime-500'>藝廊儲存量</div>
+                  <div className='my-2 text-t_lime-500'>藝廊儲存量</div>
                   <div>
                     {block.storage}
                   </div>
@@ -411,7 +406,7 @@ function Index() {
                         {
                           block.payment_line && <div>
                             <button 
-                              className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-md py-3  text-center text-white text-sm"
                               onClick={()=>{
                                 handlePay('linepay')
                                 setCurrentPlan(block.full_title)
@@ -465,12 +460,12 @@ function Index() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div className='flex flex-col gap-2'>
                             <div className='flex flex-col'>
-                              <input  type="text" placeholder="輸入推薦序號" className='bg-zinc-700 rounded-md py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
+                              <input  type="text" placeholder="輸入推薦序號" className='bg-gray-700 rounded-md py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
                               {errors.invite_number && <div className='text-xs text-white/70 my-2'>請確認有輸入推薦序號。</div>}
 
                             </div>
                             <button type="submit"    
-                              className="w-full flex  justify-center items-center gap-2 bg-lime-600  rounded-md py-3  text-center text-white text-sm"
+                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-md py-3  text-center text-white text-sm"
                             >
                               輸入推薦序號
                               <MdOutlineTrendingFlat className='ml-2'/>
@@ -502,7 +497,7 @@ function Index() {
         
       </main>
       <div className='max-w-md mx-auto mb-14 px-10 hidden'>
-        <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-lime-300 to-lime-600">常見問答</h1>
+        <h1 className="text-4xl text-center mb-6 font-extrabold text-transparent  bg-clip-text bg-gradient-to-r from-t_lime-300 to-t_lime-600">常見問答</h1>
         <div className='my-6 flex flex-col gap-8'>
           <div className='text-white'>
             <div className='text-xl my-3'>進階功能有哪些?</div>

@@ -1,8 +1,8 @@
-import React,{useEffect,useState,useRef} from 'react'
+import React,{useEffect,useState} from 'react'
 import {isMobile} from 'react-device-detect';
 import HeaderImagesBg from '../../Components/HeaderImagesBg'
 import {headerImagesItem} from '../../Components/ItemData'
-import { MdArticle,MdLaunch,MdOutlineArrowRightAlt } from "react-icons/md";
+import { MdOutlineArrowRightAlt } from "react-icons/md";
 function Section04() {
   const [imgData , setImgData] = useState(headerImagesItem)
   const half = Math.ceil(headerImagesItem.length / 2);    

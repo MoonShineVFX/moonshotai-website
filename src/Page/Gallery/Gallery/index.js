@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
-import { MdNotInterested,MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
+import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {LoadingLogoFly,LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
-import {useDevUserLogin,fetchGalleries,initializeLineLogin,getStoredLocalData,refreshToken,fetchComments,removeLocalStorageItem} from '../helpers/fetchHelper'
+import {LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
+import {fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { isLoginState,loginState, imageDataState,imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
+import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
 import Masonry from 'react-masonry-css';
+import InfiniteScroll from 'react-infinite-scroll-component';
 const filterDateItem = [
   {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -24,9 +25,6 @@ const filterModelsDate = [
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
- ]
- const bannerData = [
-  {url:"https://resource.moonshine.tw/msweb/moonshotai/gallery_banner/taiwanfood01.png"}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -83,7 +81,6 @@ function Index() {
 
 
 
-
   const onHandleSelectDate = (item)=>{
     // console.log(item)
     switch (item.value) {
@@ -123,19 +120,20 @@ function Index() {
     setPageSize(12)
     setCurrModels(value)
   }
+  const containerRef = useRef(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [clientHeight, setClientHeight] = useState(0);
   const [scrollHeight, setScrollHeight] = useState(0);
   const [lastScrollTime, setLastScrollTime] = useState(0);
   const handleScroll = () => {
     // 獲取頁面滾動相關信息
-    
-      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      const container = containerRef.current;
+      const { scrollTop, clientHeight, scrollHeight } = container;
       setScrollTop(scrollTop);
       setClientHeight(clientHeight);
       setScrollHeight(scrollHeight);
       // 檢查是否滾動到頁面底部
-      if (scrollTop + clientHeight+300 >= scrollHeight) {
+      if (scrollHeight - scrollTop <= clientHeight * 1.2) {
         const now = Date.now();
         if (now - lastScrollTime >= 1000) {
           fetchNextPage();
@@ -144,15 +142,16 @@ function Index() {
 
       }
   };
-  const debouncedHandleScroll = debounce(handleScroll, 500);
-  useEffect(() => {
-    // 監聽滾動事件
-    window.addEventListener('scroll', debouncedHandleScroll);
-    return () => {
-      // 在組件卸載時移除滾動事件監聽器
-      window.removeEventListener('scroll', debouncedHandleScroll);
-    };
-  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+  // const debouncedHandleScroll = debounce(handleScroll, 500);
+  
+  // useEffect(() => {
+  //   // 監聽滾動事件
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => {
+  //     // 在組件卸載時移除滾動事件監聽器
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
 
 
   return (
@@ -176,7 +175,7 @@ function Index() {
                         return(
                           <button 
                           key={item.title} 
-                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-zinc-200 text-black' : ' bg-zinc-700 text-white'}`}
+                          className={`px-3 py-2 text-xs md:text-sm font-semibold  rounded-full hover:brightness-110 ${currModels === item.value ? 'bg-gray-200 text-black' : ' bg-gray-800 text-white'}`}
                           onClick={()=>{
                             onHandleSelectModels(item)
                           }}
@@ -187,14 +186,20 @@ function Index() {
                   </div>
 
                 </div>
-                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate}/>
+                <ImgFilter filterItems={filterDateItem} defaultIndex={3} onHandleSelect={onHandleSelectDate} icon="MdAccessTime"/>
            
 
             </div>
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
-           <Masonry
+            <InfiniteScroll
+              dataLength={imageData ? imageData.length:0}
+              next={()=>fetchNextPage()}
+              hasMore={hasNextPage}
+              loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
+            >
+                         <Masonry
               breakpointCols={{
                 default: 5,
                 1024: 4,
@@ -216,7 +221,7 @@ function Index() {
                           alt={title}
                           src={urls.thumb}
                           data-id={id}
-                          className=' object-cover w-full hover:scale-110 transition duration-300 '
+                          className={` object-cover w-full hover:scale-110 transition duration-300 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
   
                         />
                       </div>
@@ -262,9 +267,11 @@ function Index() {
 
 
             </Masonry>
-            {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-              <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
-            </div>}
+
+
+            </InfiniteScroll>
+
+
           </div>
 
 

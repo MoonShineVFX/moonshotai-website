@@ -19,7 +19,7 @@ function UserDoc() {
             <p className='text-xl font-bold  mb-4'>Storage</p>
             <p>這裡為留存珍藏圖片的位置，若是想分享至公共藝廊，請點選圖片上的「✎ 編輯」並開啟「展示至藝廊」的按鈕，即成功分享圖片。</p>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/user01.jpg" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/user01.jpg" alt="" />
             </div>
 
           </div>
@@ -60,7 +60,7 @@ function UserDoc() {
             <p className='text-xl font-bold  mb-4'>如何取得推薦序號？</p>
             <p>至【會員資料 Account】中取得自己的推薦序號並複製。</p>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/user02.png" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/user02.png" alt="" />
             </div>
           </div>
 
@@ -68,7 +68,7 @@ function UserDoc() {
             <p className='text-xl font-bold  mb-4'>如何開通推薦序號？</p>
             <p>拿到好友的推薦序號後，進入【方案頁面 Price】點擊「開通推薦序號」，輸入推薦序號並送出。</p>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/user03.png" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/user03.png" alt="" />
             </div>
           </div>
 
@@ -76,7 +76,7 @@ function UserDoc() {
             <p className='text-xl font-bold  mb-4'>如何查看推薦序號是否開通成功？</p>
             <p>可至【訂單紀錄 Orders】裡的「訂閱紀錄」查看免費進階帳戶使用期限。</p>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/user04.png" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/user04.png" alt="" />
             </div>
           </div>
         </div>

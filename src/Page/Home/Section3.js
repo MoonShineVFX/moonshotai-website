@@ -21,7 +21,7 @@ function Section3() {
               <div 
                 key={'new'+id} 
                 onClick={()=>{handleClick(index)}}
-                className={' py-2 px-5 rounded-full text-sm transition-all cursor-pointer hover:text-black hover:bg-[#BDDE48] relative '  + (currentDataIndex === index ? ' bg-[#BDDE48] text-black'  : ' bg-zinc-700 text-white/60' )}>
+                className={' py-2 px-5 rounded-full text-sm transition-all cursor-pointer hover:text-black hover:bg-[#BDDE48] relative '  + (currentDataIndex === index ? ' bg-[#BDDE48] text-black'  : ' bg-gray-700 text-white/60' )}>
                   {title}
                   {pro && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1  rotate-12 " + (currentDataIndex === index ? '  text-rose-400 '  : '  text-rose-400' )}>PRO</div> }
               </div>

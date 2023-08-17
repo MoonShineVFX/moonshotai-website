@@ -3,7 +3,7 @@ export const TextMode = ({data,currentDataIndex})=>{
     <ul className="space-y-4 pt-32 ">
       <li className="flex justify-end ">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+          <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -12,7 +12,7 @@ export const TextMode = ({data,currentDataIndex})=>{
       {data[currentDataIndex].images &&
           <li className="flex justify-start">
             <div>
-              <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+              <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
               <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
                 <div className='flex gap-3 overflow-y-auto pb-3'>
                   { 
@@ -37,7 +37,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
     <ul className="space-y-3">
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+          <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-1 py-2 text-gray-700  rounded-2xl shadow flex justify-end ">
             <img src={process.env.PUBLIC_URL+'/images/'+data[currentDataIndex].image} alt=""  className=' rounded-md  w-4/5'/>
           </div>
@@ -45,7 +45,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
       </li>
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+          <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -54,7 +54,7 @@ export const ImageMode = ({data,currentDataIndex}) =>{
 
       <li className="flex justify-start">
         <div>
-          <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+          <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
           <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
             <div className='flex gap-3 overflow-y-auto pb-3'>
               {
@@ -78,7 +78,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
     <ul className="space-y-4 pt-32 w-full">
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+          <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -87,7 +87,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
       {data[currentDataIndex].images &&
           <li className="flex justify-start">
             <div>
-              <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+              <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
               <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
                 <div className='flex gap-3 overflow-y-auto pb-3   '>
                   { 
@@ -107,7 +107,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
         data[currentDataIndex].answer &&
         <li className="flex justify-start">
           <div>
-            <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+            <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
             <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#d2dad2] rounded-2xl shadow">
               <span className="block">{data[currentDataIndex].answer}</span>
             </div>

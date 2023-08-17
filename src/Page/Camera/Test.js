@@ -26,7 +26,7 @@ function Test() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type="file" {...register("image", { required: true })} />
       {errors.image && <span>This field is required</span>}
-      <button type="submit" className='bg-zinc-600 p-2'>送出</button>
+      <button type="submit" className='bg-gray-600 p-2'>送出</button>
     </form>
   )
 }

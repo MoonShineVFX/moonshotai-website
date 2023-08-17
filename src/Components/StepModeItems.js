@@ -47,7 +47,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-white rounded-2xl shadow">
                   <span className="block">{data.prompt_cht}</span>
                 </div>
@@ -66,7 +66,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-left text-zinc-200 text-xs font-bold mb-2 flex items-center gap-2'>
+                <div className='relative max-w-xl text-left text-gray-200 text-xs font-bold mb-2 flex items-center gap-2'>
                   <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='w-[25px] rounded-full aspect-square '/>
                   Moonshot
                 </div>
@@ -90,7 +90,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
       </div>
       <div className="flex  justify-center w-full p-3  gap-2 bg-white rounded-b-lg"> 
       <div className='flex justify-between w-full items-center'>  
-        <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
+        <div className='w-3/4 text-sm text-gray-800 bg-gray-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
           {
             showFirst ? <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete} /> : <div className='animate-fade-loop'>_</div>
           } 
@@ -105,7 +105,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
           </div>
           <div 
             onClick={()=>{handleClickStep(1)}} 
-            className={'bg-white  text-center px-4 py-2 text-black pr-2  rounded-full cursor-pointer flex items-center  justify-center relative border border-zinc-300' }>
+            className={'bg-white  text-center px-4 py-2 text-black pr-2  rounded-full cursor-pointer flex items-center  justify-center relative border border-gray-300' }>
               <MdSend size={18}/>
               {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                 <span class="relative flex h-3 w-3">
@@ -124,7 +124,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
               <div 
                 key={'m2'+index}
                 onClick={()=>{handleClickStep(item.mode,index+1,index)}}
-                className={'bg-[#B5DF0F] text-zinc-600  text-center px-5 py-2 text-sm rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
+                className={'bg-[#B5DF0F] text-gray-600  text-center px-5 py-2 text-sm rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
             )
           })
         } */}
@@ -181,7 +181,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-1 py-2 text-gray-700  rounded-2xl  flex justify-end ">
                   <img src={process.env.PUBLIC_URL+'/images/ver2_images/step/'+data.refimg} alt=""  className=' rounded-md  w-3/5'/>
                 </div>
@@ -200,7 +200,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
                   <span className="block">{data.prompt_cht}</span>
                 </div>
@@ -219,7 +219,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-left text-zinc-700 text-xs font-bold mb-2 flex items-center gap-2'>
+                <div className='relative max-w-xl text-left text-gray-700 text-xs font-bold mb-2 flex items-center gap-2'>
                   <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='w-[25px] rounded-full aspect-square'/>
                   Moonshot
                 </div>
@@ -242,7 +242,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
       </div>
       <div className="flex  justify-center w-full p-2 gap-2 bg-white rounded-b-lg"> 
         <div className='flex justify-between w-full items-center'>  
-          <div className='w-3/4 text-sm text-zinc-800 bg-zinc-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
+          <div className='w-3/4 text-sm text-gray-800 bg-gray-100 border border-gray-200 py-2 px-4 rounded-full h-10'>
           {
             showSecond && <TypingEffect text={data.prompt_cht} speed={100} onTypingComplete={handleTypingComplete}/> 
           }
@@ -259,7 +259,7 @@ export const ImageStepMode = ({data,currentDataIndex}) =>{
             </div>
             <div 
               onClick={()=>{handleClickStep(1)}} 
-              className={'bg-white  text-center px-4 py-2 pr-2 text-black  rounded-3xl cursor-pointer flex items-center  justify-center relative border border-zinc-300' }>
+              className={'bg-white  text-center px-4 py-2 pr-2 text-black  rounded-3xl cursor-pointer flex items-center  justify-center relative border border-gray-300' }>
                 <MdSend size={18}/>
                 {!showFirst && <div className={"before:content-[''] absolute z-50 text-xs font-bold -right-1 -top-1   "}>
                   <span class="relative flex h-3 w-3">
@@ -282,7 +282,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
     <ul className="space-y-4 pt-32 w-full">
       <li className="flex justify-end">
         <div className=' '>
-          <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+          <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
           <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#85e248] rounded-2xl shadow">
             <span className="block">{data[currentDataIndex].message}</span>
           </div>
@@ -291,7 +291,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
       {data[currentDataIndex].images &&
           <li className="flex justify-start">
             <div>
-              <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+              <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
               <div id="bot-images" className="relative max-w-xl text-gray-700 rounded shadow overflow-hidden ">
                 <div className='flex gap-3 overflow-y-auto pb-3   '>
                   { 
@@ -311,7 +311,7 @@ export const EtcMode = ({data,currentDataIndex})=>{
         data[currentDataIndex].answer &&
         <li className="flex justify-start">
           <div>
-            <div className='relative max-w-xl text-left text-zinc-400 text-sm font-bold mb-1'>Moonshot</div>
+            <div className='relative max-w-xl text-left text-gray-400 text-sm font-bold mb-1'>Moonshot</div>
             <div className="relative max-w-xl px-4 py-2 text-gray-700 bg-[#d2dad2] rounded-2xl shadow">
               <span className="block">{data[currentDataIndex].answer}</span>
             </div>
@@ -368,7 +368,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-5 py-3 text-white bg-[#263421] rounded-2xl shadow text-sm flex items-center gap-1 ">
                   <span className="block">點擊下方【傳送】按鈕</span>
                   <MdSend size={18}/>
@@ -386,7 +386,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className=" relative max-w-xl px-5 py-3 text-white bg-[#263421]  shadow text-sm flex items-center gap-1  rounded-tl-2xl rounded-tr-2xl rounded-br-2xl">
                   <span className="block">您可以選擇以文生圖 / 以圖生圖，並於對話中輸入欲生成圖片的風格 (Model) 與關鍵字，讓我陪你一起創造！</span>
                   <div className=' absolute bottom-0 -left-[17px]'>
@@ -409,7 +409,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-5 py-3 text-white bg-[#2F2E56] rounded-2xl shadow text-sm">
                   <span className="block">{data.prompt_cht}</span>
                 </div>
@@ -428,7 +428,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-left text-zinc-200 text-xs font-bold mb-2 flex items-center gap-2'>
+                <div className='relative max-w-xl text-left text-gray-200 text-xs font-bold mb-2 flex items-center gap-2'>
                   <img src={process.env.PUBLIC_URL+'/images/logo-2.png'} alt="" className='w-[25px] rounded-full aspect-square '/>
                   Moonshot
                 </div>
@@ -486,7 +486,7 @@ export const TextSteoMode1V3 = ({data,currentDataIndex})=>{
               <div 
                 key={'m2'+index}
                 onClick={()=>{handleClickStep(item.mode,index+1,index)}}
-                className={'bg-[#B5DF0F] text-zinc-600  text-center px-5 py-2 text-sm rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
+                className={'bg-[#B5DF0F] text-gray-600  text-center px-5 py-2 text-sm rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
             )
           })
         } */}
@@ -544,7 +544,7 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-5 py-3 text-white bg-[#263421] rounded-2xl shadow text-sm flex items-center gap-1 ">
                   <span className="block">點擊下方【傳送】按鈕</span>
                   <MdSend size={18}/>
@@ -562,7 +562,7 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=''>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className=" relative max-w-xl px-5 py-3 text-white bg-[#263421]  shadow text-sm flex items-center gap-1  rounded-tl-2xl rounded-tr-2xl rounded-br-2xl">
                   <span className="block">您可以選擇以文生圖 / 以圖生圖，並於對話中輸入欲生成圖片的風格 (Model) 與關鍵字，讓我陪你一起創造！</span>
                   <div className=' absolute bottom-0 -left-[17px]'>
@@ -585,7 +585,7 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-1 py-2 text-gray-700  rounded-2xl  flex justify-end ">
                   <img src={process.env.PUBLIC_URL+'/images/ver2_images/step/'+data.refimg} alt=""  className=' rounded-md  w-3/5'/>
                 </div>
@@ -604,7 +604,7 @@ export const ImageStepModeV3 = ({data,currentDataIndex}) =>{
               }}
             >
               <div className=' '>
-                <div className='relative max-w-xl text-right text-zinc-400 text-sm font-bold mb-1'></div>
+                <div className='relative max-w-xl text-right text-gray-400 text-sm font-bold mb-1'></div>
                 <div className="relative max-w-xl px-5 py-3 text-white bg-[#2F2E56] rounded-2xl shadow text-sm">
                   <span className="block">{data.prompt_cht}</span>
                 </div>

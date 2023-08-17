@@ -19,12 +19,12 @@ function CallToAction() {
                 href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
                 target={"_blank"} rel="noreferrer"
               >
-                <div className='p-3 md:p-4 bg-[#B5DF0F] text-base hover:bg-[#cee76d] text-zinc-700 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
+                <div className='p-3 md:p-4 bg-[#B5DF0F] text-base hover:bg-[#cee76d] text-gray-700 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
                   Moonshot Line
                 </div> 
                 
               </a>
-              <div className='text-sm text-zinc-300 mt-2'>按此加入好友</div> 
+              <div className='text-sm text-gray-300 mt-2'>按此加入好友</div> 
             </div>
 
            
@@ -41,12 +41,12 @@ function CallToAction() {
                 href="https://line.me/ti/g2/0nEqJgPJlUZitp5pYpwLeoPKmswnBuzpRGoBnw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default"
                 target={"_blank"} rel="noreferrer"
               >
-                <div className='p-3 md:p-4 bg-[#423EF5] text-base hover:bg-[#3532d6] text-zinc-200 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
+                <div className='p-3 md:p-4 bg-[#423EF5] text-base hover:bg-[#3532d6] text-gray-200 rounded-full font-bold tracking-wide min-w-[180px] text-center'>
                   交流分享社群
                 </div> 
                 
               </a>
-              <div className='text-sm text-zinc-300 mt-2'>按此加入交流分享社群</div> 
+              <div className='text-sm text-gray-300 mt-2'>按此加入交流分享社群</div> 
             </div>
 
            

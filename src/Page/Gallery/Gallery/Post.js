@@ -83,6 +83,7 @@ function Post() {
       onSuccess: (gData) => {
         // 成功獲取數據後處理
         setImageData(gData);
+        console.log(gData)
         fetchComments(gData).then(data => {
           setComments(data);
           setCommentsResults(data.results);
@@ -135,10 +136,6 @@ function Post() {
     }
   );
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
-
-
-
 
   const handleCollection = ()=>{
     console.log('click')
@@ -198,13 +195,7 @@ function Post() {
         setCurrentComment(null)
         setIsCommentModal(true)
         setIsLoginForComment(false)
-        // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
-        //   .then((images)=> {
-        //       setStorages(images)
-        //       setStoragesResults(images.results)
-        //       // console.log(images)
-        //   })
-        //   .catch((error) => console.error(error));
+
       }
 
      }
@@ -212,13 +203,7 @@ function Post() {
   const handleEditComment = ()=>{
     setIsCommentModal(true)
     setIsLoginForComment(false)
-    // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
-    //   .then((images)=> {
-    //       setStorages(images)
-    //       setStoragesResults(images.results)
-    //       // console.log(images)
-    //   })
-    //   .catch((error) => console.error(error));
+
   }
   const handleSendComment= (data)=>{
     // console.log(data)
@@ -269,8 +254,8 @@ function Post() {
      
   }
   
-  const handleCopyPrompt=(model,prompt,negative_prompt)=>{
-    const text = getWordFromLetter(model) +' '+prompt+(negative_prompt && ' --'+negative_prompt);
+  const handleCopyPrompt=(prompt,negative_prompt)=>{
+    const text = prompt+(negative_prompt && ' --'+negative_prompt);
     navigator.clipboard.writeText(text);
     fetchImageCopyPromptTime(imageData,linLoginToken)
     setIsCopied(true)
@@ -304,18 +289,18 @@ function Post() {
                   data-id= {imageData?.id}
                   src={imageData?.urls?.regular} 
                   alt={imageData?.title} 
-                  className="w-[100vw] h-full max-h-[80vh] object-contain" />
+                  className={`w-[100vw] h-full max-h-[80vh] object-contain ${imageData.is_user_nsfw || imageData.is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`} />
               </div>
-              <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-zinc-700 '>
+              <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-gray-900 '>
               <MdKeyboardArrowLeft size={32} />
               </button>
               <div className=' flex justify-center items-center my-4 space-x-2'>
                 <button 
-                  className='bg-zinc-700 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
+                  className='bg-gray-800 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
                   onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
                   ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
                 </button>
-                <div className=' flex rounded-full bg-zinc-700 space-x-6 px-4 py-2'>
+                <div className=' flex rounded-full bg-gray-800 space-x-6 px-4 py-2'>
                   <button className='flex items-center space-x-2 ' onClick={handleCollection}>
                     <FaHeart size={15} className={ isCollected ? ' text-rose-400' : ' text-white'} /> <span className='text-sm'>{imageData.likes}</span>
                   </button>
@@ -339,7 +324,7 @@ function Post() {
                   <Link to={`/user/${imageData?.author?.id}`} className='flex items-center space-x-2' onClick={recordPageUrl}>
                     <div className='w-7'>
                       <div className='pt-[100%] relative'>
-                        <img src={imageData?.author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                        <img src={imageData?.author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/>
                       </div>
                     </div>
                     <div className='text-white/80 text-sm'>{imageData?.author?.name}</div>
@@ -354,49 +339,49 @@ function Post() {
 
             <div className='w-full md:w-full flex flex-col justify-end  relative pb-12 pt-'>
               
-              <div className='text-white/70 font-bold my-3 pt-5'>Prompt 提示詞</div>
-              <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+              <div className='text-white/70 font-semibold my-3 pt-5'>Prompt 提示詞</div>
+              <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
                 <div className='p-3 text-sm'>{imageData?.prompt}</div>
               </div>
-              <div className='text-white/70 font-bold my-3 pt-5'>Negative prompt 反向提示詞</div>
-              <div className='bg-zinc-700 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+              <div className='text-white/70 font-semibold my-3 pt-5'>Negative prompt 反向提示詞</div>
+              <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
               <div className='p-3'>{imageData?.negative_prompt}</div>
               </div>
               <div className='mt-5 grid gap-4 grid-cols-2'>
-                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                <div className='text-white font-semibold my-1 flex flex-col gap-2'>
                   <div className='text-white/70'>Model</div>
-                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                  <span className='bg-gray-800 relative rounded-md whitespace-normal break-words font-normal'> 
                     <div className='p-2'>{getWordFromLetter(imageData?.model)} </div>
                   </span>
                 </div>
-                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                <div className='text-white font-semibold my-1 flex flex-col gap-2'>
                   <div className='text-white/70'>Steps</div>
-                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                  <span className='bg-gray-800 relative rounded-md whitespace-normal break-words font-normal'> 
                     <div className='p-2'>{imageData?.steps}</div>
                   </span>
                 </div>
-                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                <div className='text-white font-semibold my-1 flex flex-col gap-2'>
                   <div className='text-white/70'>Sampler_index</div>
-                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                  <span className='bg-gray-800 relative rounded-md whitespace-normal break-words font-normal'> 
                     <div className='p-2'>{imageData?.sampler_index}</div>
                   </span>
                 </div>
-                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                <div className='text-white font-semibold my-1 flex flex-col gap-2'>
                   <div className='text-white/70'>Cfg_scale</div>
-                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                  <span className='bg-gray-800 relative rounded-md whitespace-normal break-words font-normal'> 
                     <div className='p-2'>{imageData?.cfg_scale}</div>
                   </span>
                 </div>
-                <div className='text-white font-bold my-1 flex flex-col gap-2'>
+                <div className='text-white font-semibold my-1 flex flex-col gap-2'>
                   <div className='text-white/70'>Seed</div>
-                  <span className='bg-zinc-700 relative rounded-md whitespace-normal break-words font-normal'> 
+                  <span className='bg-gray-800 relative rounded-md whitespace-normal break-words font-normal'> 
                     <div className='p-2'>{imageData?.seed}</div>
                   </span>
                 </div>
               </div>
               {imageData?.description && 
                 <div className='my- border-b border-white/30 pb-6 pt-6'>
-                  <div className='text-white/70 font-bold my-1 '>Description</div>
+                  <div className='text-white/70 font-semibold my-1 '>Description</div>
                   <div className=' relative rounded-md whitespace-normal break-words '>
                     <div className='p-2'>{imageData?.description}</div>
                   </div>
@@ -404,7 +389,7 @@ function Post() {
               }
               {/* Comment area */}
               <div className='mt-7'>
-                <div className='text-white font-bold my-1 mb-4 text-center '>Discussion</div>
+                <div className='text-white font-semibold my-1 mb-4 text-center '>Discussion</div>
                 {
                   commentsResults.length > 0 ?
             
@@ -412,12 +397,12 @@ function Post() {
                       // console.log(item)
                       const {author,text,created_at} = item
                       return(
-                        <div className=' rounded-md bg-zinc-700 px-4 py-6 my-2'>
+                        <div className=' rounded-md bg-gray-800 px-4 py-6 my-2'>
                           <div>
                             <div className='flex items-center gap-2'>
                               <div className='w-8'>
                                 <div className='pt-[100%] relative'>
-                                  <img src={author.profile_image} alt="user avatar" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                                  <img src={author.profile_image} alt="user avatar" className='absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/>
                                 </div>
                               </div>
                               <div className='text-white'>{author?.name}</div>
@@ -448,10 +433,10 @@ function Post() {
 
           </div>
 
-          <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-zinc-800'>
+          <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-gray-800'>
             <button 
               className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-              onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
+              onClick={()=>handleCopyPrompt(imageData.prompt,imageData.negative_prompt)}
               >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
 
 

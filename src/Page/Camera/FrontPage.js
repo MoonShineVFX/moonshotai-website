@@ -39,7 +39,7 @@ function FrontPage({handleClick}) {
           <div>AI Camera</div>   
         </motion.div>
         <motion.div 
-          className='text-lg font-bold my-4 text-zinc-200 '
+          className='text-lg font-bold my-4 text-gray-200 '
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

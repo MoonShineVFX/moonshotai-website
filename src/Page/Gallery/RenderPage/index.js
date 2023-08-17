@@ -1,16 +1,14 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-import {motion,AnimatePresence} from 'framer-motion'
-import { FiHeart } from "react-icons/fi";
-import { FaShareSquare,FaShare,FaPlus } from "react-icons/fa";
-import { MdBookmark,MdMoreVert,MdBookmarkBorder,MdAddCircle,MdRemoveCircle,MdKeyboardArrowDown,MdAdd,MdRemove } from "react-icons/md";
-import {getWordFromLetter} from '../helpers/fetchHelper'
+import {motion} from 'framer-motion'
+import { FaShare } from "react-icons/fa";
+import { MdAdd,MdRemove } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyRenderPage } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
+import { IconButton } from "@material-tailwind/react";
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -40,30 +38,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-  const dropdownVariants = {
-    open: {
-      opacity: 1,
-      display:'block',
-      transition: {
-        duration: 0.2,
-      },
-    },
-    closed: {
-      opacity: 0,
-      display:'none',
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
 
-  const handleClick = (id) => {
-    if (openItems.includes(id)) {
-      setOpenItems(openItems.filter((item) => item !== id));
-    } else {
-      setOpenItems([...openItems, id]);
-    }
-  };
+
 
   const onHandleStorage = (image) =>{
     
@@ -79,10 +55,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   }
   const onHandleDisplayHome = (image)=>{
-    console.log(image)
-    const items = {
-      display_home:!image.display_home
-    }
+
     setIsShowDisplayFormModal(true)
     setImageData(image)
     setProfilePage('on_Renderpage')
@@ -91,12 +64,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   const onHandleCollection = (image) =>{
     handleCollection(image)
-    // if(image.is_storage === true) return
-    // const newData = { ...image, is_storage: !image.is_storage  }; 
-    // handleUpdate(image.id,newData)
   }
   const onHandleSelectDate = (item)=>{
-    // console.log(item)
     switch (item.value) {
       case '1':
         const oneDayAgo = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -144,7 +113,6 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
       }
 
-
   };
   const debouncedHandleScroll = debounce(handleScroll, 500);
 
@@ -189,18 +157,18 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
       </div>
       { isAddStorageLoading&& <motion.div 
-              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
-              initial={{ opacity: 0, y: -20,x:'-50%' }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              >
-                資料處理中
-              </motion.div>
+          className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+          initial={{ opacity: 0, y: -20,x:'-50%' }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          >
+            資料處理中
+          </motion.div>
       }
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
-        <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels}/>
-        <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate}/>
+        <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels} icon="MdPhotoSizeSelectActual"/>
+        <ImgFilter filterItems={filterDateItem} defaultIndex={2} onHandleSelect={onHandleSelectDate} icon="MdAccessTime"/>
       </div>
       {
         imagesResults.length === 0 && <div className='text-white/60'>沒有圖片。</div>
@@ -210,7 +178,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,is_storage   } = image
+            const {id, urls, created_at, display_home,is_storage,title   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -226,24 +194,24 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       setIsShowImageModal(true)
                     }} 
                   />
-                  <div className='text-xs text-white/90 absolute bottom-0  bg-zinc-800/40 w-full p-1'>
-                      {created_at.substr(0,10)}
+                  <div className='text-xs text-white/90 absolute bottom-0  bg-gray-800/40 w-full p-1'>
+                    {title ? title : created_at.substr(0,10)} 
                   </div>
                 </div>
-                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className={'  flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30  ' + (is_storage ? ' bg-white text-zinc-800  ' : '   bg-zinc-800 text-white' )} onClick={()=>onHandleStorage(image)}>
+                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0 '>
+                  <div className=' hidden' onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <button disabled={isRemoveStorageLoading} className=' flex items-center  justify-center gap-1 ' >
-                        <MdRemove />
-                      </button>
+                      <IconButton color="green" disabled={isRemoveStorageLoading} className="rounded-full">
+                        <MdAdd />
+                      </IconButton>
                       :
-                      <button disabled={isAddStorageLoading}  className='flex items-center  justify-center gap-1'>
-                        <MdAdd  />
-                      </button>
+                      <IconButton color="red" disabled={isAddStorageLoading} className="rounded-full">
+                        <MdRemove />
+                      </IconButton>
                     }
                   </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-zinc-800 text-white/80   ' : '   bg-white text-zinc-800' ) } onClick={()=>onHandleDisplayHome(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}>
 
                     <button 
                       disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
@@ -265,7 +233,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
           
       }
       {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+        <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
       </div>}
     
 

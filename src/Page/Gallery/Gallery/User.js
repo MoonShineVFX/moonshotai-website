@@ -4,9 +4,9 @@ import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoFly,LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare,MdOutlineNewReleases,MdFacebook,MdRemove,MdAdd,MdCheck } from "react-icons/md";
+import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
@@ -15,14 +15,12 @@ function User() {
   const { id } = useParams();
   // const [userData, setUserData] = useState(null)
   // const [publicImage, setPublicImage] = useState([])
-  const [publicImageResults, setPublicImageResults] = useState([])
   const [imageData, setImageData] = useRecoilState(imageDataState)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
   const [linLoginToken, setLineLoginToken] = useRecoilState(loginState)
   const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [ isLoginForFollow , setIsLoginForFollow] = useState(false)
-  const [currentHeaders , setCurrentHeaders] = useState({})
 
   const [currentPage, setCurrentPage]= useState(1)
   const [totalPage, setTotalPage]= useState(1)
@@ -78,7 +76,7 @@ function User() {
     }
   );
   const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
+    console.log(publicImageData)
   
   const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
     ['useFollowing', currentUser,linLoginToken],
@@ -161,7 +159,7 @@ function User() {
       <AnimatePresence>
       {isLoginForFollow && <CallToLoginModal closeModal={()=>setIsLoginForFollow(false)}/>}
       </AnimatePresence>
-      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-zinc-700 '>
+      <button onClick={handleBackClick} className=' w-fit mb-6 ml-3 mt-3 text-white rounded-full  bg-gray-900 '>
         <MdKeyboardArrowLeft size={32} />
       </button>
       <div className='flex flex-col justify-center items-center gap-1 relative text-white mx-5 mt-'>
@@ -169,7 +167,7 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-20'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-zinc-400'/>
+                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/>
               </div>
             </div>
           </div>
@@ -198,9 +196,9 @@ function User() {
               <div onClick={handleFollow}>
               {
                 isFollowed ? 
-                <button className='flex items-center gap-1 bg-zinc-600/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
+                <button className='flex items-center gap-1 bg-gray-700/40 border border-white/60 rounded-md text-white/60 px-3 py-1 text-sm '><MdCheck /> 正在追隨</button>
                 : 
-                <button className='flex items-center gap-1 bg-lime-600 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
+                <button className='flex items-center gap-1 bg-light-green-700 rounded-md text-white px-3 py-1 text-sm '><MdCheck /> 追隨</button>
               }
               </div>
             }
@@ -215,6 +213,7 @@ function User() {
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageData.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
+            
             return (
               <motion.div key={'gallery-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -226,7 +225,7 @@ function User() {
                       src={urls.thumb} alt={title} 
                       data-id={id}
    
-                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                      className={` absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md  ${is_user_nsfw || is_nsfw ? ' blur-xl'  : ' blur-0 ' }  `}
                 
                     />
                   </div>
@@ -234,6 +233,7 @@ function User() {
                   <div className='text-orange-500 absolute top-0 p-1 flex  space-x-1'>
                     {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
                     {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
+               
                   </div>
                 </Link>
 
@@ -243,6 +243,7 @@ function User() {
                   <div className='flex flex-col'>
                     <div className='text-base font-bold'><TitleWithLimit title={title} maxLength={12}/> </div>
                     {/* <div className='text-xs text-white/50'>{author?.name}</div> */}
+                  
                   </div>
                 </div>
               </motion.div>

@@ -15,7 +15,7 @@ function QuickStart() {
             <div className='text-xl font-bold  mb-4'>1. Scan the Moonshot QRcode to add as a friend. </div>
             <p>掃描 Moonshot QRcode 並加入好友。</p>
             <div className='w-1/2 mt-8'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick01.jpg" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/quick01.jpg" alt="" />
             </div>
 
 
@@ -52,7 +52,7 @@ function QuickStart() {
             <div className='text-xl font-bold  mb-4 pt-10'>【作為創作者，你可以........】</div>
             <div className='text-xl font-bold  mb-4'>1. 點擊右上方的「✎ 編輯」鍵。</div>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick02.png" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/quick02.png" alt="" />
             </div>
 
 
@@ -61,7 +61,7 @@ function QuickStart() {
           <div className='text-white/90 text-sm space-y-2 my-8'>
               <div className='text-xl font-bold  mb-4'>2.填寫圖片標題、敘述，並開啟「Show In Gallery」的按鈕，如果圖片有成人內容，請開啟「Add NSFW Tag」</div>
               <div className='w-1/2'>
-                <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick03.png" alt="" />
+                <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/quick03.png" alt="" />
               </div>
           </div>
 
@@ -75,7 +75,7 @@ function QuickStart() {
 
             </div>
             <div className='w-1/2'>
-              <img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick04.png" alt="" />
+              <img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/quick04.png" alt="" />
             </div>
           </div>
 

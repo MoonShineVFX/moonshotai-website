@@ -1,15 +1,13 @@
 import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-import {motion,AnimatePresence} from 'framer-motion'
-import { MdBookmarkRemove,MdMoreVert,MdVisibility,MdVisibilityOff,MdErrorOutline,MdModeEdit,MdRemoveCircle,MdShare,MdIosShare,MdRemove } from "react-icons/md";
-import { FaShareSquare,FaShare } from "react-icons/fa";
+import {motion} from 'framer-motion'
+import { MdMoreVert,MdErrorOutline,MdRemove } from "react-icons/md";
+import { FaShare } from "react-icons/fa";
 
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
 import debounce from 'lodash.debounce';
 function Index({title,images,imagesResults,currentProfile,handleStorage,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage}) {
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -98,7 +96,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           initial={{ opacity: 0, y: -20 ,x:'-50%'}}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-32 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[25vh]'
+          className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-gray-800 rounded-lg p-4 box-border text-white fixed top-32 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[25vh]'
         >
           <div className='flex flex-col items-center gap-3'>
             <div><MdErrorOutline size={26} /></div>
@@ -168,7 +166,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
           </div>
           { isStorageDataLoading&& <motion.div 
-              className='bg-zinc-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
+              className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
               initial={{ opacity: 0, y: -20,x:'-50%' }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -183,7 +181,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
           : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
             {imagesResults.map((image,index) => {
-              const {id, urls, created_at, display_home, filename,title   } = image
+              const {id, urls, created_at, display_home,title   } = image
               return (
                 <motion.div key={'storage-'+id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -205,14 +203,14 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                     <div className='p-2 ' onClick={()=>{
                       handleClick(id)
                     }}>
-                      <button  className='rounded-full bg-zinc-800/80 p-2'><MdMoreVert size={15} /></button>
+                      <button  className='rounded-full bg-gray-800/80 p-2'><MdMoreVert size={15} /></button>
  
                     </div>
                     <div className='flex justify-end gap-1 p-1'>
                       <button  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemove />
                       </button>
-                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-zinc-800 text-white/80' : ' bg-white text-zinc-800' )} onClick={()=>{
+                      <button className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
                         onHandleDisplayHome(image)
                       }}> <FaShare size={12}/></button>
 
@@ -236,25 +234,28 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                           handleClick(id)
                           onHandleSetBanner(id)
                         }}
-                      >Set as Banner</div>      
+                      >設定為背景</div>      
                       <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
                         onClick={()=>{
                           handleClick(id)
                           onHandleSetAvatar(id)
                         }}
-                      >Set as Avatar</div>       
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg hidden'
+                      >設定為頭像</div>    
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'>
+                        刪除
+                      </div>   
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg '
                         onClick={()=>{
                           handleClick(id)
                           setIsShowFormModal(true)
                           setImageData(image)
                           onHandleEditImageDetail(image)
                         }}
-                      >Edit detail</div>              
+                      >編輯</div>              
                     </motion.div>
                     
                   </div>
-                  <div className=' bg-gradient-to-t from-zinc-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                  <div className=' bg-gradient-to-t from-gray-900/80 flex items-center justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                     <div className='text-sm'>
                       {title ?title : created_at.substr(0,10)}
                     </div>
@@ -273,7 +274,7 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
 
         }
         {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-            <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+            <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
           </div>}
     </div>
   )

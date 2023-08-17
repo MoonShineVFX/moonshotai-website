@@ -36,7 +36,7 @@ function FaqDoc() {
             <div className='text-white/90 text-sm space-y-2 my-8'>
               <p className='text-xl font-bold  mb-4'>3. 是否有常見的疑問解答或教學資源可供參考？</p>
               <p>你可以參考 Moonshot 官網中的文章，我們會不定時釋出厲害的創作者使用文章，讓大家參考，你還可以加入 Moonshot 的 Line 討論社群，裡面有許多大師能請教、一起交流。</p>
-              <div className='w-1/2'><img src="https://resource.moonshine.tw/msweb/moonshotai/docs/quick01.jpg" alt="" /></div>
+              <div className='w-1/2'><img src="https://moonshine.b-cdn.net/msweb/moonshotai/docs/quick01.jpg" alt="" /></div>
 
 
 

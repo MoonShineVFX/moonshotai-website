@@ -1,192 +1,341 @@
-import React,{useState} from 'react'
-import { useForm,Controller } from 'react-hook-form';
+import React,{useEffect, useState} from 'react'
+import { useForm,Controller,useFieldArray } from 'react-hook-form';
 import {motion,AnimatePresence} from 'framer-motion'
-import { beforeDisplayModalState, imageDataState,profilePageState } from '../atoms/galleryAtom';
+import { beforeDisplayModalState, imageDataState,profilePageState,loginState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { MdCheckCircle,MdCircle } from "react-icons/md";
-import { Button } from "@material-tailwind/react";
+import { MdCheckCircle,MdCircle,MdInfo } from "react-icons/md";
+import { FaTimes } from "react-icons/fa";
+import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel, } from "@material-tailwind/react";
+import { useQuery } from 'react-query';
+import {getImgInCampaign} from '../helpers/fetchHelper'
 function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
   const profilePage = useRecoilValue(profilePageState)
-  const [selectedActivityId, setSelectedActivityId] = useState(null);
-  const { control,register, handleSubmit, formState: { errors } } = useForm({
-    name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
+  const [selectedActivityIds, setSelectedActivityIds] = useState([]);
+  const [selectedIsExistedIds, setSelectedIsExistedIds] = useState([]);
+  const [linLoginData, setLineLoginData] = useRecoilState(loginState)
+  //
+  const [imgCampaignsData, setImgCampaignsData] = useState([])
+  const { control,register, handleSubmit,setValue,watch, formState: { errors } } = useForm({
+    name:'',isNsfw:false,
   });
+  const { fields, append:addActAppend, remove:addActRemove } = useFieldArray({
+    control,
+    name: 'add_activities', // 表單欄位名稱
+  });
+  const { fields:removeActFields, append:removeActAppend, remove:removeActRemove } = useFieldArray({
+    control,
+    name: 'remove_activities', // 表單欄位名稱
+
+  });
+  //IMAGE IN campaigns LIST
+  const { data:imgCampaign, isLoading:isImgCampaignLoading, isError:isImgCampaignError, refetch:ImgCampaignRefetch } = useQuery(
+    [ 'imgCampaigns'],
+    ({ pageParam }) =>
+      getImgInCampaign(image,linLoginData),
+    {
+     onSuccess:(data)=>{
+      setImgCampaignsData(data)
+
+     }
+    }
+  );
   const onSubmit = (data) => {
-    // console.log(data);
-    const items ={
+    const add_activities = data.add_activities.filter(item=>{
+      return item.status === 'add'
+    })
+    const remove_activities = data.remove_activities.filter(item=>{
+      return item.status === 'remove'
+    })
+    console.log(data)
+    // console.log(add_activities)
+    // console.log(remove_activities)
+    let items ={
       title:data.title ||'',
       description:data.description ||null,
-      is_user_nsfw:data.is_user_nsfw ||false,
-      display_home:data.display_home ||false
-
+      display_home:true,
     }
-    handleSetStorageImage(image,items,profilePage)
+    // console.log(items)
+    // 如果沒有分享的圖直接分享
+    handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
   };
   const modalVariants = {
     close: { opacity: 0, },
     open: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
-  console.log(campaignsData)
+
   const handleActivityClick = (activityId) => {
-    console.log(activityId)
-    if (selectedActivityId === activityId) {
-      setSelectedActivityId(null); // 取消勾選
+    const activities = watch('add_activities');
+    const isSelected = selectedActivityIds.includes(activityId);
+    
+    if (isSelected) {
+      setSelectedActivityIds(prevIds => prevIds.filter(id => id !== activityId));
     } else {
-      setSelectedActivityId(activityId);
+      setSelectedActivityIds(prevIds => [...prevIds, activityId]);
     }
+
+    setValue(
+      'add_activities',
+      activities.map(activity => {
+        if (activity.campaign_id === activityId) {
+          return {
+            ...activity,
+            status: isSelected ? 'none' : 'add'
+          };
+        }
+        return activity;
+      })
+    );
+
   };
+  const handleIsExistedisClick = (activityId,campaign_id) => {
+    const activities = watch('remove_activities');
+    const isSelected = selectedIsExistedIds.includes(activityId);
+    if (isSelected) {
+      console.log('1')
+      setSelectedIsExistedIds(prevIds => prevIds.filter(id => id !== activityId));
+      const indexToRemove = activities.findIndex(activity => activity.id === activityId);
+      if (indexToRemove !== -1) {
+        removeActRemove(indexToRemove); // 移除對應項目
+      }
+    } else {
+      console.log('2')
+      setSelectedIsExistedIds(prevIds => [...prevIds, activityId]);
+      removeActAppend({ id: activityId,campaign_id:campaign_id, status: 'remove' });
+    }
+
+  }
+  
+
+
+  useEffect(() => {
+    if (image && image.campaigns) {
+      setSelectedActivityIds(image.campaigns);
+    }
+  }, [image]);
 
   return (
     <div 
-      className=' fixed z-50 top-0 left-0 w-full'>
+      className=' fixed z-[100] top-0 left-0 w-full '>
       <div className='bg-black/50 w-full h-screen' onClick={handleEdit}></div>
       
       <motion.div 
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className= 'bg-gray-900 rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full h-full  pb-20'
       >
-        <div className='text-center font-bold'>Check Post Detail </div>
-        <div className='text-xs my-3 flex flex-col justify-center items-center text-white/70'>
-          <div>#{image?.id}</div>
-          <div>Created at {image?.created_at.substr(0,10)}</div>
-        </div>
-
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='grid grid-cols-2 gap-2'>
-            <div className='flex flex-col'>
-              <label htmlFor="name" className='text-white/50 font-normal my-2'>*標題(必填)</label>
-              <Controller
-                name="title"
-                control={control}
-                defaultValue={image?.title}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <input {...field} type="text" placeholder="title" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400 ' />
-                )}
-              />
-            </div>
-          </div>
-          <div className='flex flex-col  '>
-            <label htmlFor="bio" className='text-white/50 font-normal my-2'>簡介</label>
-            <Controller
-                name="description"
-                control={control}
-                defaultValue={image?.description}
-                rules={{ required: false }}
-                render={({ field }) => (
-                  <textarea {...field} cols="20" rows="3" className='bg-zinc-700 rounded-md py-2 px-2 text-sm focus:outline-lime-400' placeholder="Description,Notes"></textarea>
-                )}
-              />
-          </div>
-          <div className='flex flex-col border border-white/60 rounded-md m-4 p-2 hidden'>
-              <label htmlFor="name" className='text-white/80 font-normal my-2'>可參與的活動</label>
-              <ul className='flex flex-wrap space-y-1 '>
-              {campaignsData.map(item => (
-                <li key={item.id} className='w-full bg-zinc-700 p-2 rounded-md'>
-                  <label className=' p-2 flex items-center '>
-                    <input
-                      type="checkbox"
-                      checked={selectedActivityId === item.id}
-                      onChange={() => handleActivityClick(item.id)}
-                      className="peer relative appearance-none w-5 h-5 border rounded-full focus:outline-none checked:bg-blue-600 hover:ring after:content-[''] after:w-full after:h-full after:absolute after:left-0 after:top-0 after:bg-no-repeat after:bg-[url('https://moonshine.b-cdn.net/msweb/moonshotai/web_icons/checked-svg.svg')]
-                      "
-                    />
-                    <div className='ml-2 font-semibold'>{item.name}</div>
-                  </label>
-
-                  <div className='text-white/50 text-xs font-normal my-2'>如該活動有外連網址可以於下方填入。</div>
-                  {selectedActivityId === item.id && item.has_link && (
-                    <div className="mt-2">
-                     
-                      <div>
-                        <label htmlFor="url" className='text-white/90 font-normal my-2'>"{item.name}"的推廣網址</label>
-                        <input
-                          type="text"
-                          id="url"
-                          value=""
-                          className='bg-zinc-700 rounded-md py-2 px-2 w-full text-sm focus:outline-lime-400 '
-                        />
-                      </div>
-
-                    </div>
+        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen md:flex-row md:justify-center'>
+          <div className=' pb-3 overflow-hidden overflow-y-auto h-4/5 md:h-full md:w-1/2'>
+            <div className='text-center font-bold'>Check Post Detail </div>
+            <div className='grid grid-cols-2 gap-2 text-white px-4'>
+              <div className='flex flex-col'>
+                <label htmlFor="name" className='text-white/50 my-2'>*標題(必填)</label>
+                <Controller
+                  name="title"
+                  control={control}
+                  defaultValue={image?.title}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Input {...field} type="text" 
+                      color="white" 
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }} 
+                      className="focus:!border-t-white !border-t-white" />
                   )}
-                </li>
-              ))}
-            </ul>
+                />
+                {errors.title && <span className="text-red-500">圖片標題為必填項目</span>}
+              </div>
             </div>
-          <div className='flex flex-col  mt-4 '>
-            <Controller
-              name="display_home"
-              control={control}
-              defaultValue={image?.display_home}
-              render={({ field }) => (
-                <div className="flex mt-4 ">
-                  <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                    />
-                    <div
-                      className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
-                        field.value
-                          ? 'peer-checked:after:translate-x-full peer-checked:bg-green-600'
-                          : ''
-                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
-                    ></div>
+            <div className='flex flex-col  px-4'>
+              <label  className='text-white/50  my-2'>簡介</label>
+              <Controller
+                  name="description"
+                  control={control}
+                  defaultValue={image?.description}
+                  rules={{ required: false }}
+                  render={({ field }) => (
+                    <Textarea   
+                      labelProps={{
+                        className: "before:content-none after:content-none",
+                      }} 
+                      className="focus:!border-white !border-t-white"
+                      placeholder='請輸入簡介'/>
+                  )}
+                />
+            </div>
+            <Tabs value="add" className="px-4 mt-2 hidden" disable={true}>
+              <TabsHeader className=''>
 
-                  </label>
-                  <span className="flex items-center text-xs font-medium text-white/80">
-                      分享圖片到藝廊
-                  </span>
-                </div>
-              )}
-            />
-          </div>
-          <div className='flex flex-col  mt-4 '>
-            <Controller
-              name="is_user_nsfw"
-              control={control}
-              defaultValue={image?.is_user_nsfw}
-              render={({ field }) => (
-                <div className="flex mt-4 ">
-                  <label className="flex  relative items-center  mr-5 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                    />
-                    <div
-                      className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
-                        field.value
-                          ? 'peer-checked:after:translate-x-full peer-checked:bg-green-600'
-                          : ''
-                      } peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}
-                    ></div>
+                  <Tab key='add' value={'add'}>
+                    <div className="flex items-center gap-2">
+                      目前可參與的活動
+                    </div>
+                  </Tab>
 
-                  </label>
-                  <span className="flex items-center text-xs font-medium text-white/80">
-                      啟用成人內容標籤
-                  </span>
+                  <Tab  key='isExisted' value={'isExisted'}>
+                    <div className="flex items-center gap-2">
+                      已參與的活動
+                    </div>
+                  </Tab>
+              </TabsHeader>
+              <TabsBody className='border rounded-md border-white/50 mt-2'>
+                  <TabPanel  key='add' value={'add'}>
+                    <div className='text-white text-sm my-1'>如該活動有外連網址，可於下方欄位填入。</div>
+                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                      {campaignsData.map((item,index) => {
+                        const isChecked = image.campaigns && image.campaigns.includes(item.id);
+                        const isActive =  selectedActivityIds.includes(item.id);
+                        const isExisted = image.campaigns.includes(item.id); 
+                        if (isExisted) {
+                          return null; // 如果已參加，則不顯示
+                        }
+                        return(
+                          <li key={item.id} className='w-full'>
+                            <div className='bg-gray-800  rounded-md flex items-center justify-start px-0 w-full'>
+                              <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full pl-3 '>
+                                {isActive && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
+                                <Typography color="white" className=' text-sm font-semibold '>
+                                  {item.name} 
+                                </Typography>
 
-                </div>
-              )}
-            />
+                              </label>  
+                              <Checkbox
+                                id={'aa'+item.name}
+                                defaultChecked={selectedActivityIds.includes(item.id)}
+                                onChange={() => handleActivityClick(item.id)}
+                                color="light-green"
+                                className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
+
+                              />
+                              <Controller
+                                name={`add_activities[${index}].campaign_id`}
+                                control={control}
+                                defaultValue={item?.id || ''}
+                                render={({ field }) => (
+                                  <input {...field} 
+                                    type="text" 
+                                    hidden
+                                  />
+                                )}
+                              />
+            
+                            </div>
+                            {item.has_link  && (
+                              <div className="mt-1">
+
+                                  <Controller
+                                    name={`add_activities[${index}].link`}
+                                    control={control}
+                                    defaultValue={item?.link}
+                                    rules={{ required: false }}
+                                    render={({ field }) => (
+                                      <Input {...field} 
+                                        type="url" 
+                                        label=""
+                                        className="!border !border-gray-300 text-white shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-white focus:ring-gray-900/10"
+                                        labelProps={{
+                                          className: ' hidden'
+                                        }}
+                                        placeholder="推廣網址"
+                                      />
+                                    )}
+                                  />
+                                  <Typography
+                                    variant="small"
+                                    className="mt-2 flex items-center gap-1 font-normal text-gray-300"
+                                  >
+                                    <MdInfo />
+                                    
+                                    請輸入活動的外連網址如果有。
+                                  </Typography>
+                              </div>
+                            )}
+                          </li>
+                        )}
+                      )}
+                    </ul>
+                  </TabPanel>
+                  <TabPanel  key='isExisted' value={'isExisted'}>
+                    <div className='text-white text-sm my-1'>已參加的活動，可取消。</div>
+                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                      {imgCampaignsData.map((item,index) => {
+                        // const isChecked = image.campaigns && image.campaigns.includes(item.id);
+                        // const isExisted = image.campaigns.includes(item.id); 
+                        const isChecked = selectedIsExistedIds.includes(item.id);
+                        return(
+                          <li key={item.id} className='w-full'>
+                            <div className='bg-gray-800  rounded-md flex items-center justify-start px-2 w-full'>
+                              <Chip
+                                size="sm"
+                                color="green"
+                                value={isChecked ? '取消' : '已投稿'}
+                                className={isChecked ? 'bg-pink-600' : 'bg-light-green-600'}
+                              />
+                              
+                              <label htmlFor={'aa'+item.campaign_name} className='flex items-center justify-start space-x-3 w-full pl-3 '>
+                                <Typography color="white" className=' text-sm font-semibold '>
+                                  {item.campaign_name} 
+                                </Typography>
+
+                              </label>  
+                              <Checkbox
+                                id={'aa'+item.campaign_name}
+                                onChange={() => handleIsExistedisClick(item.id,item.campaign_id)}
+                                color="red"
+                                className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
+                              />
+
+            
+                            </div>
+                            {item.link  && (
+                              <div className="mt-1">
+
+                                  {item?.link}
+
+                              </div>
+                            )}
+                          </li>
+                        )}
+                      )}
+                    </ul>
+                    {selectedIsExistedIds.length > 0 && <div className='text-white'>需儲存，以保存選擇。</div>}
+                  </TabPanel>
+              </TabsBody>
+            </Tabs>
+
           </div>
-          
-          <div className='mt-6 flex gap-3 justify-center text-sm'>
-            <Button type="submit" className='bg-[#4c5a13] '>儲存送出</Button>
-            <button type="button" className='text-white/80' onClick={()=>{
-              setIsShowDisplayFormModal(false)
-            }}>取消</button>
+
+
+
+          <div className=' border-t border-gray-800 w-full md:w-1/3 z-50  bg-gray-900 px-4 pb-2 '>
+              <Controller
+                name="display_home"
+                control={control}
+                defaultValue={image?.display_home}
+                render={({ field }) => (
+                  <input {...field} 
+                  type="text" 
+                  hidden
+                />
+                )}
+              />
+
+
+              <div className='mt-6 flex gap-3 justify-center md:justify-start '>
+                <Button type="submit" className='bg-light-green-600 '>儲存送出</Button>
+                <button type="button" className='text-white/80' onClick={()=>{
+                  setIsShowDisplayFormModal(false)
+                }}>取消</button>
+              </div>
           </div>
+
 
         </form>
 

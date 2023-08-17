@@ -1,10 +1,10 @@
 import React from 'react'
-import CountdownTimer from './CountdownTimer'
+// import CountdownTimer from './CountdownTimer'
 import ReactPlayer from 'react-player'
-function Secrtion05_countdown() {
+function Secrtion05_Countdown() {
   return (
     <div className=' flex flex-col justify-center items-center'>
-      <CountdownTimer />
+      {/* <CountdownTimer /> */}
       <div className=' relative w-full aspect-video mt-6'>
         <ReactPlayer
           className='react-player w-full h-full '
@@ -17,4 +17,4 @@ function Secrtion05_countdown() {
   )
 }
 
-export default Secrtion05_countdown
+export default Secrtion05_Countdown

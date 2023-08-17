@@ -1,10 +1,9 @@
 import React,{useState,useEffect} from 'react'
-import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaYoutube } from "react-icons/fa";
+import { FaFacebook,FaInstagram,FaYoutube } from "react-icons/fa";
 
 function Footer() {
   const [stickyClass, setStickyClass] = useState(false);
   const stickNavbar = () => {
-    console.log('scroll')
     if (window !== undefined) {
       let windowHeight = window.scrollY;
       windowHeight > 200 ? setStickyClass(true) : setStickyClass(false);

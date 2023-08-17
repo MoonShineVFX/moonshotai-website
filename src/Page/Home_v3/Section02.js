@@ -2,9 +2,9 @@ import React from 'react'
 
 function Section02() {
   const menuItems = [
-    {gif:"https://resource.moonshine.tw/msweb/moonshotai/home_images/g01_500x500.gif",title:"多元風格應用",desc:"無論卡通、漫畫、油畫風格等，Moonshot 能將平凡的圖片轉化為令人驚嘆的插畫作品。還能透過大圖進階功能，將圖片應用於美術概念、平面視覺等創意專案。"},
-    {gif:"https://resource.moonshine.tw/msweb/moonshotai/home_images/g02_500x500.gif",title:"導入創意製程",desc:"Moonshot 能生成 2D/3D 物件設計、材質貼圖、前期美術概念等參考素材，讓設計師、動畫師和創意愛好者能夠輕鬆地獲取和應用於他們的專案中：角色設計、NFT、3D 渲染圖等項目。"},
-    {gif:"https://resource.moonshine.tw/msweb/moonshotai/home_images/g03_500x500.gif",title:"寫實照片模擬",desc:"透過寫實逼真的照片模擬指令與關鍵字，生成真人、情境模擬、物件展示等風格圖，並賦予圖片全新的氛圍和情感，可以應用於生成真人廣告海報、影視劇照、視覺、或一切你想像的到的地方！"},
+    {gif:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/g01_500x500.gif",title:"多元風格應用",desc:"無論卡通、漫畫、油畫風格等，Moonshot 能將平凡的圖片轉化為令人驚嘆的插畫作品。還能透過大圖進階功能，將圖片應用於美術概念、平面視覺等創意專案。"},
+    {gif:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/g02_500x500.gif",title:"導入創意製程",desc:"Moonshot 能生成 2D/3D 物件設計、材質貼圖、前期美術概念等參考素材，讓設計師、動畫師和創意愛好者能夠輕鬆地獲取和應用於他們的專案中：角色設計、NFT、3D 渲染圖等項目。"},
+    {gif:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/g03_500x500.gif",title:"寫實照片模擬",desc:"透過寫實逼真的照片模擬指令與關鍵字，生成真人、情境模擬、物件展示等風格圖，並賦予圖片全新的氛圍和情感，可以應用於生成真人廣告海報、影視劇照、視覺、或一切你想像的到的地方！"},
   ]
   return (
     <div className='text-white py-10' >

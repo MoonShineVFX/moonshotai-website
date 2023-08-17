@@ -119,7 +119,7 @@ function Section2() {
                         <div 
                           key={'m2'+index}
                           onClick={()=>{handleClick(index)}}
-                          className={'bg-[#B5DF0F] text-zinc-600  text-center p-1  rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
+                          className={'bg-[#B5DF0F] text-gray-600  text-center p-1  rounded-3xl cursor-pointer ' + (currentDataIndex === index ? 'bg-[#d1e67c]' : ' bg-[#B5DF0F]' )}>{item.title}</div>
                       )
                     })
                   }

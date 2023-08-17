@@ -1,14 +1,11 @@
-import React, { useState, useEffect }  from 'react'
-import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
-import {motion,AnimatePresence} from 'framer-motion'
-import { MdErrorOutline } from "react-icons/md";
+import React, { useState }  from 'react'
+import {motion} from 'framer-motion'
 import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
 
 function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage}) {
-  const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -95,7 +92,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
 
       }
       {isFetchingNextPage && <div className='text-white/80 flex justify-center my-4 text-xs '>
-        <div className='bg-zinc-900 px-4 py-2 rounded-md'>載入更多..</div> 
+        <div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> 
       </div>}
     </div>
   )

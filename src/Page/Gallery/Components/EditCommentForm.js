@@ -65,7 +65,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-zinc-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 md:w-2/5 overflow-y-auto max-h-[85vh]'
+        className=' bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-[#49531F] via-black  to-gray-800 rounded-lg p-4 box-border text-white fixed top-5 left-1/2 -translate-x-1/2 w-4/5 md:w-2/5 overflow-y-auto max-h-[85vh]'
       >
           <div className='text-lg text-center font-bold my-2'>{formStatus === 'ADD' ? '新增評論' : '修改評論'}</div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -76,7 +76,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
                 defaultValue={comment && JSON.parse(comment?.text).text}
                 rules={{ required: false }}
                 render={({ field }) => (
-                  <textarea {...field} cols="20" rows="5" className='bg-zinc-700 rounded-md py-2 px-2 text-sm' placeholder="在這裡輸入內容"></textarea>
+                  <textarea {...field} cols="20" rows="5" className='bg-gray-700 rounded-md py-2 px-2 text-sm' placeholder="在這裡輸入內容"></textarea>
                 )}
               />
 
@@ -84,7 +84,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
             </div>
             <div className='flex flex-col items-end text-sm'>
               {/* <button type="button" className='mt-2 text-sm text-white/80 bg-lime-600 py-1 px-2 rounded-md' onClick={handleSelectStorageImage}>加入</button> */}
-              <div  className='w-full text-white/80 bg-zinc-600 py-1 px-2 rounded-md my-2' >
+              <div  className='w-full text-white/80 bg-gray-600 py-1 px-2 rounded-md my-2' >
                 <div className='text-xs'>你近期的圖片 ({selectedImages.length } / 3) 張可選</div>
                 <div className=' grid grid-cols-4 gap-1 mt-2 max-h-64 overflow-y-auto'>
                   {storagesResults.length>0 &&
