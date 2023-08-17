@@ -24,7 +24,7 @@ import TutorialPage from '../TutorialPage'
 import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
-  {title:"Storage", display:true,data_name:"total_storages"},
+  {title:"Posts", display:true,data_name:"total_storages"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
@@ -407,7 +407,7 @@ function Index() {
       case 'Renders':
         return <MdViewModule size={15} />
         break;
-      case 'Storage':
+      case 'Posts':
         return <MdImage size={15}/>
         break;
       case 'Collections':
@@ -541,22 +541,18 @@ function Index() {
         console.error('Image update failed:', error);
       }
       if(add_activities.length > 0){
-        //TODO mapImageToCampaign
-        mapImageToCampaign(image.id,add_activities,status)
+        // mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        mapImageToRemoveCampaign(image.id,remove_activities,status)
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
       updateImageMutation.mutate({ image, items, status });
       if(add_activities.length > 0){
-        //TODO mapImageToCampaign
-        console.log('執行參加活凳')
-        mapImageToCampaign(image.id,add_activities,status)
+        // mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        console.log('here')
-        mapImageToRemoveCampaign(image.id,remove_activities,status)
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }
 

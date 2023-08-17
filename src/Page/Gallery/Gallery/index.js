@@ -221,7 +221,7 @@ function Index() {
                           alt={title}
                           src={urls.thumb}
                           data-id={id}
-                          className=' object-cover w-full hover:scale-110 transition duration-300 '
+                          className={` object-cover w-full hover:scale-110 transition duration-300 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
   
                         />
                       </div>

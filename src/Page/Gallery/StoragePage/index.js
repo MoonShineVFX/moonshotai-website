@@ -234,21 +234,24 @@ function Index({title,images,imagesResults,currentProfile,handleStorage,handleRe
                           handleClick(id)
                           onHandleSetBanner(id)
                         }}
-                      >Set as Banner</div>      
+                      >設定為背景</div>      
                       <div className='hover:bg-[#555] p-2 text-sm rounded-lg'
                         onClick={()=>{
                           handleClick(id)
                           onHandleSetAvatar(id)
                         }}
-                      >Set as Avatar</div>       
-                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg hidden'
+                      >設定為頭像</div>    
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg'>
+                        刪除
+                      </div>   
+                      <div className='hover:bg-[#555] p-2 text-sm rounded-lg '
                         onClick={()=>{
                           handleClick(id)
                           setIsShowFormModal(true)
                           setImageData(image)
                           onHandleEditImageDetail(image)
                         }}
-                      >Edit detail</div>              
+                      >編輯</div>              
                     </motion.div>
                     
                   </div>

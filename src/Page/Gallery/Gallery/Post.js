@@ -83,6 +83,7 @@ function Post() {
       onSuccess: (gData) => {
         // 成功獲取數據後處理
         setImageData(gData);
+        console.log(gData)
         fetchComments(gData).then(data => {
           setComments(data);
           setCommentsResults(data.results);
@@ -135,10 +136,6 @@ function Post() {
     }
   );
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
-
-
-
 
   const handleCollection = ()=>{
     console.log('click')
@@ -198,13 +195,7 @@ function Post() {
         setCurrentComment(null)
         setIsCommentModal(true)
         setIsLoginForComment(false)
-        // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
-        //   .then((images)=> {
-        //       setStorages(images)
-        //       setStoragesResults(images.results)
-        //       // console.log(images)
-        //   })
-        //   .catch((error) => console.error(error));
+
       }
 
      }
@@ -212,13 +203,7 @@ function Post() {
   const handleEditComment = ()=>{
     setIsCommentModal(true)
     setIsLoginForComment(false)
-    // fetchUserStorages(currentUser.id,linLoginToken,currentStoragePage,pageSize)
-    //   .then((images)=> {
-    //       setStorages(images)
-    //       setStoragesResults(images.results)
-    //       // console.log(images)
-    //   })
-    //   .catch((error) => console.error(error));
+
   }
   const handleSendComment= (data)=>{
     // console.log(data)
@@ -304,7 +289,7 @@ function Post() {
                   data-id= {imageData?.id}
                   src={imageData?.urls?.regular} 
                   alt={imageData?.title} 
-                  className="w-[100vw] h-full max-h-[80vh] object-contain" />
+                  className={`w-[100vw] h-full max-h-[80vh] object-contain ${imageData.is_user_nsfw || imageData.is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`} />
               </div>
               <button onClick={handleBackClick} className='absolute top-3 left-3 text-white rounded-full  bg-gray-900 '>
               <MdKeyboardArrowLeft size={32} />

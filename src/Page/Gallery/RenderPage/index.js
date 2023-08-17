@@ -113,7 +113,6 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
       }
 
-
   };
   const debouncedHandleScroll = debounce(handleScroll, 500);
 
@@ -199,20 +198,20 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                     {title ? title : created_at.substr(0,10)} 
                   </div>
                 </div>
-                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0'>
-                  <div className='' onClick={()=>onHandleStorage(image)}>
+                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0 '>
+                  <div className=' hidden' onClick={()=>onHandleStorage(image)}>
                     {
                       is_storage ? 
-                      <IconButton color="green" disabled={isRemoveStorageLoading}>
+                      <IconButton color="green" disabled={isRemoveStorageLoading} className="rounded-full">
                         <MdAdd />
                       </IconButton>
                       :
-                      <IconButton color="red" disabled={isAddStorageLoading}>
+                      <IconButton color="red" disabled={isAddStorageLoading} className="rounded-full">
                         <MdRemove />
                       </IconButton>
                     }
                   </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border border-white/30 ' + (display_home ? ' bg-gray-800 text-white/80   ' : '   bg-white text-gray-800' ) } onClick={()=>onHandleDisplayHome(image)}>
+                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}>
 
                     <button 
                       disabled={isAddStorageLoading}  className='flex items-center  justify-center' >

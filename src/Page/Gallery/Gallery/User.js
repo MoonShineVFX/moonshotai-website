@@ -76,7 +76,7 @@ function User() {
     }
   );
   const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
+    console.log(publicImageData)
   
   const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
     ['useFollowing', currentUser,linLoginToken],
@@ -213,6 +213,7 @@ function User() {
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageData.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
+            
             return (
               <motion.div key={'gallery-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -224,7 +225,7 @@ function User() {
                       src={urls.thumb} alt={title} 
                       data-id={id}
    
-                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                      className={` absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md  ${is_user_nsfw || is_nsfw ? ' blur-xl'  : ' blur-0 ' }  `}
                 
                     />
                   </div>
@@ -232,6 +233,7 @@ function User() {
                   <div className='text-orange-500 absolute top-0 p-1 flex  space-x-1'>
                     {is_user_nsfw && <MdOutlineNewReleases size={20} color="#ff7505" />  }
                     {is_nsfw && <MdOutlineNewReleases size={20} color="#f41818" />  }
+               
                   </div>
                 </Link>
 
@@ -241,6 +243,7 @@ function User() {
                   <div className='flex flex-col'>
                     <div className='text-base font-bold'><TitleWithLimit title={title} maxLength={12}/> </div>
                     {/* <div className='text-xs text-white/50'>{author?.name}</div> */}
+                  
                   </div>
                 </div>
               </motion.div>

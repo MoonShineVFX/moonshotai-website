@@ -5,7 +5,6 @@ import { beforeDisplayModalState, imageDataState,profilePageState,loginState } f
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle,MdInfo } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
-
 import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
   TabsHeader,
   TabsBody,
@@ -53,16 +52,17 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     const remove_activities = data.remove_activities.filter(item=>{
       return item.status === 'remove'
     })
+    console.log(data)
     // console.log(add_activities)
     // console.log(remove_activities)
     let items ={
       title:data.title ||'',
       description:data.description ||null,
       is_user_nsfw:data.is_user_nsfw ||false,
-      display_home:data.display_home ||false,
-
+      display_home:true,
     }
     // console.log(items)
+    // 如果沒有分享的圖直接分享
     handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
   };
   const modalVariants = {
@@ -171,7 +171,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 ">
+            <Tabs value="add" className="px-4 mt-2 hidden" disable={true}>
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>
@@ -321,28 +321,10 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                 control={control}
                 defaultValue={image?.display_home}
                 render={({ field }) => (
-                  <div className="flex mt-4 ">
-                    <label className="inline-flex relative items-center mr-5 cursor-pointer">
-                      <Switch 
-                        ripple={false}
-                        className="h-full w-full checked:bg-[#2ec946]"
-                        containerProps={{
-                          className: "w-11 h-6",
-                        }}
-                        circleProps={{
-                          className: "before:hidden left-0.5 border-none",
-                        }}                    
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)} 
-                        label="分享圖片到藝廊" 
-                        labelProps={{
-                          className:'text-white'
-                        }}
-                      />
-
-
-                    </label>
-                  </div>
+                  <input {...field} 
+                  type="text" 
+                  hidden
+                />
                 )}
               />
               <Controller
