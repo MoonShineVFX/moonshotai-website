@@ -82,8 +82,8 @@ function Post() {
       },
       onSuccess: (gData) => {
         // 成功獲取數據後處理
-        setImageData(gData);
         console.log(gData)
+        setImageData(gData);
         fetchComments(gData).then(data => {
           setComments(data);
           setCommentsResults(data.results);
@@ -138,7 +138,6 @@ function Post() {
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
   const handleCollection = ()=>{
-    console.log('click')
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
      setIsLoginForCollection(true)
@@ -297,7 +296,7 @@ function Post() {
               <div className=' flex justify-center items-center my-4 space-x-2'>
                 <button 
                   className='bg-gray-800 text-white text-sm px-4 py-2 rounded-full flex items-center justify-center space-x-2 '
-                  onClick={()=>handleCopyPrompt(imageData.model,imageData.prompt,imageData.negative_prompt)}
+                  onClick={()=>handleCopyPrompt(imageData.prompt,imageData.negative_prompt)}
                   ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
                 </button>
                 <div className=' flex rounded-full bg-gray-800 space-x-6 px-4 py-2'>
@@ -433,14 +432,7 @@ function Post() {
 
           </div>
 
-          <div className=' hidden flex left-0 space-x-2 justify-center items-center py-4 fixed bottom-0 z-50 w-full bg-gray-800'>
-            <button 
-              className='bg-gray-600 text-white px-2 py-1 rounded-md w-1/2 '
-              onClick={()=>handleCopyPrompt(imageData.prompt,imageData.negative_prompt)}
-              >Copy Prompt {isCopied && <span className='text-xs'> Copied! </span>}</button>
 
-
-          </div>
           
         </div>
       </>

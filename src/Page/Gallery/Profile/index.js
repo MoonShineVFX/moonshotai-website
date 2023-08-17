@@ -7,7 +7,7 @@ import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign,useUpdateUserMutation } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,10 +21,10 @@ import EditImageForm from '../Components/EditImageForm';
 import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
-import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
+import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
-  {title:"Post", display:true,data_name:"total_storages"},
+  {title:"Storage", display:true,data_name:"total_storages"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
@@ -119,6 +119,10 @@ function Index() {
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
+
+  //TODO FETCH USER PROFILE
+
+
   // FETCH Render IMAGE to PAGE 
   const { data: renderData, isLoading:isRenderDataLoading, fetchNextPage:fetchRenderNextPage, hasNextPage, isFetchingNextPage, isError:isRenderDataError, refetch:renderDataRefetch } = useInfiniteQuery(
     [ 'rendersData',currentUser,linLoginData, startDate, currModels],
@@ -145,7 +149,7 @@ function Index() {
     ({ pageParam }) =>
     fetchUserStorages(currentUser.id, linLoginData, pageParam, pageSize, startDate, endDate, currModels),
     {
-      enabled: optionPage === 'Post',
+      enabled: optionPage === 'Storage',
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {
@@ -216,6 +220,26 @@ function Index() {
   };
   const handleRemoveStorage = (newData,status)=>{
     unStorageMutation.mutate({newData,status});
+  }
+  const handleRemoveFromStorage = (image,status)=>{
+    let newData = image
+    //移除分享+移除留存
+    if(image.display_home === true){
+      try {
+        let items ={display_home:false}
+        updateImageMutation.mutate({ image, items, status });
+  
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    try {
+      unStorageMutation.mutate({newData,status});
+    } catch (error) {
+      console.log(error)
+    }
+   
+
   }
 
   const updateImageMutation = useMutation((updatedData) =>{ 
@@ -365,23 +389,24 @@ function Index() {
   const followImages = followData?.pages?.flatMap((pageData) => pageData) ?? [];
 
   // Todo updateUserMutation
-  const updateUserMutation = useMutation((updatedData) =>{ 
-    patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
-   {
-      onSuccess: (data, variables) => { 
-        console.log(variables)
-        queryClient.setQueryData( (prevData) => {
-          console.log(prevData)
-          const newData = prevData.pages.map((page) => ({
-            ...page,
-            results: page.results.map((image) =>
-            image.id === variables.image.id ? { ...image,...variables.items} : image
-            ),
-          }));
-          return { pages: newData };
-        });
-      },  
-    })
+  // const updateUserMutation = useMutation((updatedData) =>{ 
+  //   patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
+  //  {
+  //     onSuccess: (data, variables) => { 
+  //       console.log(data)
+  //       console.log(variables)
+  //       queryClient.setQueryData( (prevData) => {
+  //         console.log(prevData)
+  //         const newData = prevData.pages.map((page) => ({
+  //           ...page,
+  //           results: page.results.map((image) =>
+  //           image.id === variables.image.id ? { ...image,...variables.items} : image
+  //           ),
+  //         }));
+  //         return { pages: newData };
+  //       });
+  //     },  
+  //   })
   // FETCH Campaigns to PAGE 
   const { data: campaignData, isLoading:isCampaignDataLoading, fetchNextPage:fetchCampaignNextPage, hasNextPage: hasCampaignNextPage, isFetchingNextPage:isFetchingCampaignNextPage, isError:isCampaignDataError, refetch:campaignDataRefetch } = useInfiniteQuery(
     [ 'campaignData'],
@@ -407,7 +432,7 @@ function Index() {
       case 'Renders':
         return <MdViewModule size={15} />
         break;
-      case 'Post':
+      case 'Storage':
         return <MdImage size={15}/>
         break;
       case 'Collections':
@@ -470,17 +495,20 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  const updateUserMutation = useUpdateUserMutation();
   const handleSetBanner = (id)=>{
     const items={
       profile_banner_id:id
     }
-    updateUserMutation.mutate({ items });
+    // updateUserMutation.mutate({ items });
+    updateUserMutation.mutate({currentProfile,linLoginData,items})
   }
   const handleSetAvatar = (id)=>{
     const items={
       profile_image_id:id
     }
-    updateUserMutation.mutate({ items });
+    // useUpdateUserMutation);
+    updateUserMutation.mutate({currentProfile,linLoginData,items})
   }
   const handleSetName = ()=>{
     const items={
@@ -681,8 +709,8 @@ function Index() {
     switch (currentDropDownItem.title) {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
-      case 'Post':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} />;
+      case 'Storage':
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
       case 'Following':

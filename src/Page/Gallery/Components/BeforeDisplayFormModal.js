@@ -122,19 +122,22 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
   return (
     <div 
       className=' fixed z-[100] top-0 left-0 w-full '>
-      <div className='bg-black/50 w-full h-screen' onClick={handleEdit}></div>
+      <div className='bg-black/50 w-full h-screen'  onClick={()=>{setIsShowDisplayFormModal(false)}}></div>
       
       <motion.div 
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className= 'bg-gray-900 rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full h-full  pb-20'
+        className= 'bg-gray-900 rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-6/12 h-full  pb-20'
       >
-        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen md:flex-row md:justify-center'>
-          <div className=' pb-3 overflow-hidden overflow-y-auto h-4/5 md:h-full md:w-1/2'>
-            <div className='text-center font-bold'>Check Post Detail </div>
-            <div className='grid grid-cols-2 gap-2 text-white px-4'>
+        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 md:justify-center'>
+          <div className=' pb-3 overflow-hidden overflow-y-auto h-4/5 md:h-full'>
+            <div className='text-center font-bold'>輸入圖片資訊 </div>
+            <div className='grid gap-2 text-white px-4'>
+
               <div className='flex flex-col'>
+                {image?.is_nsfw || image?.is_user_nsfw&& <div className='text-sm text-red-400 mt-2'>這張作品有成人內容，所以無法執行發佈。 nsfw_score:{image.nsfw_score}</div> }
+
                 <label htmlFor="name" className='text-white/50 my-2'>*標題(必填)</label>
                 <Controller
                   name="title"
@@ -165,7 +168,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }} 
-                      className="focus:!border-white !border-t-white"
+                      className="text-white focus:!border-white !border-t-white"
                       placeholder='請輸入簡介'/>
                   )}
                 />
@@ -314,7 +317,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
 
 
-          <div className=' border-t border-gray-800 w-full md:w-1/3 z-50  bg-gray-900 px-4 pb-2 '>
+          <div className=' border-t border-gray-800 w-full  z-50  bg-gray-900 px-4 pb-2 '>
               <Controller
                 name="display_home"
                 control={control}
@@ -329,7 +332,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
 
               <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                <Button type="submit" className='bg-light-green-600 '>儲存送出</Button>
+                <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw || image?.is_user_nsfw}>儲存送出</Button>
                 <button type="button" className='text-white/80' onClick={()=>{
                   setIsShowDisplayFormModal(false)
                 }}>取消</button>
