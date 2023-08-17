@@ -58,7 +58,6 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     let items ={
       title:data.title ||'',
       description:data.description ||null,
-      is_user_nsfw:data.is_user_nsfw ||false,
       display_home:true,
     }
     // console.log(items)
@@ -315,7 +314,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
 
 
-          <div className=' border-t border-gray-800 w-full md:w-1/3 z-50  bg-gray-900 px-4 pb-2 max-h-[80px] '>
+          <div className=' border-t border-gray-800 w-full md:w-1/3 z-50  bg-gray-900 px-4 pb-2 '>
               <Controller
                 name="display_home"
                 control={control}
@@ -327,31 +326,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                 />
                 )}
               />
-              <Controller
-                name="is_user_nsfw"
-                control={control}
-                defaultValue={image?.is_user_nsfw}
-                render={({ field }) => (
-                  <div className="flex mt-4 ">
-                    <Switch 
-                      ripple={false}
-                      className="h-full w-full checked:bg-[#2ec946]"
-                      containerProps={{
-                        className: "w-11 h-6",
-                      }}
-                      circleProps={{
-                        className: "before:hidden left-0.5 border-none",
-                      }}                    
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)} 
-                      label="啟用成人內容標籤" 
-                      labelProps={{
-                        className:'text-white'
-                      }}
-                    />
-                  </div>
-                )}
-              />
+
 
               <div className='mt-6 flex gap-3 justify-center md:justify-start '>
                 <Button type="submit" className='bg-light-green-600 '>儲存送出</Button>
