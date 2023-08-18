@@ -369,7 +369,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
                 <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                  <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw}>發佈</Button>
+                  <Button type="submit" className='bg-light-green-700 ' disabled={image?.is_nsfw}>發佈</Button>
                   <button type="button" className='text-white/80' onClick={()=>{
                     setIsShowDisplayFormModal(false)
                   }}>取消</button>

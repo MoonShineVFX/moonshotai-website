@@ -503,7 +503,6 @@ export const fetchGalleries = async (token,cursor,pageSize,startDate,endDate,cur
 }
 
 export const fetchGalleriesDetail = async (token,id) => {
-  console.log(token? 'e' : '2')
   const requestOptions = {
     method: 'GET',
     headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}

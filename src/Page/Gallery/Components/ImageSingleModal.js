@@ -14,7 +14,6 @@ function ImageSingleModal() {
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
-  console.log(image)
   return (
     <motion.div 
       initial={{ opacity: 0, y: -20 }}

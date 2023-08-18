@@ -251,7 +251,9 @@ function Index() {
         if(variables?.status === 'on_Renderpage'){
           // renderDataRefetch()
           queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+            console.log(prevData)
             const newData = prevData.pages.map((page) => ({
+              
               ...page,
               results: page.results.map((image) =>
                 image.id === variables.image.id ? { ...image,...variables.items} : image
@@ -285,7 +287,6 @@ function Index() {
     {
       onSuccess: (data, variables) => {
         if(variables?.status === 'on_Renderpage'){
-          // renderDataRefetch()
           queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
             const newData = prevData.pages.map((page) => ({
               ...page,
@@ -296,7 +297,6 @@ function Index() {
             return { pages: newData };
           });
         }else{
-          // storageDataRefetch()
           queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
             const newData = prevData.pages.map((page) => ({
               ...page,
@@ -552,10 +552,10 @@ function Index() {
    * start
    * */ 
   const handleSetStorageImage = async(image,items,status,add_activities,remove_activities) =>{
-    console.log(image)
     // console.log(image.is_storage,status)
     if(!image.is_storage){
       // console.log(image.is_storage)
+      console.log('here')
       const newData = { ...image, is_storage: !image.is_storage  }; 
       try{
         await storageMutation.mutateAsync({newData});
@@ -564,6 +564,7 @@ function Index() {
         return;
       }
       try {
+        console.log(items)
         await updateImageMutation.mutateAsync({ image, items, status });
       } catch (error) {
         console.error('Image update failed:', error);
@@ -575,6 +576,7 @@ function Index() {
         mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
+      
       updateImageMutation.mutate({ image, items, status });
       if(add_activities.length > 0){
         mapImageToCampaign(image.id,add_activities,status)

@@ -90,7 +90,6 @@ function Post() {
       },
       onSuccess: (gData) => {
         // 成功獲取數據後處理
-        console.log(gData)
         setImageData(gData);
         fetchComments(gData).then(data => {
           setComments(data);
@@ -395,7 +394,7 @@ function Post() {
                   </div>
                 </div>
               }
-              {imageData?.campaigns && 
+              {imageData?.campaigns === '12' && 
                 <div className='mt-1'>
                   <div className='text-white/70 font-semibold my-3 pt-5'>參與投稿</div>
                   <Card className="w-96 bg-gray-900 text-white">
