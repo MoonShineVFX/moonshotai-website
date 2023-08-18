@@ -104,12 +104,7 @@ function Index() {
         if(data.isLogin){
             console.log('profilePage is login:', data.isLogin)
             setToken(loginToken)
-            // handleRenders(user.id ,loginToken,1,pageSize,startDate,endDate,currModels).then((d)=>{
-            //   console.log(d)
-            // })
-
         }else{
-          // initializeLineLogin()
         }
         
       })
@@ -118,10 +113,6 @@ function Index() {
       devLogin()
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
-
-
-  //TODO FETCH USER PROFILE
-
 
   // FETCH Render IMAGE to PAGE 
   const { data: renderData, isLoading:isRenderDataLoading, fetchNextPage:fetchRenderNextPage, hasNextPage, isFetchingNextPage, isError:isRenderDataError, refetch:renderDataRefetch } = useInfiniteQuery(
@@ -253,8 +244,6 @@ function Index() {
         setIsShowDisplayFormModal(false);
       },
   });
-
-
 
   //POST IMAGE campaigns
   const postImgtoCampaignMutation = useMutation((updatedData)=>{
