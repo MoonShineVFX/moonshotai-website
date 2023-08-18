@@ -86,8 +86,8 @@ function App() {
           <Route path="/" element={<GalleryHomePageLayout/> }>
 
             <Route path="gallery" element={<Gallery />} />
-            <Route path="campaign" element={<CampaignGallery />} />
-            <Route path="campaign/:id"  element={<CampaignList />} />
+            {/* <Route path="campaign" element={<CampaignGallery />} /> */}
+            {/* <Route path="campaign/:id"  element={<CampaignList />} /> */}
           </Route>
 
           <Route path="taiwanfood" element={<TaiwanFood />} />

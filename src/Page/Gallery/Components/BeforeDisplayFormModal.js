@@ -58,6 +58,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     let items ={
       title:data.title ||'',
       description:data.description ||null,
+      is_user_nsfw:data.is_user_nsfw ||false,
       display_home:true,
     }
     // console.log(items)
@@ -142,7 +143,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             <div className='grid gap-2 text-white px-4'>
 
               <div className='flex flex-col'>
-                {image?.is_nsfw || image?.is_user_nsfw&& <div className='text-sm text-red-400 mt-2'>這張作品有成人內容，所以無法執行發佈。 nsfw_score:{image.nsfw_score}</div> }
+                {image?.is_nsfw && <div className='text-sm text-red-400 mt-2 text-center'>這張作品有成人內容，所以無法執行發佈。</div> }
 
                 <label htmlFor="name" className='text-white/50 my-2'>*標題(必填)</label>
                 <Controller
@@ -179,7 +180,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 " >
+            <Tabs value="add" className="px-4 mt-2 hidden" disabled="true" >
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>
@@ -194,7 +195,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     </div>
                   </Tab>
               </TabsHeader>
-              <TabsBody className='border rounded-md border-white/50 mt-2'>
+              <TabsBody className='border rounded-md border-white/50 mt-2 ' >
                   <TabPanel  key='add' value={'add'}>
                     <div className='text-white text-sm my-1'>如該活動有外連網址，可於下方欄位填入。</div>
                     <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
@@ -340,13 +341,42 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                 />
                 )}
               />
+              <div className='flex items-center justify-between'>
 
-              <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw || image?.is_user_nsfw}>發佈分享</Button>
-                <button type="button" className='text-white/80' onClick={()=>{
-                  setIsShowDisplayFormModal(false)
-                }}>取消</button>
+                <Controller
+                  name="is_user_nsfw"
+                  control={control}
+                  defaultValue={image?.is_user_nsfw}
+                  render={({ field }) => (
+                    <div className="flex mt-4 ">
+                      <Switch 
+                        ripple={false}
+                        className="h-full w-full checked:bg-[#2ec946]"
+                        containerProps={{
+                          className: "w-11 h-6",
+                        }}
+                        circleProps={{
+                          className: "before:hidden left-0.5 border-none",
+                        }}                    
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)} 
+                        label="啟用成人內容標籤" 
+                        labelProps={{
+                          className:'text-white text-sm'
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+                <div className='mt-6 flex gap-3 justify-center md:justify-start '>
+                  <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw}>發佈分享</Button>
+                  <button type="button" className='text-white/80' onClick={()=>{
+                    setIsShowDisplayFormModal(false)
+                  }}>取消</button>
+                </div>
               </div>
+
+
           </div>
 
 
