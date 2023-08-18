@@ -39,8 +39,9 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     ({ pageParam }) =>
       getImgInCampaign(image,linLoginData),
     {
-     onSuccess:(data)=>{
-      setImgCampaignsData(data)
+      enabled:false,
+      onSuccess:(data)=>{
+        setImgCampaignsData(data)
 
      }
     }
@@ -52,7 +53,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     const remove_activities = data.remove_activities.filter(item=>{
       return item.status === 'remove'
     })
-    console.log(data)
+    // console.log(data)
     // console.log(add_activities)
     // console.log(remove_activities)
     let items ={
