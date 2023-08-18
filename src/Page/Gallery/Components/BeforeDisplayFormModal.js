@@ -133,7 +133,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       >
         <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 ju md:justify-center'>
           <div className=' pb-3 overflow-hidden overflow-y-auto h-full md:h-full'>
-            <div className='text-center font-bold'>輸入圖片資訊 </div>
+            <div className='text-center font-bold'>分享圖片至藝廊 </div>
             <Typography
               variant="small"
               className="mt-1 px-6 flex flex-col items-center   justify-center gap-1 font-normal text-gray-300 text-xs"
@@ -176,7 +176,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                         className: "before:content-none after:content-none",
                       }} 
                       className="text-white focus:!border-white !border-t-white"
-                      placeholder='請輸入簡介'/>
+                      placeholder='介紹你的作品吧！'/>
                   )}
                 />
             </div>
@@ -253,7 +253,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                                             labelProps={{
                                               className: ' hidden'
                                             }}
-                                            placeholder="推廣網址"
+                                            placeholder="輸入外部活動網站網址"
                                           />
                                         )}
                                       />
@@ -369,7 +369,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
                 <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                  <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw}>發佈分享</Button>
+                  <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw}>發佈</Button>
                   <button type="button" className='text-white/80' onClick={()=>{
                     setIsShowDisplayFormModal(false)
                   }}>取消</button>
