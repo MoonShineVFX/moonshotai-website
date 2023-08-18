@@ -20,14 +20,14 @@ function ImageSingleModal() {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className=" fixed z-30 w-full min-h-full h-auto top-0 left-0 bg-gray-900 md:w-12/12  space-x-0  md:space-x-10 mx-auto  text-white  flex flex-col md:flex-row" 
+      className=" fixed z-30 w-full min-h-full h-auto top-0 left-0 bg-black md:w-12/12  space-x-0  md:space-x-10 mx-auto  text-white  flex flex-col md:flex-row" 
       key={image.id} 
     >
         <button  
           onClick={()=>{
             setIsShowModal(false)
           }} 
-          className='fixed top-3 left-3 text-white rounded-full  bg-black '>
+          className='fixed top-3 left-3 text-white rounded-full  bg-gray-900 '>
           <MdKeyboardArrowLeft size={32} />
         </button>
       <div className="flex flex-col  justify-center items-center md:justify-start  max-w-full md:py-6 max-h-[100vh] relative ">

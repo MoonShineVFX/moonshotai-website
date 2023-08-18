@@ -16,7 +16,7 @@ const bannerData = [
 
  const pageLinkItems = [
   {title:'最新創作',path:'/gallery'},
-  // {title:'活動作品',path:'/campaign'},
+  {title:'活動作品',path:'/campaign'},
  ]
 const GalleryHomePageLayout = () => {
   const location = useLocation();

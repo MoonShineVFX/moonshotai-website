@@ -24,7 +24,8 @@ const filterModelsDate = [
   {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
-  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
+  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
+  {title:'XL',type:'Models',command:'models',value:'sdxl'}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -142,16 +143,7 @@ function Index() {
 
       }
   };
-  // const debouncedHandleScroll = debounce(handleScroll, 500);
-  
-  // useEffect(() => {
-  //   // 監聽滾動事件
-  //   window.addEventListener('scroll', handleScroll);
-  //   return () => {
-  //     // 在組件卸載時移除滾動事件監聽器
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器
+
 
 
   return (

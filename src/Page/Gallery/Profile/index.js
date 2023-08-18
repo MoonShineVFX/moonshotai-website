@@ -569,18 +569,18 @@ function Index() {
         console.error('Image update failed:', error);
       }
       if(add_activities.length > 0){
-        // mapImageToCampaign(image.id,add_activities,status)
+        mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
       updateImageMutation.mutate({ image, items, status });
       if(add_activities.length > 0){
-        // mapImageToCampaign(image.id,add_activities,status)
+        mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }
 

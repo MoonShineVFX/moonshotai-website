@@ -128,10 +128,10 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className= 'bg-gray-900 rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-6/12 h-full  pb-20'
+        className= 'bg-black rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-6/12 h-full '
       >
-        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 md:justify-center'>
-          <div className=' pb-3 overflow-hidden overflow-y-auto h-4/5 md:h-full'>
+        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 ju md:justify-center'>
+          <div className=' pb-3 overflow-hidden overflow-y-auto h-full md:h-full'>
             <div className='text-center font-bold'>輸入圖片資訊 </div>
             <div className='grid gap-2 text-white px-4'>
 
@@ -173,7 +173,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 hidden" disable={true}>
+            <Tabs value="add" className="px-4 mt-2 " >
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>
@@ -191,7 +191,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <TabsBody className='border rounded-md border-white/50 mt-2'>
                   <TabPanel  key='add' value={'add'}>
                     <div className='text-white text-sm my-1'>如該活動有外連網址，可於下方欄位填入。</div>
-                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
                       {campaignsData.map((item,index) => {
                         const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         const isActive =  selectedActivityIds.includes(item.id);
@@ -201,65 +201,70 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                         }
                         return(
                           <li key={item.id} className='w-full'>
-                            <div className='bg-gray-800  rounded-md flex items-center justify-start px-0 w-full'>
-                              <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full pl-3 '>
-                                {isActive && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
-                                <Typography color="white" className=' text-sm font-semibold '>
-                                  {item.name} 
-                                </Typography>
-
-                              </label>  
-                              <Checkbox
-                                id={'aa'+item.name}
-                                defaultChecked={selectedActivityIds.includes(item.id)}
-                                onChange={() => handleActivityClick(item.id)}
-                                color="light-green"
-                                className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
-
-                              />
-                              <Controller
-                                name={`add_activities[${index}].campaign_id`}
-                                control={control}
-                                defaultValue={item?.id || ''}
-                                render={({ field }) => (
-                                  <input {...field} 
-                                    type="text" 
-                                    hidden
-                                  />
-                                )}
-                              />
-            
-                            </div>
-                            {item.has_link  && (
-                              <div className="mt-1">
-
-                                  <Controller
-                                    name={`add_activities[${index}].link`}
-                                    control={control}
-                                    defaultValue={item?.link}
-                                    rules={{ required: false }}
-                                    render={({ field }) => (
-                                      <Input {...field} 
-                                        type="url" 
-                                        label=""
-                                        className="!border !border-gray-300 text-white shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-white focus:ring-gray-900/10"
-                                        labelProps={{
-                                          className: ' hidden'
-                                        }}
-                                        placeholder="推廣網址"
-                                      />
-                                    )}
-                                  />
-                                  <Typography
-                                    variant="small"
-                                    className="mt-2 flex items-center gap-1 font-normal text-gray-300"
-                                  >
-                                    <MdInfo />
-                                    
-                                    請輸入活動的外連網址如果有。
+                            <div className='bg-gray-900 rounded-md p-2'>
+                              <div className='   flex items-center justify-start px-0 w-full'>
+                                <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full '>
+                                  {isActive && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
+                                  <Typography color="white" className=' text-sm font-semibold w-full cursor-pointer '>
+                                    {item.name} 
                                   </Typography>
+
+                                </label>  
+                                <Checkbox
+                                  id={'aa'+item.name}
+                                  defaultChecked={selectedActivityIds.includes(item.id)}
+                                  onChange={() => handleActivityClick(item.id)}
+                                  color="light-green"
+                                  className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
+
+                                />
+                                <Controller
+                                  name={`add_activities[${index}].campaign_id`}
+                                  control={control}
+                                  defaultValue={item?.id || ''}
+                                  render={({ field }) => (
+                                    <input {...field} 
+                                      type="text" 
+                                      hidden
+                                    />
+                                  )}
+                                />
                               </div>
-                            )}
+                              {item.has_link  && (
+                                  <div className="mt-1">
+
+                                      <Controller
+                                        name={`add_activities[${index}].link`}
+                                        control={control}
+                                        defaultValue={item?.link}
+                                        rules={{ required: false }}
+                                        render={({ field }) => (
+                                          <Input {...field} 
+                                            type="url" 
+                                            label=""
+                                            className="!border !border-gray-300 text-white shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-white focus:ring-gray-900/10"
+                                            labelProps={{
+                                              className: ' hidden'
+                                            }}
+                                            placeholder="推廣網址"
+                                          />
+                                        )}
+                                      />
+                                      <Typography
+                                        variant="small"
+                                        className="mt-2 flex items-center gap-1 font-normal text-gray-300"
+                                      >
+                                        <MdInfo />
+                                        
+                                        請輸入活動的外連網址如果有。
+                                      </Typography>
+                                  </div>
+                                )}
+                            </div>
+
+            
+   
+
                           </li>
                         )}
                       )}
@@ -267,7 +272,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   </TabPanel>
                   <TabPanel  key='isExisted' value={'isExisted'}>
                     <div className='text-white text-sm my-1'>已參加的活動，可取消。</div>
-                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[330px] overflow-hidden overflow-y-auto pr-3'>
                       {imgCampaignsData.map((item,index) => {
                         // const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         // const isExisted = image.campaigns.includes(item.id); 
@@ -317,7 +322,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
 
 
-          <div className=' border-t border-gray-800 w-full  z-50  bg-gray-900 px-4 pb-2 '>
+          <div className=' border-t border-gray-800 w-full  z-50  bg-black px-4 pb-2 '>
               <Controller
                 name="display_home"
                 control={control}
