@@ -165,36 +165,14 @@ function Index() {
 
   // ADD  Render data to STORAGE
   const queryClient = useQueryClient();
+
   const storageMutation = useMutation((updatedData) => {
     // 在此處呼叫 API 更新圖片內容
-    console.log(updatedData.newData)
+    // console.log(updatedData.newData)
     return userStorageAImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
   }, {
     // 定義更新成功後的行為
     onSuccess: (data, variables) => {
-      console.log(variables)
-      if(data.message === "You have reached the storage limits"){
-        toast('留存圖片已到達可用上限。', {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          });
-        return
-      }
-      renderDataRefetch()
-    
-      setIsShowDisplayFormModal(false);
-      
-      // if(variables?.isDisplay?.status === 'on_Renderpage'){
-      //   console.log('on_Renderpage')
-      //   updateImageMutation.mutate({ image: variables.isDisplay.image, items: variables.isDisplay.items, status: variables.isDisplay.status });
-      // }
-
       
     },
   });
@@ -247,11 +225,11 @@ function Index() {
     {
       onSuccess: (data, variables) => {
         // 執行更新成功後的操作
-        console.log(variables)
         if(variables?.status === 'on_Renderpage'){
           // renderDataRefetch()
           queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
             const newData = prevData.pages.map((page) => ({
+              
               ...page,
               results: page.results.map((image) =>
                 image.id === variables.image.id ? { ...image,...variables.items} : image
@@ -285,7 +263,6 @@ function Index() {
     {
       onSuccess: (data, variables) => {
         if(variables?.status === 'on_Renderpage'){
-          // renderDataRefetch()
           queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
             const newData = prevData.pages.map((page) => ({
               ...page,
@@ -296,7 +273,6 @@ function Index() {
             return { pages: newData };
           });
         }else{
-          // storageDataRefetch()
           queryClient.setQueryData([ 'storageData',currentUser,linLoginData, startDate, currModels], (prevData) => {
             const newData = prevData.pages.map((page) => ({
               ...page,
@@ -413,7 +389,7 @@ function Index() {
     ({ pageParam }) =>
     fetchCampaigns(),
     {
-      enabled: isShowBeforeDisplayModal,
+      enabled: isShowBeforeDisplayModal && false,
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {
@@ -552,10 +528,8 @@ function Index() {
    * start
    * */ 
   const handleSetStorageImage = async(image,items,status,add_activities,remove_activities) =>{
-    console.log(image)
     // console.log(image.is_storage,status)
     if(!image.is_storage){
-      // console.log(image.is_storage)
       const newData = { ...image, is_storage: !image.is_storage  }; 
       try{
         await storageMutation.mutateAsync({newData});
@@ -575,7 +549,8 @@ function Index() {
         // mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
-      updateImageMutation.mutate({ image, items, status });
+      
+      await updateImageMutation.mutateAsync({ image, items, status });
       if(add_activities.length > 0){
         // mapImageToCampaign(image.id,add_activities,status)
       }

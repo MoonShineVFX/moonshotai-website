@@ -39,8 +39,9 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     ({ pageParam }) =>
       getImgInCampaign(image,linLoginData),
     {
-     onSuccess:(data)=>{
-      setImgCampaignsData(data)
+      enabled:false,
+      onSuccess:(data)=>{
+        setImgCampaignsData(data)
 
      }
     }
@@ -52,12 +53,13 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     const remove_activities = data.remove_activities.filter(item=>{
       return item.status === 'remove'
     })
-    console.log(data)
+    // console.log(data)
     // console.log(add_activities)
     // console.log(remove_activities)
     let items ={
       title:data.title ||'',
       description:data.description ||null,
+      is_user_nsfw:data.is_user_nsfw ||false,
       display_home:true,
     }
     // console.log(items)
@@ -128,15 +130,21 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         initial={{ opacity: 0, y: -20 ,x:'-50%'}}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className= 'bg-gray-900 rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-6/12 h-full  pb-20'
+        className= 'bg-black rounded-lg box-border text-white fixed top-0 left-1/2 -translate-x-1/2 w-full md:w-6/12 h-full '
       >
-        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 md:justify-center'>
-          <div className=' pb-3 overflow-hidden overflow-y-auto h-4/5 md:h-full'>
-            <div className='text-center font-bold'>輸入圖片資訊 </div>
+        <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 ju md:justify-center'>
+          <div className=' pb-3 overflow-hidden overflow-y-auto h-full md:h-full'>
+            <div className='text-center font-bold'>分享圖片至藝廊 </div>
+            <Typography
+              variant="small"
+              className="mt-1 px-6 flex flex-col items-center   justify-center gap-1 font-normal text-gray-300 text-xs"
+            >
+              提醒您 Moonshot 藝廊禁止公開分享未符合規範的內容。 <a href="/docs/terms" target='_blank' className='text-teal-200'>詳見使用條款。</a>
+            </Typography>
             <div className='grid gap-2 text-white px-4'>
 
               <div className='flex flex-col'>
-                {image?.is_nsfw || image?.is_user_nsfw&& <div className='text-sm text-red-400 mt-2'>這張作品有成人內容，所以無法執行發佈。 nsfw_score:{image.nsfw_score}</div> }
+                {image?.is_nsfw && <div className='text-sm text-red-400 mt-2 text-center'>這張作品有成人內容，所以無法執行發佈。</div> }
 
                 <label htmlFor="name" className='text-white/50 my-2'>*標題(必填)</label>
                 <Controller
@@ -169,11 +177,11 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                         className: "before:content-none after:content-none",
                       }} 
                       className="text-white focus:!border-white !border-t-white"
-                      placeholder='請輸入簡介'/>
+                      placeholder='介紹你的作品吧！'/>
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 hidden" disable={true}>
+            <Tabs value="add" className="px-4 mt-2 hidden" disabled="true" >
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>
@@ -188,10 +196,10 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     </div>
                   </Tab>
               </TabsHeader>
-              <TabsBody className='border rounded-md border-white/50 mt-2'>
+              <TabsBody className='border rounded-md border-white/50 mt-2 ' >
                   <TabPanel  key='add' value={'add'}>
                     <div className='text-white text-sm my-1'>如該活動有外連網址，可於下方欄位填入。</div>
-                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
                       {campaignsData.map((item,index) => {
                         const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         const isActive =  selectedActivityIds.includes(item.id);
@@ -201,65 +209,70 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                         }
                         return(
                           <li key={item.id} className='w-full'>
-                            <div className='bg-gray-800  rounded-md flex items-center justify-start px-0 w-full'>
-                              <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full pl-3 '>
-                                {isActive && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
-                                <Typography color="white" className=' text-sm font-semibold '>
-                                  {item.name} 
-                                </Typography>
-
-                              </label>  
-                              <Checkbox
-                                id={'aa'+item.name}
-                                defaultChecked={selectedActivityIds.includes(item.id)}
-                                onChange={() => handleActivityClick(item.id)}
-                                color="light-green"
-                                className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
-
-                              />
-                              <Controller
-                                name={`add_activities[${index}].campaign_id`}
-                                control={control}
-                                defaultValue={item?.id || ''}
-                                render={({ field }) => (
-                                  <input {...field} 
-                                    type="text" 
-                                    hidden
-                                  />
-                                )}
-                              />
-            
-                            </div>
-                            {item.has_link  && (
-                              <div className="mt-1">
-
-                                  <Controller
-                                    name={`add_activities[${index}].link`}
-                                    control={control}
-                                    defaultValue={item?.link}
-                                    rules={{ required: false }}
-                                    render={({ field }) => (
-                                      <Input {...field} 
-                                        type="url" 
-                                        label=""
-                                        className="!border !border-gray-300 text-white shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-white focus:ring-gray-900/10"
-                                        labelProps={{
-                                          className: ' hidden'
-                                        }}
-                                        placeholder="推廣網址"
-                                      />
-                                    )}
-                                  />
-                                  <Typography
-                                    variant="small"
-                                    className="mt-2 flex items-center gap-1 font-normal text-gray-300"
-                                  >
-                                    <MdInfo />
-                                    
-                                    請輸入活動的外連網址如果有。
+                            <div className='bg-gray-900 rounded-md p-2'>
+                              <div className='   flex items-center justify-start px-0 w-full'>
+                                <label htmlFor={'aa'+item.name} className='flex items-center justify-start space-x-3 w-full '>
+                                  {isActive && <Chip size="sm" color="green" value="投稿" className='bg-light-green-600 ' />}
+                                  <Typography color="white" className=' text-sm font-semibold w-full cursor-pointer '>
+                                    {item.name} 
                                   </Typography>
+
+                                </label>  
+                                <Checkbox
+                                  id={'aa'+item.name}
+                                  defaultChecked={selectedActivityIds.includes(item.id)}
+                                  onChange={() => handleActivityClick(item.id)}
+                                  color="light-green"
+                                  className=" rounded-full border-white-900/20 bg-gray-300 transition-all hover:scale-105 hover:before:opacity-0 "
+
+                                />
+                                <Controller
+                                  name={`add_activities[${index}].campaign_id`}
+                                  control={control}
+                                  defaultValue={item?.id || ''}
+                                  render={({ field }) => (
+                                    <input {...field} 
+                                      type="text" 
+                                      hidden
+                                    />
+                                  )}
+                                />
                               </div>
-                            )}
+                              {item.has_link  && (
+                                  <div className="mt-1">
+
+                                      <Controller
+                                        name={`add_activities[${index}].link`}
+                                        control={control}
+                                        defaultValue={item?.link}
+                                        rules={{ required: false }}
+                                        render={({ field }) => (
+                                          <Input {...field} 
+                                            type="url" 
+                                            label=""
+                                            className="!border !border-gray-300 text-white shadow-lg shadow-gray-900/5 ring-4 ring-transparent placeholder:text-gray-500 focus:!border-white focus:ring-gray-900/10"
+                                            labelProps={{
+                                              className: ' hidden'
+                                            }}
+                                            placeholder="輸入外部活動網站網址"
+                                          />
+                                        )}
+                                      />
+                                      <Typography
+                                        variant="small"
+                                        className="mt-2 flex items-center gap-1 font-normal text-gray-300"
+                                      >
+                                        <MdInfo />
+                                        
+                                        請輸入活動的外連網址如果有。
+                                      </Typography>
+                                  </div>
+                                )}
+                            </div>
+
+            
+   
+
                           </li>
                         )}
                       )}
@@ -267,7 +280,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   </TabPanel>
                   <TabPanel  key='isExisted' value={'isExisted'}>
                     <div className='text-white text-sm my-1'>已參加的活動，可取消。</div>
-                    <ul className='grid grid-cols-1 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
+                    <ul className='grid grid-cols-1 md: gap-3 max-h-[330px] overflow-hidden overflow-y-auto pr-3'>
                       {imgCampaignsData.map((item,index) => {
                         // const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         // const isExisted = image.campaigns.includes(item.id); 
@@ -317,7 +330,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
 
 
 
-          <div className=' border-t border-gray-800 w-full  z-50  bg-gray-900 px-4 pb-2 '>
+          <div className=' border-t border-gray-800 w-full  z-50  bg-black px-4 pb-2 '>
               <Controller
                 name="display_home"
                 control={control}
@@ -329,14 +342,42 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                 />
                 )}
               />
+              <div className='flex items-center justify-between'>
 
-
-              <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw || image?.is_user_nsfw}>儲存送出</Button>
-                <button type="button" className='text-white/80' onClick={()=>{
-                  setIsShowDisplayFormModal(false)
-                }}>取消</button>
+                <Controller
+                  name="is_user_nsfw"
+                  control={control}
+                  defaultValue={image?.is_user_nsfw}
+                  render={({ field }) => (
+                    <div className="flex mt-4 ">
+                      <Switch 
+                        ripple={false}
+                        className="h-full w-full checked:bg-[#2ec946]"
+                        containerProps={{
+                          className: "w-11 h-6",
+                        }}
+                        circleProps={{
+                          className: "before:hidden left-0.5 border-none",
+                        }}                    
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)} 
+                        label="啟用成人內容標籤" 
+                        labelProps={{
+                          className:'text-white text-sm'
+                        }}
+                      />
+                    </div>
+                  )}
+                />
+                <div className='mt-6 flex gap-3 justify-center md:justify-start '>
+                  <Button type="submit" className='bg-light-green-700 ' disabled={image?.is_nsfw}>發佈</Button>
+                  <button type="button" className='text-white/80' onClick={()=>{
+                    setIsShowDisplayFormModal(false)
+                  }}>取消</button>
+                </div>
               </div>
+
+
           </div>
 
 

@@ -370,14 +370,16 @@ function Index() {
               name="isNsfw"
               control={control}
               defaultValue={currentProfile && currentProfile.display_nsfw}
+              disabled
               render={({ field }) => (
-                <div className="flex mt-4 ">
+                <div className="flex mt-4 hidden">
                   <label className="inline-flex relative items-center mr-5 cursor-pointer">
                     <input
                       type="checkbox"
-                      className="sr-only peer"
+                      className="sr-only peer "
                       checked={field.value}
                       onChange={(e) => field.onChange(e.target.checked)}
+                      disabled
                     />
                     <div
                       className={`w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-green-300 ${
