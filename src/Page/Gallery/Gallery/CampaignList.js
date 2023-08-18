@@ -5,7 +5,7 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
-import {getStoredLocalData,fetchCampaignImages} from '../helpers/fetchHelper'
+import {getStoredLocalData,fetchCampaignImages,fetchCampaigns} from '../helpers/fetchHelper'
 import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
 
 import { FaHeart } from "react-icons/fa";
@@ -20,6 +20,7 @@ function CampaignList() {
 
   const [pageSize, setPageSize] = useState(20)
   const [isInitialized, setIsInitialized] = useState(false);
+  const [ currentCampign , setCurrentCampaign] = useState({})
   const navigate = useNavigate();
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -53,9 +54,23 @@ function CampaignList() {
     }
   );
   const campaignImageData = campaignImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
-  console.log(campaignImageData)
+  const { data:campaigns, isLoading:isCampaignsLoading, isError:isCampaignsError, refetch:campaignsRefetch } = useQuery(
+    [ 'campaigns'],
+    ({ pageParam }) =>
+      fetchCampaigns(),
+    {
+     onSuccess:(data)=>{
+     const filterCamp = data.filter((item)=>{
+        return item.id === Number(id)
+      })
+      setCurrentCampaign(filterCamp[0])
+
+     }
+    }
+  );
   return (
-    <div>CampaignList {id}
+    <div>
+        <div className='text-white text-lg my-6 font-semibold '>{currentCampign?.name}</div>
         <Masonry
           breakpointCols={{
             default: 5,
@@ -65,6 +80,7 @@ function CampaignList() {
           className="my-masonry-grid"
           columnClassName="my-masonry-grid_column"
         >
+ 
           {campaignImageData.map((image,index)=>{
             const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
             return (

@@ -133,6 +133,12 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
         <form onSubmit={handleSubmit(onSubmit)} className=' relative flex flex-col h-screen py-4 ju md:justify-center'>
           <div className=' pb-3 overflow-hidden overflow-y-auto h-full md:h-full'>
             <div className='text-center font-bold'>輸入圖片資訊 </div>
+            <Typography
+              variant="small"
+              className="mt-1 px-6 flex flex-col items-center   justify-center gap-1 font-normal text-gray-300 text-xs"
+            >
+              提醒您 Moonshot 藝廊禁止公開分享未符合規範的內容。 <a href="/docs/terms" target='_blank' className='text-teal-200'>詳見使用條款。</a>
+            </Typography>
             <div className='grid gap-2 text-white px-4'>
 
               <div className='flex flex-col'>
@@ -272,7 +278,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   </TabPanel>
                   <TabPanel  key='isExisted' value={'isExisted'}>
                     <div className='text-white text-sm my-1'>已參加的活動，可取消。</div>
-                    <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[330px] overflow-hidden overflow-y-auto pr-3'>
+                    <ul className='grid grid-cols-1 md: gap-3 max-h-[330px] overflow-hidden overflow-y-auto pr-3'>
                       {imgCampaignsData.map((item,index) => {
                         // const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         // const isExisted = image.campaigns.includes(item.id); 
@@ -335,9 +341,8 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                 )}
               />
 
-
               <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw || image?.is_user_nsfw}>儲存送出</Button>
+                <Button type="submit" className='bg-light-green-600 ' disabled={image?.is_nsfw || image?.is_user_nsfw}>發佈分享</Button>
                 <button type="button" className='text-white/80' onClick={()=>{
                   setIsShowDisplayFormModal(false)
                 }}>取消</button>

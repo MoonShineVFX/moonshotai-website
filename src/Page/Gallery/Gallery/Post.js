@@ -13,6 +13,14 @@ import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
 import moment from 'moment';
 import EditCommentForm from '../Components/EditCommentForm';
+import {
+  List,
+  ListItem,
+  ListItemPrefix,
+  Avatar,
+  Card,
+  Typography,
+} from "@material-tailwind/react";
 import { useQuery, useMutation,useInfiniteQuery } from 'react-query';
 function Post() {
   const { id } = useParams();
@@ -344,7 +352,7 @@ function Post() {
               </div>
               <div className='text-white/70 font-semibold my-3 pt-5'>Negative prompt 反向提示詞</div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-              <div className='p-3'>{imageData?.negative_prompt}</div>
+                <div className='p-3'>{imageData?.negative_prompt}</div>
               </div>
               <div className='mt-5 grid gap-4 grid-cols-2'>
                 <div className='text-white font-semibold my-1 flex flex-col gap-2'>
@@ -381,9 +389,41 @@ function Post() {
               {imageData?.description && 
                 <div className='my- border-b border-white/30 pb-6 pt-6'>
                   <div className='text-white/70 font-semibold my-1 '>Description</div>
+                  
                   <div className=' relative rounded-md whitespace-normal break-words '>
                     <div className='p-2'>{imageData?.description}</div>
                   </div>
+                </div>
+              }
+              {imageData?.campaigns && 
+                <div className='mt-1'>
+                  <div className='text-white/70 font-semibold my-3 pt-5'>參與投稿</div>
+                  <Card className="w-96 bg-gray-900 text-white">
+                    <List>
+                    {imageData?.campaigns.map((item,index)=>{
+                      return(
+                        <ListItem className='hover:bg-gray-800'>
+                          <ListItemPrefix>
+                           <div className='bg-amber-800 rounded-full aspect-square w-8 text-black/80 flex justify-center items-center'> {item.name.substr(0,1)}</div>
+                          </ListItemPrefix>
+                          <div>
+                            <Typography variant="h6" color="white">
+                              <a href={`/campaign/${item.id}`}>{item.name}</a>
+                            </Typography>
+                            <Typography variant="small"  className="font-normal text-white/70">
+                              <a href={item.link} target='_blank' >{item.link}</a> 
+                            </Typography>
+                          </div>
+                        </ListItem>
+                      )
+                      })
+                    }
+                    </List>
+                  </Card>
+
+
+            
+
                 </div>
               }
               {/* Comment area */}
