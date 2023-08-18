@@ -35,11 +35,11 @@ const GalleryHomePageLayout = () => {
           }}
           >
           {
-            bannerData?.map((item)=>{
+            bannerData?.map((item,index)=>{
               
               return(
                 <SwiperSlide>
-                  <Link to={item.path}>
+                  <Link to={item.path} key={'banner'+index}>
                     <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md' />
                   </Link>
                 </SwiperSlide>
@@ -50,9 +50,9 @@ const GalleryHomePageLayout = () => {
       </div>
       <div className='text-white text-xl  mb-3 font-bold flex space-x-6'>
         {
-          pageLinkItems.map((item)=>{
+          pageLinkItems.map((item,index)=>{
             return(
-              <Link to={item.path} className={`pb-2  ${location.pathname === item.path ? ' text-white border-b': ' text-white/70'}` }>{item.title}</Link>
+              <Link to={item.path} key={'pagelink'+index} className={`pb-2  ${location.pathname === item.path ? ' text-white border-b': ' text-white/70'}` }>{item.title}</Link>
             )
             })
         }

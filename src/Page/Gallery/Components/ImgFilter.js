@@ -1,7 +1,11 @@
 import React, { useState, useEffect }  from 'react'
 import { MdKeyboardArrowDown,MdAccessTime } from "react-icons/md";
 import {motion,AnimatePresence} from 'framer-motion'
-import { Button } from "@material-tailwind/react";
+import { 
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,Button } from "@material-tailwind/react";
 import { Icon } from '../helpers/componentsHelper';
 function ImgFilter({filterItems,defaultIndex,onHandleSelect,icon}) {
   const [currentFilterDateItem, setCurrentFilterDateItem] = useState(filterItems[defaultIndex])
@@ -37,48 +41,36 @@ function ImgFilter({filterItems,defaultIndex,onHandleSelect,icon}) {
     )
   }
 return ( 
-    <div className=' relative   '>
-      <Button className="flex items-center gap-1 rounded-full px-3 py-2" onClick={toggleDropdown}>
-        <Icon nameIcon={icon} propsIcon={{ size: 20 }} /> 
-        {currentFilterDateItem.title}
-      </Button>
+    <Menu className=' relative   ' placement="bottom-end">
+      <MenuHandler >  
+        <Button className="flex items-center justify-center gap-1  rounded-full py-2 px-1 min-w-[75px] " >
+          <Icon nameIcon={icon} propsIcon={{ size: 20 }} /> 
+          {currentFilterDateItem.title}
+        </Button>
+      </MenuHandler>
+      <MenuList className='bg-gray-900 text-white border-0 p-2 min-w-[100px]' >
 
-      {/* <div 
-        className='text-white px-2 py-2 bg-gray-800  rounded-full flex  justify-center items-center min-w-[70px]'
-        onClick={toggleDropdown}
-      >
-        <div className=' absolute text-xs -top-4 left-1 hidden'>{currentFilterDateItem.type}</div>
-        <MdAccessTime size={18}/><span className=' rounded-xl px-0 ml-1 text-xs'>{currentFilterDateItem.title} </span> 
-      </div> */}
-        <motion.div
-          className={`fixed w-full h-screen top-0 left-0 bg-black/30 z-20 ${isDropDownOpen ? ' ' : ' hidden'}` }
-          variants={dropdownVariants}
-          initial="closed"
-          animate={isDropDownOpen ? 'open' : 'closed'}
-          onClick={toggleDropdown}
-        ></motion.div>
-        <motion.div 
-          className={`text-white  absolute rounded-lg bg-[#444] my-2 w-full  border-white/20 z-30  ` }
-          variants={dropdownVariants}
-          initial="closed"
-          animate={isDropDownOpen ? 'open' : 'closed'}
-        >
           {filterItems.map((item,index)=>{
             return(
-              <div 
+              <MenuItem 
                 key={item.title} 
-                className='hover:bg-[#555] px-2 py-3 text-xs rounded-lg'
+                className='  text-xs  '
                 onClick={()=>{
                   handleClickOption(item)
                 }}
-              ><span className=' rounded-xl px-2 py-0 mr-1  whitespace-nowrap'>{item.title}</span> </div>
+              ><span className=' whitespace-nowrap'>{item.title}</span> 
+              </MenuItem>
             )
           })}
-        </motion.div>
+    
+      </MenuList>
+
+
+
       
 
 
-    </div>
+    </Menu>
   )
 }
 
