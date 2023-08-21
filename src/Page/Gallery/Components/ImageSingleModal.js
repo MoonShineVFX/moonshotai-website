@@ -5,6 +5,7 @@ import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {getWordFromLetter} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { IoCopyOutline } from "react-icons/io5";
+import { Chip } from "@material-tailwind/react";
 function ImageSingleModal() {
   const [isShowModal, setIsShowModal] = useRecoilState(imageModalState)
   const image = useRecoilValue(imageDataState)
@@ -14,6 +15,7 @@ function ImageSingleModal() {
     navigator.clipboard.writeText(text);
     setIsCopied(true)
   }
+  console.log(image)
   return (
     <motion.div 
       initial={{ opacity: 0, y: -20 }}
@@ -49,9 +51,15 @@ function ImageSingleModal() {
       </div>
       <div className='w-full md:basis-[480px] md:w-full p-4 '> 
         <div className='flex flex-col justify-end  relative pb-20 pt-2 px-2'>
+
           <div className='text-xs text-white/40 text-center'>#{image.created_at && image.id}</div>
           <div className='text-xs mb-3 text-white/40 text-center'>Created at {image.created_at && image.created_at.substr(0,10)}</div>
-          
+         
+            <div className='flex gap-2'>
+            {image.is_nsfw &&<Chip value="NSFW" color="pink"/> }
+            {image.is_user_nsfw &&<Chip value="USER NSFW" color="pink"/> }
+            </div>
+         
           <div className='text-white/70 font-semibold my-3 pt-5'>Prompt 提示詞</div>
           <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
             <div className='p-3 text-sm'>{image.prompt}</div>
