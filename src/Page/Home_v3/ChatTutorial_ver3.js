@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import { ver2LineItem } from '../../Components/ItemData'
 import { ImageStepModeV3,TextSteoMode1V3 } from '../../Components/StepModeItems';
-
+import { Button } from "@material-tailwind/react";
 function ChatTutorial_ver3() {
   const [data,setData] = useState(ver2LineItem[0])
   const [currentDataIndex , setCurrentDataIndex] = useState(0)
@@ -19,23 +19,19 @@ function ChatTutorial_ver3() {
     <div className='py-5 md:py-10  '>
 
       <div className='flex flex-col'>
-        <div id="menu" className='text-center text-sm my-4 md:my-10 flex justify-between items-center w-2/3 mx-auto gap-3'>
+        <div id="menu" className='text-center text-sm my-4 md:my-10 flex justify-between items-center md:w-2/3 mx-auto gap-3'>
           {
             ver2LineItem.map((item,index)=>{
               return(
-                <div
+                <Button
                   key={'m'+index} 
                   onClick={()=>{handleClick(item.mode,index)}}
-                  className={'relative    w-1/2 max-w-[180px] ' + (currentDataIndex === index ? '  '  : '  ' )}
+                  className={'relative rounded-full font-bold capitalize text-sm   max-w-[180px] border border-[#BDDE48] ' + (currentDataIndex === index ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
                 >
-                  <div className=' absolute top-0 left-0'>
-                    <img src={process.env.PUBLIC_URL+'/images/ver3_images/left_icon.png'} alt="" />
-                  </div>
+    
                   {item.title}
-                  <div className=' absolute top-0 right-0'>
-                    <img src={process.env.PUBLIC_URL+'/images/ver3_images/right_icon.png'} alt="" />
-                  </div>
-                </div>
+
+                </Button>
               )
             })
           }

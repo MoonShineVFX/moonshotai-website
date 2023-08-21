@@ -7,6 +7,9 @@ module.exports =withMT({
   theme: {
 
     extend: {
+      fontFamily:{
+        sans:["Mulish","Noto Sans TC", "sans-serif"],
+      },
       colors:{
         t_lime:{
           50 :"rgb(247 254 231)",

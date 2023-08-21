@@ -8,7 +8,7 @@ function HomeFooter() {
           <a href="/docs/terms">Terms of Use</a>
           <a href="/docs/policy">Privacy Policy</a>
         </div>
-        <div className=' flex  items-center gap-5 mt-4'>
+        <div className=' flex  items-center gap-5 mt-4 '>
               <a href='https://twitter.com/MoonshotAI_' target="_blank" rel="noopener noreferrer" >
                 <img src="https://moonshine.b-cdn.net/msweb/moonshotai/web_icons/twitter-x.svg" className='min-w-3 w-3  object-contain' alt="" />
               </a>
