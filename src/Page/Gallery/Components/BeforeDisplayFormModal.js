@@ -181,7 +181,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 hidden" disabled="true" >
+            <Tabs value="add" className="px-4 mt-2" >
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>

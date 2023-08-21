@@ -378,7 +378,7 @@ function Index() {
     ({ pageParam }) =>
     fetchCampaigns(),
     {
-      enabled: isShowBeforeDisplayModal && false,
+      enabled: isShowBeforeDisplayModal,
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {
@@ -532,19 +532,19 @@ function Index() {
         console.error('Image update failed:', error);
       }
       if(add_activities.length > 0){
-        // mapImageToCampaign(image.id,add_activities,status)
+        mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
       
       await updateImageMutation.mutateAsync({ image, items, status });
       if(add_activities.length > 0){
-        // mapImageToCampaign(image.id,add_activities,status)
+        mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        // mapImageToRemoveCampaign(image.id,remove_activities,status)
+        mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }
 

@@ -15,7 +15,6 @@ function Index() {
       <div className='md:w-10/12 mx-auto'>
         <Header executeScroll={executeScroll}/>
 
-        <Secrtion05Countdown />
         <div ref={myRef}>
           <Section01 />
         </div>
