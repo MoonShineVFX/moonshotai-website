@@ -247,8 +247,8 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                       <MenuList>
                         <MenuItem onClick={()=>onHandleSetBanner(id)}>設定為背景</MenuItem>
                         <MenuItem onClick={()=>onHandleSetAvatar(id)}>設定為頭像</MenuItem>
-                        <MenuItem onClick={()=> {handleOpen(); setCurrentItem(image); }}>刪除發佈</MenuItem>
-                        <MenuItem onClick={()=> {onHandleDisplayHome(image); }}>編輯內容</MenuItem>
+                        <MenuItem onClick={()=> {handleOpen(); setCurrentItem(image); }}>刪除</MenuItem>
+                        <MenuItem onClick={()=> {onHandleDisplayHome(image); }}>編輯分享內容</MenuItem>
                       </MenuList>
                     </Menu>
                     <div className='flex justify-end gap-1 p-1 hidden'>

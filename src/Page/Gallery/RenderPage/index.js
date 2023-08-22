@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react'
 import {motion} from 'framer-motion'
-import { FaShare } from "react-icons/fa";
+import { FaShare,FaCheck } from "react-icons/fa";
 import { MdAdd,MdRemove } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
@@ -44,13 +44,13 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
   const onHandleStorage = (image) =>{
     
     if(image.is_storage === true) {
-      const newData = { ...image, is_storage: !image.is_storage  }; 
+      // const newData = { ...image, is_storage: !image.is_storage  }; 
       // handleUpdate(image.id,newData)
-      handleRemoveStorage(newData)
+      // handleRemoveStorage(newData)
     }else {
       const newData = { ...image, is_storage: !image.is_storage  }; 
       // handleUpdate(image.id,newData)
-      handleStorage(newData)
+      handleStorage(newData,'on_Renderpage')
     }
 
   }
@@ -198,27 +198,30 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                     {title ? title : created_at.substr(0,10)} 
                   </div>
                 </div>
-                <div className='flex justify-end gap-1 p-1 absolute top-0 right-0 '>
-                  <div className=' hidden' onClick={()=>onHandleStorage(image)}>
-                    {
-                      is_storage ? 
-                      <IconButton color="green" disabled={isRemoveStorageLoading} className="rounded-full">
+                <div className='flex justify-between w-full  gap-1 p-1 absolute top-0 right-0 '>
+                  {
+                    is_storage ?
+                    <IconButton  size="sm"  className="rounded-full">
+                      <FaCheck />
+                    </IconButton>
+                    :
+                    <div></div>
+                  }
+ 
+                  <div className='flex gap-1 ' >
+                      <IconButton color="black" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleStorage(image)}>
                         <MdAdd />
                       </IconButton>
-                      :
-                      <IconButton color="red" disabled={isAddStorageLoading} className="rounded-full">
-                        <MdRemove />
-                      </IconButton>
-                    }
-                  </div>
-                  <div className={' flex items-center  justify-center text-xs rounded-full  p-2  mt-1 border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}>
-
-                    <button 
-                      disabled={isAddStorageLoading}  className='flex items-center  justify-center' >
+                    <IconButton 
+                      disabled={isAddStorageLoading}  
+                      size="sm"
+                      className={' flex items-center  justify-center text-xs rounded-full  p-2  border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                    >
                       <FaShare />
-                    </button>
-                      
+                    </IconButton>
                   </div>
+                      
+               
                 </div>
 
 
