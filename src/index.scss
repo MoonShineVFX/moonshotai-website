@@ -5,7 +5,7 @@
 @layer base {
   html {
     /* font-family: Montserrat, sans-serif; */
-    font-family: 'Mulish', sans-serif;
+    font-family: 'Mulish','Noto Sans TC', sans-serif;
   }
 }
 
@@ -17,7 +17,9 @@ body{
 
 
 .grecaptcha-badge { visibility: hidden; }
-
+.swiper-button-prev , .swiper-button-next{
+  color: white !important;
+} 
 /* Scroll Bar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -540,7 +542,7 @@ button.toggle-button.active .toggle-switch {
   .circle {
     width: 100%;
     height: 100%;
-    background: linear-gradient(270deg, #16f0ba, #7e0fff);
+    background: linear-gradient(270deg, #ffffff, #fdfaff);
     border-radius: 50%;
     -webkit-filter: blur(8vw);
     -moz-filter: blur(8vw);
@@ -549,6 +551,7 @@ button.toggle-button.active .toggle-switch {
     transition: 1.8s;    
     transform: scale(1.1);
     animation: opactiy infinite 8s linear;
+    opacity: 0.5;
   }
   .circle2 {
     width: 100%;
@@ -574,16 +577,13 @@ button.toggle-button.active .toggle-switch {
   }
   @keyframes opactiy {
     0% {
-      opacity: 1;
       filter: blur(8vw);
 
     }
     50% {
-      opacity: 0.8;
       filter: blur(2vw);
     }
     100% {
-      opacity: 1;
       filter: blur(8vw);
     }
   }

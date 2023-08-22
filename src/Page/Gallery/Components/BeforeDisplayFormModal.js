@@ -53,9 +53,6 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     const remove_activities = data.remove_activities.filter(item=>{
       return item.status === 'remove'
     })
-    // console.log(data)
-    // console.log(add_activities)
-    // console.log(remove_activities)
     let items ={
       title:data.title ||'',
       description:data.description ||null,
@@ -63,7 +60,6 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       display_home:true,
     }
     // console.log(items)
-    // 如果沒有分享的圖直接分享
     handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
   };
   const modalVariants = {
@@ -181,7 +177,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <Tabs value="add" className="px-4 mt-2 hidden" disabled="true" >
+            <Tabs value="add" className="px-4 mt-2 hidden" >
               <TabsHeader className=''>
 
                   <Tab key='add' value={'add'}>
@@ -201,7 +197,6 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     <div className='text-white text-sm my-1'>如該活動有外連網址，可於下方欄位填入。</div>
                     <ul className='grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[300px] overflow-hidden overflow-y-auto pr-3'>
                       {campaignsData.map((item,index) => {
-                        const isChecked = image.campaigns && image.campaigns.includes(item.id);
                         const isActive =  selectedActivityIds.includes(item.id);
                         const isExisted = image.campaigns.includes(item.id); 
                         if (isExisted) {
@@ -282,8 +277,6 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     <div className='text-white text-sm my-1'>已參加的活動，可取消。</div>
                     <ul className='grid grid-cols-1 md: gap-3 max-h-[330px] overflow-hidden overflow-y-auto pr-3'>
                       {imgCampaignsData.map((item,index) => {
-                        // const isChecked = image.campaigns && image.campaigns.includes(item.id);
-                        // const isExisted = image.campaigns.includes(item.id); 
                         const isChecked = selectedIsExistedIds.includes(item.id);
                         return(
                           <li key={item.id} className='w-full'>

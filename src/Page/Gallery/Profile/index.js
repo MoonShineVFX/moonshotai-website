@@ -159,12 +159,23 @@ function Index() {
 
   const storageMutation = useMutation((updatedData) => {
     // 在此處呼叫 API 更新圖片內容
-    // console.log(updatedData.newData)
     return userStorageAImage(updatedData.newData,linLoginData); // 假設 fetchUpdateImage 為更新圖片內容的 API 請求函數
   }, {
     // 定義更新成功後的行為
     onSuccess: (data, variables) => {
-      
+      console.log(variables)
+      if(variables.status === 'on_Renderpage'){
+        queryClient.setQueryData(['rendersData', currentUser, linLoginData, startDate, currModels], (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.newData.id ? { ...image,...variables.newData} : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      }
     },
   });
 
@@ -183,9 +194,9 @@ function Index() {
 
       },
     });
-  const handleStorage = (newData) => {
+  const handleStorage = (newData,status) => {
     // 呼叫更新函數
-    storageMutation.mutate({newData});
+    storageMutation.mutate({newData,status});
   };
   const handleRemoveStorage = (newData,status)=>{
     unStorageMutation.mutate({newData,status});
@@ -354,31 +365,14 @@ function Index() {
   const followImages = followData?.pages?.flatMap((pageData) => pageData) ?? [];
 
   // Todo updateUserMutation
-  // const updateUserMutation = useMutation((updatedData) =>{ 
-  //   patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
-  //  {
-  //     onSuccess: (data, variables) => { 
-  //       console.log(data)
-  //       console.log(variables)
-  //       queryClient.setQueryData( (prevData) => {
-  //         console.log(prevData)
-  //         const newData = prevData.pages.map((page) => ({
-  //           ...page,
-  //           results: page.results.map((image) =>
-  //           image.id === variables.image.id ? { ...image,...variables.items} : image
-  //           ),
-  //         }));
-  //         return { pages: newData };
-  //       });
-  //     },  
-  //   })
+
   // FETCH Campaigns to PAGE 
   const { data: campaignData, isLoading:isCampaignDataLoading, fetchNextPage:fetchCampaignNextPage, hasNextPage: hasCampaignNextPage, isFetchingNextPage:isFetchingCampaignNextPage, isError:isCampaignDataError, refetch:campaignDataRefetch } = useInfiniteQuery(
     [ 'campaignData'],
     ({ pageParam }) =>
     fetchCampaigns(),
     {
-      enabled: isShowBeforeDisplayModal && false,
+      enabled: isShowBeforeDisplayModal,
       getNextPageParam: (lastPage, pages) =>{
         // 檢查是否有下一頁
         if (lastPage.next) {

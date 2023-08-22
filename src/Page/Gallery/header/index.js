@@ -117,11 +117,7 @@ function Index({}) {
     if (storedLoginTokenData) {
       try {
         const userLoginData = JSON.parse(storedLoginTokenData);
-        // 使用 react-query 來執行 fetchUserProfile API
-        // const udata = await queryClient.fetchQuery(['userProfile', userLoginData.user_id, userLoginData.token], () =>
-        //   fetchUserProfile(userLoginData.user_id, userLoginData.token),
 
-        // );
         const udata = await fetchUserProfileData(userLoginData.user_id, userLoginData.token, queryClient);
         if (udata === 401) {
           queryClient.clear();
@@ -159,8 +155,6 @@ function Index({}) {
         localStorage.setItem('lineProfile', JSON.stringify(profile));
         const lined = await fetchLineLogin(profile);
         localStorage.setItem('loginTokenData', JSON.stringify(lined));
-
-        // 使用 react-query 來執行 fetchUserProfile API
         const udata = await queryClient.fetchQuery(['userProfile', lined.user_id, lined.token], () =>
           fetchUserProfile(lined.user_id, lined.token)
         );
