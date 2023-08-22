@@ -4,52 +4,63 @@ function Header({executeScroll}) {
 
 
   return (
-    <div className='text-white flex justify-center items-center relative py-20' >
-      <video 
-        src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/website_banner_video.mp4' 
-        autoPlay loop muted 
-        className=' object-cover w-full min-h-screen  absolute top-0 opacity-20 -z-20'
-      />
-      <div className=' absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-blacks'></div>
-
-      <div className='w-8/12 mx-auto flex flex-col'>
-
-        <div className='text-4xl font-bold text-center order-1'>Let Moonshot Create For You.</div>
-        <div className=' flex flex-col items-center relative order-3 md:order-2'>
+    <div className='text-white py-10 md:w-8/12 mx-auto' >
+      <div className='mx-12 flex flex-col items-center'>
+        <div className='text-4xl font-bold text-center'>Let Moonshot Create For You.</div>
+        <div className='text-center text-sm my-4 '>Extend your creation limits through interaction with Moonshot. 
+  Let AI enter your world with amazement.</div>
+        <div className=' my-5 relative w-full md:w-1/2' >
+          <div 
+            className=' w-3/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+            // style={{animation: 'float_center 12s ease-in-out infinite'}}
+          >
+            <div className="circle absolute  -z-10  "></div>
+            <img src={process.env.PUBLIC_URL+'/images/ver3_images/Home_MS_logo01.png'} alt="" className='w-full'/>
+            <div 
+            className=' absolute -top-12 -right-16'
+            style={{animation: 'float_t01 5s ease-in-out infinite', animationDelay:'400ms' }}  
+          >
+            <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_c01.png'} alt="" />
+          </div>
+          <div 
+            className=' absolute -bottom-14 -left-10'
+            style={{animation: 'float_t01 6s ease-in-out infinite' , animationDelay:'1000ms'}}  
+          >
+            <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_c02.png'} alt="" />
+          </div>
           
-          <div className=' my-5 relative w-full md:w-1/3' >
+          </div>
 
-            <div className=' w-full mx-auto  relative my-10'>
-              <div className="circle absolute  -z-10  "></div>
-              <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png' alt="" className='w-full'/>
+
+          <div className=' w-full relative'>
+
+            <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc01.png'} alt="" className='w-full' />
+            <div className=' absolute top-4 left-4' style={{animation: 'float_t02 10s ease-in-out infinite' , animationDelay:'1000ms'}} >
+              <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc02.png'} alt="" className='max-w-full scale-75' />
             </div>
-          
-        </div>
-        </div>
-        <div className='text-center text-base my-4 md:mx-20 font-semibold order-2 md:order-3'>
-          Extend your creation limits through interaction with Moonshot. Let AI enter your world with amazement.
-        </div> 
-        <div className='text-lg  flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-20 order-4'>
-           
-          <Button variant="outlined" color='white' className="rounded-full  font-bold capitalize text-sm"  onClick={executeScroll}>
-            Learn More
-          </Button>
-          <Button className="rounded-full bg-[#BDDE48] text-black font-bold capitalize text-sm ">
-          <a 
-            href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
-            target={"_blank"} rel="noreferrer"
-          >Start For Free </a>
-          </Button>
-          <Button variant="none" className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm">
-          <a 
-            href="/gallery"
-            target={"_blank"} rel="noreferrer"
-          >See Gallery </a>
-         </Button>
-        </div>
+            <div className=' absolute bottom-12 right-10' style={{animation: 'float_t03 8s ease-in-out infinite' , animationDelay:'1500ms'}} >
+              <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc03.png'} alt="" className='max-w-full scale-75' />
+            </div>
+            <div className=' absolute bottom-2 right-4' style={{animation: 'float_t03 8s ease-in-out infinite' , animationDelay:'2000ms'}} >
+              <img src={process.env.PUBLIC_URL+'/images/ver3_images/header_logo_acc04.png'} alt="" className='max-w-full scale-75' />
+            </div>
+          </div>
 
+       </div>
       </div>
-
+      <div className='flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-8'>
+        <div className='w-32 text-center px-2 py-2 rounded-full border' onClick={executeScroll}>Learn More</div>
+        <a 
+          className='w-32 text-center px-2 py-2 rounded-full text-black bg-[#BDDE48] '
+          href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
+          target={"_blank"} rel="noreferrer"
+        >Start For Free </a>
+        <a 
+          className='w-32 text-center px-2 py-2 rounded-full bg-[#423EF5]'
+          href="/gallery"
+          target={"_blank"} rel="noreferrer"
+        >See Gallery </a>
+      </div>
 
 
     </div>
