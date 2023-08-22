@@ -10,7 +10,7 @@ import 'swiper/css/effect-fade';
 import "swiper/css/pagination";
 
 const bannerData = [
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnft2880.png",path:'/asusnft'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnft2880.png?v2",path:'/asusnft'},
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood01.png",path:'/taiwanfood'},
  ]
 
