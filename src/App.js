@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 //
 import HomeLayout from './Page/Lyaouts/HomeLayout';
 import HomeV3 from './Page/Home_v3'
+import HomeV4 from './Page/Home_v4'
 
 //
 import Camera from './Page/Camera'
@@ -81,7 +82,7 @@ function App() {
         
         <Route path="/" element={<GalleryLayout/> }>
           <Route path="*" element={<Notfound />} />
-          <Route path="" element={<HomeV3 />} />
+          <Route path="" element={<HomeV4 />} />
 
           <Route path="/" element={<GalleryHomePageLayout/> }>
 

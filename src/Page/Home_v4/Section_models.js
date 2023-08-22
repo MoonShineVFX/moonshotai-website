@@ -18,8 +18,8 @@ function Section_models() {
   ]
   return (
     <div className='flex flex-col text-white'>
-      <div className='flex justify-between w-full items-center'>
-        <div className=' flex flex-col items-center w-3/6'>
+      <div className='flex  justify-between w-full items-center'>
+        <div className=' flex flex-col items-center w-2/3 mx-auto text-center md:text-left md:w-3/6'>
           <div className='text-3xl font-bold relative glow'>
             Fulfill Your AI Applications With  <span className='text-[#BDDE48]'>Diverse Model Styles</span>
             <div 
@@ -33,25 +33,42 @@ function Section_models() {
 
 
         </div>
-        <div className='w-1/3 flex gap-10 justify-end'>
-        <IconButton variant="outlined" className="slideprev rounded-full text-white border-white">
-          <FaAngleLeft />
-        </IconButton>
-        <IconButton variant="outlined" className="slidenext rounded-full text-white border-white">
-         <FaAngleRight /> 
-        </IconButton>
+        <div className='w-1/3 gap-10 justify-evenly md:justify-end mt-7 hidden  md:flex '>
+          <IconButton variant="outlined" id="slideprev" className="slideprev rounded-full text-white border-white">
+            <FaAngleLeft />
+          </IconButton>
+          <IconButton variant="outlined" id="slidenext" className="slidenext rounded-full text-white border-white">
+          <FaAngleRight /> 
+          </IconButton>
         </div>
       </div>
 
-      <div className='w-full'>
+      <div className=' md:w-full relative'>
         <Swiper
           key="model"
           spaceBetween={20}
-          slidesPerView={4}
+          slidesPerView={1.5}
+          centeredSlides={true}
+          loopedSlides={2}
           loop={true}
+          center
+          breakpoints={{
+              420: {
+                slidesPerView: 1.5,
+                spaceBetween:40
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween:20
+              },
+              1024:{
+                slidesPerView: 4,
+                spaceBetween:20
+              }
+            }}
           navigation={{
-            nextEl: ".slidenext",
-            prevEl: ".slideprev"
+            nextEl: ".slidenext, .slidenext2",
+            prevEl: ".slideprev, .slideprev2"
           }}
           modules={[Navigation]}
           className='w-full'
@@ -61,7 +78,7 @@ function Section_models() {
           {menuItems.map((item,index)=>{
             return(
               <SwiperSlide key={'model'+index}>
-                  <div className='flex flex-col justify-center items-center  my-20  '>
+                  <div className='flex flex-col justify-center items-center my-7  md:my-20  '>
                     <div className={''}>
                       <img src={item.image} alt="" className='w-full aspect-video object-cover rounded-md object-top' />
                     </div>
@@ -77,6 +94,14 @@ function Section_models() {
           }
 
         </Swiper>
+        <div className='px-4 w-full gap-10 justify-between mt-7  flex md:hidden absolute top-[15%] z-10  '>
+          <IconButton variant="outlined"  className="slideprev2 rounded-full text-white border-white">
+            <FaAngleLeft />
+          </IconButton>
+          <IconButton variant="outlined"  className="slidenext2 rounded-full text-white border-white">
+          <FaAngleRight /> 
+          </IconButton>
+        </div>
       </div>
     </div>
   )

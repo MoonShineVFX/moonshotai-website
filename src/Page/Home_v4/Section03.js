@@ -3,7 +3,7 @@ import { MdLaunch } from "react-icons/md";
 
 function Section03() {
   const mediumRssFeed = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@ai_72180"
-  const MAX_ARTICLES = 6;
+  const MAX_ARTICLES = 3;
   const [articles, setArticles] = useState();
     // 讀取 medium 文章
     useEffect(() => {
@@ -20,36 +20,45 @@ function Section03() {
   return (
     <div className='text-white py-10' >
       <div className='mx-12 flex flex-col items-center'>
-        <div className='text-3xl font-bold text-center relative'>
-            <img src={process.env.PUBLIC_URL+'/images/ver3_images/section03_title.png'} alt="" />
+        <div className='text-3xl font-bold text-center relative w-full md:w-1/3'>
+            <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/section03_title.png' alt="" className='' />
 
         </div>
 
 
       </div>
-      <div className="jsonContent grid grid-cols-1 md:grid-cols-2 md:gap-8  mt-10 divide-y divide-white/30 border-t border-b border-white/30">
+      <div className="jsonContent grid grid-cols-1 md:grid-cols-2 md:gap-10  mt-10 mx-5 md:mx-0">
           {
             articles ? 
             articles.map((item,index)=>{
               console.log(item)
               const{guid,thumbnail,title,link,description,pubDate} = item
               return(
-                <div className="w-full md:w-full hover:brightness-110 flex items-center py-3" key={guid}>
-
-                  <div className="blogCard-body w-8/12 px-3">
-                    <div className="text-sm font-bold my-3 pr-4 text-white/90">
-                      <a href={link} target="_blank" rel="noreferrer"  className='flex items-center gap-2 hover:text-white/80'> {title}</a>
-                    </div>
-                    <div className="text-sm my-1 text-white/50 hidden">{description.replace(/(<([^>]+)>)/ig,"").substr(0,15)}...</div>
-                    <div className="text-xs my-1 text-white/30 ">{pubDate.substr(0,10)}</div>
-                  </div>
+                <div className={`w-full md:w-full hover:brightness-110 flex items-center py-3 ${index === 0 ? ' row-span-2 flex-col ' : 'row-span-1 ' }`} key={guid}>
                   <div 
-                    className="w-4/12 aspect-[16/11] bg-black bg-center bg-cover bg-no-repeat cursor-pointer"
+                    className={` aspect-[16/9] bg-black bg-center bg-cover bg-no-repeat cursor-pointer rounded-md ${index === 0 ? 'w-full' : 'w-1/2'}`}
                     style={{backgroundImage:`url(${thumbnail})`}}
                     onClick={()=> window.open(link, "_blank")}
                   >
 
                   </div>
+                  <div className={`blogCard-body    ${index === 0 ? 'w-full mt-2'  : ' px-3 w-6/12' }`}>
+                    <div className="text-xs my-1 text-white/50 ">{pubDate.substr(0,10)}</div>
+
+                    <div className="text-base font-bold my-3 w-full text-white/90 flex justify-between items-end ">
+                      <a href={link} target="_blank" rel="noreferrer"  className='flex items-center gap-2 hover:text-white/80'> {title}</a>
+                      {
+                        index === 0 && <a href={link} target="_blank" rel="noreferrer"  className='w-1/3 text-xs text-right hover:text-white/80'>Read more </a>
+                      }
+                      
+                    </div>
+
+                    
+
+                    <div className="text-sm my-1 text-white/50 hidden">{description.replace(/(<([^>]+)>)/ig,"").substr(0,15)}...</div>
+                    
+                  </div>
+
                 </div>
 
               )

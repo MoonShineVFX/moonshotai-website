@@ -70,17 +70,47 @@ body{
   -webkit-animation: linear infinite;
   -webkit-animation-name: run;
   -webkit-animation-duration: 60s;
-  transform: translateX(-50%)
+  transform: translateX(0%)
+}
+#headerBg2{
+  -webkit-animation: linear infinite;
+  -webkit-animation-name: run2;
+  -webkit-animation-duration: 60s;
+  transform: translateX(0%)
+}
+#headerBg3{
+  -webkit-animation: linear infinite;
+  -webkit-animation-name: run3;
+  -webkit-animation-duration: 60s;
+  transform: translateX(-100%)
 }
 @keyframes run {
   0% {
-    transform: translateX(-30%); 
+    transform: translateX(30%); 
   }
   50% {
     transform: translateX(0%); 
   }
   100% {
     transform: translateX(-30%);    
+  }
+}
+@keyframes run2 {
+  0% {
+    transform: translateX(0%); 
+  }
+
+  100% {
+    transform: translateX(-100%);    
+  }
+}
+@keyframes run3 {
+  0% {
+    transform: translateX(-100%); 
+  }
+
+  100% {
+    transform: translateX(0%);    
   }
 }
 .scroll-down{
