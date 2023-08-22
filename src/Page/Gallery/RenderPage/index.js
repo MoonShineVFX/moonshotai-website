@@ -198,20 +198,20 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                     {title ? title : created_at.substr(0,10)} 
                   </div>
                 </div>
-                <div className='flex justify-between w-full  gap-1 p-1 absolute top-0 right-0 '>
-                  {
-                    is_storage ?
-                    <IconButton  size="sm"  className="rounded-full">
-                      <FaCheck />
-                    </IconButton>
-                    :
-                    <div></div>
-                  }
- 
+                <div className='flex justify-between w-full  gap-1 p-1 absolute top-0 right-0 '>    
+                  <div></div>
                   <div className='flex gap-1 ' >
-                      <IconButton color="black" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleStorage(image)}>
-                        <MdAdd />
-                      </IconButton>
+                      {
+                        is_storage ? 
+                        <IconButton color="white"  size="sm"  className="rounded-full">
+                          <FaCheck />
+                        </IconButton>
+                        :
+                        <IconButton color="black" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleStorage(image)}>
+                          <MdAdd />
+                        </IconButton>
+                      }
+
                     <IconButton 
                       disabled={isAddStorageLoading}  
                       size="sm"

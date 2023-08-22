@@ -365,24 +365,7 @@ function Index() {
   const followImages = followData?.pages?.flatMap((pageData) => pageData) ?? [];
 
   // Todo updateUserMutation
-  // const updateUserMutation = useMutation((updatedData) =>{ 
-  //   patchUserProfile(currentProfile.id,linLoginData,updatedData.items)}, 
-  //  {
-  //     onSuccess: (data, variables) => { 
-  //       console.log(data)
-  //       console.log(variables)
-  //       queryClient.setQueryData( (prevData) => {
-  //         console.log(prevData)
-  //         const newData = prevData.pages.map((page) => ({
-  //           ...page,
-  //           results: page.results.map((image) =>
-  //           image.id === variables.image.id ? { ...image,...variables.items} : image
-  //           ),
-  //         }));
-  //         return { pages: newData };
-  //       });
-  //     },  
-  //   })
+
   // FETCH Campaigns to PAGE 
   const { data: campaignData, isLoading:isCampaignDataLoading, fetchNextPage:fetchCampaignNextPage, hasNextPage: hasCampaignNextPage, isFetchingNextPage:isFetchingCampaignNextPage, isError:isCampaignDataError, refetch:campaignDataRefetch } = useInfiniteQuery(
     [ 'campaignData'],
@@ -543,19 +526,19 @@ function Index() {
         console.error('Image update failed:', error);
       }
       if(add_activities.length > 0){
-        mapImageToCampaign(image.id,add_activities,status)
+        // mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        mapImageToRemoveCampaign(image.id,remove_activities,status)
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }else{
       
       await updateImageMutation.mutateAsync({ image, items, status });
       if(add_activities.length > 0){
-        mapImageToCampaign(image.id,add_activities,status)
+        // mapImageToCampaign(image.id,add_activities,status)
       }
       if(remove_activities.length>0){
-        mapImageToRemoveCampaign(image.id,remove_activities,status)
+        // mapImageToRemoveCampaign(image.id,remove_activities,status)
       }
     }
 
