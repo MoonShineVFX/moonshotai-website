@@ -1,6 +1,5 @@
 import React,{useEffect,useState} from 'react'
 import {isMobile} from 'react-device-detect';
-import HeaderImagesBg from '../../Components/HeaderImagesBg'
 import RandomImagesBg from '../../Components/RandomImagesBg';
 import {headerImagesItem} from '../../Components/ItemData'
 import { MdOutlineArrowRightAlt } from "react-icons/md";

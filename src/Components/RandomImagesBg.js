@@ -25,7 +25,7 @@ function RandomImagesBg({data}) {
       {data.map((item,index)=>{
         return(
           <div key={'r_img'+index} className=' aspect-square  '>
-            <img src={process.env.PUBLIC_URL+ '/images/ver2_images/header/'+item.image} alt="imgs" className=' aspect-square overflow-hidden object-cover min-w-[220px]' />
+            <img src={'https://moonshine.b-cdn.net/msweb/moonshotai/square_images/'+item.image} alt="imgs" className=' aspect-square overflow-hidden object-cover min-w-[220px]' />
           </div>
         )
       })}

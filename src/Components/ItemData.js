@@ -39,8 +39,6 @@ export const headerImagesItem = [
   {image:"p38.jpg"},
   {image:"p39.jpg"},
   {image:"p40.jpg"},
-  {image:"p41.jpg"},
-  {image:"p42.jpg"},
 
 ]
 

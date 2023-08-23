@@ -68,7 +68,7 @@ function HomeFooter() {
             
           </div>
 
-          <div className='flex flex-col md:flex-row items-center space-y-5 md:space-y-0  md:space-x-7 justify-center text-sm md:text-xs pt-3 md:border-t border-white/30 pb-10 mb:pb-4 '>
+          <div className='flex flex-col md:flex-row items-center space-y-5 md:space-y-0  md:space-x-7 justify-center text-sm md:text-xs py-3 md:border-t border-white/30 pb-10  mb:pb-0 '>
             <div className='flex items-center '>  <div className='hidden md:block'>©</div>
               <a href='/' className=' w-20 lg:w-20'>
                 <img src={process.env.PUBLIC_URL+'/images/ver2_images/mslogo.svg'} alt="logo" className='ml-2 w-full p-0 mt-0 hidden md:block'/>
