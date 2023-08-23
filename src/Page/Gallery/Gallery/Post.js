@@ -21,7 +21,7 @@ import {
   Card,
   Typography,
 } from "@material-tailwind/react";
-import { useQuery, useMutation,useInfiniteQuery } from 'react-query';
+import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } from 'react-query';
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useState(null)
@@ -143,32 +143,60 @@ function Post() {
     }
   );
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  const queryClient = useQueryClient();
+  //ADD Collection
+  const collectionAImageMutation = useMutation((updatedData)=>
+    {userCollectionAImage(updatedData.imageData,linLoginToken) },
+    {
+      onSuccess:(data,variables)=>{
+        setImageData( {...imageData, likes: imageData.likes+1 })
+        setIsCollected(true)
+        // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
+        //   console.log(prevData)
 
-  const handleCollection = ()=>{
+          // const newData = prevData.id === variables.imageData.id ? {prevData}
+          // const newData = prevData.pages.map((page)=>({
+          //   ...page,
+          //   results: page.results.map((image) =>
+          //     image.id === variables.image.id ? { ...image,...variables.items} : image
+          //   ),
+          // }))
+          // return { pages: newData };
+        // })
+      }
+    }
+  )
+  //DEL Collection 
+  const unCollectionAImageMutation = useMutation((updatedData)=>
+    {userDelACollectionImage(updatedData.imageData.id,linLoginToken) },
+    {
+      onSuccess:(data,variables)=>{
+        setImageData( {...imageData, likes: imageData.likes-1 })
+        setIsCollected(false)
+        // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
+        //   const newData = prevData.pages.map((page)=>({
+        //     ...page,
+        //     results: page.results.map((image) =>
+        //       image.id === variables.image.id ? { ...image,...variables.items} : image
+        //     ),
+        //   }))
+        //   return { pages: newData };
+        // })
+      }
+    }
+  )
+  const handleCollection = async ()=>{
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
      setIsLoginForCollection(true)
     }else{
       // console.log(imageData)
       if(isCollected){
-        userDelACollectionImage(imageData.id,linLoginToken)
-          .then((data)=> {
-            if(data.status===204){
-              setIsCollected(false)
-              setImageData( {...imageData, likes: imageData.likes-1 })
-            
-            }
-          })
-          .catch((error) => console.error(error));
+        unCollectionAImageMutation.mutateAsync({imageData})
+
       }else{
-        userCollectionAImage(imageData,linLoginToken)
-          .then((data)=> {
-            if(data.status===200){
-              setIsCollected(true)
-              setImageData( {...imageData, likes: imageData.likes+1 })
-            }
-          })
-          .catch((error) => console.error(error));
+        collectionAImageMutation.mutateAsync({imageData})
+
       }
       setIsLoginForCollection(false)
     }

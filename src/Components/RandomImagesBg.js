@@ -24,8 +24,8 @@ function RandomImagesBg({data}) {
     <div className='flex gap-4'>
       {data.map((item,index)=>{
         return(
-          <div key={'r_img'+index}>
-            <img src={process.env.PUBLIC_URL+ '/images/ver2_images/header/'+item.image} alt="imgs" className=' aspect-square object-cover min-w-[220px]' />
+          <div key={'r_img'+index} className=' aspect-square  '>
+            <img src={process.env.PUBLIC_URL+ '/images/ver2_images/header/'+item.image} alt="imgs" className=' aspect-square overflow-hidden object-cover min-w-[220px]' />
           </div>
         )
       })}

@@ -19,8 +19,8 @@ function Section_models() {
   return (
     <div className='flex flex-col text-white'>
       <div className='flex  justify-between w-full items-center'>
-        <div className=' flex flex-col items-center w-2/3 mx-auto text-center md:text-left md:w-3/6'>
-          <div className='text-3xl font-bold relative glow'>
+        <div className=' flex flex-col items-center md:items-start w-2/3  md:w-3/6 mx-auto md:mx-0 text-center md:text-left'>
+          <div className='text-3xl font-bold relative glow flex flex-col  '>
             Fulfill Your AI Applications With  <span className='text-[#BDDE48]'>Diverse Model Styles</span>
             <div 
               className=' absolute -top-12 -left-8 md:-left-12'

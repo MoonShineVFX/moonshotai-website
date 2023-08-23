@@ -30,7 +30,7 @@ function Header({executeScroll}) {
           <div> Extend your creation limits through interaction with Moonshot. </div>
           <div>Let AI enter your world with amazement.</div>
         </div> 
-        <div className='text-lg  flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-20 order-4'>
+        <div className='text-lg  flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-10 order-4'>
            
           <Button variant="outlined" color='white' className="rounded-full  font-bold capitalize text-sm"  onClick={executeScroll}>
             Learn More

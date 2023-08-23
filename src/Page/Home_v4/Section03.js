@@ -34,7 +34,7 @@ function Section03() {
               console.log(item)
               const{guid,thumbnail,title,link,description,pubDate} = item
               return(
-                <div className={`w-full md:w-full hover:brightness-110 flex items-center py-3 ${index === 0 ? ' row-span-2 flex-col ' : 'row-span-1 ' }`} key={guid}>
+                <div className={`w-full md:w-full hover:brightness-110 flex items-center py-3 relative ${index === 0 ? ' row-span-2 flex-col ' : 'row-span-1 ' } ${index === 1 && ' after:content after:w-full after:h-[1px] after:bg-white/30 after:absolute after:-bottom-5 after:hidden after:md:block '}` } key={guid}>
                   <div 
                     className={` aspect-[16/9] bg-black bg-center bg-cover bg-no-repeat cursor-pointer rounded-md ${index === 0 ? 'w-full' : 'w-1/2'}`}
                     style={{backgroundImage:`url(${thumbnail})`}}
@@ -42,13 +42,13 @@ function Section03() {
                   >
 
                   </div>
-                  <div className={`blogCard-body    ${index === 0 ? 'w-full mt-2'  : ' px-3 w-6/12' }`}>
+                  <div className={`blogCard-body    ${index === 0 ? 'w-full mt-2'  : ' px-3 w-6/12' } `}>
                     <div className="text-xs my-1 text-white/50 ">{pubDate.substr(0,10)}</div>
 
                     <div className="text-base font-bold my-3 w-full text-white/90 flex justify-between items-end ">
                       <a href={link} target="_blank" rel="noreferrer"  className='flex items-center gap-2 hover:text-white/80'> {title}</a>
                       {
-                        index === 0 && <a href={link} target="_blank" rel="noreferrer"  className='w-1/3 text-xs text-right hover:text-white/80'>Read more </a>
+                        index === 0 && <a href={link} target="_blank" rel="noreferrer"  className='w-1/3 text-xs text-right text-white/60 hover:text-white/80 '>Read more </a>
                       }
                       
                     </div>
@@ -66,7 +66,7 @@ function Section03() {
           }
         </div>
         <a 
-          className='h-12 bg-white w-full text-black font-bold flex justify-center items-center '
+          className='h-12 bg-white w-full text-black font-bold flex justify-center items-center mt-10'
           href="https://medium.com/@ai_72180"
           target={"_blank"} rel="noreferrer"
         >

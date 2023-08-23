@@ -4,13 +4,13 @@ import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
-import {fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
+import {fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,fetchUserCollections} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
-import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
+import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } from 'react-query';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 const filterDateItem = [
@@ -40,6 +40,9 @@ function Index() {
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
+
+  const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
+  const [ isCollected ,setIsCollected] = useState(false)
 
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -79,9 +82,93 @@ function Index() {
     }
   );
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  
+  //USER COLLECTION LIST
+  const { data: userCollection, isLoading: isUserCollectionLoading, isError: issUserCollectionError } = useQuery(
+    ['userCollections', currentUser,linLoginData],
+    () => fetchUserCollections(currentUser.id, linLoginData),
+    {
+      enabled: isLoggedIn === true, 
+      onError: () => {
+        // 發生錯誤時處理
+      },
+      onSuccess: (uData) => {
+        // 成功獲取數據後處理
 
+      },
+    }
+  );
+    const queryClient = useQueryClient();
+    //ADD Collection
+    const collectionAImageMutation = useMutation((updatedData)=>
+      {userCollectionAImage(updatedData.image,linLoginData) },
+      {
+        onSuccess:(data,variables)=>{
+          queryClient.setQueryData([ 'galleries',linLoginData, startDate, currModels],(prevData)=>{
+            console.log(prevData)
 
+            const newData = prevData.pages.map((page)=>({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id ? { ...image, like: prevData.like+1} : image
+              ),
+            }))
+            return { pages: newData };
+          })
+        }
+      }
+    )
+    //DEL Collection 
+    const unCollectionAImageMutation = useMutation((updatedData)=>
+      {userDelACollectionImage(updatedData.image.id,linLoginData) },
+      {
+        onSuccess:(data,variables)=>{
+          // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
+          //   const newData = prevData.pages.map((page)=>({
+          //     ...page,
+          //     results: page.results.map((image) =>
+          //       image.id === variables.image.id ? { ...image,...variables.items} : image
+          //     ),
+          //   }))
+          //   return { pages: newData };
+          // })
+        }
+      }
+    )
 
+  //COLLECTION
+  const handleCollection = async (image)=>{
+    if(!isLoggedIn){
+    //  console.log(isLoggedIn)
+     setIsLoginForCollection(true)
+    }else{
+      // console.log(imageData)
+      if(isCollected){
+        unCollectionAImageMutation.mutateAsync({image})
+        // userDelACollectionImage(imageData.id,linLoginToken)
+        //   .then((data)=> {
+        //     if(data.status===204){
+        //       setIsCollected(false)
+        //       setImageData( {...imageData, likes: imageData.likes-1 })
+            
+        //     }
+        //   })
+        //   .catch((error) => console.error(error));
+      }else{
+        collectionAImageMutation.mutateAsync({image})
+        // userCollectionAImage(imageData,linLoginToken)
+        //   .then((data)=> {
+        //     if(data.status===200){
+        //       setIsCollected(true)
+        //       setImageData( {...imageData, likes: imageData.likes+1 })
+        //     }
+        //   })
+        //   .catch((error) => console.error(error));
+      }
+      setIsLoginForCollection(false)
+    }
+    
+  }
   const onHandleSelectDate = (item)=>{
     // console.log(item)
     switch (item.value) {
@@ -104,7 +191,6 @@ function Index() {
         handleSelectDate('all','2022-01-01')
         break;
     }
-
   }
   const onHandleSelectModels = (item)=>{
     // console.log('click')
@@ -121,38 +207,12 @@ function Index() {
     setPageSize(12)
     setCurrModels(value)
   }
-  const containerRef = useRef(null);
-  const [scrollTop, setScrollTop] = useState(0);
-  const [clientHeight, setClientHeight] = useState(0);
-  const [scrollHeight, setScrollHeight] = useState(0);
-  const [lastScrollTime, setLastScrollTime] = useState(0);
-  const handleScroll = () => {
-    // 獲取頁面滾動相關信息
-      const container = containerRef.current;
-      const { scrollTop, clientHeight, scrollHeight } = container;
-      setScrollTop(scrollTop);
-      setClientHeight(clientHeight);
-      setScrollHeight(scrollHeight);
-      // 檢查是否滾動到頁面底部
-      if (scrollHeight - scrollTop <= clientHeight * 1.2) {
-        const now = Date.now();
-        if (now - lastScrollTime >= 1000) {
-          fetchNextPage();
-          setLastScrollTime(now);
-        }
 
-      }
-  };
 
 
 
   return (
     <div className='w-full '>
-      {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
-        <div>scrollTop:{scrollTop} </div>
-        <div>clientHeight:{clientHeight} </div>
-        <div>scrollHeight:{scrollHeight}</div>
-      </div> */}
         
       <div className=''>
           {!imageData ? 
@@ -202,6 +262,7 @@ function Index() {
             >
               {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                const isImageCollected = userCollection?.results.some((item) => item.id === id);
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -228,7 +289,7 @@ function Index() {
 
                     <div className=' flex flex-col  mt-2 w-full   text-white'>
                       <div className='flex flex-col'>
-                        <div className='text-lg font-semibold '><TitleWithLimit title={title} maxLength={12}/> </div>
+                        <div className=' text-base font-semibold '><TitleWithLimit title={title} maxLength={12}/> </div>
                       </div>
                       <div className='flex justify-between items-center px-1'>
 
@@ -243,7 +304,7 @@ function Index() {
                         </div>
                         <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 opacity-70 '>
                           <div className='flex items-center space-x-3 text-sm'>
-                            <div className='flex items-center  space-x-1'><FaRegHeart /> <span>{likes}</span></div>
+                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleCollection(image)}>{isImageCollected ?<FaHeart />  :<FaRegHeart /> }<span>{likes}</span></div>
                             <Link to={`/post/${id}`} className='flex items-center  space-x-1'><FaRegComment /> <span>{comments}</span></Link>
                             
                           </div>

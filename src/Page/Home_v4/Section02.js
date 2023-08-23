@@ -20,7 +20,7 @@ function Section02() {
     {value:'g03',gif:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/g03_230x230.gif",title:"寫實照片模擬",desc:"透過寫實逼真的照片模擬指令與關鍵字，生成真人、情境模擬、物件展示等風格圖，並賦予圖片全新的氛圍和情感，可以應用於生成真人廣告海報、影視劇照、視覺、或一切你想像的到的地方！"},
   ]
   return (
-    <div className='text-white py-10' >
+    <div className='text-white md:py-20' >
       <div className='mx-12 flex flex-col items-center'>
         <div className='text-3xl font-bold text-center relative glow'>
             Ubiquitous <span className='text-[#BDDE48]'> AI Applications</span>
@@ -49,7 +49,7 @@ function Section02() {
                 key={value}
                 value={value}
                 onClick={() => setActiveTab(value)}
-                className={activeTab === value ? "text-gray-100" : "text-gray-500 "}
+                className={`tracking-widest ${activeTab === value ? "text-gray-100" : "text-gray-500" }`}
               >
                 {title}
               </Tab>
