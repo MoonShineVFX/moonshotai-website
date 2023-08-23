@@ -22,7 +22,7 @@ function HomeFooter() {
     <div className='text-white/60 '>
       <div className='flex flex-col text-sm  '>
 
-        <div className=' grid md:grid-cols-4 py-10 space-y-4 md:space-y-0'>
+        <div className=' grid md:grid-cols-4 py-10 space-y-4 md:space-y-0 md:w-11/12 mx-auto'>
           <div className='md:flex items-center hidden '>
             <div className='w-1/3 mx-auto'>
               <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/logo-2.png" alt="logo" className='max-w-full' />
@@ -53,7 +53,7 @@ function HomeFooter() {
             </div>
           </div>
           <div className='text-base text-center md:text-left'>
-            <h1 className='text-white font-bold'>Join line community:</h1>
+            <h1 className='text-white font-bold'>Join line community</h1>
             <div className='flex flex-col space-y-4 mt-4'>
               {
                 join.map((item,index)=>{
