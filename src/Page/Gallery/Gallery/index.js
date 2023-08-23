@@ -1,7 +1,7 @@
 import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaRegHeart,FaRegComment,FaComment } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
 import {fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
@@ -218,18 +218,7 @@ function Index() {
                         />
                       </div>
 
-                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2 md:opacity-0 md:group-hover:opacity-100 transition duration-700'>
-                        <div className='flex items-center space-x-2'>
-                          <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
-                          <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
-                        </div>
 
-                        <div className='text-red-300'>
-                          {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
-                        </div>
-
-
-                      </div>
                       <div>
                         
                       </div>
@@ -237,17 +226,36 @@ function Index() {
 
 
 
-                    <div className='text-sm  flex items-center mt-2 space-x-3 w-full   text-white'>
-                      <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
-                        <div className='pt-[100%] relative'>
-                          <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
-                        </div>
-                      </Link>
-
+                    <div className=' flex flex-col  mt-2 w-full   text-white'>
                       <div className='flex flex-col'>
-                        <div className='text-base font-bold '><TitleWithLimit title={title} maxLength={12}/> </div>
-                        <div className='text-xs text-white/50'>{author?.name}</div>
+                        <div className='text-lg font-semibold '><TitleWithLimit title={title} maxLength={12}/> </div>
                       </div>
+                      <div className='flex justify-between items-center px-1'>
+
+                        <div className='text-sm flex items-center mt-1 space-x-3 w-full   text-white'>
+                          <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
+                            <div className='pt-[100%] relative'>
+                              <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                            </div>
+                          </Link>
+                          <div className='text-xs text-white/50'>{author?.name}</div>
+      
+                        </div>
+                        <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 opacity-70 '>
+                          <div className='flex items-center space-x-3 text-sm'>
+                            <div className='flex items-center  space-x-1'><FaRegHeart /> <span>{likes}</span></div>
+                            <Link to={`/post/${id}`} className='flex items-center  space-x-1'><FaRegComment /> <span>{comments}</span></Link>
+                            
+                          </div>
+
+
+
+                        </div>
+                      </div>
+
+
+
+
                     </div>
 
 

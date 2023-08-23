@@ -55,11 +55,9 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   }
   const onHandleDisplayHome = (image)=>{
-
     setIsShowDisplayFormModal(true)
     setImageData(image)
     setProfilePage('on_Renderpage')
-
   }
 
   const onHandleCollection = (image) =>{
@@ -188,7 +186,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   <img  
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
-                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full '
+                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full cursor-pointer '
                     onClick={() => {
                       setImageData(image)
                       setIsShowImageModal(true)
@@ -215,7 +213,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                     <IconButton 
                       disabled={isAddStorageLoading}  
                       size="sm"
-                      className={' flex items-center  justify-center text-xs rounded-full  p-2  border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (display_home ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
                     >
                       <FaShare />
                     </IconButton>

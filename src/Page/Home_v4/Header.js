@@ -19,7 +19,7 @@ function Header({executeScroll}) {
           
           <div className=' my-5 relative w-full md:w-1/3' >
 
-            <div className=' w-full mx-auto  relative my-10'>
+            <div className=' w-full mx-auto  relative md:my-7'>
               <div className="circle absolute  -z-10  "></div>
               <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png' alt="" className='w-full'/>
             </div>
@@ -27,7 +27,8 @@ function Header({executeScroll}) {
         </div>
         </div>
         <div className='text-center text-base my-4 md:mx-20 font-semibold order-2 md:order-3'>
-          Extend your creation limits through interaction with Moonshot. Let AI enter your world with amazement.
+          <div> Extend your creation limits through interaction with Moonshot. </div>
+          <div>Let AI enter your world with amazement.</div>
         </div> 
         <div className='text-lg  flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-20 order-4'>
            

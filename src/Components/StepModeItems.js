@@ -18,9 +18,7 @@ export const TextSteoMode1 = ({data,currentDataIndex})=>{
   useEffect(() => {
     let timeout;
     if (showFirst) {
-      // timeout = setTimeout(() => {
-      //   setShowSecond(true);
-      // }, 1500);
+
     }
     if(isTypingComplete){
       timeout = setTimeout(() => {
