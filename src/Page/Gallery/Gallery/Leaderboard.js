@@ -1,42 +1,43 @@
 import React from 'react'
-import { Link} from 'react-router-dom';
-
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
-import { GiShield,GiArson } from "react-icons/gi";
-import {LoadingLogoSpin,recordPageUrl} from '../helpers/componentsHelper'
-
-function Leaderboard({title,data,isLoading}) {
+import {fetchTopLikedUser,fetchTopRenderdUser} from '../helpers/fetchHelper'
+import LeaderboardComp from './LeaderboardComp';
+import { useQuery } from 'react-query';
+function LeaderBoard() {
+  const { data:topLikedUser, isLoading:isTopLikedUserLoading, isError:isTopLikedUserError } = useQuery('topLikedUsers', fetchTopLikedUser);
+  const { data:topRenderUser, isLoading:isTopRenderUserLoading, isError:isTopRenderUserError } = useQuery('topRenderUsers', fetchTopRenderdUser);
   return (
-    <div className='flex-1 bg-gray-900 rounded-md p-2'>
-      <div className='text-white/90 text-sm '>{title}</div>
-      <div className=' space-y-3 mt-3'>
-        {
-          isLoading ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
-          (
-            data.slice(0,5).map((item,index)=>{
-              return(
-                <div className='flex items-center justify-start gap-1'>
-                  <div className='text-white/60 text-xs mr-2'>{index === 0 ?  <GiArson color="red" size={14} /> : '0'+index }</div>
-                  <div className='text-sm flex items-center     text-white'>
-                    <Link to={`/user/${item.id}`}  className='w-7' onClick={recordPageUrl}>
-                      <div className='pt-[100%] relative'>
-                        <img src={item?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
-                      </div>
-                    </Link>
-                  </div>
-                  <div> 
-                    <div className='text-xs text-amber-400'>{item?.name}</div>
-                    <div className='flex items-center text-white/70 text-xs'> <MdOutlineLocalFireDepartment color="red" size="13" />{item?.monthly_count}</div>
-                  </div>
-                </div>
-              )
-            })
-          )
-        }
+    <div className="w-full md:w-10/12  space-x-0  mx-auto  text-white relative">
+      <div className='text-xl font-bold text-center my-10'>MoonShot 排行榜</div>
+      <div className='flex flex-col md:flex-row md:gap-8 px-4 space-y-6'>
+  
+        <LeaderboardComp 
+          title="人氣作者" 
+          data={topLikedUser} 
+          isLoading={isTopLikedUserLoading} 
+          sliceNum={15} 
+          containerStyle={'px-3 md:px-8'}
+          containerTitleStyle={'text-lg font-semibold '}
+          listContainerStyle={''}
+          listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+          listAvatarStyle={'w-16'}
+          listNameStyle={'text-lg'}
+        />
+        <LeaderboardComp 
+          title="創作次數" 
+          data={topRenderUser} 
+          isLoading={isTopRenderUserLoading} 
+          sliceNum={15} 
+          containerStyle={'px-3 md:px-8'}
+          containerTitleStyle={'text-lg font-semibold '}
+          listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+          listAvatarStyle={'w-16'}
+          listNameStyle={'text-lg'}
+        />
+        
       </div>
-
     </div>
+
   )
 }
 
-export default Leaderboard
+export default LeaderBoard

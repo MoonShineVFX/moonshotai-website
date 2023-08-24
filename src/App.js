@@ -24,6 +24,7 @@ import Policy from './Page/DocPage/Policy';
 //
 import GalleryLayout from './Page/Lyaouts/GalleryLayout';
 import Gallery from './Page/Gallery/Gallery';
+
 import CampaignGallery from './Page/Gallery/Gallery/CampaignGallery';
 import CampaignList from './Page/Gallery/Gallery/CampaignList';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
@@ -39,6 +40,7 @@ import Orders from './Page/Gallery/PricePage/Orders';
 
 import TaiwanFood from './Page/Gallery/CampaignPage/TaiwanFood';
 import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
+import LeaderBoard from './Page/Gallery/Gallery/LeaderBoard';
 
 import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
@@ -60,17 +62,7 @@ function App() {
   useEffect(() => {
     AOS.init();
   }, [])
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (performance.navigation.type !== 1) {
-        // removeLocalStorageItem().then(data=>console.log(data))
-      }
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -93,6 +85,8 @@ function App() {
 
           <Route path="taiwanfood" element={<TaiwanFood />} />
           <Route path="asusnft" element={<AsusNFT />} />
+          <Route path="leaderboard" element={<LeaderBoard />} />
+
  
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />

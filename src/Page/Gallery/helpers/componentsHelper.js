@@ -483,3 +483,19 @@ export const Icon = ({nameIcon, propsIcon}) =>{
   });
   return <ElementIcon {...propsIcon} />
 }
+
+
+export const formatNumberWithK = (number) =>{
+  if (number >= 1000) {
+    const formattedNumber = (number / 1000).toFixed(1) + 'k';
+    return formattedNumber;
+  }
+  return number.toString();
+}
+
+export const padWithZero =(number) => {
+  if (number < 10) {
+    return '0' + number;
+  }
+  return number.toString();
+}

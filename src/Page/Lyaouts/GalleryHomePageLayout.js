@@ -1,13 +1,10 @@
 import React from 'react'
 import { Link, Outlet,useLocation} from 'react-router-dom';
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
-import { GiShield,GiArson } from "react-icons/gi";
 import {  Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {fetchTopLikedUser,fetchTopRenderdUser} from '../../Page/Gallery/helpers/fetchHelper'
-import {LoadingLogoSpin,recordPageUrl} from '../../Page/Gallery/helpers/componentsHelper'
 import { useQuery } from 'react-query';
-import Leaderboard from '../Gallery/Gallery/Leaderboard';
+import LeaderboardComp from '../Gallery/Gallery/LeaderboardComp';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -26,13 +23,7 @@ const GalleryHomePageLayout = () => {
   const location = useLocation();
   const { data:topLikedUser, isLoading:isTopLikedUserLoading, isError:isTopLikedUserError } = useQuery('topLikedUsers', fetchTopLikedUser);
   const { data:topRenderUser, isLoading:isTopRenderUserLoading, isError:isTopRenderUserError } = useQuery('topRenderUsers', fetchTopRenderdUser);
-  function formatNumberWithK(number) {
-    if (number >= 1000) {
-      const formattedNumber = (number / 1000).toFixed(1) + 'k';
-      return formattedNumber;
-    }
-    return number.toString();
-  }
+
   
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
@@ -62,8 +53,30 @@ const GalleryHomePageLayout = () => {
           }  
           </Swiper>
           <div className='flex w-1/2 gap-2'>
-            <Leaderboard title="人氣作者" data={topLikedUser} isLoading={isTopLikedUserLoading} />
-            <Leaderboard title="創作次數" data={topRenderUser} isLoading={isTopRenderUserLoading} />
+            <LeaderboardComp 
+              title="人氣作者" 
+              data={topLikedUser} 
+              isLoading={isTopLikedUserLoading} 
+              sliceNum={5} 
+              more={true} 
+              containerStyle={''}
+              containerTitleStyle={''}
+              listStyle={''}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+            />
+            <LeaderboardComp 
+              title="創作次數" 
+              data={topRenderUser} 
+              isLoading={isTopRenderUserLoading} 
+              sliceNum={5} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={''}
+              listStyle={''}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+            />
           </div>
 
            
