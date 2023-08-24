@@ -150,7 +150,7 @@ export const LoadingLogoFly = ()=>{
 } 
 export const LoadingLogoSpin = ()=>{
   return (
-    <div className='text-white h-[50vh] flex justify-center items-center relative'>
+    <div className='text-white  flex justify-center items-center relative'>
       <div  className='text-lime-600  w-14 '>
       <span className="loader"></span>
       </div>

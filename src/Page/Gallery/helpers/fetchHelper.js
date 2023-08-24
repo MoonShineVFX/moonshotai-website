@@ -852,8 +852,6 @@ export const removeImgtoCampaign= (imgid,items,token) => {
   return fetch(apiUrl +'image_campaigns/'+items.id, requestOptions).then((response) => response.status);
 };
 
-
-
 // GET /campaigns 取得活動所屬圖片列表
 export const fetchCampaignImages =async (campaign_id,page_size) =>{
   console.log(page_size)
@@ -868,4 +866,35 @@ export const fetchCampaignImages =async (campaign_id,page_size) =>{
   const data =await response.json()
   return data
     
+}
+
+
+// top_liked_users
+export const fetchTopLikedUser =async (campaign_id,page_size) =>{
+  console.log(page_size)
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'top_liked_users' ,requestOptions)
+  const data =await response.json()
+  return data
+}
+
+// top_render_users
+export const fetchTopRenderdUser =async (campaign_id,page_size) =>{
+  console.log(page_size)
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'top_render_users' ,requestOptions)
+  const data =await response.json()
+  return data
 }
