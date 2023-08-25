@@ -1,15 +1,29 @@
 import React, { useState }  from 'react'
 import {motion} from 'framer-motion'
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaBookmark } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
-
+import {
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Button,
+  IconButton,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
 function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage}) {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [imageData, setImageData] = useRecoilState(imageDataState)
+  const [open, setOpen] = React.useState(false);
+  const [currentItem, setCurrentItem] = React.useState({});
+  const handleOpen = () => setOpen(!open);
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
@@ -31,11 +45,8 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
     },
   };
   const onHandleRemoveCollection = (image)=>{
-    console.log(image)
-    handleRemoveCollection(image.id)
-
-
-    // 
+    handleRemoveCollection(image,'collectionPage')
+    setOpen(!open)
   }
   if(totalImage === 0) {
     return <div>
@@ -46,6 +57,36 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
 
   return (
     <div >
+        <Dialog
+          open={open}
+          size={"xs"}
+          handler={handleOpen}
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0.9, y: -100 },
+          }}
+          className='bg-gray-900'
+        >
+          <DialogHeader className='text-lg text-white/80'>移除這張收藏</DialogHeader>
+          <DialogBody 
+      
+            className=' text-white '>
+            刪除發佈，不會直接性的刪除這張圖片，是將這張圖片從分享藝廊區移除。
+          </DialogBody>
+          <DialogFooter className='border-t border-gray-600'>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>取消</span>
+            </Button>
+            <Button variant="gradient" color="" onClick={()=>onHandleRemoveCollection(currentItem)}>
+              <span>確認</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
@@ -75,8 +116,8 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
                     {title ?title : created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
-                    <div className=' flex items-center gap-1  text-sm ' onClick={()=>onHandleRemoveCollection(image)}>
-                      <FaHeart />Remove
+                    <div className=' flex items-center gap-1  text-sm  cursor-pointer ' onClick={()=> {handleOpen(); setCurrentItem(image); }}>
+                      <FaBookmark />移除
                     </div>
 
 

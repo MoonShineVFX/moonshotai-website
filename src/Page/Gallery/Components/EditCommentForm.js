@@ -7,6 +7,7 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
+  console.log(storagesResults)
   const [imageArray, setImageArray] = useState([])
   const [selectedImages, setSelectedImages] = useState([]);
   const comment = useRecoilValue(commentDataState)

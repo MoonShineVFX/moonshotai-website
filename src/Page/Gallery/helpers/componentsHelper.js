@@ -63,13 +63,13 @@ export const CallToLoginModal = ({closeModal})=>{
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className='  bg-gray-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-gray-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 md:w-2/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
           <div className=' font-bold'>登入通知</div>
           <div className='text-white/70 text-xs mt-1 mb-4'>當您要使用這些功能時，需要登入網站。</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <div onClick={handleLogin} className=' bg-lime-600 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>現在登入</div>
+            <div onClick={handleLogin} className=' bg-t_lime-600 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>現在登入</div>
             <button type="button" className='text-white/50 text-sm' onClick={handleClose}>下次一定</button>
           </div>
         </div>

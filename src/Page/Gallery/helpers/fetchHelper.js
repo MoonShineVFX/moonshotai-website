@@ -1,4 +1,5 @@
 
+import React, { useState }  from 'react'
 import liff from '@line/liff';
 import {   useRecoilState } from 'recoil';
 import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
@@ -131,10 +132,7 @@ export const getStoredLocalData = async ()=>{
     lineProfile: JSON.parse(storedLineProfile),
     currentUser: JSON.parse(storedCurrentUser)
   }
-    
-  
 }
-
 
 export const fetchLineLogin = async (profile) =>{
   const requestOptions = {
@@ -225,6 +223,202 @@ export const userStorageAImage =async (image,token) =>{
   // console.log(response.json())
   return data
 }
+//USER POST-post 
+export const userPostAImage =async (image,items,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+    
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/post', requestOptions)
+  const data =await response
+  // console.log(response.json())
+  return data
+}
+//use USER POST 
+export function usePostImageMutation(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const [isPostComplete, setIsPostComplete] = useState(false);
+  const postImageMutation = useMutation((updatedData) =>
+  userPostAImage(updatedData.image,updatedData.items, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+
+        setIsPostComplete(true);
+      },
+    }
+  );
+
+  return postImageMutation;
+}
+//USER DEL-post
+export const userDelAPostImage = async (image,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/post', requestOptions)
+  const data =await response
+  return data
+}
+//use USER POST DEL
+export function useDelPostImageMutation(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const [isPostComplete, setIsPostComplete] = useState(false);
+  const postImageMutation = useMutation((updatedData) =>
+  userDelAPostImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.filter((image) => image.id !== variables.image.id),
+          }));
+          return { pages: newData };
+        });
+      },
+    }
+  );
+
+  return postImageMutation;
+}
+
+//PATCH post image
+export const userPatchAPostImage = async(img,items,token)=>{
+  const requestOptions = {
+    method: 'PATCH',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(items)
+  };
+  const response = await fetch(apiUrl+'posts/'+img.id, requestOptions)
+  const data = await response
+  return data
+}
+//use PATCH USER POST img
+export function usePatchPostImageMutation(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const postImageMutation = useMutation((updatedData) =>
+  userPatchAPostImage(updatedData.image,updatedData.items, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image,...variables.items }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+
+      },
+    }
+  );
+
+  return postImageMutation;
+}
+
+//Like a image
+export const userLikeAImage =async (image,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/like', requestOptions)
+  const data =await response
+  return data
+}
+//use Like a image
+export function useLikeImageMutation(linLoginData, fnKey) {
+  const queryClient = useQueryClient();
+
+  const likeImageMutation = useMutation((updatedData) =>
+    userLikeAImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image, is_like: true,likes: (parseInt(image.likes) + 1).toString() }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      },
+    }
+  );
+
+  return likeImageMutation;
+}
+//DEL Like a image
+export const userDelALikedImage = async (id,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+id+'/like', requestOptions)
+  const data =await response
+  return data
+}
+//use DEL Like a image
+export function useDelLikedImageMutation(linLoginData, fnKey) {
+  const queryClient = useQueryClient();
+
+  const unlikeImageMutation = useMutation((updatedData) =>
+    userLikeAImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image, is_like: false,likes: (parseInt(image.likes) - 1).toString() }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      },
+    }
+  );
+
+  return unlikeImageMutation;
+}
+
+//ADD Collection
 export const userCollectionAImage =async (image,token) =>{
   const requestOptions = {
     method: 'POST',
@@ -236,6 +430,80 @@ export const userCollectionAImage =async (image,token) =>{
   const response =await fetch(apiUrl+'images/'+image.id+'/collection', requestOptions)
   const data =await response
   return data
+}
+//use ADD Collection
+export function useCollectionImageMutation(linLoginData, fnKey) {
+  const queryClient = useQueryClient();
+
+  const collectionImageMutation = useMutation((updatedData) =>
+    userCollectionAImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image, is_collection: true }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+      },
+    }
+  );
+
+  return collectionImageMutation;
+}
+//DEL Collection
+export const userDelACollectionImage = async (image,token)=>{
+  const requestOptions = {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'images/'+image.id+'/collection', requestOptions)
+  const data =await response
+  return data
+}
+//use DEL Collection
+export function useDelACollectionImageMutation(linLoginData, fnKey) {
+  const queryClient = useQueryClient();
+
+  const uncollectionImageMutation = useMutation((updatedData) =>
+  userDelACollectionImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        if(variables.status === 'collectionPage'){
+          queryClient.setQueryData(fnKey, (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.filter((image) => image.id !== variables.image.id),
+            }));
+            return { pages: newData };
+          });
+        } else{
+          queryClient.setQueryData(fnKey, (prevData) => {
+            const newData = prevData.pages.map((page) => ({
+              ...page,
+              results: page.results.map((image) =>
+                image.id === variables.image.id
+                  ? { ...image, is_collection: false }
+                  : image
+              ),
+            }));
+            return { pages: newData };
+          });
+        }
+
+      },
+    }
+  );
+
+  return uncollectionImageMutation;
 }
 export const userDelAStorageImage = async (image,token)=>{
   const requestOptions = {
@@ -249,18 +517,7 @@ export const userDelAStorageImage = async (image,token)=>{
   const data =await response
   return data
 }
-export const userDelACollectionImage = async (id,token)=>{
-  const requestOptions = {
-    method: 'DELETE',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
-  };
-  const response =await fetch(apiUrl+'images/'+id+'/collection', requestOptions)
-  const data =await response
-  return data
-}
+
 export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endDate,currModels)=>{
   let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
@@ -283,17 +540,16 @@ export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endD
   
 
 }
-export const fetchUserPublicImages =async (uuid,cursor,pageSize)=>{
+// users/<int:id>/posts 看post的公開圖
+export const fetchUserPublicImages =async (token,uuid,cursor,pageSize)=>{
   let newCursor = cursor === undefined ? '' : cursor
 
   const requestOptions = {
     method: 'GET',
-    headers: { 
-      'Content-Type': 'application/json'
-    }
+    headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
   };
   if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/images?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
+    const response =await fetch(apiUrl+'users/'+uuid+'/posts?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
     const data =await response.json()
     return data
     
@@ -463,6 +719,7 @@ export const userPatchAStorageImage = async(img,token,items)=>{
   const data = await response
   return data
 }
+
 //修改保留區圖片是否顯示於藝廊 (需攜帶JWT 作者本人才能存取)
 export const userPatchDisplayHome = async(imgid,token,items)=>{
   const requestOptions = {
@@ -489,7 +746,6 @@ export const fetchGalleries = async (token,cursor,pageSize,startDate,endDate,cur
     headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
   };
 
-
   const response = await fetch(apiUrl+'galleries?'+'cursor='+newCursor+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
   let data 
@@ -501,6 +757,26 @@ export const fetchGalleries = async (token,cursor,pageSize,startDate,endDate,cur
   }
 
 }
+//use function
+export function useGalleries(linLoginData, pageSize,startDate,endDate, currModels,isInitialized,isLoggedIn) {
+  return useInfiniteQuery(
+    ['galleries', linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: isInitialized && (linLoginData !== null || isLoggedIn !== null),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+      }
+    }
+  );
+}
+
 
 export const fetchGalleriesDetail = async (token,id) => {
   const requestOptions = {
@@ -870,8 +1146,7 @@ export const fetchCampaignImages =async (campaign_id,page_size) =>{
 
 
 // top_liked_users
-export const fetchTopLikedUser =async (campaign_id,page_size) =>{
-  console.log(page_size)
+export const fetchTopLikedUser =async () =>{
 
   const requestOptions = {
     method: 'GET',
@@ -885,8 +1160,7 @@ export const fetchTopLikedUser =async (campaign_id,page_size) =>{
 }
 
 // top_render_users
-export const fetchTopRenderdUser =async (campaign_id,page_size) =>{
-  console.log(page_size)
+export const fetchTopRenderdUser =async () =>{
 
   const requestOptions = {
     method: 'GET',

@@ -1,10 +1,10 @@
 import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
-import { FaHeart,FaRegHeart,FaRegComment,FaComment } from "react-icons/fa";
+import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
-import {fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,fetchUserCollections} from '../helpers/fetchHelper'
+import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal} from '../helpers/componentsHelper'
+import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
@@ -25,7 +25,7 @@ const filterModelsDate = [
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
-  // {title:'XL',type:'Models',command:'models',value:'sdxl'}
+  {title:'XL',type:'Models',command:'models',value:'xl'}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -43,6 +43,8 @@ function Index() {
 
   const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
   const [ isCollected ,setIsCollected] = useState(false)
+  const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
+
 
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -63,109 +65,55 @@ function Index() {
 
     });
   }, [setLineLoginData,setCurrentUser]);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    refetch,
+  } = useGalleries(linLoginData, pageSize, startDate, endDate, currModels, isInitialized, isLoggedIn);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
-    [ 'galleries',linLoginData, startDate, currModels],
-    ({ pageParam }) =>
-      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
-    {
-      enabled:isInitialized && (linLoginData !== null || isLoggedIn !== null),
-      getNextPageParam: (lastPage, pages) =>{
-        // 檢查是否有下一頁
-        if (lastPage.next) {
-          const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("cursor");
-          return nextPage ? nextPage : undefined;
-        }
-        return undefined;
-        }
-    }
-  );
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  //ADD Collection
+  const collectionAImageMutation = useCollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //DEL Collection 
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //ADD LIKE
+  const likeAImageMutation = useLikeImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //DEL LIKE
+  const unLikeAImageMutation = useDelLikedImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+
+  const handleLike = async(image,is_like)=>{
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+      setIsLoginForFuns(true)
+      }else{
+        // console.log(imageData)
+        if(is_like){
+          unLikeAImageMutation.mutateAsync({image})
+        }else{
+          likeAImageMutation.mutateAsync({image})
   
-  //USER COLLECTION LIST
-  const { data: userCollection, isLoading: isUserCollectionLoading, isError: issUserCollectionError } = useQuery(
-    ['userCollections', currentUser,linLoginData],
-    () => fetchUserCollections(currentUser.id, linLoginData),
-    {
-      enabled: isLoggedIn === true, 
-      onError: () => {
-        // 發生錯誤時處理
-      },
-      onSuccess: (uData) => {
-        // 成功獲取數據後處理
-
-      },
-    }
-  );
-    const queryClient = useQueryClient();
-    //ADD Collection
-    const collectionAImageMutation = useMutation((updatedData)=>
-      {userCollectionAImage(updatedData.image,linLoginData) },
-      {
-        onSuccess:(data,variables)=>{
-          queryClient.setQueryData([ 'galleries',linLoginData, startDate, currModels],(prevData)=>{
-            console.log(prevData)
-
-            const newData = prevData.pages.map((page)=>({
-              ...page,
-              results: page.results.map((image) =>
-                image.id === variables.image.id ? { ...image, like: prevData.like+1} : image
-              ),
-            }))
-            return { pages: newData };
-          })
         }
+        setIsLoginForFuns(false)
       }
-    )
-    //DEL Collection 
-    const unCollectionAImageMutation = useMutation((updatedData)=>
-      {userDelACollectionImage(updatedData.image.id,linLoginData) },
-      {
-        onSuccess:(data,variables)=>{
-          // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
-          //   const newData = prevData.pages.map((page)=>({
-          //     ...page,
-          //     results: page.results.map((image) =>
-          //       image.id === variables.image.id ? { ...image,...variables.items} : image
-          //     ),
-          //   }))
-          //   return { pages: newData };
-          // })
-        }
-      }
-    )
-
+  }
   //COLLECTION
-  const handleCollection = async (image)=>{
+  const handleCollection = async (image,is_collection)=>{
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
-     setIsLoginForCollection(true)
+    setIsLoginForFuns(true)
     }else{
       // console.log(imageData)
-      if(isCollected){
+      if(is_collection){
         unCollectionAImageMutation.mutateAsync({image})
-        // userDelACollectionImage(imageData.id,linLoginToken)
-        //   .then((data)=> {
-        //     if(data.status===204){
-        //       setIsCollected(false)
-        //       setImageData( {...imageData, likes: imageData.likes-1 })
-            
-        //     }
-        //   })
-        //   .catch((error) => console.error(error));
       }else{
         collectionAImageMutation.mutateAsync({image})
-        // userCollectionAImage(imageData,linLoginToken)
-        //   .then((data)=> {
-        //     if(data.status===200){
-        //       setIsCollected(true)
-        //       setImageData( {...imageData, likes: imageData.likes+1 })
-        //     }
-        //   })
-        //   .catch((error) => console.error(error));
+
       }
-      setIsLoginForCollection(false)
+      setIsLoginForFuns(false)
     }
     
   }
@@ -213,7 +161,9 @@ function Index() {
 
   return (
     <div className='w-full '>
-        
+      <AnimatePresence>
+      {isLoginForFuns && <CallToLoginModal closeModal={()=>setIsLoginForFuns(false)}/>}
+      </AnimatePresence>
       <div className=''>
           {!imageData ? 
             <LoadingLogoSpin />
@@ -261,8 +211,7 @@ function Index() {
               columnClassName="my-masonry-grid_column"
             >
               {imageData.map((image,index)=>{
-                const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
-                const isImageCollected = userCollection?.results.some((item) => item.id === id);
+                const {id, urls, created_at, display_home, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -302,10 +251,11 @@ function Index() {
                           <div className='text-xs text-white/50'>{author?.name}</div>
       
                         </div>
-                        <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 opacity-70 '>
+                        <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 '>
                           <div className='flex items-center space-x-3 text-sm'>
-                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleCollection(image)}>{isImageCollected ?<FaHeart />  :<FaRegHeart /> }<span>{likes}</span></div>
-                            <Link to={`/post/${id}`} className='flex items-center  space-x-1'><FaRegComment /> <span>{comments}</span></Link>
+                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike(image,is_like)}>{is_like ?<FaHeart color="red" />  :<FaRegHeart /> }<span>{likes}</span></div>
+                            <div className='flex items-center  space-x-1 cursor-pointer'onClick={()=>handleCollection(image,is_collection)}>
+                            {is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span></div>
                             
                           </div>
 

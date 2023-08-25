@@ -1,13 +1,13 @@
 import React, { useState, useEffect }  from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdKeyboardArrowDown, MdMoreVert,MdViewModule,MdBookmark,MdSupervisedUserCircle,MdImage } from "react-icons/md";
-import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
+import { FaHeart,FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord,FaImages } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign,useUpdateUserMutation } from '../helpers/fetchHelper';
+import { fetchLineLogin, fetchUserImages, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,fetchCampaigns,postImgtoCampaign,removeImgtoCampaign,useUpdateUserMutation,fetchUserPublicImages,useCollectionImageMutation,useDelACollectionImageMutation,usePostImageMutation,useDelPostImageMutation,usePatchPostImageMutation } from '../helpers/fetchHelper';
 import {EmptyProfilePage} from '../../Gallery/helpers/componentsHelper'
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
@@ -24,7 +24,7 @@ import TutorialPage from '../TutorialPage'
 import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
-  {title:"Storage", display:true,data_name:"total_storages"},
+  {title:"Post", display:true,data_name:"total_post"},
   {title:"Collections", display:true,data_name:"total_collections"},
   {title:"Following",display:true,data_name:"total_follows"},
 ]
@@ -69,6 +69,8 @@ function Index() {
   const isShowImageModal = useRecoilValue(imageModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const isShowBeforeDisplayModal = useRecoilValue(beforeDisplayModalState)
+
+  const [isComplete , setIsComplete] = useState(false)
 
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -153,6 +155,26 @@ function Index() {
     }
   );
   const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  // FETCH POST  IMAGE to PAGE 
+  const { data: postsData, isLoading:isPostsDataLoading, fetchNextPage:fetchPostsNextPage, hasNextPage:hasPostsNextPage, isFetchingNextPage:isFetchPostsNextPage, isError:isPostsDataError, refetch:PostsDataRefetch } = useInfiniteQuery(
+    [ 'userPostsData',currentUser,linLoginData, startDate, currModels],
+    ({ pageParam }) =>
+    fetchUserPublicImages(linLoginData,currentUser.id, pageParam, pageSize, startDate, endDate, currModels),
+    {
+      enabled: optionPage === 'Post',
+      getNextPageParam: (lastPage, pages) =>{
+        // 檢查是否有下一頁
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+        }
+    }
+  );
+  const postImages = postsData?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
   // ADD  Render data to STORAGE
   const queryClient = useQueryClient();
@@ -321,7 +343,6 @@ function Index() {
     }
   )
 
-
   //
   // FETCH Collection IMAGE to PAGE 
   const { data: collectionData, isLoading:isCollectioDataLoading, fetchNextPage:fetchCollectioNextPage, hasNextPage:hasCollectioNextPage, isFetchingNextPage:isFetchCollectionNextPage, isError:isCollectioDataError, refetch:collectionDataRefetch } = useInfiniteQuery(
@@ -391,11 +412,11 @@ function Index() {
       case 'Renders':
         return <MdViewModule size={15} />
         break;
-      case 'Storage':
-        return <MdImage size={15}/>
+      case 'Post':
+        return <FaImages size={15}/>
         break;
       case 'Collections':
-        return <FaHeart size={13}/>
+        return <MdBookmark size={13}/>
         break;
       case 'Following':
         return <MdSupervisedUserCircle size={15}/>
@@ -444,16 +465,46 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
-
-  const handleCollection = (image) =>{
-    userCollectionAImage(image,token)
-      .then((data)=> {
-        setTimeout(()=>{
-          setCurrentProfile({...currentProfile, total_collections: currentProfile.total_collections+1});
-        },600)
-      })
-      .catch((error) => console.error(error));
+  //ADD POST rendersData
+  const postImageMutation = usePostImageMutation(linLoginData,[ 'rendersData',currentUser,linLoginData, startDate, currModels]);
+  //DEL POST rendersData
+  const unPostImageMutation = useDelPostImageMutation(linLoginData,[ 'userPostsData',currentUser,linLoginData, startDate, currModels]);
+  const patchPostImageMutation = usePatchPostImageMutation(linLoginData,[ 'userPostsData',currentUser,linLoginData, startDate, currModels]);
+  
+  const handlePostImage = (image,items) =>{
+    postImageMutation.mutateAsync({image,items}).then(()=>{
+      setIsShowDisplayFormModal(false)
+      setIsComplete(true)
+    })
   }
+  const handleRemovePost = (image)=>{
+    unPostImageMutation.mutateAsync({image})
+  }
+  const handlePatchPost = (image,items)=>{
+    //
+    patchPostImageMutation.mutateAsync({image,items}).then(()=>{
+      setIsShowDisplayFormModal(false)
+      setIsComplete(true)
+    })
+  }
+  //ADD Collection
+  const collectionAImageMutation = useCollectionImageMutation(linLoginData, startDate, currModels,[ 'rendersData',currentUser,linLoginData, startDate, currModels]);
+  //DEL Collection 
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginData, startDate, currModels,[ 'rendersData',currentUser,linLoginData, startDate, currModels]);
+  const handleCollection = (image,is_collection) =>{
+    if(is_collection){
+      unCollectionAImageMutation.mutateAsync({image})
+    }else{
+      collectionAImageMutation.mutateAsync({image})
+    }
+  }
+  const unCollectionAImageMutation_C = useDelACollectionImageMutation(linLoginData, startDate, currModels,[ 'collectionData',currentUser,linLoginData, startDate, currModels]);
+  const handleRemoveCollection = (image ,status)=>{
+    unCollectionAImageMutation_C.mutateAsync({image,status})
+  }
+
+
+
   const updateUserMutation = useUpdateUserMutation();
   const handleSetBanner = (id)=>{
     const items={
@@ -505,10 +556,12 @@ function Index() {
       })
       .catch((error) => console.error(error));
   }
+  // POST 
 
   /**
    * Storage API 
-   * start
+   * start 
+   * 不需要 Storage 了
    * */ 
   const handleSetStorageImage = async(image,items,status,add_activities,remove_activities) =>{
     // console.log(image.is_storage,status)
@@ -591,27 +644,6 @@ function Index() {
       .catch((error) => console.error(error));
   }
 
-  const handleRemoveCollection = (id)=>{
-    userDelACollectionImage(id,token)
-      .then((data)=> {
-        if(data.status === 200 || data.status === 204){
-          console.log('200')
-          setTimeout(()=>{
-            // change currentUser collections 
-            setCurrentProfile({...currentProfile, total_collections
-              : currentProfile.total_collections
-              -1});
-            fetchUserCollections(currentProfile.id,token)
-            .then((images)=> {
-                setCollections(images)
-                setCollectionsResults(images.results)
-            })
-            .catch((error) => console.error(error));
-          },1000)
-        }
-      })
-      .catch((error) => console.error(error));
-  }
   const handleUnfollow = (user)=>{
     userUnFollowAUser(user,token)
       .then(data=>{
@@ -667,8 +699,8 @@ function Index() {
     switch (currentDropDownItem.title) {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
-      case 'Storage':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={storageImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} />;
+      case 'Post':
+        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
       case 'Following':
@@ -678,8 +710,30 @@ function Index() {
   }
   
 
-  //LISTEN  LOGIN IF not LINE INIT
-
+  //CompletionMessage
+  function CompletionMessage({title,isComplete}) {
+    useEffect(() => {
+      if (isComplete) {
+        // 在3秒后自动隐藏消息
+        const timeoutId = setTimeout(() => {
+          setIsComplete(false)
+        }, 3000);
+  
+        // 清除计时器，以避免内存泄漏
+        return () => clearTimeout(timeoutId);
+      }
+    }, [isComplete]);
+  
+    return (
+      <motion.div 
+          initial={{ opacity: 0, y: -20,x:'-50%' }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        className=' fixed p-2 top-[30%] left-1/2 -translate-x-1/2  text-sm rounded-md bg-gray-900 text-white z-50 border border-white/30'>
+        {title} 完成!
+      </motion.div>
+    );
+  }
 
 
   if(isLoggedIn === false || !currentProfile ){
@@ -692,16 +746,17 @@ function Index() {
   return (
     <div >
       <AnimatePresence>
+ 
         {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
           )}
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
-        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} campaignsData={campaigns}/>)}
+        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} handlePostImage={handlePostImage} handlePatchPost={handlePatchPost} campaignsData={campaigns}/>)}
         {currentProfile?.finish_tutorial && <TutorialPage/> }
 
       </AnimatePresence>
       <ToastContainer />
-
+      {isComplete && <CompletionMessage title="圖片分享" isComplete={isComplete} />}
       {/* <Header isLoggedIn={isLoggedIn} currentUser={currentProfile}/> */}
 
       <div className='lg:w-10/12 mx-auto lg:my-10'>

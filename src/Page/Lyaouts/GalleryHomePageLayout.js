@@ -43,7 +43,7 @@ const GalleryHomePageLayout = () => {
             bannerData?.map((item,index)=>{
               
               return(
-                <SwiperSlide >
+                <SwiperSlide key={'banner'+index}>
                   <Link to={item.path} key={'banner'+index}>
                     <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md object-cover h-full' />
                   </Link>

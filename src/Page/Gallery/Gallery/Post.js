@@ -5,10 +5,11 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,userClickCopyPrompt,fetchImageCopyPromptTime,removeLocalStorageItem} from '../helpers/fetchHelper'
-import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoFly,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages} from '../helpers/fetchHelper'
+import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
+
 import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
 import moment from 'moment';
@@ -125,90 +126,89 @@ function Post() {
     }
   );
   // FETCH Storage IMAGE to PAGE 
-  const { data: storageData, isLoading:isStorageDataLoading, fetchNextPage:fetchStorageNextPage, hasNextPage:hasStorageNextPage, isFetchingNextPage:isFetchStorageNextPage, isError:isStorageDataError, refetch:storageDataRefetch } = useInfiniteQuery(
-    [ 'storageData',currentUser],
+  const { data:postsData , isLoading:isPostsDataLoading, isError:isPostsDataError} = useQuery(
+    [ 'userPosts',currentUser],
     ({ pageParam }) =>
-    fetchUserStorages(currentUser.id, linLoginToken, pageParam, pageSize, startDate, endDate, currModels),
+    fetchUserPublicImages(currentUser.id, pageParam, pageSize),
     {
       enabled: isCommentModal,
-      getNextPageParam: (lastPage, pages) =>{
-        // 檢查是否有下一頁
-        if (lastPage.next) {
-          const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("cursor");
-          return nextPage ? nextPage : undefined;
-        }
-        return undefined;
-        }
     }
   );
-  const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
-  const queryClient = useQueryClient();
+  const postsImages =  postsData?.results || []
   //ADD Collection
   const collectionAImageMutation = useMutation((updatedData)=>
     {userCollectionAImage(updatedData.imageData,linLoginToken) },
     {
       onSuccess:(data,variables)=>{
-        setImageData( {...imageData, likes: imageData.likes+1 })
+        setImageData( {...imageData, is_collection: true })
         setIsCollected(true)
-        // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
-        //   console.log(prevData)
-
-          // const newData = prevData.id === variables.imageData.id ? {prevData}
-          // const newData = prevData.pages.map((page)=>({
-          //   ...page,
-          //   results: page.results.map((image) =>
-          //     image.id === variables.image.id ? { ...image,...variables.items} : image
-          //   ),
-          // }))
-          // return { pages: newData };
-        // })
       }
     }
   )
   //DEL Collection 
   const unCollectionAImageMutation = useMutation((updatedData)=>
-    {userDelACollectionImage(updatedData.imageData.id,linLoginToken) },
+    {userDelACollectionImage(updatedData.imageData,linLoginToken) },
     {
       onSuccess:(data,variables)=>{
-        setImageData( {...imageData, likes: imageData.likes-1 })
+        setImageData( {...imageData, is_collection: false })
         setIsCollected(false)
-        // queryClient.setQueryData(['galleryDetail',linLoginToken,id],(prevData)=>{
-        //   const newData = prevData.pages.map((page)=>({
-        //     ...page,
-        //     results: page.results.map((image) =>
-        //       image.id === variables.image.id ? { ...image,...variables.items} : image
-        //     ),
-        //   }))
-        //   return { pages: newData };
-        // })
       }
     }
   )
+  //ADD Like
+  const likeAImageMutation = useMutation((updatedData)=>
+  {userLikeAImage(updatedData.imageData,linLoginToken) },
+  {
+    onSuccess:(data,variables)=>{
+      setImageData( {...imageData,is_like: true, likes: imageData.likes+1 })
+      setIsCollected(true)
+    }
+  }
+)
+//DEL Like
+  const unLikeAImageMutation = useMutation((updatedData)=>
+  {userDelALikedImage(updatedData.imageData,linLoginToken) },
+  {
+    onSuccess:(data,variables)=>{
+      setImageData( {...imageData,is_like: false, likes: imageData.likes-1 })
+      setIsCollected(false)
+    }
+  }
+)
   const handleCollection = async ()=>{
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
      setIsLoginForCollection(true)
     }else{
       // console.log(imageData)
-      if(isCollected){
+      if(imageData.is_collection){
         unCollectionAImageMutation.mutateAsync({imageData})
-
       }else{
         collectionAImageMutation.mutateAsync({imageData})
-
       }
       setIsLoginForCollection(false)
     }
     
+  }
+  const handleLike = async ()=>{
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+       setIsLoginForCollection(true)
+      }else{
+        // console.log(imageData)
+        if(imageData.is_like){
+          unLikeAImageMutation.mutateAsync({imageData})
+        }else{
+          likeAImageMutation.mutateAsync({imageData})
+        }
+        setIsLoginForCollection(false)
+      }
   }
 
 
 
 
   const handleComment = (item)=>{
-    // console.log('click')
-    // console.log(isHaveUserComment)
     if(!isLoggedIn){
       // console.log(isLoggedIn)
       setIsLoginForComment(true)
@@ -308,7 +308,7 @@ function Post() {
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
       {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
-      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={storageImages} handleSelectStorageImage={handleSelectStorageImage}/>}
+      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={postsImages} handleSelectStorageImage={handleSelectStorageImage}/>}
       </AnimatePresence>
       <ToastContainer />
 
@@ -335,9 +335,12 @@ function Post() {
                   ><IoCopyOutline /> <div>Copy Prompt</div> {isCopied && <span className='text-xs'> Copied! </span>}
                 </button>
                 <div className=' flex rounded-full bg-gray-800 space-x-6 px-4 py-2'>
-                  <button className='flex items-center space-x-2 ' onClick={handleCollection}>
-                    <FaHeart size={15} className={ isCollected ? ' text-rose-400' : ' text-white'} /> <span className='text-sm'>{imageData.likes}</span>
-                  </button>
+                  <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike()}>
+                    {imageData.is_like ?  <FaHeart color="red" />  :<FaRegHeart /> }<span>{imageData.likes}</span>
+                  </div>
+                  <div className='flex items-center  space-x-1 cursor-pointer'onClick={()=>handleCollection()}>
+                    {imageData.is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span>
+                  </div>
                   <button className=' ' onClick={handleComment}>
                     <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
                   </button>

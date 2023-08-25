@@ -19,7 +19,7 @@ function LeaderboardComp({title,data,isLoading,sliceNum,more,containerStyle,cont
           (
             data.slice(0,sliceNum).map((item,index)=>{
               return(
-                <div className={`flex items-center justify-start gap-1 ${listStyle}`}>
+                <div key={title+'_leaderComp_'+index} className={`flex items-center justify-start gap-1 ${listStyle}`}>
                   <div className='text-white/60 text-xs mr-2'>{index === 0 ?  <GiArson color="red" size={14} /> : padWithZero(index+1) }</div>
                   <div className='text-sm flex items-center     text-white'>
                     <Link to={`/user/${item.id}`}  className={` ${listAvatarStyle}`} onClick={recordPageUrl}>

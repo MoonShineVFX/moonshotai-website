@@ -1,11 +1,13 @@
 import React,{useState,useEffect} from 'react'
 import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
+import { FaHeart,FaRegHeart,FaBookmark,FaRegBookmark } from "react-icons/fa";
+
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
 import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
-import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,removeLocalStorageItem} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
@@ -27,6 +29,7 @@ function User() {
   const [pageSize, setPageSize] = useState(20)
   const [isFollowed ,setIsFollowed] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false);
+  const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
   const navigate = useNavigate();
   const imageVariants = {
     hidden: { opacity: 0, },
@@ -61,7 +64,7 @@ function User() {
   );
   const { data: publicImage, isLoading: isPublicImageLoading, isError: isPublicImageError } = useInfiniteQuery(
     ['publicImages', id, currentPage, pageSize],
-    ({ pageParam }) => fetchUserPublicImages(id, pageParam, pageSize),
+    ({ pageParam }) => fetchUserPublicImages(linLoginToken,id, pageParam, pageSize),
     {
       enabled: isInitialized && (!!id || isLoggedIn !== null), // 只有在 id 不為空時才啟用 useQuery
         getNextPageParam: (lastPage, pages) =>{
@@ -76,6 +79,46 @@ function User() {
     }
   );
   const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  //ADD Collection
+  const collectionAImageMutation = useCollectionImageMutation(linLoginToken,['publicImages', id, currentPage, pageSize]);
+  //DEL Collection 
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  //ADD LIKE
+  const likeAImageMutation = useLikeImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  //DEL LIKE
+  const unLikeAImageMutation = useDelLikedImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  const handleLike = async(image,is_like)=>{
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+      setIsLoginForFuns(true)
+      }else{
+        // console.log(imageData)
+        if(is_like){
+          unLikeAImageMutation.mutateAsync({image})
+        }else{
+          likeAImageMutation.mutateAsync({image})
+  
+        }
+        setIsLoginForFuns(false)
+      }
+  }
+  //COLLECTION
+  const handleCollection = async (image,is_collection)=>{
+    if(!isLoggedIn){
+    //  console.log(isLoggedIn)
+    setIsLoginForFuns(true)
+    }else{
+      // console.log(imageData)
+      if(is_collection){
+        unCollectionAImageMutation.mutateAsync({image})
+      }else{
+        collectionAImageMutation.mutateAsync({image})
+
+      }
+      setIsLoginForFuns(false)
+    }
+    
+  }
   
   const { data: userFollowing, isLoading: isUserFolloeingLoading, isError: isUserFollowingError } = useQuery(
     ['useFollowing', currentUser,linLoginToken],
@@ -86,6 +129,7 @@ function User() {
         // 發生錯誤時處理
       },
       onSuccess: (results) => {
+
         // 成功獲取數據後處理
         const findFollowId = results.some((item)=>{
           return item.id === parseInt(id)
@@ -209,7 +253,7 @@ function User() {
         :
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageData.map((image,index)=>{
-            const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw   } = image
+            const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,is_like,likes,is_collection   } = image
             
             return (
               <motion.div key={'gallery-'+index} 
@@ -234,13 +278,24 @@ function User() {
                   </div>
                 </Link>
 
-                <div className='text-sm  flex items-start mt-3  space-x-3  w-full   text-white'>
+                <div className='text-sm  flex items-start justify-between mt-3  space-x-3  w-full   text-white'>
 
 
                   <div className='flex flex-col'>
                     <div className='text-base font-bold'><TitleWithLimit title={title} maxLength={12}/> </div>
                     {/* <div className='text-xs text-white/50'>{author?.name}</div> */}
                   
+                  </div>
+                  <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 '>
+                    <div className='flex items-center space-x-3 text-sm'>
+                      <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike(image,is_like)}>{is_like ?<FaHeart color="red" />  :<FaRegHeart /> }<span>{likes}</span></div>
+                      <div className='flex items-center  space-x-1 cursor-pointer'onClick={()=>handleCollection(image,is_collection)}>
+                      {is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span></div>
+                      
+                    </div>
+
+
+
                   </div>
                 </div>
               </motion.div>

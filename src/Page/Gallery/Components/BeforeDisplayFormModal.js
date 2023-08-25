@@ -12,7 +12,7 @@ import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
   TabPanel, } from "@material-tailwind/react";
 import { useQuery } from 'react-query';
 import {getImgInCampaign} from '../helpers/fetchHelper'
-function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData}) {
+function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData,handlePostImage,handlePatchPost}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
   const profilePage = useRecoilValue(profilePageState)
@@ -57,10 +57,15 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       title:data.title ||'',
       description:data.description ||null,
       is_user_nsfw:data.is_user_nsfw ||false,
-      display_home:true,
     }
     // console.log(items)
-    handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
+    // handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
+    if(profilePage === 'on_Storagepage'){
+      handlePatchPost(image,items,'on_Storagepage')
+    }else{
+      handlePostImage(image,items)
+    }
+
   };
   const modalVariants = {
     close: { opacity: 0, },
