@@ -37,10 +37,9 @@ import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
 import Orders from './Page/Gallery/PricePage/Orders';
-
 import TaiwanFood from './Page/Gallery/CampaignPage/TaiwanFood';
 import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
-import LeaderBoard from './Page/Gallery/Gallery/LeaderBoard';
+import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
 
 import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
@@ -50,6 +49,7 @@ import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools";
+import LeaderBoard from './Page/Gallery/Gallery/LeaderBoardHome';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -85,7 +85,7 @@ function App() {
 
           <Route path="taiwanfood" element={<TaiwanFood />} />
           <Route path="asusnft" element={<AsusNFT />} />
-          <Route path="leaderboard" element={<LeaderBoard />} />
+          <Route path="leaderboard" element={<LeaderBoardHome />} />
 
  
           <Route path="post/:id" element={<Post />} />
