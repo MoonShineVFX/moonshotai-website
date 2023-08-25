@@ -1172,3 +1172,17 @@ export const fetchTopRenderdUser =async () =>{
   const data =await response.json()
   return data
 }
+
+// top_render_users
+export const fetchTopRanking =async () =>{
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+    }
+  };
+  const response =await fetch(apiUrl+'top_ranking' ,requestOptions)
+  const data =await response.json()
+  return data
+}

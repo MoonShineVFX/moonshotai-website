@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, Outlet,useLocation} from 'react-router-dom';
 import {  Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {fetchTopLikedUser,fetchTopRenderdUser} from '../../Page/Gallery/helpers/fetchHelper'
+import {fetchTopLikedUser,fetchTopRenderdUser,fetchTopRanking} from '../../Page/Gallery/helpers/fetchHelper'
 import { useQuery } from 'react-query';
 import LeaderboardComp from '../Gallery/Gallery/LeaderboardComp';
 // Import Swiper styles
@@ -23,6 +23,7 @@ const GalleryHomePageLayout = () => {
   const location = useLocation();
   const { data:topLikedUser, isLoading:isTopLikedUserLoading, isError:isTopLikedUserError } = useQuery('topLikedUsers', fetchTopLikedUser);
   const { data:topRenderUser, isLoading:isTopRenderUserLoading, isError:isTopRenderUserError } = useQuery('topRenderUsers', fetchTopRenderdUser);
+  const { data:topRanking, isLoading:isTopRankingLoading, isError:isTopRankingError } = useQuery('topRanking', fetchTopRanking);
 
   
   return (
@@ -55,8 +56,8 @@ const GalleryHomePageLayout = () => {
           <div className='flex w-1/2 gap-2'>
             <LeaderboardComp 
               title="人氣作者" 
-              data={topLikedUser} 
-              isLoading={isTopLikedUserLoading} 
+              data={topRanking?.top_liked_users} 
+              isLoading={isTopRankingLoading} 
               sliceNum={5} 
               more={true} 
               containerStyle={''}
@@ -67,8 +68,32 @@ const GalleryHomePageLayout = () => {
             />
             <LeaderboardComp 
               title="創作次數" 
-              data={topRenderUser} 
-              isLoading={isTopRenderUserLoading} 
+              data={topRanking?.top_render_users} 
+              isLoading={isTopRankingLoading} 
+              sliceNum={5} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={''}
+              listStyle={''}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+            />
+            <LeaderboardComp 
+              title="模型排名" 
+              data={topRanking?.top_used_models} 
+              isLoading={isTopRankingLoading} 
+              sliceNum={5} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={''}
+              listStyle={''}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+            />
+            <LeaderboardComp 
+              title="Lora 排名" 
+              data={topRanking?.top_used_loras} 
+              isLoading={isTopRankingLoading} 
               sliceNum={5} 
               more={true}
               containerStyle={''}
