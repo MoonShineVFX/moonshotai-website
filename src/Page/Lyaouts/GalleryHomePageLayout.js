@@ -53,8 +53,9 @@ const GalleryHomePageLayout = () => {
             })
           }  
           </Swiper>
-          <div className='flex flex-col md:flex-row md:w-1/2 gap-2'>
+          <div className='flex flex-col md:flex-row w-full md:w-1/2 gap-2'>
             <LeaderboardComp 
+              page={'home'}
               title="人氣作者" 
               data={topRanking?.top_liked_users} 
               isLoading={isTopRankingLoading} 
@@ -69,6 +70,7 @@ const GalleryHomePageLayout = () => {
               linkpath={'/user/'}
             />
             <LeaderboardComp 
+              page={'home'}
               title="創作次數" 
               data={topRanking?.top_render_users} 
               isLoading={isTopRankingLoading} 
@@ -83,6 +85,7 @@ const GalleryHomePageLayout = () => {
               linkpath={'/user/'}
             />
             <LeaderboardComp 
+              page={'home'}
               title="模型排名" 
               data={topRanking?.top_used_models} 
               isLoading={isTopRankingLoading} 
@@ -95,6 +98,7 @@ const GalleryHomePageLayout = () => {
               listNameStyle={'text-sm'}
             />
             <LeaderboardComp 
+              page={'home'}
               title="Lora 排名" 
               data={topRanking?.top_used_loras} 
               isLoading={isTopRankingLoading} 

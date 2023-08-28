@@ -9,6 +9,7 @@ import { MdDoneOutline,MdOutlineTrendingFlat,MdCreditCard,MdOutlineCircle,MdChec
 import { useForm,Controller } from 'react-hook-form';
 import moment from 'moment';
 import liff from '@line/liff';
+import { Button } from "@material-tailwind/react";
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -400,13 +401,13 @@ function Index() {
                   <div>
                     {block.storage}
                   </div>
-                  <div className='my-2 flex flex-col'>
+                  <div className='mt-5 mb-2 flex flex-col'>
                     {block.payment_line || block.payment_blue ?
                       <div>
                         {
                           block.payment_line && <div>
-                            <button 
-                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-md py-3  text-center text-white text-sm"
+                            <Button 
+                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-full py-3  text-center text-white text-sm"
                               onClick={()=>{
                                 handlePay('linepay')
                                 setCurrentPlan(block.full_title)
@@ -417,7 +418,7 @@ function Index() {
                               <MdCreditCard size={20} />  Line pay <MdArrowRightAlt />
                               {isLoadingReq && <div className='text-xs'>等待回應...</div>}
                               
-                            </button>
+                            </Button>
                             
                             
                           </div>
@@ -460,17 +461,17 @@ function Index() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                           <div className='flex flex-col gap-2'>
                             <div className='flex flex-col'>
-                              <input  type="text" placeholder="輸入推薦序號" className='bg-gray-700 rounded-md py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
+                              <input  type="text" placeholder="輸入推薦序號" className='bg-gray-700 rounded-full py-3 px-2 text-sm' {...register("invite_number", { required: true })}/>
                               {errors.invite_number && <div className='text-xs text-white/70 my-2'>請確認有輸入推薦序號。</div>}
 
                             </div>
-                            <button type="submit"    
-                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-md py-3  text-center text-white text-sm"
+                            <Button type="submit"    
+                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-full py-3  text-center text-white text-sm"
                             >
                               輸入推薦序號
                               <MdOutlineTrendingFlat className='ml-2'/>
                               {isInviteLoadingReq&& <div className='text-xs'>等待回應...</div>}
-                            </button>
+                            </Button>
                             <div className='text-center text-yellow-500'>
                              
                               {isInviteSuccess&& <div className='text-xs'>完成，體驗天數已成功增加。</div>}

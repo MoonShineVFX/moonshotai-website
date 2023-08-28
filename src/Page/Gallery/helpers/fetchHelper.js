@@ -236,7 +236,6 @@ export const userPostAImage =async (image,items,token) =>{
   };
   const response =await fetch(apiUrl+'images/'+image.id+'/post', requestOptions)
   const data =await response
-  // console.log(response.json())
   return data
 }
 //use USER POST 

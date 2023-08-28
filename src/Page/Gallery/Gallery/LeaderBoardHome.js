@@ -14,11 +14,21 @@ function LeaderBoardHome () {
   };
   return (
     <div className="w-full md:w-10/12  space-x-0  mx-auto  text-white relative py-10">
+      <div className='flex gap-3 my-10 justify-center'>
+        <Button
+        onClick={() => handleTabChange('popularity')}
+          className={'relative rounded-full font-bold capitalize text-sm   max-w-[180px] border border-[#BDDE48] ' + (activeTab === 'popularity' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
+        >
+          使用者排行榜
+        </Button>
+        <Button
+        onClick={() => handleTabChange('model')}
+          className={'relative rounded-full font-bold capitalize text-sm   max-w-[180px] border border-[#BDDE48] ' + (activeTab === 'model' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
+        >
+          模型排行榜
+        </Button>
+      </div>
 
-      <ButtonGroup className="gap-2 bg-gray-500/0 p-1 rounded-md my-10 flex justify-center ">
-        <Button className="rounded-md text-sm" onClick={() => handleTabChange('popularity')}>使用者排行榜</Button>
-        <Button className="rounded-md text-sm" onClick={() => handleTabChange('model')}>模型排行榜</Button>
-      </ButtonGroup>
       {activeTab === 'popularity' && (
         <motion.div 
           key={'1'}
@@ -26,7 +36,7 @@ function LeaderBoardHome () {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className='flex flex-col md:flex-row items-start  md:gap-8 px-4 space-y-6 md:space-y-0'>
+          className='flex flex-col md:flex-row items-start w-full  md:gap-8 px-4 space-y-6 md:space-y-0'>
     
           <LeaderboardComp 
             title="人氣作者" 
