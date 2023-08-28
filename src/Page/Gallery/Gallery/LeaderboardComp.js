@@ -43,7 +43,7 @@ function LeaderboardComp({title,data,isLoading,customer_sliceNum,more,containerS
           (
             data.slice(0,sliceNum).map((item,index)=>{
               return(
-                <div key={title+'_leaderComp_'+index} className={`flex items-center justify-start gap-1 ${listStyle} ${isMobile && index===0 && ' bg-gray-700/0 p-2 rounded-md '}`}>
+                <div key={title+'_leaderComp_'+index} className={`flex items-center justify-start gap-1 w-full ${listStyle} ${isMobile && index===0 && ' bg-gray-700/0 p-2 rounded-md '}`}>
                   <div className='text-white/60 text-xs mr-2'>{index === 0 ?  <GiArson color="red" size={14} /> : padWithZero(index+1) }</div>
                   <div className='text-sm flex items-center     text-white'>
                     {item?.profile_image && (
