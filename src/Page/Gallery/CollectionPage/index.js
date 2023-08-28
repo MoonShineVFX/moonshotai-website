@@ -71,7 +71,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
           <DialogBody 
       
             className=' text-white '>
-            刪除發佈，不會直接性的刪除這張圖片，是將這張圖片從分享藝廊區移除。
+            此動作不會直接從算圖圖庫中刪除圖片，僅為移除收藏。你確定要將圖片移除收藏嗎？
           </DialogBody>
           <DialogFooter className='border-t border-gray-600'>
             <Button

@@ -488,9 +488,9 @@ function Index() {
     })
   }
   //ADD Collection
-  const collectionAImageMutation = useCollectionImageMutation(linLoginData, startDate, currModels,[ 'rendersData',currentUser,linLoginData, startDate, currModels]);
+  const collectionAImageMutation = useCollectionImageMutation(linLoginData, [ 'rendersData',currentUser,linLoginData, startDate, currModels]);
   //DEL Collection 
-  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginData, startDate, currModels,[ 'rendersData',currentUser,linLoginData, startDate, currModels]);
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginData, [ 'rendersData',currentUser,linLoginData, startDate, currModels]);
   const handleCollection = (image,is_collection) =>{
     if(is_collection){
       unCollectionAImageMutation.mutateAsync({image})
@@ -498,7 +498,7 @@ function Index() {
       collectionAImageMutation.mutateAsync({image})
     }
   }
-  const unCollectionAImageMutation_C = useDelACollectionImageMutation(linLoginData, startDate, currModels,[ 'collectionData',currentUser,linLoginData, startDate, currModels]);
+  const unCollectionAImageMutation_C = useDelACollectionImageMutation(linLoginData, [ 'collectionData',currentUser,linLoginData, startDate, currModels]);
   const handleRemoveCollection = (image ,status)=>{
     unCollectionAImageMutation_C.mutateAsync({image,status})
   }

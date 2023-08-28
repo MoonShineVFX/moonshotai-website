@@ -28,13 +28,13 @@ const GalleryHomePageLayout = () => {
   
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
-      <div className='flex gap-6 justify-center'>
+      <div className='flex flex-col md:flex-row gap-6 justify-center'>
           <Swiper
           spaceBetween={1}
           slidesPerView={1}
           loop={true}
           modules={[Autoplay]}
-          className='w-1/2 h-auto'
+          className='w-full md:w-1/2 h-auto'
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
@@ -53,36 +53,40 @@ const GalleryHomePageLayout = () => {
             })
           }  
           </Swiper>
-          <div className='flex w-1/2 gap-2'>
+          <div className='flex flex-col md:flex-row md:w-1/2 gap-2'>
             <LeaderboardComp 
               title="人氣作者" 
               data={topRanking?.top_liked_users} 
               isLoading={isTopRankingLoading} 
-              sliceNum={5} 
+              customer_sliceNum={5} 
               more={true} 
               containerStyle={''}
               containerTitleStyle={''}
               listStyle={''}
               listAvatarStyle={'w-7'}
               listNameStyle={'text-sm'}
+              is_link={true}
+              linkpath={'/user/'}
             />
             <LeaderboardComp 
               title="創作次數" 
               data={topRanking?.top_render_users} 
               isLoading={isTopRankingLoading} 
-              sliceNum={5} 
+              customer_sliceNum={5} 
               more={true}
               containerStyle={''}
               containerTitleStyle={''}
               listStyle={''}
               listAvatarStyle={'w-7'}
               listNameStyle={'text-sm'}
+              is_link={true}
+              linkpath={'/user/'}
             />
             <LeaderboardComp 
               title="模型排名" 
               data={topRanking?.top_used_models} 
               isLoading={isTopRankingLoading} 
-              sliceNum={5} 
+              customer_sliceNum={5} 
               more={true}
               containerStyle={''}
               containerTitleStyle={''}
@@ -94,7 +98,7 @@ const GalleryHomePageLayout = () => {
               title="Lora 排名" 
               data={topRanking?.top_used_loras} 
               isLoading={isTopRankingLoading} 
-              sliceNum={5} 
+              customer_sliceNum={5} 
               more={true}
               containerStyle={''}
               containerTitleStyle={''}

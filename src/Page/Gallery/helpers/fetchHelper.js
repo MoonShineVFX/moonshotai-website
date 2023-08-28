@@ -434,7 +434,6 @@ export const userCollectionAImage =async (image,token) =>{
 //use ADD Collection
 export function useCollectionImageMutation(linLoginData, fnKey) {
   const queryClient = useQueryClient();
-
   const collectionImageMutation = useMutation((updatedData) =>
     userCollectionAImage(updatedData.image, linLoginData),
     {
