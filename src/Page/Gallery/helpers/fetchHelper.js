@@ -251,7 +251,7 @@ export function usePostImageMutation(linLoginData,fnKey) {
             ...page,
             results: page.results.map((image) =>
               image.id === variables.image.id
-                ? { ...image }
+                ? { ...image,...variables.items }
                 : image
             ),
           }));

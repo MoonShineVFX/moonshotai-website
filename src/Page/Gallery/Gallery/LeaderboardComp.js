@@ -36,13 +36,13 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
     };
   }, []);
   return (
-    <div className={`flex-1 bg-gray-900 rounded-md p-2 w-full ${containerStyle}`}>
+    <div className={`col-span-1 bg-gray-900 rounded-lg p-2 w-full h-full overflow-hidden ${containerStyle}`}>
       <div className='flex items-center justify-between'>
         <div className={`text-white/90 text-sm ${containerTitleStyle} `}>{title}</div>      
         {more &&<Link to="/leaderboard" className='text-white/30 text-sm hover:text-white '>更多</Link>}
       </div>
 
-      <div className={`md:space-y-3 mt-3 flex justify-between md:flex-col  gap-2 items-center md:items-start ${listContainerStyle} ${page === 'home' ? 'flex-row md:flex-col' : 'flex-col' } `}>
+      <div className={`md:space-y-3 mt-3 flex justify-between md:flex-col  items-center md:items-start ${listContainerStyle} ${page === 'home' ? 'flex-row md:flex-col' : 'flex-col' } `}>
         {
           isLoading ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
           (

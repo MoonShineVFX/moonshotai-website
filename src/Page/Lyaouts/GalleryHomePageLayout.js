@@ -12,7 +12,9 @@ import "swiper/css/pagination";
 
 const bannerData = [
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnft2880.png?v2",path:'/asusnft'},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood01.png",path:'/taiwanfood'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png",path:'/taiwanfood'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png"},
  ]
 
  const pageLinkItems = [
@@ -21,99 +23,105 @@ const bannerData = [
  ]
 const GalleryHomePageLayout = () => {
   const location = useLocation();
-  const { data:topLikedUser, isLoading:isTopLikedUserLoading, isError:isTopLikedUserError } = useQuery('topLikedUsers', fetchTopLikedUser);
-  const { data:topRenderUser, isLoading:isTopRenderUserLoading, isError:isTopRenderUserError } = useQuery('topRenderUsers', fetchTopRenderdUser);
   const { data:topRanking, isLoading:isTopRankingLoading, isError:isTopRankingError } = useQuery('topRanking', fetchTopRanking);
 
   
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
-      <div className='flex flex-col md:flex-row gap-6 justify-center'>
+      <div className='grid grid-cols-7 gap-4'>
           <Swiper
-          spaceBetween={1}
-          slidesPerView={1}
-          loop={true}
-          modules={[Autoplay]}
-          className='w-full md:w-1/2 h-auto'
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
+            spaceBetween={1}
+            slidesPerView={1}
+            loop={true}
+            modules={[Autoplay]}
+            className='w-full h-auto col-span-3'
+            autoplay={{
+              delay: 5500,
+              disableOnInteraction: false,
+            }}
           >
           {
             bannerData?.map((item,index)=>{
               
               return(
                 <SwiperSlide key={'banner'+index}>
-                  <Link to={item.path} key={'banner'+index}>
-                    <img src={window.innerWidth <= 450 ? item.url+'?width=400' : item.url} alt="slide" className=' rounded-md object-cover h-full' />
-                  </Link>
+                  {item.path ? (
+
+                    <Link to={item.path} key={'banner'+index} className=' aspect-[1920/853]'>
+                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  ' />
+                    </Link>
+                  ) : (
+                    <div key={'banner'+index} className=' aspect-[1920/853] bg-blue-gray-300'>
+                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  ' />
+                    </div>
+                  )
+                  }
+
                 </SwiperSlide>
               )
             })
           }  
           </Swiper>
-          <div className='flex flex-col md:flex-row w-full md:w-1/2 gap-2'>
-            <LeaderboardComp 
-              page={'home'}
-              title="人氣作者" 
-              data={topRanking?.top_liked_users} 
-              isLoading={isTopRankingLoading} 
-              customer_sliceNum={5} 
-              more={true} 
-              containerStyle={''}
-              containerTitleStyle={''}
-              listStyle={''}
-              listAvatarStyle={'w-7'}
-              listNameStyle={'text-sm'}
-              is_link={true}
-              linkpath={'/user/'}
-            />
-            <LeaderboardComp 
-              page={'home'}
-              title="創作次數" 
-              data={topRanking?.top_render_users} 
-              isLoading={isTopRankingLoading} 
-              customer_sliceNum={5} 
-              more={true}
-              containerStyle={''}
-              containerTitleStyle={''}
-              listStyle={''}
-              listAvatarStyle={'w-7'}
-              listNameStyle={'text-sm'}
-              is_link={true}
-              linkpath={'/user/'}
-            />
-            <LeaderboardComp 
-              page={'home'}
-              title="模型排名" 
-              data={topRanking?.top_used_models} 
-              isLoading={isTopRankingLoading} 
-              customer_sliceNum={5} 
-              more={true}
-              containerStyle={''}
-              containerTitleStyle={''}
-              listStyle={''}
-              listAvatarStyle={'w-7'}
-              listNameStyle={'text-sm'}
-            />
-            <LeaderboardComp 
-              page={'home'}
-              title="Lora 排名" 
-              data={topRanking?.top_used_loras} 
-              isLoading={isTopRankingLoading} 
-              customer_sliceNum={5} 
-              more={true}
-              containerStyle={''}
-              containerTitleStyle={''}
-              listStyle={''}
-              listAvatarStyle={'w-7'}
-              listNameStyle={'text-sm'}
-            />
-          </div>
 
-           
+          <LeaderboardComp 
+            page={'home'}
+            title="人氣作者" 
+            data={topRanking?.top_liked_users} 
+            isLoading={isTopRankingLoading} 
+            customer_sliceNum={4} 
+            more={true} 
+            containerStyle={''}
+            containerTitleStyle={''}
+            listContainerStyle={''}
+            listStyle={'h-[25%]'}
+            listAvatarStyle={'w-7'}
+            listNameStyle={'text-sm'}
+            is_link={true}
+            linkpath={'/user/'}
+          />
+          <LeaderboardComp 
+            page={'home'}
+            title="創作次數" 
+            data={topRanking?.top_render_users} 
+            isLoading={isTopRankingLoading} 
+            customer_sliceNum={4} 
+            more={true}
+            containerStyle={''}
+            containerTitleStyle={''}
+            listStyle={'h-[25%]'}
+            listAvatarStyle={'w-7'}
+            listNameStyle={'text-sm'}
+            is_link={true}
+            linkpath={'/user/'}
+          />
+          <LeaderboardComp 
+            page={'home'}
+            title="模型排名" 
+            data={topRanking?.top_used_models} 
+            isLoading={isTopRankingLoading} 
+            customer_sliceNum={4} 
+            more={true}
+            containerStyle={''}
+            containerTitleStyle={''}
+            listStyle={'h-[25%]'}
+            listAvatarStyle={'w-7'}
+            listNameStyle={'text-sm'}
+          />
+          <LeaderboardComp 
+            page={'home'}
+            title="Lora 排名" 
+            data={topRanking?.top_used_loras} 
+            isLoading={isTopRankingLoading} 
+            customer_sliceNum={4} 
+            more={true}
+            containerStyle={''}
+            containerTitleStyle={''}
+            listStyle={'h-[25%]'}
+            listAvatarStyle={'w-7'}
+            listNameStyle={'text-sm'}
+          />
           
+
       </div>
       <div className='text-white text-xl  mb-3 font-bold flex space-x-6 mt-14'>
         {
