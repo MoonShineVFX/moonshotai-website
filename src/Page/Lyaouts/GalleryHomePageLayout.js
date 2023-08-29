@@ -13,8 +13,8 @@ import "swiper/css/pagination";
 const bannerData = [
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnft2880.png?v2",path:'/asusnft'},
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png",path:'/taiwanfood'},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png"},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png"},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png",path:'/sdxl'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png",path:'/voice'},
  ]
 
  const pageLinkItems = [
@@ -28,13 +28,13 @@ const GalleryHomePageLayout = () => {
   
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
-      <div className='grid grid-cols-7 gap-4'>
+      <div className='grid grid-cols-8 gap-4'>
           <Swiper
             spaceBetween={1}
             slidesPerView={1}
             loop={true}
             modules={[Autoplay]}
-            className='w-full h-auto col-span-3'
+            className='banner w-full  col-span-4'
             autoplay={{
               delay: 5500,
               disableOnInteraction: false,
@@ -47,12 +47,12 @@ const GalleryHomePageLayout = () => {
                 <SwiperSlide key={'banner'+index}>
                   {item.path ? (
 
-                    <Link to={item.path} key={'banner'+index} className=' aspect-[1920/853]'>
+                    <Link to={item.path} key={'banner'+index} className=' '>
                       <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  ' />
                     </Link>
                   ) : (
-                    <div key={'banner'+index} className=' aspect-[1920/853] bg-blue-gray-300'>
-                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  ' />
+                    <div key={'banner'+index} className=' ] '>
+                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  object-contain ' />
                     </div>
                   )
                   }

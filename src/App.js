@@ -39,6 +39,8 @@ import Cancel from './Page/Gallery/PricePage/Cancel';
 import Orders from './Page/Gallery/PricePage/Orders';
 import TaiwanFood from './Page/Gallery/CampaignPage/TaiwanFood';
 import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
+import Sdxl from './Page/Gallery/CampaignPage/Sdxl';
+import Voice from './Page/Gallery/CampaignPage/Voice';
 import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
 
 import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
@@ -85,6 +87,8 @@ function App() {
 
           <Route path="taiwanfood" element={<TaiwanFood />} />
           <Route path="asusnft" element={<AsusNFT />} />
+          <Route path="sdxl" element={<Sdxl />} />
+          <Route path="voice" element={<Voice />} />
           <Route path="leaderboard" element={<LeaderBoardHome />} />
 
  
