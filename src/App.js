@@ -6,6 +6,7 @@ import 'aos/dist/aos.css';
 //
 import HomeLayout from './Page/Lyaouts/HomeLayout';
 import HomeV3 from './Page/Home_v3'
+import HomeV4 from './Page/Home_v4'
 
 //
 import Camera from './Page/Camera'
@@ -23,6 +24,7 @@ import Policy from './Page/DocPage/Policy';
 //
 import GalleryLayout from './Page/Lyaouts/GalleryLayout';
 import Gallery from './Page/Gallery/Gallery';
+
 import CampaignGallery from './Page/Gallery/Gallery/CampaignGallery';
 import CampaignList from './Page/Gallery/Gallery/CampaignList';
 import GalleryV2 from './Page/Gallery/Gallery/index_v2';
@@ -35,9 +37,11 @@ import Price from './Page/Gallery/PricePage';
 import Confirm from './Page/Gallery/PricePage/Confirm';
 import Cancel from './Page/Gallery/PricePage/Cancel';
 import Orders from './Page/Gallery/PricePage/Orders';
-
 import TaiwanFood from './Page/Gallery/CampaignPage/TaiwanFood';
 import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
+import Sdxl from './Page/Gallery/CampaignPage/Sdxl';
+import Voice from './Page/Gallery/CampaignPage/Voice';
+import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
 
 import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
@@ -47,6 +51,7 @@ import {removeLocalStorageItem} from './Page/Gallery/helpers/fetchHelper'
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools";
+import LeaderBoard from './Page/Gallery/Gallery/LeaderBoardHome';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -59,17 +64,7 @@ function App() {
   useEffect(() => {
     AOS.init();
   }, [])
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      if (performance.navigation.type !== 1) {
-        // removeLocalStorageItem().then(data=>console.log(data))
-      }
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -81,7 +76,7 @@ function App() {
         
         <Route path="/" element={<GalleryLayout/> }>
           <Route path="*" element={<Notfound />} />
-          <Route path="" element={<HomeV3 />} />
+          <Route path="" element={<HomeV4 />} />
 
           <Route path="/" element={<GalleryHomePageLayout/> }>
 
@@ -92,6 +87,10 @@ function App() {
 
           <Route path="taiwanfood" element={<TaiwanFood />} />
           <Route path="asusnft" element={<AsusNFT />} />
+          <Route path="sdxl" element={<Sdxl />} />
+          <Route path="voice" element={<Voice />} />
+          <Route path="leaderboard" element={<LeaderBoardHome />} />
+
  
           <Route path="post/:id" element={<Post />} />
           <Route path="user/:id" element={<User />} />

@@ -207,7 +207,7 @@ function Index() {
       <div className='md:w-10/12 mx-auto flex flex-col md:flex-row'>
         <div className='mx-4 my-4 md:w-full'>
          
-          <div className='text-lime-500'>個人資料</div>
+          <div className='text-t_lime-500'>個人資料</div>
           
           <div>
             <div className='text-white/70 my-2 text-xs'>會員狀態</div>
@@ -233,14 +233,19 @@ function Index() {
           </div>
           <div className='my-4'>
             <div className='text-white/70 my-2 text-xs'>使用量</div>
-            <div className='text-xs text-white/ㄞ0 mt-1 space-y-1 '>
+            <div className='text-xs text-white/ㄞ0 mt-1 space-y-1'>
               <div className='flex justify-between'> 推薦序號被使用次數:(上限 5)  <span>{currentProfile.total_invitations}</span> </div>
-              <div className='flex justify-between'> 製圖總圖片量         <span>{currentProfile.total_photos}</span>          </div>
-              <div className='flex justify-between'> 已保留圖片數         <span>{currentProfile.total_storages}</span>          </div>
-              <div className='flex justify-between'> 已收藏圖片數         <span>{currentProfile.total_collections}</span>         </div>
-              <div className='flex justify-between'> 被收藏圖片數         <span>{currentProfile.total_collected}</span>         </div>
-              <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_follows}</span>         </div>
-              <div className='flex justify-between'> 被追隨人數           <span>{currentProfile.total_followers}</span>         </div>
+              {false && (
+                <>
+                <div className='flex justify-between'> 製圖總圖片量     <span>{currentProfile.total_photos}</span>          </div>
+                <div className='flex justify-between'> 已保留圖片數     <span>{currentProfile.total_storages}</span>          </div>
+                <div className='flex justify-between'> 已收藏圖片數     <span>{currentProfile.total_collections}</span>         </div>
+                <div className='flex justify-between'> 被收藏圖片數     <span>{currentProfile.total_collected}</span>         </div>
+                <div className='flex justify-between'> 已追隨人數       <span>{currentProfile.total_follows}</span>         </div>
+                <div className='flex justify-between'> 被追隨人數       <span>{currentProfile.total_followers}</span>         </div>
+                </>
+              )}
+
             </div>
           </div>
     
@@ -285,7 +290,7 @@ function Index() {
                 )}
               />
             </div>
-            <div className='mt-8 text-lime-500'>其他設定</div>
+            <div className='mt-8 text-t_lime-500'>其他設定</div>
             <div className='grid grid-cols-2 gap-2 '>
               <div className='flex flex-col  '>
                 <label htmlFor="portfolioUrl" className='text-white/70 my-2 text-xs'>Website</label>
@@ -397,7 +402,7 @@ function Index() {
             />
             
             <div className='mt-6 flex gap-3 justify-center text-md'>
-              <button type="submit" className='w-full  py-1 px-2 rounded-md bg-lime-700'>儲存變更</button>
+              <button type="submit" className='w-full  py-1 px-2 rounded-md bg-t_lime-700'>儲存變更</button>
             </div>
             {isSaveSuccess && <div className=''>修改完成。</div>}
 

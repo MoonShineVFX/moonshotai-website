@@ -19,7 +19,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage,handleRemoveFromStorage}) {
+function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage,handleRemoveFromStorage,handleRemovePost}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -64,6 +64,10 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
     handleRemoveFromStorage(image,'on_Storagepage')
     setOpen(!open)
   }
+  const onHandleRemovePost = (image) =>{
+    handleRemovePost(image,'on_Storagepage')
+    setOpen(!open)
+  }
   const handleClick = (id) => {
     if (openItems.includes(id)) {
       setOpenItems(openItems.filter((item) => item !== id));
@@ -72,13 +76,10 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
     }
   };
   const onHandleDisplayHome = (image)=>{
-    console.log(image)
-    const items = {
-      display_home:!image.display_home
-    }
+
     setIsShowDisplayFormModal(true)
-    const newData = { ...image, is_storage: true };
-    setImageData(newData)
+    // const newData = { ...image, is_storage: true };
+    setImageData(image)
     setProfilePage('on_Storagepage')
 
   }
@@ -192,14 +193,15 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                 >
                   <span>取消</span>
                 </Button>
-                <Button variant="gradient" color="" onClick={()=>onHandleRemoveFormStorage(currentItem)}>
+                <Button variant="gradient"  onClick={()=>onHandleRemovePost(currentItem)}>
                   <span>確認</span>
                 </Button>
               </DialogFooter>
             </Dialog>
           <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
-            {title}   {renderLimitImage(totalImage,limitImage)} 
-            <div className='text-xs text-white/50'>免費會員可留存 100 張圖片，進階會員可留存 300 張圖片</div>
+            {title}   
+            <div className='text-xs text-white/50'>{totalImage} items</div>  
+            <div className='text-xs text-white/50'>此區為已發佈分享的圖片。</div>
 
           </div>
           { isStorageDataLoading&& <motion.div 
@@ -228,7 +230,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                     <img  
                       src={urls.thumb} alt={image?.description} 
                       data-id={id}
-                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md'
+                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md cursor-pointer'
                       onClick={() => {
                         setImageData(image)
                         setIsShowImageModal(true)

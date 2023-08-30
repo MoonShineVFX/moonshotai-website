@@ -63,13 +63,13 @@ export const CallToLoginModal = ({closeModal})=>{
         initial={{ opacity: 0, scale:0 ,x:'-50%'}}
         animate={{ opacity: 1, scale:1 }}
         exit={{ opacity: 0, scale:0 }}
-        className='  bg-gray-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 overflow-y-auto max-h-[85vh]'
+        className='  bg-gray-800 rounded-md  p-4 box-border border border-white/20 text-white fixed top-1/3 left-1/2 -translate-x-1/2 w-4/5 md:w-2/5 overflow-y-auto max-h-[85vh]'
       >
         <div className='flex flex-col justify-center items-center'>
           <div className=' font-bold'>登入通知</div>
           <div className='text-white/70 text-xs mt-1 mb-4'>當您要使用這些功能時，需要登入網站。</div>
           <div className='mt-6 flex flex-col gap-3 justify-center text-md'>
-            <div onClick={handleLogin} className=' bg-lime-600 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>現在登入</div>
+            <div onClick={handleLogin} className=' bg-t_lime-600 cursor-pointer px-5 py-2 rounded-md hover:bg-gray-600'>現在登入</div>
             <button type="button" className='text-white/50 text-sm' onClick={handleClose}>下次一定</button>
           </div>
         </div>
@@ -150,7 +150,7 @@ export const LoadingLogoFly = ()=>{
 } 
 export const LoadingLogoSpin = ()=>{
   return (
-    <div className='text-white h-[50vh] flex justify-center items-center relative'>
+    <div className='text-white  flex justify-center items-center relative'>
       <div  className='text-lime-600  w-14 '>
       <span className="loader"></span>
       </div>
@@ -355,8 +355,8 @@ export const CommentDataFormat = ({data})=>{
 export const EmptyRenderPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
         <div>尚無圖片</div>
@@ -400,11 +400,11 @@ export const EmptyProfilePage = ()=>{
 export const EmptyStoragePage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
-        尚無留存的圖片
+        還沒有發布的圖片。
       </div>
     </div>
   )
@@ -412,11 +412,11 @@ export const EmptyStoragePage = ()=>{
 export const EmptyCollectionPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
-        尚無喜歡的圖片
+        還沒有收藏的圖片
       </div>
     </div>
   )
@@ -424,8 +424,8 @@ export const EmptyCollectionPage = ()=>{
 export const EmptyFollowPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
         還沒有追隨使用者
@@ -482,4 +482,31 @@ export const Icon = ({nameIcon, propsIcon}) =>{
 
   });
   return <ElementIcon {...propsIcon} />
+}
+
+
+export const formatNumberWithK = (number) =>{
+  if (number >= 1000) {
+    const formattedNumber = (number / 1000).toFixed(1) + 'k';
+    return formattedNumber;
+  }
+  return number.toString();
+}
+
+export const padWithZero =(number) => {
+  if (number < 10) {
+    return '0' + number;
+  }
+  return number.toString();
+}
+
+
+export const ImageWithFallback=({ src, alt, fallbackSrc,custom_style })=> {
+  const [imageSrc, setImageSrc] = useState(src);
+
+  const handleImageError = () => {
+    setImageSrc('https://i.stack.imgur.com/SeuQK.jpg');
+  };
+
+  return <img src={imageSrc+'?width=100'} alt={alt} onError={handleImageError} className={`absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-600 ${custom_style}`}/>;
 }

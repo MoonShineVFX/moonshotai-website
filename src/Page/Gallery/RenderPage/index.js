@@ -1,6 +1,6 @@
 import React, { useState, useEffect }  from 'react'
 import {motion} from 'framer-motion'
-import { FaShare,FaCheck } from "react-icons/fa";
+import { FaShare,FaCheck,FaBookmark} from "react-icons/fa";
 import { MdAdd,MdRemove } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
@@ -55,15 +55,13 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
   }
   const onHandleDisplayHome = (image)=>{
-
     setIsShowDisplayFormModal(true)
     setImageData(image)
     setProfilePage('on_Renderpage')
-
   }
-
-  const onHandleCollection = (image) =>{
-    handleCollection(image)
+  
+  const onHandleCollection = (image,is_collection) =>{
+    handleCollection(image,is_collection)
   }
   const onHandleSelectDate = (item)=>{
     switch (item.value) {
@@ -154,7 +152,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         } */}
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
-        <div className='text-xs text-white/50'>此區圖片的保存期限為 90 天，如您需要永久保存圖片，可以將圖片下載或是點選〔加入留存〕存放至【 Storage 】。</div>
+        <div className='text-xs text-white/50'>如要「分享圖片」請點分享按鈕，要「收藏圖片」請點收藏按鈕。</div>
       </div>
       { isAddStorageLoading&& <motion.div 
           className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
@@ -178,7 +176,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home,is_storage,title   } = image
+            const {id, urls, created_at, display_home,is_storage,title,is_collection,is_post   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -188,7 +186,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   <img  
                     src={urls.thumb} alt={image?.description} 
                     data-id={id}
-                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full '
+                    className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full cursor-pointer '
                     onClick={() => {
                       setImageData(image)
                       setIsShowImageModal(true)
@@ -202,20 +200,20 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   <div></div>
                   <div className='flex gap-1 ' >
                       {
-                        is_storage ? 
-                        <IconButton color="white"  size="sm"  className="rounded-full">
-                          <FaCheck />
+                        is_collection ? 
+                        <IconButton color="orange"  size="sm"  className="rounded-full relative" onClick={()=>onHandleCollection(image,is_collection)}>
+                          <div className=' absolute -top-1 -right-1 rounded-full bg-orange-500 p-[1px]'><FaCheck  size={9} /></div>
+                          <FaBookmark color="white"/>
                         </IconButton>
                         :
-                        <IconButton color="black" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleStorage(image)}>
-                          <MdAdd />
+                        <IconButton color="orange" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>
+                          <FaBookmark color="white"/>
                         </IconButton>
                       }
 
                     <IconButton 
-                      disabled={isAddStorageLoading}  
                       size="sm"
-                      className={' flex items-center  justify-center text-xs rounded-full  p-2  border  shadow-md ' + (display_home ? 'border-white/0 bg-amber-700 text-white/70   ' : ' border-white bg-white/0 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (display_home ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
                     >
                       <FaShare />
                     </IconButton>

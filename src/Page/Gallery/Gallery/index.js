@@ -1,16 +1,16 @@
 import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {LoadingLogoSpin,TitleWithLimit,recordPageUrl} from '../helpers/componentsHelper'
-import {fetchGalleries,getStoredLocalData} from '../helpers/fetchHelper'
+import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback} from '../helpers/componentsHelper'
+import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
 import moment from 'moment';
 import ImgFilter from '../Components/ImgFilter';
 import debounce from 'lodash.debounce';
-import { useQuery, useInfiniteQuery,QueryClient } from 'react-query';
+import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } from 'react-query';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 const filterDateItem = [
@@ -25,7 +25,7 @@ const filterModelsDate = [
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
-  // {title:'XL',type:'Models',command:'models',value:'sdxl'}
+  {title:'SDXL',type:'Models',command:'models',value:'xl'}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -40,6 +40,11 @@ function Index() {
   const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
   const [currModels, setCurrModels] = useState('all')
   const [loading, setLoading] = useState(false);
+
+  const [ isLoginForCollection , setIsLoginForCollection] = useState(false)
+  const [ isCollected ,setIsCollected] = useState(false)
+  const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
+
 
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -60,28 +65,59 @@ function Index() {
 
     });
   }, [setLineLoginData,setCurrentUser]);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    refetch,
+  } = useGalleries(linLoginData, pageSize, startDate, endDate, currModels, isInitialized, isLoggedIn);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isError, refetch } = useInfiniteQuery(
-    [ 'galleries',linLoginData, startDate, currModels],
-    ({ pageParam }) =>
-      fetchGalleries(linLoginData, pageParam, pageSize, startDate, endDate, currModels),
-    {
-      enabled:isInitialized && (linLoginData !== null || isLoggedIn !== null),
-      getNextPageParam: (lastPage, pages) =>{
-        // 檢查是否有下一頁
-        if (lastPage.next) {
-          const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("cursor");
-          return nextPage ? nextPage : undefined;
-        }
-        return undefined;
-        }
-    }
-  );
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
 
+  //ADD Collection
+  const collectionAImageMutation = useCollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //DEL Collection 
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //ADD LIKE
+  const likeAImageMutation = useLikeImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
+  //DEL LIKE
+  const unLikeAImageMutation = useDelLikedImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
 
+  const handleLike = async(image,is_like)=>{
+    console.log(is_like)
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+      setIsLoginForFuns(true)
+      }else{
+        // console.log(imageData)
+        if(is_like){
+          unLikeAImageMutation.mutateAsync({image})
+        }else{
+          likeAImageMutation.mutateAsync({image})
+  
+        }
+        setIsLoginForFuns(false)
+      }
+  }
+  //COLLECTION
+  const handleCollection = async (image,is_collection)=>{
+    if(!isLoggedIn){
+    //  console.log(isLoggedIn)
+    setIsLoginForFuns(true)
+    }else{
+      // console.log(imageData)
+      if(is_collection){
+        unCollectionAImageMutation.mutateAsync({image})
+      }else{
+        collectionAImageMutation.mutateAsync({image})
 
+      }
+      setIsLoginForFuns(false)
+    }
+    
+  }
   const onHandleSelectDate = (item)=>{
     // console.log(item)
     switch (item.value) {
@@ -104,7 +140,6 @@ function Index() {
         handleSelectDate('all','2022-01-01')
         break;
     }
-
   }
   const onHandleSelectModels = (item)=>{
     // console.log('click')
@@ -121,39 +156,15 @@ function Index() {
     setPageSize(12)
     setCurrModels(value)
   }
-  const containerRef = useRef(null);
-  const [scrollTop, setScrollTop] = useState(0);
-  const [clientHeight, setClientHeight] = useState(0);
-  const [scrollHeight, setScrollHeight] = useState(0);
-  const [lastScrollTime, setLastScrollTime] = useState(0);
-  const handleScroll = () => {
-    // 獲取頁面滾動相關信息
-      const container = containerRef.current;
-      const { scrollTop, clientHeight, scrollHeight } = container;
-      setScrollTop(scrollTop);
-      setClientHeight(clientHeight);
-      setScrollHeight(scrollHeight);
-      // 檢查是否滾動到頁面底部
-      if (scrollHeight - scrollTop <= clientHeight * 1.2) {
-        const now = Date.now();
-        if (now - lastScrollTime >= 1000) {
-          fetchNextPage();
-          setLastScrollTime(now);
-        }
 
-      }
-  };
 
 
 
   return (
     <div className='w-full '>
-      {/* <div className=' fixed top-2 left-2 bg-black/60 text-white z-50'>
-        <div>scrollTop:{scrollTop} </div>
-        <div>clientHeight:{clientHeight} </div>
-        <div>scrollHeight:{scrollHeight}</div>
-      </div> */}
-        
+      <AnimatePresence>
+      {isLoginForFuns && <CallToLoginModal closeModal={()=>setIsLoginForFuns(false)}/>}
+      </AnimatePresence>
       <div className=''>
           {!imageData ? 
             <LoadingLogoSpin />
@@ -201,7 +212,7 @@ function Index() {
               columnClassName="my-masonry-grid_column"
             >
               {imageData.map((image,index)=>{
-                const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                const {id, urls, created_at, display_home, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -218,18 +229,7 @@ function Index() {
                         />
                       </div>
 
-                      <div className='absolute bottom-0 p-1 flex gap-1 items-center text-white justify-between w-full px-2 md:opacity-0 md:group-hover:opacity-100 transition duration-700'>
-                        <div className='flex items-center space-x-2'>
-                          <div className='flex items-center  space-x-2 '><FaHeart /> <span>{likes}</span></div>
-                          <div className='flex items-center  space-x-2'><MdModeComment />  <span>{comments}</span></div>
-                        </div>
 
-                        <div className='text-red-300'>
-                          {is_user_nsfw || is_nsfw ?  <MdOutlineNewReleases size={20}  />  : ""  }
-                        </div>
-
-
-                      </div>
                       <div>
                         
                       </div>
@@ -237,17 +237,41 @@ function Index() {
 
 
 
-                    <div className='text-sm  flex items-center mt-2 space-x-3 w-full   text-white'>
-                      <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
-                        <div className='pt-[100%] relative'>
-                          <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
-                        </div>
-                      </Link>
-
+                    <div className=' flex flex-col  mt-2 w-full   text-white'>
                       <div className='flex flex-col'>
-                        <div className='text-base font-bold '><TitleWithLimit title={title} maxLength={12}/> </div>
-                        <div className='text-xs text-white/50'>{author?.name}</div>
+                        <div className=' text-base font-semibold '><TitleWithLimit title={title} maxLength={12}/> </div>
                       </div>
+                      <div className='flex justify-between items-center px-1'>
+
+                        <div className='text-sm flex items-center mt-1 space-x-2 w-full   text-white'>
+                          <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
+                            <div className='pt-[100%] relative'>
+                              <ImageWithFallback src={author?.profile_image} alt="user avatar" />
+                              {/* <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/> */}
+                            </div>
+                          </Link>
+                          <div className='text-xs text-white/50'>{author?.name}</div>
+      
+                        </div>
+                        <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 '>
+                          <div className='flex items-center space-x-2 text-sm'>
+                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike(image,is_like)}>
+                              {is_like ?<FaHeart color="red" />  :<FaRegHeart /> }<span>{likes}</span>
+                            </div>
+                            <div className='flex items-center  space-x-1 cursor-pointer'onClick={()=>handleCollection(image,is_collection)}>
+                              {is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span>
+                            </div>
+                            
+                          </div>
+
+
+
+                        </div>
+                      </div>
+
+
+
+
                     </div>
 
 
