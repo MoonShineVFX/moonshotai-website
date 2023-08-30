@@ -28,13 +28,13 @@ const GalleryHomePageLayout = () => {
   
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
-      <div className='grid grid-cols-8 gap-4'>
+      <div className='flex flex-col lg:flex-row gap-4'>
           <Swiper
             spaceBetween={1}
             slidesPerView={1}
             loop={true}
             modules={[Autoplay]}
-            className='banner w-full  col-span-4'
+            className='banner w-full lg:w-1/2 '
             autoplay={{
               delay: 5500,
               disableOnInteraction: false,
@@ -62,18 +62,18 @@ const GalleryHomePageLayout = () => {
             })
           }  
           </Swiper>
-
+        <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 mdg:ap-4  '>
           <LeaderboardComp 
             page={'home'}
             title="人氣作者" 
             data={topRanking?.top_liked_users} 
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={4} 
+            customer_sliceNum={10} 
             more={true} 
             containerStyle={''}
             containerTitleStyle={''}
-            listContainerStyle={''}
-            listStyle={'h-[25%]'}
+            listContainerStyle={'text-sm'}
+            listStyle={'h-[20%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
             is_link={true}
@@ -84,10 +84,10 @@ const GalleryHomePageLayout = () => {
             title="創作次數" 
             data={topRanking?.top_render_users} 
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={4} 
+            customer_sliceNum={10} 
             more={true}
             containerStyle={''}
-            containerTitleStyle={''}
+            containerTitleStyle={'text-sm'}
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
@@ -99,10 +99,10 @@ const GalleryHomePageLayout = () => {
             title="模型排名" 
             data={topRanking?.top_used_models} 
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={4} 
+            customer_sliceNum={10} 
             more={true}
             containerStyle={''}
-            containerTitleStyle={''}
+            containerTitleStyle={'text-sm'}
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
@@ -112,14 +112,16 @@ const GalleryHomePageLayout = () => {
             title="Lora 排名" 
             data={topRanking?.top_used_loras} 
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={4} 
+            customer_sliceNum={10} 
             more={true}
             containerStyle={''}
-            containerTitleStyle={''}
+            containerTitleStyle={'text-sm'}
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
           />
+        </div>    
+
           
 
       </div>

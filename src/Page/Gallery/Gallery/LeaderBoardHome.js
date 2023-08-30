@@ -46,11 +46,12 @@ function LeaderBoardHome () {
             containerStyle={'px-3 md:px-8'}
             containerTitleStyle={'text-lg font-semibold '}
             listContainerStyle={''}
-            listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+            listStyle={'px-4 py-2 bg-gray-700/20 rounded-md gap-6'}
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             is_link={true}
             linkpath={'/user/'}
+            title_textlimit={100}
           />
           <LeaderboardComp 
             title="創作次數" 
@@ -59,11 +60,12 @@ function LeaderBoardHome () {
             customer_sliceNum={15} 
             containerStyle={'px-3 md:px-8'}
             containerTitleStyle={'text-lg font-semibold '}
-            listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+            listStyle={'px-4 py-2 bg-gray-700/20 rounded-md gap-6'}
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             is_link={true}
             linkpath={'/user/'}
+            title_textlimit={100}
           />
           
         </motion.div>
@@ -85,9 +87,10 @@ function LeaderBoardHome () {
             containerStyle={'px-3 md:px-8'}
             containerTitleStyle={'text-lg font-semibold '}
             listContainerStyle={''}
-            listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+            listStyle={'px-4 py-2 bg-gray-700/20 rounded-md gap-6'}
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
+            title_textlimit={100}
           />
           <LeaderboardComp 
             title="Lora 排名"
@@ -96,9 +99,10 @@ function LeaderBoardHome () {
             customer_sliceNum={15} 
             containerStyle={'px-3 md:px-8'}
             containerTitleStyle={'text-lg font-semibold '}
-            listStyle={'p-2 bg-gray-700/20 rounded-md gap-6'}
+            listStyle={'px-4 py-2 bg-gray-700/20 rounded-md gap-6'}
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
+            title_textlimit={100}
           />
           
         </motion.div>

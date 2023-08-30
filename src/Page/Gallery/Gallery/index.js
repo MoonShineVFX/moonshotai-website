@@ -25,7 +25,7 @@ const filterModelsDate = [
   {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
-  {title:'XL',type:'Models',command:'models',value:'xl'}
+  {title:'SDXL',type:'Models',command:'models',value:'xl'}
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
