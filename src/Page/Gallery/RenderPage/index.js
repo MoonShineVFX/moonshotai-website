@@ -201,8 +201,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   <div className='flex gap-1 ' >
                       {
                         is_collection ? 
-                        <IconButton color="white"  size="sm"  className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>
-                          <FaCheck />
+                        <IconButton color="orange"  size="sm"  className="rounded-full relative" onClick={()=>onHandleCollection(image,is_collection)}>
+                          <FaCheck className=' absolute -top-0 -right-0' size={8} color="black" /><FaBookmark color="white"/>
                         </IconButton>
                         :
                         <IconButton color="orange" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>

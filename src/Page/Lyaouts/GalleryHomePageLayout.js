@@ -36,7 +36,7 @@ const GalleryHomePageLayout = () => {
             modules={[Autoplay]}
             className='banner w-full lg:w-1/2 '
             autoplay={{
-              delay: 5500,
+              delay: 2300,
               disableOnInteraction: false,
             }}
           >
@@ -45,7 +45,7 @@ const GalleryHomePageLayout = () => {
               
               return(
                 <SwiperSlide key={'banner'+index}>
-                  {item.path ? (
+                  {!item.path ? (
 
                     <Link to={item.path} key={'banner'+index} className=' '>
                       <img src={window.innerWidth <= 450 ? item.url+'&width=400' : item.url} alt="slide" className=' rounded-md  ' />
@@ -98,6 +98,7 @@ const GalleryHomePageLayout = () => {
             page={'home'}
             title="模型排名" 
             data={topRanking?.top_used_models} 
+            borderType={'model'}
             isLoading={isTopRankingLoading} 
             customer_sliceNum={10} 
             more={true}

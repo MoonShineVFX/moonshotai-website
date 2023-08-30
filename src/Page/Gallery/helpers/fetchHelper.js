@@ -379,7 +379,7 @@ export function useLikeImageMutation(linLoginData, fnKey) {
   return likeImageMutation;
 }
 //DEL Like a image
-export const userDelALikedImage = async (id,token)=>{
+export const userDelALikedImage = async (image,token)=>{
   const requestOptions = {
     method: 'DELETE',
     headers: { 
@@ -387,7 +387,7 @@ export const userDelALikedImage = async (id,token)=>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'images/'+id+'/like', requestOptions)
+  const response =await fetch(apiUrl+'images/'+image.id+'/like', requestOptions)
   const data =await response
   return data
 }
@@ -396,7 +396,7 @@ export function useDelLikedImageMutation(linLoginData, fnKey) {
   const queryClient = useQueryClient();
 
   const unlikeImageMutation = useMutation((updatedData) =>
-    userLikeAImage(updatedData.image, linLoginData),
+  userDelALikedImage(updatedData.image, linLoginData),
     {
       onSuccess: (data, variables) => {
         queryClient.setQueryData(fnKey, (prevData) => {

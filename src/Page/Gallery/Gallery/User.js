@@ -220,7 +220,7 @@ function User() {
           </div>
           <div className='flex text-xs  space-x-3 my-2'>
             <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_photos}</span> renders</div>
-            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_collected}</span> collected</div> 
+            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_liked}</span> liked</div> 
             <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
           </div>
           <div className='flex items-center  space-x-4 mt-2'>

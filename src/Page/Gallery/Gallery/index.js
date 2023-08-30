@@ -86,6 +86,7 @@ function Index() {
   const unLikeAImageMutation = useDelLikedImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
 
   const handleLike = async(image,is_like)=>{
+    console.log(is_like)
     if(!isLoggedIn){
       //  console.log(isLoggedIn)
       setIsLoginForFuns(true)

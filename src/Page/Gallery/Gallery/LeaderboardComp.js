@@ -5,9 +5,25 @@ import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { GiShield,GiArson,GiRingedPlanet,GiBurningDot,GiLaurelsTrophy } from "react-icons/gi";
 import {LoadingLogoSpin,recordPageUrl,formatNumberWithK,padWithZero,TitleWithLimit} from '../helpers/componentsHelper'
 
-function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,containerStyle,containerTitleStyle,listStyle,listAvatarStyle,listNameStyle,listContainerStyle,is_link,linkpath,title_textlimit}) {
-  const [sliceNum, setSliceNum] = useState(customer_sliceNum); 
+function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,containerStyle,containerTitleStyle,listStyle,listAvatarStyle,listNameStyle,listContainerStyle,is_link,linkpath,title_textlimit,borderType}) {
+  const [sliceNum, setSliceNum] = useState(10); 
   const [isMobile ,setIsMobile ] = useState(false) 
+
+  const modelData = [
+    {command:'ct',title:'插畫 CT'},
+    {command:'pr',title:'寫實 PR'},
+    {command:'cm',title:'漫畫 CM'},
+    {command:'pc',title:'寫實人像 PC'},
+    {command:'xl',title:'SDXL'}
+  ]
+  function ModelMapName({command}){
+
+    const newName = modelData.filter((item)=>{
+      return item.command === command
+    })
+
+    return <div alt={newName[0].command}>{newName[0].title}</div>
+  }
 
   function ImageWithFallback({ src, alt, fallbackSrc }) {
     const [imageSrc, setImageSrc] = useState(src);
@@ -44,7 +60,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
     <div 
       className={`flex-1 bg-gray-900 rounded-lg p-2  overflow-hidden  relative
         ${containerStyle} 
-        ${page === 'home' && '  before:content before:absolute before:w-full before:md:h-10 before:bottom-0 before:bg-gradient-to-t before:from-gray-900 before:z-10  before:left-0 '}`
+        ${page === 'home' && '  before:content before:absolute before:w-full before:md:h-10 before:bottom-0 before:bg-gradient-to-t before:from-gray-900 before:z-10  before:left-0  before:pointer-events-none'}`
       }
     >
       <div className={`flex items-center justify-between ${page === 'home' && 'md:aspect-[176/22] overflow-hidden '} `}>
@@ -54,7 +70,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
 
       <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/235]  lg:overflow-y-auto ' : 'flex-col ' } `}>
         {
-          isLoading ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
+          isLoading || !sliceNum ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
           (
             data.slice(0,sliceNum).map((item,index)=>{
               return(
@@ -90,7 +106,16 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
                   </div>
                   <div className={`${page==='home'? ' ' : ' flex w-full justify-between px-2 '}`}> 
                     <div className={`${page === 'home' &&  ' w-[5em]'} `}>
-                      <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>{isMobile&&page==='home' ?  <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}</div>
+                      {borderType === 'model' ? (
+                        <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>
+                          <ModelMapName command={item?.command}/> 
+                        </div>
+                      ) :(
+                        <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>
+                          {isMobile&&page==='home' ?             <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}
+                        </div>
+                      ) }
+
                     </div>
                     <div className='flex items-center text-white/70 text-xs'> <GiBurningDot color="#BDDE48" size="13" className='mr-1' />{item?.monthly_count && formatNumberWithK(item?.monthly_count)}
                     </div>

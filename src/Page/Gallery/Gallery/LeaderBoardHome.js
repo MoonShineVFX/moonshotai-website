@@ -17,13 +17,13 @@ function LeaderBoardHome () {
       <div className='flex gap-3 my-10 justify-center'>
         <Button
         onClick={() => handleTabChange('popularity')}
-          className={'relative rounded-full font-bold capitalize text-sm   max-w-[180px] border border-[#BDDE48] ' + (activeTab === 'popularity' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
+          className={'relative rounded-full font-bold capitalize text-sm w-22 md:w-44    border border-[#BDDE48] ' + (activeTab === 'popularity' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
         >
           使用者排行榜
         </Button>
         <Button
         onClick={() => handleTabChange('model')}
-          className={'relative rounded-full font-bold capitalize text-sm   max-w-[180px] border border-[#BDDE48] ' + (activeTab === 'model' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
+          className={'relative rounded-full font-bold capitalize text-sm w-22  md:w-44   border border-[#BDDE48] ' + (activeTab === 'model' ? ' bg-[#BDDE48] text-black '  : ' bg-black  ' )}
         >
           模型排行榜
         </Button>
@@ -84,6 +84,7 @@ function LeaderBoardHome () {
             title="模型排名" 
             data={topRanking?.top_used_models} 
             isLoading={isTopLikedUserLoading} 
+            borderType={'model'}
             customer_sliceNum={15} 
             containerStyle={'px-0 md:px-0 w-full '}
             containerTitleStyle={'text-lg font-semibold py-2 px-4'}
