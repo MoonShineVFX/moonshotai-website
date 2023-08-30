@@ -10,7 +10,7 @@ function Header({executeScroll}) {
         autoPlay loop muted 
         className=' object-cover w-full min-h-screen  absolute top-0 opacity-20 -z-20'
       />
-      <div className=' absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-blacks'></div>
+      <div className=' absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black via-blacks pointer-events-none'></div>
 
       <div className='w-8/12 mx-auto flex flex-col'>
 
