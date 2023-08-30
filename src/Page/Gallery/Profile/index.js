@@ -135,6 +135,7 @@ function Index() {
     }
   );
   const renderImages = renderData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+ 
   
   // FETCH Storage IMAGE to PAGE 
   const { data: storageData, isLoading:isStorageDataLoading, fetchNextPage:fetchStorageNextPage, hasNextPage:hasStorageNextPage, isFetchingNextPage:isFetchStorageNextPage, isError:isStorageDataError, refetch:storageDataRefetch } = useInfiniteQuery(
@@ -700,11 +701,11 @@ function Index() {
       case 'Renders':
         return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
       case 'Post':
-        return <StoragePage title={currentDropDownItem.title} totalImage={currentProfile?.total_storages} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
       case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} totalImage={currentProfile?.total_collections} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
+        return <CollectionPage title={currentDropDownItem.title} totalImage={collectionImages.length} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
       case 'Following':
-        return <FollowPage title={currentDropDownItem.title} totalImage={currentProfile?.total_follows} follows={follows} followsResults={followImages} handleUnfollow={handleUnfollow}/>;
+        return <FollowPage title={currentDropDownItem.title} totalImage={followImages.length} follows={follows} followsResults={followImages} handleUnfollow={handleUnfollow}/>;
       default: return null;
     }
   }

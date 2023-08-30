@@ -6,7 +6,7 @@ import { FaHeart,FaRegHeart,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue,formatNumberWithK} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
@@ -218,10 +218,10 @@ function User() {
           <div className=' text-xs text-white/80'>
             {userData?.bio}  
           </div>
-          <div className='flex text-xs  space-x-3 my-2'>
-            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_photos}</span> renders</div>
-            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_liked}</span> liked</div> 
-            <div className='flex flex-col items-center'><span className='text-sm'>{userData?.total_followers}</span> follower</div> 
+          <div className='flex text-xs  space-x-3 my-2  '>
+            <div className='flex flex-row items-center'><span className='text-sm font-semibold mr-1'>{formatNumberWithK(userData?.total_photos)}</span> 創作數</div>
+            <div className='flex flex-row items-center'><span className='text-sm font-semibold mr-1'>{formatNumberWithK(userData?.total_liked)}</span> 讚</div> 
+            <div className='flex flex-row items-center'><span className='text-sm font-semibold mr-1'>{formatNumberWithK(userData?.total_followers)}</span> 追隨者</div> 
           </div>
           <div className='flex items-center  space-x-4 mt-2'>
             {userData?.portfolio_url && <a href={userData?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }

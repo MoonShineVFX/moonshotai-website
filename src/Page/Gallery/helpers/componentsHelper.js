@@ -355,8 +355,8 @@ export const CommentDataFormat = ({data})=>{
 export const EmptyRenderPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
         <div>尚無圖片</div>
@@ -400,11 +400,11 @@ export const EmptyProfilePage = ()=>{
 export const EmptyStoragePage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
-        尚無留存的圖片
+        還沒有發布的圖片。
       </div>
     </div>
   )
@@ -412,11 +412,11 @@ export const EmptyStoragePage = ()=>{
 export const EmptyCollectionPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
-        尚無喜歡的圖片
+        還沒有收藏的圖片
       </div>
     </div>
   )
@@ -424,8 +424,8 @@ export const EmptyCollectionPage = ()=>{
 export const EmptyFollowPage = ()=>{
   return (
     <div className='flex flex-col justify-center items-center text-white brightness-50 mt-10'>
-      <div className='w-1/2'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/2 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full mx-auto' />
       </div>
       <div className='mt-10'>
         還沒有追隨使用者

@@ -71,7 +71,7 @@ const GalleryHomePageLayout = () => {
             customer_sliceNum={10} 
             more={true} 
             containerStyle={''}
-            containerTitleStyle={''}
+            containerTitleStyle={'text-sm'}
             listContainerStyle={'text-sm'}
             listStyle={'h-[20%]'}
             listAvatarStyle={'w-7'}

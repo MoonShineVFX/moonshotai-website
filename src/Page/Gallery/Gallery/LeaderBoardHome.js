@@ -98,6 +98,7 @@ function LeaderBoardHome () {
             title="Lora 排名"
             data={topRanking?.top_used_loras} 
             isLoading={isTopRenderUserLoading} 
+            borderType={'lora'}
             customer_sliceNum={15} 
             containerStyle={'px-0 md:px-0 w-full '}
             containerTitleStyle={'text-lg font-semibold py-2 px-4'}

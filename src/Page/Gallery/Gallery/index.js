@@ -243,7 +243,7 @@ function Index() {
                       </div>
                       <div className='flex justify-between items-center px-1'>
 
-                        <div className='text-sm flex items-center mt-1 space-x-3 w-full   text-white'>
+                        <div className='text-sm flex items-center mt-1 space-x-2 w-full   text-white'>
                           <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
                             <div className='pt-[100%] relative'>
                               <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
@@ -253,10 +253,13 @@ function Index() {
       
                         </div>
                         <div className='ml-auto flex gap-1 justify-end items-center text-white   transition duration-700 '>
-                          <div className='flex items-center space-x-3 text-sm'>
-                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike(image,is_like)}>{is_like ?<FaHeart color="red" />  :<FaRegHeart /> }<span>{likes}</span></div>
+                          <div className='flex items-center space-x-2 text-sm'>
+                            <div className='flex items-center  space-x-1 cursor-pointer' onClick={()=>handleLike(image,is_like)}>
+                              {is_like ?<FaHeart color="red" />  :<FaRegHeart /> }<span>{likes}</span>
+                            </div>
                             <div className='flex items-center  space-x-1 cursor-pointer'onClick={()=>handleCollection(image,is_collection)}>
-                            {is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span></div>
+                              {is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span>
+                            </div>
                             
                           </div>
 

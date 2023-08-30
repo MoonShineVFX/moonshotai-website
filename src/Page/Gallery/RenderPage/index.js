@@ -202,7 +202,8 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                       {
                         is_collection ? 
                         <IconButton color="orange"  size="sm"  className="rounded-full relative" onClick={()=>onHandleCollection(image,is_collection)}>
-                          <FaCheck className=' absolute -top-0 -right-0' size={8} color="black" /><FaBookmark color="white"/>
+                          <div className=' absolute -top-1 -right-1 rounded-full bg-orange-500 p-[1px]'><FaCheck  size={9} /></div>
+                          <FaBookmark color="white"/>
                         </IconButton>
                         :
                         <IconButton color="orange" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>
