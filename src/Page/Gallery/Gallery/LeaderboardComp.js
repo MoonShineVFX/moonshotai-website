@@ -3,7 +3,7 @@ import { Link} from 'react-router-dom';
 
 import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { GiShield,GiArson,GiRingedPlanet,GiBurningDot,GiLaurelsTrophy } from "react-icons/gi";
-import {LoadingLogoSpin,recordPageUrl,formatNumberWithK,padWithZero,TitleWithLimit} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,recordPageUrl,formatNumberWithK,padWithZero,TitleWithLimit,ImageWithFallback} from '../helpers/componentsHelper'
 
 function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,containerStyle,containerTitleStyle,listStyle,listAvatarStyle,listNameStyle,listContainerStyle,is_link,linkpath,title_textlimit,borderType}) {
   const [sliceNum, setSliceNum] = useState(10); 
@@ -25,15 +25,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
     return <div alt={newName[0].command}>{newName[0].title}</div>
   }
 
-  function ImageWithFallback({ src, alt, fallbackSrc }) {
-    const [imageSrc, setImageSrc] = useState(src);
-  
-    const handleImageError = () => {
-      setImageSrc(fallbackSrc);
-    };
-  
-    return <img src={imageSrc+'?width=100'} alt={alt} onError={handleImageError} className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>;
-  }
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -68,7 +60,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
         {more &&<Link to="/leaderboard" className='text-white/30 text-xs md:w-1/3 md:text-sm hover:text-white whitespace-nowrap '>更多</Link>}
       </div>
 
-      <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/235]  lg:overflow-y-auto ' : 'flex-col ' } `}>
+      <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/163]  lg:overflow-y-auto ' : 'flex-col ' } `}>
         {
           isLoading || !sliceNum ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
           (
@@ -88,14 +80,14 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
                       is_link ?(
                         <Link to={`/user/${item.id}`}  className={` ${listAvatarStyle}`} onClick={recordPageUrl}>
                           <div className='pt-[100%] relative'>
-                           <ImageWithFallback src={item?.image_url} alt="user avatar" fallbackSrc={'https://i.stack.imgur.com/SeuQK.jpg'}/>
+                           <ImageWithFallback src={item?.image_url} alt="user avatar" />
                             {/* <img src={item?.image_url} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/> */}
                           </div>
                         </Link>)
                         :
                         (<div className={` ${listAvatarStyle}`} onClick={recordPageUrl}>
                           <div className='pt-[100%] relative'>
-                            <ImageWithFallback src={item?.image_url} alt="user avatar" fallbackSrc={'https://i.stack.imgur.com/SeuQK.jpg'}/>
+                            <ImageWithFallback src={item?.image_url} alt="user avatar" />
                             {/* <img src={item?.image_url} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/> */}
                           </div>
                         </div>)

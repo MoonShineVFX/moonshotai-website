@@ -499,3 +499,14 @@ export const padWithZero =(number) => {
   }
   return number.toString();
 }
+
+
+export const ImageWithFallback=({ src, alt, fallbackSrc,custom_style })=> {
+  const [imageSrc, setImageSrc] = useState(src);
+
+  const handleImageError = () => {
+    setImageSrc('https://i.stack.imgur.com/SeuQK.jpg');
+  };
+
+  return <img src={imageSrc+'?width=100'} alt={alt} onError={handleImageError} className={`absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-600 ${custom_style}`}/>;
+}

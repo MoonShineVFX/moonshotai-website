@@ -62,7 +62,7 @@ const GalleryHomePageLayout = () => {
             })
           }  
           </Swiper>
-        <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 mdg:ap-4  '>
+        <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 md:gap-4  '>
           <LeaderboardComp 
             page={'home'}
             title="人氣作者" 
@@ -79,7 +79,7 @@ const GalleryHomePageLayout = () => {
             is_link={true}
             linkpath={'/user/'}
           />
-          <LeaderboardComp 
+          {/* <LeaderboardComp 
             page={'home'}
             title="創作次數" 
             data={topRanking?.top_render_users} 
@@ -93,7 +93,7 @@ const GalleryHomePageLayout = () => {
             listNameStyle={'text-sm'}
             is_link={true}
             linkpath={'/user/'}
-          />
+          /> */}
           <LeaderboardComp 
             page={'home'}
             title="模型排名" 

@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback} from '../helpers/componentsHelper'
 import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
@@ -246,7 +246,8 @@ function Index() {
                         <div className='text-sm flex items-center mt-1 space-x-2 w-full   text-white'>
                           <Link to={`/user/${author?.id}`}  className='w-8' onClick={recordPageUrl}>
                             <div className='pt-[100%] relative'>
-                              <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>
+                              <ImageWithFallback src={author?.profile_image} alt="user avatar" />
+                              {/* <img src={author?.profile_image} alt="user avatar" className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/> */}
                             </div>
                           </Link>
                           <div className='text-xs text-white/50'>{author?.name}</div>

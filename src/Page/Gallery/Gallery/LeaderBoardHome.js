@@ -53,7 +53,7 @@ function LeaderBoardHome () {
             linkpath={'/user/'}
             title_textlimit={100}
           />
-          <LeaderboardComp 
+          {/* <LeaderboardComp 
             title="創作次數" 
             data={topRanking?.top_render_users} 
             isLoading={isTopRenderUserLoading} 
@@ -67,7 +67,7 @@ function LeaderBoardHome () {
             is_link={true}
             linkpath={'/user/'}
             title_textlimit={100}
-          />
+          /> */}
           
         </motion.div>
       )}

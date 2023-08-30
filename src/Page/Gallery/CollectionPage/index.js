@@ -1,6 +1,6 @@
 import React, { useState }  from 'react'
 import {motion} from 'framer-motion'
-import { FaHeart,FaBookmark } from "react-icons/fa";
+import { FaHeart,FaBookmark,FaMinus } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
@@ -111,13 +111,19 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
                   />
                 </div>
                 
-                <div className=' backdrop-blur-md bg-black/30 flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
+                <div className=' backdrop-blur-md bg-black flex justify-between  gap-0 p-2 w-full  absolute bottom-0 text-white'>
                   <div className='text-sm'>
                     {title ?title : created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
                     <div className=' flex items-center gap-1  text-sm  cursor-pointer ' onClick={()=> {handleOpen(); setCurrentItem(image); }}>
-                      <FaBookmark />移除
+                      
+                      <div className=' relative mr-1'>
+                        <div className=' absolute -top-1 -right-1 rounded-full bg-black p-[1px]'><FaMinus  size={10} /></div>
+
+                        <FaBookmark />
+                      </div>
+                      移除
                     </div>
 
 

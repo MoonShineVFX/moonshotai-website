@@ -6,7 +6,7 @@ import { FaHeart,FaRegHeart,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
-import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue,formatNumberWithK} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue,formatNumberWithK,ImageWithFallback} from '../helpers/componentsHelper'
 import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
@@ -208,7 +208,8 @@ function User() {
           <div className='flex items-center justify-between'>
             <div className='w-20'>
               <div className='pt-[100%] relative'>
-                <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/>
+                <ImageWithFallback src={userData?.profile_image} alt="user avatar"  />
+                {/* <img src={userData.profile_image} alt="user avatar" className=' aspect-square absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-400'/> */}
               </div>
             </div>
           </div>
