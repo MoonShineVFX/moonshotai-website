@@ -39,7 +39,7 @@ function LeaderBoardHome () {
           <LeaderboardComp 
             title="人氣作者" 
             data={topRanking?.top_liked_users} 
-            isLoading={isTopLikedUserLoading} 
+            isLoading={isTopRankingLoading} 
             customer_sliceNum={15} 
             containerStyle={'px-0 md:px-0 w-full '}
             containerTitleStyle={'text-lg font-semibold py-2 px-4'}
@@ -81,7 +81,7 @@ function LeaderBoardHome () {
           <LeaderboardComp 
             title="模型排名" 
             data={topRanking?.top_used_models} 
-            isLoading={isTopLikedUserLoading} 
+            isLoading={isTopRankingLoading} 
             borderType={'model'}
             customer_sliceNum={15} 
             containerStyle={'px-0 md:px-0 w-full '}
@@ -95,7 +95,7 @@ function LeaderBoardHome () {
           <LeaderboardComp 
             title="LoRa 排名"
             data={topRanking?.top_used_loras} 
-            isLoading={isTopRenderUserLoading} 
+            isLoading={isTopRankingLoading} 
             borderType={'lora'}
             customer_sliceNum={15} 
             containerStyle={'px-0 md:px-0 w-full '}
