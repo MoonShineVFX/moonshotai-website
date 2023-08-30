@@ -200,7 +200,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
             </Dialog>
           <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>
             {title}   
-            {/* {renderLimitImage(totalImage,limitImage)}  */}
+            <div className='text-xs text-white/50'>{totalImage} items</div>  
             <div className='text-xs text-white/50'>此區為已發佈分享的圖片。</div>
 
           </div>
