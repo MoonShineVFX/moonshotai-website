@@ -11,10 +11,10 @@ import 'swiper/css/effect-fade';
 import "swiper/css/pagination";
 
 const bannerData = [
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnft2880.png?v2",path:'/asusnft'},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png",path:'/taiwanfood'},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png",path:'/sdxl'},
-  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png",path:'/voice'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnftv02_1.png?v2",path:'/asusnft'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png?v2",path:'/taiwanfood'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png?v2",path:'/sdxl'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png?v2",path:'/voice'},
  ]
 
  const pageLinkItems = [
@@ -48,11 +48,11 @@ const GalleryHomePageLayout = () => {
                   {item.path ? (
 
                     <Link to={item.path} key={'banner'+index} className=' '>
-                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  ' />
+                      <img src={window.innerWidth <= 450 ? item.url+'&width=400' : item.url} alt="slide" className=' rounded-md  ' />
                     </Link>
                   ) : (
                     <div key={'banner'+index} className=' ] '>
-                      <img src={window.innerWidth <= 450 ? item.url : item.url} alt="slide" className=' rounded-md  object-contain ' />
+                      <img src={window.innerWidth <= 450 ? item.url+'&width=400' : item.url} alt="slide" className=' rounded-md  object-contain ' />
                     </div>
                   )
                   }

@@ -16,7 +16,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
       setImageSrc(fallbackSrc);
     };
   
-    return <img src={imageSrc} alt={alt} onError={handleImageError} className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>;
+    return <img src={imageSrc+'?width=100'} alt={alt} onError={handleImageError} className='absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full'/>;
   }
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
         {more &&<Link to="/leaderboard" className='text-white/30 text-xs md:w-1/3 md:text-sm hover:text-white whitespace-nowrap '>更多</Link>}
       </div>
 
-      <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/235]  lg:overflow-y-auto ' : 'flex-col' } `}>
+      <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/235]  lg:overflow-y-auto ' : 'flex-col ' } `}>
         {
           isLoading ? ( <div className='py-10 '><LoadingLogoSpin /></div>) :
           (
@@ -88,11 +88,12 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
 
 
                   </div>
-                  <div className=' '> 
+                  <div className={`${page==='home'? ' ' : ' flex w-full justify-between px-2 '}`}> 
                     <div className={`${page === 'home' &&  ' w-[5em]'} `}>
-                      <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>{isMobile ?  <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}</div>
+                      <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>{isMobile&&page==='home' ?  <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}</div>
                     </div>
-                    <div className='flex items-center text-white/70 text-xs'> <GiBurningDot color="#BDDE48" size="13" className='mr-1' />{item?.monthly_count && formatNumberWithK(item?.monthly_count)}</div>
+                    <div className='flex items-center text-white/70 text-xs'> <GiBurningDot color="#BDDE48" size="13" className='mr-1' />{item?.monthly_count && formatNumberWithK(item?.monthly_count)}
+                    </div>
                   </div>
                 </div>
               )
