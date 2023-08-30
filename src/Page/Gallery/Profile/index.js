@@ -699,9 +699,9 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentProfile?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentUser?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
       case 'Post':
-        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentProfile?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentProfile} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentUser?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentUser} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={collectionImages.length} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
       case 'Following':
@@ -737,7 +737,7 @@ function Index() {
   }
 
 
-  if(isLoggedIn === false || !currentProfile ){
+  if(isLoggedIn === false || !currentUser ){
     return <div className='text-white/70 text-xl    md:text-left md:text-3xl  mb-4  md:w-8/12 mx-auto'>
 
        <EmptyProfilePage />
@@ -748,12 +748,12 @@ function Index() {
     <div >
       <AnimatePresence>
  
-        {isEdit && (<EditUserForm userData={currentProfile} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
+        {isEdit && (<EditUserForm userData={currentUser} handleEdit={()=>setIsEdit(!isEdit)} handleSetUserProfile={handleSetUserProfile}/>
           )}
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
         {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} handlePostImage={handlePostImage} handlePatchPost={handlePatchPost} campaignsData={campaigns}/>)}
-        {currentProfile?.finish_tutorial && <TutorialPage/> }
+        {/* {currentUser?.finish_tutorial && <TutorialPage/> } */}
 
       </AnimatePresence>
       <ToastContainer />
@@ -767,14 +767,14 @@ function Index() {
             isLoggedIn ?
             <div className='flex flex-col items-center gap-5'>
               <div 
-                style={{backgroundImage:`url(${currentProfile?.profile_banner})`}}
+                style={{backgroundImage:`url(${currentUser?.profile_banner})`}}
                 className=' absolute top-0 left-0 -z-10  w-full h-[23vh] bg-cover bg-center bg-no-repeat brightness-75'>
                 <div className='absolute -bottom-2 left-0 w-full h-32 z-10 bg-gradient-to-t from-[#1e1e1e]  '></div>
 
               </div>
               <div 
                 className='w-[85px]  aspect-square rounded-full overflow-hidden bg-center bg-no-repeat bg-cover bg-black '
-                style={{backgroundImage:currentProfile  ?  `url(${currentProfile.profile_image})` : 'none'}}
+                style={{backgroundImage:currentUser  ?  `url(${currentUser.profile_image})` : 'none'}}
               ></div>
 
               <div 
@@ -784,16 +784,16 @@ function Index() {
                 Settings<MdMoreVert size={20} /> 
               </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
-                <div className=' text-xl leading-4'>{currentProfile && currentProfile.name} </div>
+                <div className=' text-xl leading-4'>{currentUser && currentUser.name} </div>
                 <div className='text-white flex gap-3 my-2'>
-                {currentProfile?.portfolio_url && <a href={currentProfile?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
-                {currentProfile?.facebook_id && <a href={currentProfile?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
-                {currentProfile?.instagram_id && <a href={currentProfile?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
-                {currentProfile?.linkedin_id && <a href={currentProfile?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
-                {currentProfile?.twitter_id && <a href={currentProfile?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter /></a> }
-                {currentProfile?.discord_id && <a href={currentProfile?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
+                {currentUser?.portfolio_url && <a href={currentUser?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
+                {currentUser?.facebook_id && <a href={currentUser?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
+                {currentUser?.instagram_id && <a href={currentUser?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
+                {currentUser?.linkedin_id && <a href={currentUser?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
+                {currentUser?.twitter_id && <a href={currentProfile?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter /></a> }
+                {currentUser?.discord_id && <a href={currentUser?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
                 </div>
-                <div className=' text-xs'>{currentProfile && currentProfile.bio}  </div>
+                <div className=' text-xs'>{currentUser && currentUser.bio}  </div>
               </div>              
             </div>
             :
