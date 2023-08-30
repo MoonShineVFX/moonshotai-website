@@ -56,7 +56,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
       }
     >
       <div className={`flex items-center justify-between ${page === 'home' && 'md:aspect-[176/22] overflow-hidden '} `}>
-        <div className={`text-white/90 w-1/2 md:w-full  ${containerTitleStyle} `}>{title}</div>      
+        <div className={`text-white/90 w-1/3 md:w-full  ${containerTitleStyle} `}>{title}</div>      
         {more &&<Link to="/leaderboard" className='text-white/30 text-xs md:w-1/3 md:text-sm hover:text-white whitespace-nowrap '>更多</Link>}
       </div>
 
