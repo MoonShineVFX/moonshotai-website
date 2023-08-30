@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import { ButtonGroup, Button } from "@material-tailwind/react";
 function LeaderBoardHome () {
   const [activeTab, setActiveTab] = useState('popularity');
-  const { data:topLikedUser, isLoading:isTopLikedUserLoading, isError:isTopLikedUserError } = useQuery('topLikedUsers', fetchTopLikedUser);
-  const { data:topRenderUser, isLoading:isTopRenderUserLoading, isError:isTopRenderUserError } = useQuery('topRenderUsers', fetchTopRenderdUser);
   const { data:topRanking, isLoading:isTopRankingLoading, isError:isTopRankingError } = useQuery('topRanking', fetchTopRanking);
   const handleTabChange = (tab) => {
     setActiveTab(tab);
