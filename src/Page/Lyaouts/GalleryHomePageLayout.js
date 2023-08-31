@@ -110,7 +110,7 @@ const GalleryHomePageLayout = () => {
           />
           <LeaderboardComp 
             page={'home'}
-            title="LoRa 排名" 
+            title="LoRA 排名" 
             data={topRanking?.top_used_loras} 
             isLoading={isTopRankingLoading} 
             customer_sliceNum={10} 
