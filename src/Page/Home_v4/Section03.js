@@ -31,7 +31,6 @@ function Section03() {
           {
             articles ? 
             articles.map((item,index)=>{
-              console.log(item)
               const{guid,thumbnail,title,link,description,pubDate} = item
               return(
                 <div className={`w-full md:w-full hover:brightness-110 flex items-center py-3 relative ${index === 0 ? ' row-span-2 flex-col ' : 'row-span-1 ' } ${index === 1 && ' after:content after:w-full after:h-[1px] after:bg-white/30 after:absolute after:-bottom-5 after:hidden after:md:block '}` } key={guid}>

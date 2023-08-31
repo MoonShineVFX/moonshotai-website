@@ -85,7 +85,7 @@ function Index({}) {
  
 
   }
-
+  
   //針對頭像檢查
   const checkUserForHeader = async()=>{
     const storedLoginTokenData = localStorage.getItem('loginTokenData');
@@ -114,6 +114,7 @@ function Index({}) {
     }
     setIsCheckUserLoginExecuted(true);
     const storedLoginTokenData = localStorage.getItem('loginTokenData');
+    console.log(storedLoginTokenData)
     if (storedLoginTokenData) {
       try {
         const userLoginData = JSON.parse(storedLoginTokenData);
@@ -135,6 +136,7 @@ function Index({}) {
           })
         }else{
           // 其他邏輯...
+          setIsLoggedIn(true)
           setCurrentUser(udata);
         }
 

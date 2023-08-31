@@ -72,8 +72,7 @@ function Section_models() {
           }}
           modules={[Navigation]}
           className='w-full'
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
+
         >
           {menuItems.map((item,index)=>{
             return(
