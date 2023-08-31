@@ -93,7 +93,7 @@ function LeaderBoardHome () {
             title_textlimit={100}
           />
           <LeaderboardComp 
-            title="LoRa 排名"
+            title="LoRA 排名"
             data={topRanking?.top_used_loras} 
             isLoading={isTopRankingLoading} 
             borderType={'lora'}
