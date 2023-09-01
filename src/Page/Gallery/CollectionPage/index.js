@@ -16,7 +16,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage}) {
+function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage,isBanned}) {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -116,7 +116,11 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
                     {title ?title : created_at.substr(0,10)}
                   </div>
                   <div className='flex gap-4'>
-                    <div className=' flex items-center gap-1  text-sm  cursor-pointer ' onClick={()=> {handleOpen(); setCurrentItem(image); }}>
+                    <Button 
+                      className='p-0 flex items-center gap-1  text-sm  cursor-pointer ' 
+                      onClick={()=> {handleOpen(); setCurrentItem(image); }}
+                      disabled={isBanned}
+                      >
                       
                       <div className=' relative mr-1'>
                         <div className=' absolute -top-1 -right-1 rounded-full bg-black p-[1px]'><FaMinus  size={10} /></div>
@@ -124,7 +128,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
                         <FaBookmark />
                       </div>
                       移除
-                    </div>
+                    </Button>
 
 
                   </div>

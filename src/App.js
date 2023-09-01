@@ -20,6 +20,7 @@ import CommandDoc from './Page/DocPage/CommandDoc';
 import RefundDoc from './Page/DocPage/RefundDoc';
 import Terms from './Page/DocPage/Terms';
 import Policy from './Page/DocPage/Policy';
+import Contract from './Page/DocPage/Contract';
 
 //
 import GalleryLayout from './Page/Lyaouts/GalleryLayout';
@@ -109,6 +110,7 @@ function App() {
             <Route path="refunds" element={<RefundDoc />}/>
             <Route path="terms" element={<Terms />} />
             <Route path="policy" element={<Policy />} />
+            <Route path="contract" element={<Contract />} />
           </Route>
         </Route>
 

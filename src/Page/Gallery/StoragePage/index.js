@@ -19,7 +19,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage,handleRemoveFromStorage,handleRemovePost}) {
+function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,handleSetBanner,handleSetAvatar,handleDisplayHome,fetchMoreStorageImages,currentStoragePage,totalPage,totalImage,limitImage,isStorageDataLoading,isFetchingNextPage,handleRemoveFromStorage,handleRemovePost,isBanned}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -242,7 +242,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
 
                     <Menu>
                       <MenuHandler >
-                        <IconButton className="rounded-full mt-1 ml-1">
+                        <IconButton className="rounded-full mt-1 ml-1" disabled={isBanned}>
                           <MdMoreVert size={15} />
                         </IconButton>
                       </MenuHandler>

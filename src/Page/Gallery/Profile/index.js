@@ -22,6 +22,7 @@ import ImageSingleModal from '../Components/ImageSingleModal';
 import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
 import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
+import { Chip } from '@material-tailwind/react';
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Post", display:true,data_name:"total_post"},
@@ -699,11 +700,11 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentUser?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage}/>;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentUser?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage} isBanned={currentUser?.is_banned}/>;
       case 'Post':
-        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentUser?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentUser} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentUser?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentUser} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} isBanned={currentUser?.is_banned} />;
       case 'Collections':
-        return <CollectionPage title={currentDropDownItem.title} totalImage={collectionImages.length} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage}/>;
+        return <CollectionPage title={currentDropDownItem.title} totalImage={collectionImages.length} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage} />;
       case 'Following':
         return <FollowPage title={currentDropDownItem.title} totalImage={followImages.length} follows={follows} followsResults={followImages} handleUnfollow={handleUnfollow}/>;
       default: return null;
@@ -752,7 +753,7 @@ function Index() {
           )}
         {isShowModal && (<EditImageForm handleSetStorageImage={handleSetStorageImage}/>)}
         {isShowImageModal && (<ImageSingleModal/>)}
-        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} handlePostImage={handlePostImage} handlePatchPost={handlePatchPost} campaignsData={campaigns}/>)}
+        {isShowBeforeDisplayModal && (<BeforeDisplayFormModal handleSetStorageImage={handleSetStorageImage} handlePostImage={handlePostImage} handlePatchPost={handlePatchPost} campaignsData={campaigns} isBanned={currentUser?.is_banned}/>)}
         {/* {currentUser?.finish_tutorial && <TutorialPage/> } */}
 
       </AnimatePresence>
@@ -777,14 +778,12 @@ function Index() {
                 style={{backgroundImage:currentUser  ?  `url(${currentUser.profile_image})` : 'none'}}
               ></div>
 
-              <div 
-                className=' text-xs flex items-center ml-auto absolute top-32 right-5  hidden '
-                onClick={()=>setIsEdit(true)}
-              > 
-                Settings<MdMoreVert size={20} /> 
-              </div>
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentUser && currentUser.name} </div>
+                {currentUser && !currentUser.is_banned && <div className='flex flex-col items-center'>
+                  <Chip color="red" value="你已遭暫停使用網站功能。" />
+                  <div className='text-xs mt-1'>很抱歉，因您違反  <a href="/docs" target='_blank' className='text-teal-200'>藝廊公約</a> 將暫停使用藝廊服務五日。如持續惡意違規，官方有權立即永久終止您使用本產品服務之授權。</div>
+                </div>    }
                 <div className='text-white flex gap-3 my-2'>
                 {currentUser?.portfolio_url && <a href={currentUser?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
                 {currentUser?.facebook_id && <a href={currentUser?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }

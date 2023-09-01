@@ -24,7 +24,7 @@ const filterModelsDate = [
  ]
 
 
-function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage}) {
+function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage,isBanned}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -201,12 +201,12 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                   <div className='flex gap-1 ' >
                       {
                         is_collection ? 
-                        <IconButton color="orange"  size="sm"  className="rounded-full relative" onClick={()=>onHandleCollection(image,is_collection)}>
+                        <IconButton color="orange"  size="sm"  className="rounded-full relative" disabled={isBanned} onClick={()=>onHandleCollection(image,is_collection)}>
                           <div className=' absolute -top-1 -right-1 rounded-full bg-orange-500 p-[1px]'><FaCheck  size={9} /></div>
                           <FaBookmark color="white"/>
                         </IconButton>
                         :
-                        <IconButton color="orange" size="sm" disabled={isRemoveStorageLoading} className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>
+                        <IconButton color="orange" size="sm" disabled={isBanned} className="rounded-full" onClick={()=>onHandleCollection(image,is_collection)}>
                           <FaBookmark color="white"/>
                         </IconButton>
                       }
@@ -214,6 +214,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
                     <IconButton 
                       size="sm"
                       className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (display_home ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                      disabled={isBanned}
                     >
                       <FaShare />
                     </IconButton>
