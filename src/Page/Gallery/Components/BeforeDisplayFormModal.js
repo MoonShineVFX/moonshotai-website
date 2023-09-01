@@ -12,7 +12,7 @@ import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
   TabPanel, } from "@material-tailwind/react";
 import { useQuery } from 'react-query';
 import {getImgInCampaign} from '../helpers/fetchHelper'
-function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData,handlePostImage,handlePatchPost}) {
+function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData,handlePostImage,handlePatchPost,isBanned}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const image = useRecoilValue(imageDataState)
   const profilePage = useRecoilValue(profilePageState)
@@ -368,7 +368,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
                 <div className='mt-6 flex gap-3 justify-center md:justify-start '>
-                  <Button type="submit" className='bg-light-green-700 ' disabled={image?.is_nsfw}>發佈</Button>
+                  <Button type="submit" className='bg-light-green-700 ' disabled={image?.is_nsfw || isBanned}>發佈</Button>
                   <button type="button" className='text-white/80' onClick={()=>{
                     setIsShowDisplayFormModal(false)
                   }}>取消</button>

@@ -82,20 +82,6 @@ function QuickStart() {
 
           </div>
 
-          <div className='text-white/90 text-sm space-y-2 my-8 pt-10 border-t border-white/20'>
-            <div className='text-xl font-bold  mb-4'>藝廊公約</div>
-            <p>為了創造友善的交流環境，請創作者一起遵守以下規章：</p>
-            <div className='pl-1 space-y-4 pb-10'>
-            <p>1. 請避免仇恨言論或霸凌文字，尊重言論自由，保持禮貌友好的交流模式。</p>
-            <p>2. 請避免張貼色情、暴力、血腥、恐怖等「有害兒少身心健康」相關討論及內容，若是圖片內容隱含成人內容，請開啟「Add NSFW Tag」的按鈕才能發布、上傳，如有違反則直接刪除並不特別告知。</p>
-            <p>3. 請勿張貼非 Moonshot 平台生成之圖片。</p>
-            <p>4. 若是違反藝廊規章，官方有權將立即暫時或永久終止您使用本服務之授權。</p>
-
-
-          </div>
-
-
-        </div>
       </div>
 
 

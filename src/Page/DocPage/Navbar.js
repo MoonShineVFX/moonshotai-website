@@ -23,8 +23,18 @@ function Navbar() {
     });
   };
   const menuItem = [
-    {title:"如何開始",section:"/docs",path:"" , submenus:[{title:"Quick Start",section:"quick"},{title:"Gallery Guidelines",section:"guidelines"}]},
-    {title:"個人帳戶",section:"account" ,path:"docs/account", submenus:[{title:"Profile",section:"profile"},{title:"Account",section:"account"},{title:"Refeeral",section:"refeeral"},{title:"Orders",section:"orders"}]},
+    {title:"如何開始",section:"/docs",path:"" , 
+      submenus:[
+        {title:"Quick Start",section:"quick"},
+        {title:"Gallery Guidelines",section:"guidelines"}
+      ]},
+    {title:"藝廊公約",section:"contract",path:"docs/contract"},
+    {title:"個人帳戶",section:"account" ,path:"docs/account", 
+      submenus:[
+        {title:"Profile",section:"profile"},
+        {title:"Account",section:"account"},{title:"Refeeral",section:"refeeral"},{title:"Orders",section:"orders"}
+      ]},
+    
     {title:"常見問答",section:"faq",path:"docs/faq"},
     {title:"指令介紹",section:"command" ,path:"docs/commend"},
     {title:"退款流程",section:"refunds" ,path:"docs/refund"},

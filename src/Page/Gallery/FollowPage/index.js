@@ -19,7 +19,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-function Index({title,follows,followsResults,currentProfile,handleUnfollow,totalImage}) {
+function Index({title,follows,followsResults,currentProfile,handleUnfollow,totalImage,isBanned}) {
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
@@ -126,7 +126,11 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
                     {name }
                   </div>
                   <div className='flex gap-4'>
-                    <Button className=' flex items-center gap-1  text-sm bg-t_lime-600 py-1 px-3 cursor-pointer' onClick={()=> {handleOpen(); setCurrentItem(user); }}>
+                    <Button 
+                      className=' flex items-center gap-1  text-sm bg-t_lime-600 py-1 px-3 cursor-pointer' 
+                      onClick={()=> {handleOpen(); setCurrentItem(user); }}
+                      disabled={isBanned}
+                    >
                       <FaHeart />Unfollow
                     </Button>
 
