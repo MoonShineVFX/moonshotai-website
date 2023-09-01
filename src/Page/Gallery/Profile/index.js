@@ -780,7 +780,7 @@ function Index() {
 
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentUser && currentUser.name} </div>
-                {currentUser && !currentUser.is_banned && <div className='flex flex-col items-center'>
+                {currentUser && currentUser.is_banned && <div className='flex flex-col items-center'>
                   <Chip color="red" value="你已遭暫停使用網站功能。" />
                   <div className='text-xs mt-1'>很抱歉，因您違反  <a href="/docs" target='_blank' className='text-teal-200'>藝廊公約</a> 將暫停使用藝廊服務五日。如持續惡意違規，官方有權立即永久終止您使用本產品服務之授權。</div>
                 </div>    }
