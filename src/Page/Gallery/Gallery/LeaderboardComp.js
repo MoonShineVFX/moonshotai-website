@@ -18,11 +18,13 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
   ]
   function ModelMapName({command}){
 
-    const newName = modelData.filter((item)=>{
-      return item.command === command
-    })
+    // 查找匹配的 modelData 条目
+    const match = modelData.find((item) => item.command === command);
 
-    return <div alt={newName[0].command}>{newName[0].title}</div>
+    // 如果找到匹配的条目，则返回其 title，否则返回一个默认值（或者可以选择返回 null）
+    const title = match ? match.title : '未知';
+
+    return <div alt={command}>{title}</div>;
   }
 
 
