@@ -78,6 +78,7 @@ const GalleryHomePageLayout = () => {
             listNameStyle={'text-sm'}
             is_link={true}
             linkpath={'/user/'}
+            tip={'本月份以來，使用者獲得愛心數量排名。'}
           />
           {/* <LeaderboardComp 
             page={'home'}
@@ -100,13 +101,14 @@ const GalleryHomePageLayout = () => {
             data={topRanking?.top_used_models} 
             borderType={'model'}
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={10} 
+            customer_sliceNum={4} 
             more={true}
             containerStyle={''}
             containerTitleStyle={'text-sm'}
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
+            tip={'本月份以來 Models 指令的使用量排名。'}
           />
           <LeaderboardComp 
             page={'home'}
@@ -120,6 +122,7 @@ const GalleryHomePageLayout = () => {
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
+            tip={'本月份以來 LoRA 指令的使用量排名。'}
           />
         </div>    
 

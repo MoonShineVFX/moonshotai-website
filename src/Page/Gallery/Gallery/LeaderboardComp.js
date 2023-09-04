@@ -1,11 +1,11 @@
 import React,{useState,useEffect} from 'react'
 import { Link} from 'react-router-dom';
 
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
+import { MdOutlineLocalFireDepartment,MdInfoOutline } from "react-icons/md";
 import { GiShield,GiArson,GiRingedPlanet,GiBurningDot,GiLaurelsTrophy } from "react-icons/gi";
 import {LoadingLogoSpin,recordPageUrl,formatNumberWithK,padWithZero,TitleWithLimit,ImageWithFallback} from '../helpers/componentsHelper'
-
-function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,containerStyle,containerTitleStyle,listStyle,listAvatarStyle,listNameStyle,listContainerStyle,is_link,linkpath,title_textlimit,borderType}) {
+import { Tooltip, Typography } from "@material-tailwind/react";
+function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,containerStyle,containerTitleStyle,listStyle,listAvatarStyle,listNameStyle,listContainerStyle,is_link,linkpath,title_textlimit,borderType,tip}) {
   const [sliceNum, setSliceNum] = useState(10); 
   const [isMobile ,setIsMobile ] = useState(false) 
 
@@ -58,8 +58,33 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
       }
     >
       <div className={`flex items-center justify-between ${page === 'home' && 'md:aspect-[176/22] overflow-hidden '} `}>
-        <div className={`text-white/90 w-1/3 md:w-full  ${containerTitleStyle} `}>{title}</div>      
-        {more &&<Link to="/leaderboard" className='text-white/30 text-xs md:w-1/3 md:text-sm hover:text-white whitespace-nowrap '>更多</Link>}
+        <div className={`text-white/90 w-1/3 md:w-full flex gap-2 items-center  ${containerTitleStyle} `}>
+          
+          {title}
+          {
+            tip && (
+              <Tooltip
+                content={
+                  <div className="w-80">
+                    <Typography color="white" className="font-medium">
+                      {title}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      color="white"
+                      className="font-normal opacity-80"
+                    >
+                      {tip}
+                    </Typography>
+                  </div>
+                }
+              >
+                <div className="hidden md:block"><MdInfoOutline/></div>
+              </Tooltip>
+            )
+          }
+        </div>      
+        {more &&<Link to="/leaderboard" className='text-white/30 text-xs text-right md:w-1/3 md:text-sm hover:text-white whitespace-nowrap '>更多</Link>}
       </div>
 
       <div className={` md:space-y-3 mt-3 flex justify-between md:items-start  ${listContainerStyle} ${page === 'home' ? 'flex-col overflow-hidden md:aspect-[176/163]  lg:overflow-y-auto ' : 'flex-col ' } `}>

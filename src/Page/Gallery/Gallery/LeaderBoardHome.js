@@ -50,6 +50,7 @@ function LeaderBoardHome () {
             is_link={true}
             linkpath={'/user/'}
             title_textlimit={100}
+            tip={'本月份以來，使用者獲得愛心數量排名。'}
           />
           {/* <LeaderboardComp 
             title="創作次數" 
@@ -83,7 +84,7 @@ function LeaderBoardHome () {
             data={topRanking?.top_used_models} 
             isLoading={isTopRankingLoading} 
             borderType={'model'}
-            customer_sliceNum={15} 
+            customer_sliceNum={4} 
             containerStyle={'px-0 md:px-0 w-full '}
             containerTitleStyle={'text-lg font-semibold py-2 px-4'}
             listContainerStyle={' divide-y divide-white/20'}
@@ -91,6 +92,7 @@ function LeaderBoardHome () {
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             title_textlimit={100}
+            tip={'本月份以來 Models 指令的使用量排名。'}
           />
           <LeaderboardComp 
             title="LoRA 排名"
@@ -105,6 +107,7 @@ function LeaderBoardHome () {
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             title_textlimit={100}
+            tip={'本月份以來 LoRA 指令的使用量排名。'}
           />
           
         </motion.div>
