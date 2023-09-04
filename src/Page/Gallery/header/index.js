@@ -114,7 +114,6 @@ function Index({}) {
     }
     setIsCheckUserLoginExecuted(true);
     const storedLoginTokenData = localStorage.getItem('loginTokenData');
-    console.log(storedLoginTokenData)
     if (storedLoginTokenData) {
       try {
         const userLoginData = JSON.parse(storedLoginTokenData);
@@ -147,7 +146,6 @@ function Index({}) {
     } else {
       // 未找到登入資訊，執行其他操作或導向登入頁面
       await liff.init({ liffId: liffID });
-      console.log(liff.isLoggedIn());
       if (!liff.isLoggedIn()) {
         return;
       }

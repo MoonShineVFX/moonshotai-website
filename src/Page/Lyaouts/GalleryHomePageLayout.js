@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link, Outlet,useLocation} from 'react-router-dom';
-import {  Autoplay } from "swiper";
-import { Swiper, SwiperSlide } from 'swiper/react';
+
 import {fetchTopLikedUser,fetchTopRenderdUser,fetchTopRanking} from '../../Page/Gallery/helpers/fetchHelper'
 import { useQuery } from 'react-query';
 import LeaderboardComp from '../Gallery/Gallery/LeaderboardComp';
 // Import Swiper styles
+import {  Autoplay } from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import "swiper/css/pagination";
@@ -29,39 +30,9 @@ const GalleryHomePageLayout = () => {
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
       <div className='flex flex-col lg:flex-row gap-4'>
-          <Swiper
-            spaceBetween={1}
-            slidesPerView={1}
-            loop={true}
-            modules={[Autoplay]}
-            className='banner w-full lg:w-1/2 '
-            autoplay={{
-              delay: 2300,
-              disableOnInteraction: false,
-            }}
-          >
-          {
-            bannerData?.map((item,index)=>{
-              
-              return(
-                <SwiperSlide key={'banner'+index}>
-                  {!item.path ? (
-
-                    <Link to={item.path} key={'banner'+index} className=' '>
-                      <img src={window.innerWidth <= 450 ? item.url+'&width=400' : item.url} alt="slide" className=' rounded-md  ' />
-                    </Link>
-                  ) : (
-                    <div key={'banner'+index} className=' ] '>
-                      <img src={window.innerWidth <= 450 ? item.url+'&width=400' : item.url} alt="slide" className=' rounded-md  object-contain ' />
-                    </div>
-                  )
-                  }
-
-                </SwiperSlide>
-              )
-            })
-          }  
-          </Swiper>
+        <div className='w-1/2'>
+          <img src="https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/img001.png?width=750" alt="" className=' aspect-[1920/853] object-cover rounded-md' />
+        </div>
         <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 md:gap-4  '>
           <LeaderboardComp 
             page={'home'}
