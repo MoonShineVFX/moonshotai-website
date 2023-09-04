@@ -101,7 +101,7 @@ const GalleryHomePageLayout = () => {
             data={topRanking?.top_used_models} 
             borderType={'model'}
             isLoading={isTopRankingLoading} 
-            customer_sliceNum={10} 
+            customer_sliceNum={4} 
             more={true}
             containerStyle={''}
             containerTitleStyle={'text-sm'}
