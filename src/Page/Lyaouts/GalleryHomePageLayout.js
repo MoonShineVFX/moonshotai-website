@@ -30,8 +30,8 @@ const GalleryHomePageLayout = () => {
   return (
     <div className='w-11/12 md:w-11/12 mx-auto my-6 '>
       <div className='flex flex-col lg:flex-row gap-4'>
-        <div className='w-1/2'>
-          <img src="https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/img001.png?width=750" alt="" className=' aspect-[1920/853] object-cover rounded-md' />
+        <div className='w-1/2 '>
+          <img src="https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/img001.png?width=750" alt="" className='aspect-[24/9]  w-full object-cover rounded-md' />
         </div>
         <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 md:gap-4  '>
           <LeaderboardComp 
