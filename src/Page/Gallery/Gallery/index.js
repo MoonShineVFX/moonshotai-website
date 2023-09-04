@@ -13,6 +13,12 @@ import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } from 'react-query';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+// Import Swiper styles
+import {  Autoplay,EffectFade } from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-fade';
+import "swiper/css/pagination";
 const filterDateItem = [
   {title:'24 hr',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -26,6 +32,12 @@ const filterModelsDate = [
   {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
   {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
   {title:'SDXL',type:'Models',command:'models',value:'xl'}
+ ]
+const bannerData = [
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnftv02_1.png?v2",path:'/asusnft'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png?v2",path:'/taiwanfood'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/sdxl.png?v2",path:'/sdxl'},
+  {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/moonshot01.png?v2",path:'/voice'},
  ]
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
@@ -86,7 +98,6 @@ function Index() {
   const unLikeAImageMutation = useDelLikedImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
 
   const handleLike = async(image,is_like)=>{
-    console.log(is_like)
     if(!isLoggedIn){
       //  console.log(isLoggedIn)
       setIsLoginForFuns(true)
@@ -146,7 +157,6 @@ function Index() {
     handleSelectModels(item.value)
   }
   const handleSelectDate = (value,date)=>{
-    console.log(date)
     setCurrentPage(1)
     setPageSize(12)
     setStartDate(date)
@@ -196,13 +206,14 @@ function Index() {
             {
               imageData.length === 0 && <div className='text-white/60 text-sm my-6 text-center'>這個選擇下目前沒有圖片。</div>
             }
+            
             <InfiniteScroll
               dataLength={imageData ? imageData.length:0}
               next={()=>fetchNextPage()}
               hasMore={hasNextPage}
               loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
             >
-                         <Masonry
+            <Masonry
               breakpointCols={{
                 default: 5,
                 1024: 4,
@@ -211,6 +222,7 @@ function Index() {
               className="my-masonry-grid"
               columnClassName="my-masonry-grid_column"
             >
+      
               {imageData.map((image,index)=>{
                 const {id, urls, created_at, display_home, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments } = image
                 return (
@@ -222,9 +234,9 @@ function Index() {
                       <div className=' relative overflow-hidden   rounded-md'>
                         <img  
                           alt={title}
-                          src={urls.thumb}
+                          src={urls.thumb+'?width=400'}
                           data-id={id}
-                          className={` object-cover w-full hover:scale-110 transition duration-300 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
+                          className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
   
                         />
                       </div>
