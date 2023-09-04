@@ -78,6 +78,7 @@ const GalleryHomePageLayout = () => {
             listNameStyle={'text-sm'}
             is_link={true}
             linkpath={'/user/'}
+            tip={'本月份以來，使用者獲得愛心數量排名。'}
           />
           {/* <LeaderboardComp 
             page={'home'}
@@ -107,6 +108,7 @@ const GalleryHomePageLayout = () => {
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
+            tip={'本月份以來 Models 指令的使用量排名。'}
           />
           <LeaderboardComp 
             page={'home'}
@@ -120,6 +122,7 @@ const GalleryHomePageLayout = () => {
             listStyle={'h-[25%]'}
             listAvatarStyle={'w-7'}
             listNameStyle={'text-sm'}
+            tip={'本月份以來 LoRA 指令的使用量排名。'}
           />
         </div>    
 

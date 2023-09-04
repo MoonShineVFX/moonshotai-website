@@ -50,6 +50,7 @@ function LeaderBoardHome () {
             is_link={true}
             linkpath={'/user/'}
             title_textlimit={100}
+            tip={'本月份以來，使用者獲得愛心數量排名。'}
           />
           {/* <LeaderboardComp 
             title="創作次數" 
@@ -91,6 +92,7 @@ function LeaderBoardHome () {
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             title_textlimit={100}
+            tip={'本月份以來 Models 指令的使用量排名。'}
           />
           <LeaderboardComp 
             title="LoRA 排名"
@@ -105,6 +107,7 @@ function LeaderBoardHome () {
             listAvatarStyle={'w-16'}
             listNameStyle={'text-lg'}
             title_textlimit={100}
+            tip={'本月份以來 LoRA 指令的使用量排名。'}
           />
           
         </motion.div>
