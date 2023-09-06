@@ -14,7 +14,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-const liffID = process.env.REACT_APP_LIFF_PROMPT_ID
+
 function Index() {
   const [activeTab, setActiveTab] = React.useState("character");
   const data = [
@@ -68,6 +68,7 @@ function Index() {
   }
   useEffect(()=>{
     if(!liff.isLoggedIn()){
+      const liffID = process.env.REACT_APP_LIFF_PROMPT_ID
       liff.init({liffId: liffID}) 
     }
   },[])
