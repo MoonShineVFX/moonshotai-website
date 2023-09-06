@@ -14,9 +14,10 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-const liffID = '1660658719-V7Z6RdQl'
+
 function Index() {
   const [activeTab, setActiveTab] = React.useState("character");
+  const liffID = '1660658719-V7Z6RdQl'
   const data = [
     {
       label: "人物角色",
