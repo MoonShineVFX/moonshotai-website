@@ -61,7 +61,7 @@ function Index() {
     liff.sendMessages([
       {
         type: 'text',
-        text: model+prompt+'--'+negative_prompt
+        text: model+' '+prompt+',--'+negative_prompt
       }
     ]).then(function(res) {
       console.log(res)
