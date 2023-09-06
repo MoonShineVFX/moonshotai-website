@@ -1,9 +1,11 @@
-import React, { useState }  from 'react'
+import React, { useState,useEffect }  from 'react'
 import {motion} from 'framer-motion'
 import { FaHeart,FaBookmark,FaMinus } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
+import moment from 'moment';
+import debounce from 'lodash.debounce';
 import {
   Menu,
   MenuHandler,
@@ -16,7 +18,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage,isBanned}) {
+function Index({title,images,imagesResults,currentProfile,handleRemoveCollection,totalImage,isFetchingNextPage,isBanned,fetchMoreImages,currentPage,totalPage}) {
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
@@ -44,10 +46,39 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
       },
     },
   };
+
   const onHandleRemoveCollection = (image)=>{
     handleRemoveCollection(image,'collectionPage')
     setOpen(!open)
   }
+  const [lastScrollTime, setLastScrollTime] = useState(0);
+  const handleScroll = () => {
+    // 獲取頁面滾動相關信息
+    
+      const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+      // 檢查是否滾動到頁面底部
+      if (scrollTop + clientHeight +300  >= scrollHeight ) {
+        const now = Date.now();
+        if (now - lastScrollTime >= 1000) {
+          console.log('go')
+          fetchMoreImages(); // 加載更多圖片
+          setLastScrollTime(now);
+        }
+
+      }
+
+  };
+  const debouncedHandleScroll = debounce(handleScroll, 500);
+
+  useEffect(() => {
+
+    // 監聽滾動事件
+    window.addEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      // 在組件卸載時移除滾動事件監聽器
+      window.removeEventListener('scroll', debouncedHandleScroll);
+    };
+  }, [currentPage,totalPage]); // 空依賴數組，只在組件初次渲染時設置監聽器  
   if(totalImage === 0) {
     return <div>
       <div className='text-white text-xl font-bolds  md:text-left md:text-3xl  mb-4'>{title} <div className='text-xs text-white/50'>{totalImage} items</div>  </div>
@@ -91,7 +122,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
       {!imagesResults ?
         <div className='text-white'>Loading</div> 
         : 
-        <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
+        <div className='grid grid-cols-2 md:grid-cols-6 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
             const {id, urls, created_at, display_home, filename,title   } = image
             return (
