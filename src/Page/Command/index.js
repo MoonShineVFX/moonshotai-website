@@ -63,7 +63,12 @@ function Index() {
         type: 'text',
         text: model+prompt+'--'+negative_prompt
       }
-    ])
+    ]).then(function(res) {
+      console.log(res)
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
 
   }
   // useEffect(()=>{
