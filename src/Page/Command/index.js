@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import liff from '@line/liff';
 import { characterData,realismData,science_fictionData,artData,architectureData,transportationData } from './prompt_item';
 import {
@@ -58,18 +58,19 @@ function Index() {
     transportation: transportationData,
   };
   const sendMsg = async(model,prompt,negative_prompt)=>{
-    try{
-      await liff.init({liffId: liffID}) 
-      liff.sendMessages([
-        {
-          type: 'text',
-          text: model+prompt+'--'+negative_prompt
-        }
-      ])
-    }catch{
+    liff.sendMessages([
+      {
+        type: 'text',
+        text: model+prompt+'--'+negative_prompt
+      }
+    ])
 
-    }
   }
+  useEffect(()=>{
+    if(!liff.isLoggedIn()){
+      liff.init({liffId: liffID}) 
+    }
+  },[])
   return (
     <div className='p-4 text-white'>
       <div className='text-xs text-center text-white/60 mx-20 my-5'>
