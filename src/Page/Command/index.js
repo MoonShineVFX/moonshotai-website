@@ -1,4 +1,5 @@
 import React from 'react'
+import liff from '@line/liff';
 import { characterData,realismData,science_fictionData,artData,architectureData,transportationData } from './prompt_item';
 import {
   Tabs,
@@ -13,6 +14,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
+const liffID = '1660658719-V7Z6RdQl'
 function Index() {
   const [activeTab, setActiveTab] = React.useState("character");
   const data = [
@@ -55,6 +57,19 @@ function Index() {
     architecture: architectureData,
     transportation: transportationData,
   };
+  const sendMsg = async(model,prompt,negative_prompt)=>{
+    try{
+      await liff.init({liffId: liffID}) 
+      liff.sendMessages([
+        {
+          type: 'text',
+          text: model+prompt+'--'+negative_prompt
+        }
+      ])
+    }catch{
+
+    }
+  }
   return (
     <div className='p-4 text-white'>
       <div className='text-xs text-center text-white/60 mx-20 my-5'>
@@ -116,6 +131,7 @@ function Index() {
                           ripple={false}
                           fullWidth={true}
                           className="bg-black/0 text-white rounded-none "
+                          onClick={()=>sendMsg(item.model,item.prompt,item.negative_prompt)}
                         >
                         使用這個 Prompt
                         </Button>
