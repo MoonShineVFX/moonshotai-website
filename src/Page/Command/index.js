@@ -66,12 +66,12 @@ function Index() {
     ])
 
   }
-  useEffect(()=>{
-    if(!liff.isLoggedIn()){
-      const liffID = process.env.REACT_APP_LIFF_PROMPT_ID
-      liff.init({liffId: liffID}) 
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(!liff.isLoggedIn()){
+  //     const liffID = process.env.REACT_APP_LIFF_PROMPT_ID
+  //     liff.init({liffId: liffID}) 
+  //   }
+  // },[])
   return (
     <div className='p-4 text-white'>
       <div className='text-xs text-center text-white/60 mx-20 my-5'>
