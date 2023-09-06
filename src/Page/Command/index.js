@@ -71,12 +71,13 @@ function Index() {
     });
 
   }
-  // useEffect(()=>{
-  //   if(!liff.isLoggedIn()){
-  //     const liffID = process.env.REACT_APP_LIFF_PROMPT_ID
-  //     liff.init({liffId: liffID}) 
-  //   }
-  // },[])
+  useEffect(async ()=>{
+    try {
+      await liff.init({liffId: '1660658719-V7Z6RdQl'}) 
+    } catch (error) {
+      console.log(`liff.state init error ${error}`);
+    }
+  },[])
   return (
     <div className='p-4 text-white'>
       <div className='text-xs text-center text-white/60 mx-20 my-5'>
