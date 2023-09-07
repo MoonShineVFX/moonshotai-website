@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import liff from '@line/liff';
-import { characterData,realismData,science_fictionData,artData,architectureData,transportationData } from './prompt_item';
+import { characterData,artData,architectureData,transportationData,designData,interiorData } from './prompt_item';
 import {
   Tabs,
   TabsHeader,
@@ -24,38 +24,39 @@ function Index() {
       desc: `已設定好的角色Prompt。`,
     },
     {
-      label: "寫實",
-      value: "realism",
-      desc: `偏寫實的圖。`,
-    },
-    {
-      label: "科幻",
-      value: "science_fiction",
-      desc: `偏科幻的圖。`,
-    },
-    {
-      label: "藝術",
+      label: "藝術風格",
       value: "art",
       desc: `偏藝術的圖。`,
     },
     {
-      label: "建築",
+      label: "建築風景",
       value: "architecture",
-      desc: `偏藝術的圖。`,
+      desc: `偏建築的圖。`,
     },
     {
       label: "運輸交通",
       value: "transportation",
       desc: `偏運輸交通的圖。`,
+    },
+    {
+      label: "平面設計",
+      value: "design",
+      desc: `偏平面設計的圖。`,
+    },
+    {
+      label: "室內裝潢",
+      value: "interior",
+      desc: `偏室內裝潢的圖。`,
     }
   ];
   const dataSources = {
     character: characterData,
-    realism: realismData,
-    science_fiction: science_fictionData,
     art: artData,
     architecture: architectureData,
     transportation: transportationData,
+    design: designData,
+    interior: interiorData,
+
   };
   const sendMsg = async(model,prompt,negative_prompt)=>{
     liff.sendMessages([
@@ -65,6 +66,10 @@ function Index() {
       }
     ]).then(function(res) {
       console.log(res)
+      
+      setTimeout(()=>{
+        liff.closeWindow()
+      },1000)
     })
     .catch(function(error) {
       console.log(error);
