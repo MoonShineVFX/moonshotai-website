@@ -24,6 +24,16 @@ function Index() {
       desc: `已設定好的角色Prompt。`,
     },
     {
+      label: "平面設計",
+      value: "design",
+      desc: `偏平面設計的圖。`,
+    },
+    {
+      label: "室內裝潢",
+      value: "interior",
+      desc: `偏室內裝潢的圖。`,
+    },
+    {
       label: "藝術風格",
       value: "art",
       desc: `偏藝術的圖。`,
@@ -37,17 +47,8 @@ function Index() {
       label: "運輸交通",
       value: "transportation",
       desc: `偏運輸交通的圖。`,
-    },
-    {
-      label: "平面設計",
-      value: "design",
-      desc: `偏平面設計的圖。`,
-    },
-    {
-      label: "室內裝潢",
-      value: "interior",
-      desc: `偏室內裝潢的圖。`,
     }
+
   ];
   const dataSources = {
     character: characterData,
@@ -76,12 +77,15 @@ function Index() {
     });
 
   }
-  useEffect(async ()=>{
+  const init=async()=>{
     try {
       await liff.init({liffId: '1660658719-V7Z6RdQl'}) 
     } catch (error) {
-      console.log(`liff.state init error ${error}`);
+      console.log(error)
     }
+  }
+  useEffect( ()=>{
+    init()
   },[])
   return (
     <div className='p-4 text-white'>
