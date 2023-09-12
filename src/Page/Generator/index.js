@@ -42,6 +42,7 @@ function Index() {
 
   const [ currentModel , setCurrentModel] = useState(models[0])
   const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
+  const [errMsg , setErrMsg] = useState('')
   useEffect(() => {
     const ratioValue = watch('ratio');
     const newSelectedRatio = RATIOS[ratioValue - 1];
@@ -70,6 +71,7 @@ function Index() {
     })
     .catch(function(error) {
       console.log(error);
+      setErrMsg('sendmsg err:'+error)
     });
   };
   const init=async()=>{
@@ -77,6 +79,7 @@ function Index() {
       await liff.init({liffId: '1660658719-rJwe93nW'}) 
     } catch (error) {
       console.log(error)
+      setErrMsg('init err:'+error)
     }
   }
   useEffect( ()=>{
@@ -209,6 +212,7 @@ function Index() {
 
         </div>
       </form>
+      <div className='text-red-400'>偵測錯誤訊息：{errMsg}</div>
         
     </div>
   )
