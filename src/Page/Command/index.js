@@ -152,13 +152,7 @@ function Index() {
                         >
                         使用這個 Prompt
                         </Button>
-                        <Button
-                          ripple={false}
-                          fullWidth={true}
-                          className="bg-black/0 text-white rounded-none"
-                        >
-                          先編輯再傳
-                        </Button>
+
                       </CardFooter>
                     </Card>
                   ))
