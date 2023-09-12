@@ -30,26 +30,7 @@ function Index() {
   });
   const [displayType, setDisplayType] = useState('prompt');
   //https://bunny-cdn.moonland.ai/moonland/etc/danbooru.json
-  const onSubmit = data => {
-    const alltext = `${data.selectedModel} ${data.ratio ? RATIOS[data?.ratio-1].value : '1/1'},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
-    `
-    console.log(alltext)
-    liff.sendMessages([
-      {
-        type: 'text',
-        text: alltext
-      }
-    ]).then(function(res) {
-      console.log(res)
-      
-      setTimeout(()=>{
-        liff.closeWindow()
-      },1000)
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-  };
+
   const promptValue = watch('prompt');
   const promptCount = promptValue ? promptValue.length : 0;
   const nativePromptValue = watch('nativeprompt');
@@ -71,9 +52,29 @@ function Index() {
   const RatioRecElement = ({r})=>{
     return <div className={` aspect-[${r.value}] w-1/3  bg-white/50  border-4 border-white/40 text-white/70 text-xl font-bold`}> {r.name} </div>
   }
+  const onSubmit = data => {
+    const alltext = `${data.selectedModel} ${data.ratio ? RATIOS[data?.ratio-1].value : '1/1'},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
+    `
+    console.log(alltext)
+    liff.sendMessages([
+      {
+        type: 'text',
+        text: alltext
+      }
+    ]).then(function(res) {
+      console.log(res)
+      
+      setTimeout(()=>{
+        liff.closeWindow()
+      },1000)
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+  };
   const init=async()=>{
     try {
-      await liff.init({liffId: '1660658719-V7Z6RdQl'}) 
+      await liff.init({liffId: '1660658719-rJwe93nW'}) 
     } catch (error) {
       console.log(error)
     }
