@@ -122,7 +122,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
         >
           <DialogHeader className="justify-between">
             <Typography variant="h5" color="white">
-              選擇模型指令
+              選擇風格
             </Typography>
             <IconButton
               color="blue-gray"

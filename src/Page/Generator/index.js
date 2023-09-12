@@ -212,7 +212,7 @@ function Index() {
 
         </div>
       </form>
-      <div className='text-red-400'>偵測錯誤訊息：{errMsg}</div>
+      <div className='text-red-400'>會刪:錯誤訊息偵測區：{errMsg}</div>
         
     </div>
   )
