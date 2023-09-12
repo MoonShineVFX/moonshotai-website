@@ -19,19 +19,19 @@ function Index() {
   ]
   const { register, handleSubmit, control,watch, formState: { errors } } = useForm({
     defaultValues:{
-      selectedModel:'',
-      selecteStyle:'',
+      selectedModel:'ct',
+      selecteStyle:'無',
       prompt:'',
       nativeprompt:'',
-      ratio:'',
-      steps:'',
-      cfgScale:''
+      ratio:5,
+      steps:5,
+      cfgScale:10
     }
   });
   const [displayType, setDisplayType] = useState('prompt');
   //https://bunny-cdn.moonland.ai/moonland/etc/danbooru.json
   const onSubmit = data => {
-    const alltext = `${data.selectedModel} ${RATIOS[data?.ratio-1].value},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
+    const alltext = `${data.selectedModel} ${data.ratio ? RATIOS[data?.ratio-1].value : '1/1'},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
     `
     console.log(alltext)
     liff.sendMessages([
@@ -143,7 +143,7 @@ function Index() {
             <div className={`relative  text-sm border-gray-600 break-keep  `}>步數 </div>
             <div className='w-full'>
               <input 
-                type="range" name="" id="" max="60" min="1" step={1} 
+                type="range" name="" id="" max="60" min="1" step={1} defaultValue={5}
                 className="accent-blue-50 w-full "   
                 {...register('steps')}
               />
@@ -157,7 +157,7 @@ function Index() {
             <div className={`relative  text-sm border-gray-600 break-keep  `}>強度 </div>
             <div className='w-full'>
               <input 
-                type="range" name="" id="" max="20" min="0" step={0.1} 
+                type="range" name="" id="" max="20" min="0" step={0.1} defaultValue={10}
                 className="accent-blue-50 w-full "   
                 {...register('cfgScale')}
               />
