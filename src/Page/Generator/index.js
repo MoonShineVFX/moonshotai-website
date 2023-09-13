@@ -3,8 +3,10 @@ import liff from '@line/liff';
 import { useForm,Controller } from "react-hook-form";
 import { motion } from 'framer-motion';
 import {ModelSelector,StyleSelector} from './SelectorComponent'
-import { Button} from "@material-tailwind/react";
+import { Button,Checkbox,Radio} from "@material-tailwind/react";
 import { promptPresets,models} from './promptPresets'
+import { FaWandSparkles,FaCheck } from "react-icons/fa6";
+
 function Index() {
   const RATIOS = [
     { name: '16:9', value:'16/9' },
@@ -41,15 +43,11 @@ function Index() {
   const [ currentModel , setCurrentModel] = useState(models[0])
   const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
   const [errMsg , setErrMsg] = useState('')
-  useEffect(() => {
-    const ratioValue = watch('ratio');
-    const newSelectedRatio = RATIOS[ratioValue - 1];
 
-    setSelectedRatio(newSelectedRatio);
-  }, [watch('ratio')]);
 
-  const RatioRecElement = ({r})=>{
-    return <div className={` aspect-[${r.value}] w-1/3   bg-white/50  border-4 border-white/40 text-white/70 text-xl font-bold`}> {r.name} </div>
+  const RatioRecElement = ({rv})=>{
+    const ra = RATIOS[rv - 1];
+    return <div className={` aspect-[${ra.value}] w-1/3 h-auto flex justify-center items-center bg-white/50  border-2 border-white/40 text-white/70 text-xl font-bold`}> {ra.name} </div>
   }
   React.useEffect(() => {
     const cookies = document.cookie.split(';');
@@ -74,10 +72,21 @@ function Index() {
     setValue('nativeprompt', storedText);
   }, [setValue]);
   const onSubmit = data => {
+    console.log(data)
+    // 指令存cookie
     document.cookie = `userText=${encodeURIComponent(data.prompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
     document.cookie = `userNativeText=${encodeURIComponent(data.nativeprompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
-    const alltext = `${data.selectedModel} ${data.ratio ? RATIOS[data?.ratio-1].value : '1/1'},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
-    `
+
+    const model = data.selectedModel
+    const ratio = data.ratio && data.ratio === 5 ? '' : RATIOS[data?.ratio-1].name+','
+    const style = data.selecteStyle && data.selecteStyle === '無' ? '' : '/style:'+data.selecteStyle+','
+    const steps = data.steps && data.steps === '25' ? '' : '/steps:'+data.steps+','
+    const prompt = data.prompt
+    const nprompt = data.nativeprompt.length > 0 ? ',-- '+data.nativeprompt : ''
+    const scale = data.scaleOption && data.scaleOption === '0'? '': data.scaleOption+','
+
+    const defaultText = ``
+    const alltext = `${model} ${scale}${ratio}${style}${steps}${prompt}${nprompt}`
     console.log(alltext)
     liff.sendMessages([
       {
@@ -110,9 +119,9 @@ function Index() {
   },[])
   return (
     <div className=' text-white'>
-      <div className='py-4'>
+      <div className='py-4 border-b border-white/30'>
         <div className='text-center '>你的創作，從這開始</div>
-        <div className='py-1 text-xs text-white/70 text-center border-b border-white/30'>送出後的指令會儲存一段時間，方便繼續編輯。</div>
+        <div className='py-1 text-xs text-white/70 text-center '>送出後的提示詞會儲存一段時間，方便繼續編輯。</div>
       </div>
      
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -203,7 +212,7 @@ function Index() {
             />
           </div>
           <div className='flex items-center gap-4 h-24 my-6'>             
-            <div className={`relative  text-sm border-gray-600 break-keep  `}>比例 </div>
+            <div className={`relative  text-sm  break-keep  `}>比例 </div>
             <div className='w-full'>
               <input 
                 type="range" name="" id="" max="9" min="1" step={1}  defaultValue={5}
@@ -211,17 +220,19 @@ function Index() {
                 {...register('ratio')}
               />
             </div>
-             <div className='w-1'></div>
               {/* 比例 */}
-            <RatioRecElement r={selectedRatio ? selectedRatio : RATIOS[4]} />
+            <RatioRecElement rv={watch('ratio')}  />
           </div>
-          <div className='py-4'>
-            <div className='text-base text-gray-400 text-center border-t border-white/50 pt-6'>  進階會員指令  </div>
-            <div className='py-1 text-xs text-white/70 text-center border-b border-white/30'>一般會員無法觸發。</div>
+
+          <div className='py-4  border-white/30 border-t flex flex-col  items-center '>
+            <div className='mb-1'><FaWandSparkles /></div>
+            <div className='text-base text-white text-center  '>  進階會員指令  </div>
+            <div className='py-1 text-xs text-white/70 text-center '>一般會員無法觸發，可於社群尋找推薦序號提升指令權限。</div>
 
           </div>
+
           <div className='flex items-center gap-2 my-6'>             
-            <div className={`relative  text-sm border-gray-600 break-keep  `}>步數 </div>
+            <div className={`relative  text-sm break-keep  `}>步數 </div>
             <div className='w-full'>
               <input 
                 type="range" name="" id="" max="50" min="1" step={1} defaultValue={25}
@@ -234,6 +245,35 @@ function Index() {
             </div>
           </div>
 
+          <div className='flex items-center my-6 gap-4'>
+            <div className={`relative text-sm break-keep `}>尺寸</div>       
+            <div className='w-full bg-white/20  rounded-lg'>
+              <Controller
+                name="scaleOption"
+                control={control}
+                render={({ field }) => (
+                  <Radio {...field} icon={ <FaCheck/>}  label="預設" value="0" color="light-blue" labelProps={{className: "text-white"}} defaultChecked />
+                )}
+              />
+              <Controller
+                name="scaleOption"
+                control={control}
+                render={({ field }) => (
+                  <Radio {...field} icon={ <FaCheck/>}  label="製作大圖" value="/hr" color="light-blue" labelProps={{className: "text-white"}}/>
+                )}
+              />
+              <Controller
+                name="scaleOption"
+                control={control}
+                render={({ field }) => (
+                  <Radio {...field} icon={ <FaCheck/>} label="製作中圖" value="/mr" color="light-blue" labelProps={{className: "text-white"}}/>
+                )}
+              />
+            </div>
+
+          </div>
+
+
 
 
           <div className='flex gap-2 my-2'>
@@ -245,7 +285,7 @@ function Index() {
 
         </div>
       </form>
-      <div className='text-red-400'>會刪:錯誤訊息偵測區：{errMsg}</div>
+      <div className='text-red-400 hidden'>會刪:錯誤訊息偵測區：{errMsg}</div>
         
     </div>
   )
