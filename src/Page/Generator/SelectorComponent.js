@@ -62,11 +62,11 @@ export const ModelSelector = ({data, onModelChange}) =>{
                 <div 
                   key={model.command} 
                   onClick={() => handleModelClick(model) }
-                  className='bg-white/10  border border-white/30 text-white  font-bold rounded-md flex items-center h-16 overflow-hidden relative'>
-                  <div className='w-1/2 overflow-hidden'>
+                  className='bg-white/10  border border-white/30 text-white  font-bold rounded-md flex items-center h-14 overflow-hidden relative'>
+                  <div className='w-full aspect-square overflow-hidden opacity-60'>
                     <img src={model.image+'?width=400'} alt={model.title} className=' object-cover object-center '/>
                   </div>
-                  <div className='flex justify-center items-center w-full text-lg'>{model.title}</div>
+                  <div className=' absolute  flex justify-center items-center w-full text-base'>{model.title}</div>
                 </div>
 
               ))}

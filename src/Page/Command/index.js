@@ -90,7 +90,7 @@ function Index() {
   return (
     <div className='p-4 text-white'>
       <div className='text-xs text-center text-white/60 mx-20 my-5'>
-        指令直接選，也可以編輯，並傳送到 Line 上面直接生成。
+        喜歡什麼風格指令請點選，並傳送到 Line 上面直接生成。
       </div>
       <Tabs value={activeTab} >
         <TabsHeader

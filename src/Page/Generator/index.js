@@ -3,7 +3,7 @@ import liff from '@line/liff';
 import { useForm,Controller } from "react-hook-form";
 import { motion } from 'framer-motion';
 import {ModelSelector,StyleSelector} from './SelectorComponent'
-import { Button,Checkbox,Radio} from "@material-tailwind/react";
+import { Button,Checkbox,Radio,Spinner} from "@material-tailwind/react";
 import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 
@@ -43,6 +43,7 @@ function Index() {
   const [ currentModel , setCurrentModel] = useState(models[0])
   const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
   const [errMsg , setErrMsg] = useState('')
+  const [sendSuccess , setSendSuccess] = useState(false)
 
 
   const RatioRecElement = ({rv})=>{
@@ -87,18 +88,17 @@ function Index() {
 
     const defaultText = ``
     const alltext = `${model} ${scale}${ratio}${style}${steps}${prompt}${nprompt}`
-    console.log(alltext)
+    setSendSuccess(false)
     liff.sendMessages([
       {
         type: 'text',
         text: alltext
       }
     ]).then(function(res) {
-      console.log(res)
-      
+      setSendSuccess(true)
       setTimeout(()=>{
         liff.closeWindow()
-      },1000)
+      },900)
     })
     .catch(function(error) {
       console.log(error);
@@ -273,12 +273,9 @@ function Index() {
 
           </div>
 
-
-
-
           <div className='flex gap-2 my-2'>
-            <Button color="gray" variant="gradient"  className='w-1/3' onClick={reset}>重設</Button>
-            <Button color="blue"  type='submit' className='w-2/3'>送出指令</Button>
+            <Button color="gray" variant="gradient"  className='w-1/3' onClick={() => reset()}>重設</Button>
+            <Button color="blue"  type='submit' className='w-2/3 flex  justify-center items-center  relative'>送出指令 {sendSuccess && <Spinner className=' absolute right-1/4' />}</Button>
           </div>
 
         
