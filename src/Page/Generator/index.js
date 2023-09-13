@@ -81,7 +81,7 @@ function Index() {
     const model = data.selectedModel
     const ratio = data.ratio && data.ratio === 5 ? '' : RATIOS[data?.ratio-1].name+','
     const style = data.selecteStyle && data.selecteStyle === '無' ? '' : '/style:'+data.selecteStyle+','
-    const steps = data.steps && data.steps === '25' ? '' : '/steps:'+data.steps+','
+    const steps = data.steps && parseInt(data.steps) === 25 ? '' : '/steps:'+data.steps+','
     const prompt = data.prompt
     const nprompt = data.nativeprompt.length > 0 ? ',-- '+data.nativeprompt : ''
     const scale = data.scaleOption && data.scaleOption === '0'? '': data.scaleOption+','
