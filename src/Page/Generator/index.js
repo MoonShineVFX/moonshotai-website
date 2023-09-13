@@ -150,7 +150,7 @@ function Index() {
                     <textarea
                       {...field} 
                       className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
-                      rows={10}
+                      rows={8}
                     />
                   )}
                 />
@@ -170,7 +170,7 @@ function Index() {
                     <textarea
                       {...field} 
                       className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
-                      rows={10}
+                      rows={8}
                     />
                   )}
                 />
