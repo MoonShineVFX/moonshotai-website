@@ -17,15 +17,14 @@ function Index() {
     { name: '2:3', value: '2/3' },
     { name: '9:16', value: '9/16' },
   ]
-  const { register, handleSubmit, control,watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, control,watch,setValue, formState: { errors } } = useForm({
     defaultValues:{
       selectedModel:'ct',
       selecteStyle:'無',
       prompt:'',
       nativeprompt:'',
       ratio:5,
-      steps:5,
-      cfgScale:10
+      steps:25,
     }
   });
   const [displayType, setDisplayType] = useState('prompt');
@@ -51,9 +50,34 @@ function Index() {
   }, [watch('ratio')]);
 
   const RatioRecElement = ({r})=>{
-    return <div className={` aspect-[${r.value}] w-1/3  bg-white/50  border-4 border-white/40 text-white/70 text-xl font-bold`}> {r.name} </div>
+    return <div className={` aspect-[${r.value}] w-1/3   bg-white/50  border-4 border-white/40 text-white/70 text-xl font-bold`}> {r.name} </div>
   }
+  
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userText') {
+        storedText = decodeURIComponent(value);
+      }
+    });
+    setValue('prompt', storedText);
+  }, [setValue]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userNativeText') {
+        storedText = decodeURIComponent(value);
+      }
+    });
+    setValue('nativeprompt', storedText);
+  }, [setValue]);
   const onSubmit = data => {
+    document.cookie = `userText=${encodeURIComponent(data.prompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
+    document.cookie = `userNativeText=${encodeURIComponent(data.nativeprompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
     const alltext = `${data.selectedModel} ${data.ratio ? RATIOS[data?.ratio-1].value : '1/1'},${data.prompt},/steps:${data.steps} styles:${data.selecteStyle} ,--${data.nativeprompt}
     `
     console.log(alltext)
@@ -74,6 +98,7 @@ function Index() {
       setErrMsg('sendmsg err:'+error)
     });
   };
+
   const init=async()=>{
     try {
       await liff.init({liffId: '1660658719-rJwe93nW'}) 
@@ -107,11 +132,17 @@ function Index() {
                 exit={{ opacity: 0 }}   
                 transition={{ duration: 0.3 }} 
               >
-                <textarea
-                  className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
-                  rows={10}
-                  {...register('prompt')}
-                ></textarea>
+                <Controller
+                  name="prompt" 
+                  control={control} 
+                  render={({ field }) => (
+                    <textarea
+                      {...field} 
+                      className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
+                      rows={10}
+                    />
+                  )}
+                />
               </motion.div>
             ) : (
               <motion.div
@@ -121,56 +152,23 @@ function Index() {
                 exit={{ opacity: 0 }}   
                 transition={{ duration: 0.3 }} 
               >
-                <textarea
-                  className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
-                  rows={10}
-                  {...register('nativeprompt')}
-                ></textarea>
+                <Controller
+                  name="nativeprompt" 
+                  control={control} 
+                  render={({ field }) => (
+                    <textarea
+                      {...field} 
+                      className='w-full rounded-b-lg bg-gray-900 border-gray-600 border outline-none text-white/80 p-2 text-sm'
+                      rows={10}
+                    />
+                  )}
+                />
               </motion.div>
             )
              
             }
           </div>
-          <div className='flex items-center gap-4 h-24 my-6'>             
-            <div className={`relative  text-sm border-gray-600 break-keep  `}>比例 </div>
-            <div className='w-full'>
-              <input 
-                type="range" name="" id="" max="9" min="1" step={1}  defaultValue={5}
-                className="accent-blue-50 w-full "   
-                {...register('ratio')}
-              />
-            </div>
-              {/* 比例 */}
-            <RatioRecElement r={selectedRatio ? selectedRatio : RATIOS[4]} />
-          </div>
-          <div className='flex items-center gap-2 my-6'>             
-            <div className={`relative  text-sm border-gray-600 break-keep  `}>步數 </div>
-            <div className='w-full'>
-              <input 
-                type="range" name="" id="" max="60" min="1" step={1} defaultValue={5}
-                className="accent-blue-50 w-full "   
-                {...register('steps')}
-              />
-            </div>
-            <div>
-              {stepsValue}
-            </div>
-          </div>
-
-          <div className='flex items-center gap-2 my-6'>             
-            <div className={`relative  text-sm border-gray-600 break-keep  `}>強度 </div>
-            <div className='w-full'>
-              <input 
-                type="range" name="" id="" max="20" min="0" step={0.1} defaultValue={10}
-                className="accent-blue-50 w-full "   
-                {...register('cfgScale')}
-              />
-            </div>
-            <div>
-              {cfgScaleValue}
-            </div>
-          </div>
-          <div className='flex items-center gap-2 my-6'> 
+          <div className='flex items-center gap-2 my-2'> 
             <Controller
               name="selectedModel" // 指定表单字段的名称，将值存储在 "selectedModel" 字段中
               control={control} // 传递表单控制对象
@@ -202,6 +200,35 @@ function Index() {
               )}
             />
           </div>
+          <div className='flex items-center gap-4 h-24 my-6'>             
+            <div className={`relative  text-sm border-gray-600 break-keep  `}>比例 </div>
+            <div className='w-full'>
+              <input 
+                type="range" name="" id="" max="9" min="1" step={1}  defaultValue={5}
+                className="accent-blue-50 w-full "   
+                {...register('ratio')}
+              />
+            </div>
+             <div className='w-1'></div>
+              {/* 比例 */}
+            <RatioRecElement r={selectedRatio ? selectedRatio : RATIOS[4]} />
+          </div>
+          <div className='text-base text-gray-400 text-center border-t border-white/50 pt-6'>  進階會員指令  </div>
+          <div className='flex items-center gap-2 my-6'>             
+            <div className={`relative  text-sm border-gray-600 break-keep  `}>步數 </div>
+            <div className='w-full'>
+              <input 
+                type="range" name="" id="" max="50" min="1" step={1} defaultValue={25}
+                className="accent-blue-50 w-full [&::-webkit-slider-thumb]:w-12 "   
+                {...register('steps')}
+              />
+            </div>
+            <div>
+              {stepsValue}
+            </div>
+          </div>
+
+
 
           <div className='flex gap-1 my-2'>
             <Button color="gray" variant="gradient"  className='w-1/3'>重設</Button>
