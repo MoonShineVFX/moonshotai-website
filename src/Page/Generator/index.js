@@ -17,9 +17,9 @@ function Index() {
     { name: '2:3', value: '2/3' },
     { name: '9:16', value: '9/16' },
   ]
-  const { register, handleSubmit, control,watch,setValue, formState: { errors } } = useForm({
+  const { register, handleSubmit, control,watch,setValue,reset, formState: { errors } } = useForm({
     defaultValues:{
-      selectedModel:'ct',
+      selectedModel:'xl',
       selecteStyle:'無',
       prompt:'',
       nativeprompt:'',
@@ -37,7 +37,6 @@ function Index() {
   const [selectedRatio, setSelectedRatio] = useState(RATIOS[0]);
 
   const stepsValue = watch('steps');
-  const cfgScaleValue = watch('cfgScale');
 
   const [ currentModel , setCurrentModel] = useState(models[0])
   const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
@@ -52,7 +51,6 @@ function Index() {
   const RatioRecElement = ({r})=>{
     return <div className={` aspect-[${r.value}] w-1/3   bg-white/50  border-4 border-white/40 text-white/70 text-xl font-bold`}> {r.name} </div>
   }
-  
   React.useEffect(() => {
     const cookies = document.cookie.split(';');
     let storedText = '';
@@ -112,7 +110,11 @@ function Index() {
   },[])
   return (
     <div className=' text-white'>
-      <div className='py-4 text-center border-b border-white/30'>你的創作，從這開始</div>
+      <div className='py-4'>
+        <div className='text-center '>你的創作，從這開始</div>
+        <div className='py-1 text-xs text-white/70 text-center border-b border-white/30'>送出後的指令會儲存一段時間，方便繼續編輯。</div>
+      </div>
+     
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='px-4 py-6 relative'>
           <div className='flex  items-center  '>
@@ -213,7 +215,11 @@ function Index() {
               {/* 比例 */}
             <RatioRecElement r={selectedRatio ? selectedRatio : RATIOS[4]} />
           </div>
-          <div className='text-base text-gray-400 text-center border-t border-white/50 pt-6'>  進階會員指令  </div>
+          <div className='py-4'>
+            <div className='text-base text-gray-400 text-center border-t border-white/50 pt-6'>  進階會員指令  </div>
+            <div className='py-1 text-xs text-white/70 text-center border-b border-white/30'>一般會員無法觸發。</div>
+
+          </div>
           <div className='flex items-center gap-2 my-6'>             
             <div className={`relative  text-sm border-gray-600 break-keep  `}>步數 </div>
             <div className='w-full'>
@@ -230,9 +236,9 @@ function Index() {
 
 
 
-          <div className='flex gap-1 my-2'>
-            <Button color="gray" variant="gradient"  className='w-1/3'>重設</Button>
-            <Button color="blue"  type='submit' className='w-2/3'>送出</Button>
+          <div className='flex gap-2 my-2'>
+            <Button color="gray" variant="gradient"  className='w-1/3' onClick={reset}>重設</Button>
+            <Button color="blue"  type='submit' className='w-2/3'>送出指令</Button>
           </div>
 
         

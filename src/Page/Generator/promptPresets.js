@@ -830,10 +830,10 @@ export const promptPresets = [
 
 export const models = 
 [
+	{command:'xl',title:'SDXL',image:"https://bunny-cdn.moonland.ai/aimodel/image/c170635e946b8cd061c64dc0dfa6cce938cebf42b46205f70c03fca3ed2cd697.jpeg"},
 	{command:'ct',title:'插畫 CT',image:"https://storage.moonshot.today/source/ct.jpg"},
 	{command:'pr',title:'寫實 PR',image:"https://storage.moonshot.today/source/pr.webp"},
 	{command:'cm',title:'漫畫 CM',image:"https://storage.moonshot.today/source/cm.jpg"},
 	{command:'pc',title:'寫實人像 PC',image:"https://storage.moonshot.today/source/pc.png"},
-	{command:'xl',title:'SDXL',image:"https://bunny-cdn.moonland.ai/aimodel/image/c170635e946b8cd061c64dc0dfa6cce938cebf42b46205f70c03fca3ed2cd697.jpeg"},
 	{command:'mj',title:'MJ',image:"https://bunny-cdn.moonland.ai/aimodel/image/6e53bc110e5c81bcf0f7f09524bac3048cc1b8f0b65d8245bb457a1116e48574.jpeg"}
 ]
