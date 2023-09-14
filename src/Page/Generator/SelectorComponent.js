@@ -107,7 +107,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
         <div 
           className='border border-white/40 text-white text-xl font-bold rounded-md overflow-hidden  relative h-16 flex justify-center items-center'
         >
-          <img src={currentStyle.image} alt="" className=' absolute  object-cover object-center opacity-60 -z-10' />
+          <img src={`https://images-cdn.moonshot.today/moonshot/presets/${currentStyle.id}.jpg`} alt="" className=' absolute  object-cover object-center opacity-60 -z-10' />
           {currentStyle.label}
         </div>
       </div>
@@ -140,7 +140,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
                   key={item.id} 
                   onClick={() => handleModelClick(item) }
                   className='border h-24 border-white/40 text-white text-xl font-bold rounded-md overflow-hidden  relative flex justify-center items-cente'>
-                  <img src={item.image+'?width=400'} alt={item.label} className=' absolute  object-cover object-center opacity-60 z-0 '/>
+                  <img src={`https://images-cdn.moonshot.today/moonshot/presets/${item.id}.jpg`} alt={item.label} className=' absolute  object-cover object-center opacity-60 z-0 '/>
                   <div className='flex justify-center items-center w-full text-lg z-10'>{item.label}</div>
                 </div>
 

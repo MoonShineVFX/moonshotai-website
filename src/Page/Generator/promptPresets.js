@@ -1,6 +1,6 @@
 export const promptPresets = [
 	{
-		id: '0',
+		id: 'none',
 		label: '無',
 		image: 'https://images-cdn.moonshot.today/moonland/presets/16eafb30-bb55-4fad-a2bc-085046fe46db.webp',
 	},

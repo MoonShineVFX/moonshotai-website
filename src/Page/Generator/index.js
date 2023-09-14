@@ -27,6 +27,7 @@ function Index() {
       nativeprompt:'',
       ratio:5,
       steps:25,
+      scaleOption:'0'
     }
   });
   const [displayType, setDisplayType] = useState('prompt');
