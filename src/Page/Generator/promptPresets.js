@@ -546,7 +546,7 @@ export const promptPresets = [
 	},
 	 {
 		id: 'adorable_3d_character',
-		label: '3D 角色',
+		label: '3D角色',
 		image: 'https://images-cdn.moonshot.today/moonland/presets/7eacb266-ebf2-4c7e-be5c-7f7ff5b04194.webp',
 	},
 	 {
@@ -830,10 +830,10 @@ export const promptPresets = [
 
 export const models = 
 [
-	{command:'xl',title:'SDXL',image:"https://images-cdn.moonshot.today/aimodel/image/c170635e946b8cd061c64dc0dfa6cce938cebf42b46205f70c03fca3ed2cd697.jpeg"},
-	{command:'ct',title:'插畫 CT',image:"https://storage.moonshot.today/source/ct.jpg"},
-	{command:'pr',title:'寫實 PR',image:"https://storage.moonshot.today/source/pr.webp"},
-	{command:'cm',title:'漫畫 CM',image:"https://storage.moonshot.today/source/cm.jpg"},
-	{command:'pc',title:'寫實人像 PC',image:"https://storage.moonshot.today/source/pc.png"},
-	{command:'mj',title:'MJ',image:"https://images-cdn.moonshot.today/aimodel/image/6e53bc110e5c81bcf0f7f09524bac3048cc1b8f0b65d8245bb457a1116e48574.jpeg"}
+	{command:'XL',title:'SDXL',image:"https://images-cdn.moonshot.today/aimodel/image/c170635e946b8cd061c64dc0dfa6cce938cebf42b46205f70c03fca3ed2cd697.jpeg"},
+	{command:'CT',title:'插畫 CT',image:"https://storage.moonshot.today/source/ct.jpg"},
+	{command:'PR',title:'寫實 PR',image:"https://storage.moonshot.today/source/pr.webp"},
+	{command:'CM',title:'漫畫 CM',image:"https://storage.moonshot.today/source/cm.jpg"},
+	{command:'PC',title:'寫實人像 PC',image:"https://storage.moonshot.today/source/pc.png"},
+	{command:'MJ',title:'MJ',image:"https://images-cdn.moonshot.today/aimodel/image/6e53bc110e5c81bcf0f7f09524bac3048cc1b8f0b65d8245bb457a1116e48574.jpeg"}
 ]
