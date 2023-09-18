@@ -835,5 +835,5 @@ export const models =
 	{command:'PR',title:'寫實 PR',image:"https://storage.moonshot.today/source/pr.webp"},
 	{command:'CM',title:'漫畫 CM',image:"https://storage.moonshot.today/source/cm.jpg"},
 	{command:'PC',title:'寫實人像 PC',image:"https://storage.moonshot.today/source/pc.png"},
-	{command:'MJ',title:'MJ',image:"https://images-cdn.moonshot.today/aimodel/image/6e53bc110e5c81bcf0f7f09524bac3048cc1b8f0b65d8245bb457a1116e48574.jpeg"}
+	{command:'MJ',title:'MJ',image:"https://images-cdn.moonshot.today/aimodel/image/5604099db1c46072fce6b33bcce70db57f170e5028659765827bb90e100713b4.jpeg"}
 ]
