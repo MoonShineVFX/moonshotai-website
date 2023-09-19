@@ -225,10 +225,12 @@ function Index() {
   const handleRemoveStorage = (newData,status)=>{
     unStorageMutation.mutate({newData,status});
   }
+
+  //棄用
   const handleRemoveFromStorage = (image,status)=>{
     let newData = image
     //移除分享+移除留存
-    if(image.display_home === true){
+    if(image.is_post === true){
       try {
         let items ={display_home:false}
         updateImageMutation.mutate({ image, items, status });

@@ -254,7 +254,7 @@ function User() {
         :
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageData.map((image,index)=>{
-            const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,is_like,likes,is_collection   } = image
+            const {id, urls, created_at, filename,is_storage,title,author,is_user_nsfw,is_nsfw,is_like,likes,is_collection   } = image
             
             return (
               <motion.div key={'gallery-'+index} 

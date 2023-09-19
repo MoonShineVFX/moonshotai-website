@@ -60,6 +60,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
 
     // remove後應更新使用者擁有數量
   }
+  //棄用
   const onHandleRemoveFormStorage = (image) =>{
     handleRemoveFromStorage(image,'on_Storagepage')
     setOpen(!open)
@@ -220,7 +221,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
           : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
             {imagesResults.map((image,index) => {
-              const {id, urls, created_at, display_home,title   } = image
+              const {id, urls, created_at,title,is_post   } = image
               return (
                 <motion.div key={'storage-'+id} 
                   variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -257,7 +258,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                       <button disabled  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
                         <MdRemove />
                       </button>
-                      <button disabled className={'rounded-full p-2 flex  items-center border border-white/30 ' + (display_home ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
+                      <button disabled className={'rounded-full p-2 flex  items-center border border-white/30 ' + (is_post ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
                         onHandleDisplayHome(image)
                       }}> <FaShare size={12}/></button>
 

@@ -124,7 +124,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
         : 
         <div className='grid grid-cols-2 md:grid-cols-6 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home, filename,title   } = image
+            const {id, urls, created_at, filename,title   } = image
             return (
               <motion.div key={id} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}

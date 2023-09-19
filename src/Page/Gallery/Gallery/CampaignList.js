@@ -82,7 +82,7 @@ function CampaignList() {
         >
  
           {campaignImageData.map((image,index)=>{
-            const {id, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+            const {id, urls, created_at, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
             return (
               <motion.div key={'campList-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
