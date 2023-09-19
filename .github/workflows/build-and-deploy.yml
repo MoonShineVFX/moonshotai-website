@@ -18,6 +18,7 @@ jobs:
       REACT_APP_MOONSHOT_LINELOGIN_APIKEY: ${{secrets.MOONSHOT_LINELOGIN_APIKEY}}
       REACT_APP_MOONSHOT_API_URL: ${{ secrets.MOONSHOT_API_URL }}
       REACT_APP_LIFF_PROMPT_ID: ${{secrets.LIFF_PROMPT_ID}}
+      REACT_APP_LIFF_GERNERATOR_ID: ${{secrets.LIFF_GERNERATOR_ID}}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

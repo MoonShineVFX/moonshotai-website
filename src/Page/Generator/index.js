@@ -8,6 +8,7 @@ import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 
 function Index() {
+  const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
   const RATIOS = [
     { name: '16:9', value:'16/9' },
     { name: '3:2', value: '3/2' },
@@ -45,7 +46,17 @@ function Index() {
   const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
   const [errMsg , setErrMsg] = useState('')
   const [sendSuccess , setSendSuccess] = useState(false)
-
+  const init=async()=>{
+    try {
+      await liff.init({liffId: liffID}) 
+    } catch (error) {
+      console.log(error)
+      setErrMsg('init err:'+error)
+    }
+  }
+  useEffect( ()=>{
+    init()
+  },[])
 
   const RatioRecElement = ({rv})=>{
     const ra = RATIOS[rv - 1];
@@ -107,17 +118,7 @@ function Index() {
     });
   };
 
-  const init=async()=>{
-    try {
-      await liff.init({liffId: '1660658719-rJwe93nW'}) 
-    } catch (error) {
-      console.log(error)
-      setErrMsg('init err:'+error)
-    }
-  }
-  useEffect( ()=>{
-    init()
-  },[])
+
   return (
     <div className=' text-white'>
       <div className='py-4 border-b border-white/30'>
