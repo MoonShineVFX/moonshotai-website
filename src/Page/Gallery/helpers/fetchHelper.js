@@ -718,7 +718,7 @@ export const userPatchAStorageImage = async(img,token,items)=>{
   return data
 }
 
-//修改保留區圖片是否顯示於藝廊 (需攜帶JWT 作者本人才能存取)
+//修改保留區圖片是否顯示於藝廊 (需攜帶JWT 作者本人才能存取) 已棄用
 export const userPatchDisplayHome = async(imgid,token,items)=>{
   const requestOptions = {
     method: 'PATCH',

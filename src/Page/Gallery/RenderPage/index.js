@@ -176,7 +176,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         : 
           <div className='grid grid-cols-2 md:grid-cols-4 gap-3 pb-3'>
           {imagesResults.map((image,index) => {
-            const {id, urls, created_at, display_home,is_storage,title,is_collection,is_post   } = image
+            const {id, urls, created_at,is_storage,title,is_collection,is_post   } = image
             return (
               <motion.div key={'render-'+index} 
                 variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -213,7 +213,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
                     <IconButton 
                       size="sm"
-                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (display_home ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (is_post ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
                       disabled={isBanned}
                     >
                       <FaShare />

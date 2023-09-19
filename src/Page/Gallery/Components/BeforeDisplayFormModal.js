@@ -332,7 +332,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <Controller
                 name="display_home"
                 control={control}
-                defaultValue={image?.display_home}
+                defaultValue={image?.is_post}
                 render={({ field }) => (
                   <input {...field} 
                   type="text" 
