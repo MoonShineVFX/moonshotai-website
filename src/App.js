@@ -44,6 +44,8 @@ import Sdxl from './Page/Gallery/CampaignPage/Sdxl';
 import Voice from './Page/Gallery/CampaignPage/Voice';
 import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
 
+import  Command from  './Page/Command';
+import  Generator from './Page/Generator'
 import GalleryHomePageLayout from './Page/Lyaouts/GalleryHomePageLayout';
 import Docs from './Page/Gallery/Docs'
 import Notfound from './Page/Home/Notfound';
@@ -74,6 +76,8 @@ function App() {
       <Routes> 
        
         <Route path="/camera" element={<Camera />} />
+        <Route path="/command" element={<Command />} />
+        <Route path="/generator" element={<Generator />} />
         
         <Route path="/" element={<GalleryLayout/> }>
           <Route path="*" element={<Notfound />} />
