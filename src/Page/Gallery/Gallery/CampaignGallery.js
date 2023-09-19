@@ -95,7 +95,7 @@ function CampaignGallery() {
                 {imageResults[index].data?.results.length > 0 ? (
                   imageResults[index].data.results.map((image) => {
                     const { id: campaignId } = campaign;
-                    const {id:imageId, urls, created_at, display_home, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
+                    const {id:imageId, urls, created_at, filename,is_storage,title,author,is_user_nsfw,is_nsfw,likes,comments   } = image
                     return (
                       <motion.div key={`campGallery-${campaignId}-${imageId}`} 
                         variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
