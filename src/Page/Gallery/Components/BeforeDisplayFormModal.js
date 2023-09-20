@@ -148,7 +148,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <div className='flex flex-col'>
                 {image?.is_nsfw && <div className='text-sm text-red-400 mt-2 text-center'>這張作品有成人內容，所以無法執行發佈。</div> }
 
-                <label htmlFor="name" className='text-white/50 my-2'>*標題</label>
+                <label htmlFor="name" className='text-white/50 my-2'>標題</label>
                 <Controller
                   name="title"
                   control={control}
