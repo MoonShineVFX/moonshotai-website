@@ -44,7 +44,7 @@ export const ModelSelector = ({data, onModelChange}) =>{
           }}
           className='bg-gray-900'
         >
-          <DialogHeader className="justify-between">
+          <DialogHeader className="p-2 justify-between">
             <Typography variant="h5" color="white">
               選擇模型指令
             </Typography>
@@ -150,7 +150,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
               <div><FaXmark /></div>
             </IconButton>
           </DialogHeader>
-          <DialogBody className=' ' >
+          <DialogBody className='p-2 ' >
             <div className='grid grid-cols-3  gap-3 relative  overflow-y-auto h-[45vh] pr-4'>
               {data.map((item) => {
                 if(item.label==='無') return
