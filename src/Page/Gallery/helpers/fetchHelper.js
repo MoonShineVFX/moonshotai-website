@@ -755,6 +755,7 @@ export const fetchGalleries = async (token,cursor,pageSize,startDate,endDate,cur
   }
 
 }
+
 //use function
 export function useGalleries(linLoginData, pageSize,startDate,endDate, currModels,isInitialized,isLoggedIn) {
   return useInfiniteQuery(

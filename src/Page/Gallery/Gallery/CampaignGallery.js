@@ -80,7 +80,7 @@ function CampaignGallery() {
   return (
     <div className='w-full text-white'>
 
-      <ul>
+    <ul>
         {campaignsData.map((campaign, index) => (
           <li key={campaign.id}>
             <div>

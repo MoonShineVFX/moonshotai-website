@@ -56,6 +56,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     let items ={
       title:data.title ||'',
       description:data.description ||null,
+      display_prompt:data.display_prompt||false,
       is_user_nsfw:data.is_user_nsfw ||false,
     }
     // console.log(items)
@@ -147,7 +148,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <div className='flex flex-col'>
                 {image?.is_nsfw && <div className='text-sm text-red-400 mt-2 text-center'>這張作品有成人內容，所以無法執行發佈。</div> }
 
-                <label htmlFor="name" className='text-white/50 my-2'>*標題(必填)</label>
+                <label htmlFor="name" className='text-white/50 my-2'>*標題</label>
                 <Controller
                   name="title"
                   control={control}
@@ -159,7 +160,8 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }} 
-                      className="focus:!border-t-white !border-t-white" />
+                      className="focus:!border-t-white !border-t-white" 
+                      placeholder='作品名稱'/>
                   )}
                 />
                 {errors.title && <span className="text-red-500">圖片標題為必填項目</span>}
@@ -182,6 +184,34 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
+            <div className='flex flex-col  px-4'>
+              <Controller
+                name="display_prompt"
+                control={control}
+                defaultValue={image?.display_prompt}
+                render={({ field }) => (
+                  <div className="flex mt-4 ">
+                    <Switch 
+                      ripple={false}
+                      className="h-full w-full checked:bg-[#2ec946]"
+                      containerProps={{
+                        className: "w-11 h-6",
+                      }}
+                      circleProps={{
+                        className: "before:hidden left-0.5 border-none",
+                      }}                    
+                      checked={field.value}
+                      onChange={(e) => field.onChange(e.target.checked)} 
+                      label="開放顯示 Prompt" 
+                      labelProps={{
+                        className:'text-white text-sm'
+                      }}
+                    />
+                  </div>
+                )}
+              />
+            </div>
+
             <Tabs value="add" className="px-4 mt-2 hidden" >
               <TabsHeader className=''>
 
@@ -367,6 +397,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     </div>
                   )}
                 />
+
                 <div className='mt-6 flex gap-3 justify-center md:justify-start '>
                   <Button type="submit" className='bg-light-green-700 ' disabled={image?.is_nsfw || isBanned}>發佈</Button>
                   <button type="button" className='text-white/80' onClick={()=>{
