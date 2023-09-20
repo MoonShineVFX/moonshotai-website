@@ -54,7 +54,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       return item.status === 'remove'
     })
     let items ={
-      title:data.title ||'',
+      title:data.title ||null,
       description:data.description ||null,
       display_prompt:data.display_prompt||false,
       is_user_nsfw:data.is_user_nsfw ||false,
@@ -153,7 +153,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   name="title"
                   control={control}
                   defaultValue={image?.title}
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                   render={({ field }) => (
                     <Input {...field} type="text" 
                       color="white" 
