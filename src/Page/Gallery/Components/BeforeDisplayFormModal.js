@@ -54,7 +54,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       return item.status === 'remove'
     })
     let items ={
-      title:data.title ||'',
+      title:data.title ||null,
       description:data.description ||null,
       display_prompt:data.display_prompt||false,
       is_user_nsfw:data.is_user_nsfw ||false,
@@ -148,12 +148,12 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <div className='flex flex-col'>
                 {image?.is_nsfw && <div className='text-sm text-red-400 mt-2 text-center'>這張作品有成人內容，所以無法執行發佈。</div> }
 
-                <label htmlFor="name" className='text-white/50 my-2'>*標題</label>
+                <label htmlFor="name" className='text-white/50 my-2'>標題</label>
                 <Controller
                   name="title"
                   control={control}
                   defaultValue={image?.title}
-                  rules={{ required: true }}
+                  rules={{ required: false }}
                   render={({ field }) => (
                     <Input {...field} type="text" 
                       color="white" 
