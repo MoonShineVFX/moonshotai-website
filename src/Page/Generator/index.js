@@ -43,7 +43,8 @@ function Index() {
   const stepsValue = watch('steps');
 
   const [ currentModel , setCurrentModel] = useState(models[0])
-  const [ currentStyle , setCurrentStyle] = useState(promptPresets[0])
+  const [ currentStyle , setCurrentStyle] = useState([])
+  const [selectedStyles, setSelectedStyles] = useState([]);
   const [errMsg , setErrMsg] = useState('')
   const [sendSuccess , setSendSuccess] = useState(false)
   const init=async()=>{
@@ -86,20 +87,25 @@ function Index() {
   }, [setValue]);
   const onSubmit = data => {
     console.log(data)
+    console.log(selectedStyles)
     // 指令存cookie
     document.cookie = `userText=${encodeURIComponent(data.prompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
     document.cookie = `userNativeText=${encodeURIComponent(data.nativeprompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
-
     const model = data.selectedModel
     const ratio = data.ratio && data.ratio === 5 ? '' : RATIOS[data?.ratio-1].name+','
-    const style = data.selecteStyle && data.selecteStyle === '無' ? '' : '/style:'+data.selecteStyle+','
+    let styles = '';
+    if (!selectedStyles.includes("無")) {
+      styles = selectedStyles.map((style) => `/style:${style}`).join(", ")+ ",";
+    }
+    // const style = data.selecteStyle && data.selecteStyle === '無' ? '' : '/style:'+data.selecteStyle+','
     const steps = data.steps && parseInt(data.steps) === 25 ? '' : '/steps:'+data.steps+','
     const prompt = data.prompt
     const nprompt = data.nativeprompt.length > 0 ? ',-- '+data.nativeprompt : ''
     const scale = data.scaleOption && data.scaleOption === '0'? '': data.scaleOption+','
 
     const defaultText = ``
-    const alltext = `${model} ${scale}${ratio}${style}${steps}${prompt}${nprompt}`
+    const alltext = `${model} ${scale}${ratio}${styles}${steps}${prompt}${nprompt}`
+    console.log(alltext)
     setSendSuccess(false)
     liff.sendMessages([
       {
@@ -205,8 +211,9 @@ function Index() {
                 <StyleSelector
                   data={promptPresets}
                   onStyleChange={(selectedItem) => {
-                    setCurrentStyle(selectedItem)
-                    field.onChange(selectedItem.label)
+                    console.log(selectedItem)
+                    setSelectedStyles(selectedItem.length > 0 ? selectedItem : ['無'])
+                    // field.onChange(selectedItem.label)
                     } 
                   }
                 />
