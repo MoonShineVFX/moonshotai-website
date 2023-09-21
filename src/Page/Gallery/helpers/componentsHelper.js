@@ -510,3 +510,13 @@ export const ImageWithFallback=({ src, alt, fallbackSrc,custom_style })=> {
 
   return <img src={imageSrc+'?width=100'} alt={alt} onError={handleImageError} className={`absolute aspect-square top-1/2 left-0 -translate-y-1/2 object-cover w-full h-fulls rounded-full border border-gray-600 ${custom_style}`}/>;
 }
+
+export const filterModelsDate = [
+  {title:'全部',type:'Models',command:'models',value:'all'},
+  {title:'SDXL',type:'Models',command:'models',value:'xl'},
+  {title:'麥橘 MJ',type:'Models',command:'models',value:'mj'},
+  {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
+  {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
+  {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
+  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
+ ]

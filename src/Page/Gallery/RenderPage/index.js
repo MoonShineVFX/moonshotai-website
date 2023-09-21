@@ -4,7 +4,7 @@ import { FaShare,FaCheck,FaBookmark} from "react-icons/fa";
 import { MdAdd,MdRemove } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
-import { EmptyRenderPage } from '../helpers/componentsHelper';
+import { EmptyRenderPage,filterModelsDate } from '../helpers/componentsHelper';
 import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
@@ -15,13 +15,7 @@ const filterDateItem = [
   {title:'30 天', type:'時間區間',command:'days',value:'30'},
   {title:'全部',type:'時間區間',command:'days',value:'all'}
 ]
-const filterModelsDate = [
-  {title:'全部',type:'Models',command:'models',value:'all'},
-  {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
-  {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
-  {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
-  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'}
- ]
+
 
 
 function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage,isBanned}) {
