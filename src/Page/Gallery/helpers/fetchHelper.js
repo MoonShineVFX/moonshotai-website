@@ -539,15 +539,15 @@ export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endD
 
 }
 // users/<int:id>/posts 看post的公開圖
-export const fetchUserPublicImages =async (token,uuid,cursor,pageSize)=>{
+export const fetchUserPublicImages =async (token,uid,cursor,pageSize)=>{
   let newCursor = cursor === undefined ? '' : cursor
 
   const requestOptions = {
     method: 'GET',
     headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
   };
-  if(uuid){
-    const response =await fetch(apiUrl+'users/'+uuid+'/posts?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
+  if(uid){
+    const response =await fetch(apiUrl+'users/'+uid+'/posts?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
     const data =await response.json()
     return data
     
@@ -556,6 +556,26 @@ export const fetchUserPublicImages =async (token,uuid,cursor,pageSize)=>{
   }
 
 }
+//use function :  users/<int:id>/posts 
+export function useUserPublicImages(linLoginToken,id, pageSize,isInitialized,isLoggedIn) {
+  return useInfiniteQuery(
+    ['publicImages', id, pageSize],
+    ({ pageParam }) =>
+    fetchUserPublicImages(linLoginToken,id, pageParam, pageSize),
+    {
+      enabled: isInitialized && (!!id || isLoggedIn !== null),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+      }
+    }
+  );
+}
+
 export const fetchUserStorages =async (userid,token,cursor,pageSize,) =>{
   let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {

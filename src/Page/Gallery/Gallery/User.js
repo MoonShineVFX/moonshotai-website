@@ -7,12 +7,13 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { loginState,isLoginState,lineProfileState,userState,imageDataState } from '../atoms/galleryAtom';
 
 import {LoadingLogoSpin,CallToLoginModal,TitleWithLimit,recordPageUrl,getCookieValue,formatNumberWithK,ImageWithFallback} from '../helpers/componentsHelper'
-import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
+import {fetchUser,getStoredLocalData,userFollowAUser,userUnFollowAUser,fetchUserPublicImages,refreshToken,fetchUserFollowings,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation,useUserPublicImages} from '../helpers/fetchHelper'
 import { MdKeyboardArrowLeft,MdOutlineNewReleases,MdCheck } from "react-icons/md";
 import { FaFacebook,FaInstagram,FaTwitter,FaLinkedinIn,FaDiscord } from "react-icons/fa";
 import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
+import InfiniteScroll from 'react-infinite-scroll-component';
 function User() {
   const { id } = useParams();
   // const [userData, setUserData] = useState(null)
@@ -62,23 +63,31 @@ function User() {
       enabled: !!id, // 只有在 id 不為空時才啟用 useQuery
     }
   );
-  const { data: publicImage, isLoading: isPublicImageLoading, isError: isPublicImageError } = useInfiniteQuery(
-    ['publicImages', id, currentPage, pageSize],
-    ({ pageParam }) => fetchUserPublicImages(linLoginToken,id, pageParam, pageSize),
-    {
-      enabled: isInitialized && (!!id || isLoggedIn !== null), // 只有在 id 不為空時才啟用 useQuery
-        getNextPageParam: (lastPage, pages) =>{
-        // 檢查是否有下一頁
-        if (lastPage.next) {
-          const url = new URL(lastPage.next);
-          const nextPage = url.searchParams.get("cursor");
-          return nextPage ? nextPage : undefined;
-        }
-        return undefined;
-        }
-    }
-  );
-  const publicImageData = publicImage?.pages?.flatMap((pageData) => pageData.results) ?? [];
+  // const { data: publicImage, isLoading: isPublicImageLoading, isError: isPublicImageError } = useInfiniteQuery(
+  //   ['publicImages', id, currentPage, pageSize],
+  //   ({ pageParam }) => fetchUserPublicImages(linLoginToken,id, pageParam, pageSize),
+  //   {
+  //     enabled: isInitialized && (!!id || isLoggedIn !== null), // 只有在 id 不為空時才啟用 useQuery
+  //       getNextPageParam: (lastPage, pages) =>{
+  //       // 檢查是否有下一頁
+  //       if (lastPage.next) {
+  //         const url = new URL(lastPage.next);
+  //         const nextPage = url.searchParams.get("cursor");
+  //         return nextPage ? nextPage : undefined;
+  //       }
+  //       return undefined;
+  //       }
+  //   }
+  // );
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError,
+    refetch,
+  } = useUserPublicImages(linLoginToken,id, pageSize, isInitialized, isLoggedIn);
+  const publicImageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
   //ADD Collection
   const collectionAImageMutation = useCollectionImageMutation(linLoginToken,['publicImages', id, currentPage, pageSize]);
   //DEL Collection 
@@ -250,8 +259,14 @@ function User() {
       <div className='w-11/12 mx-auto my-10'>
 
       {!publicImageData ? 
-        <div className='text-white'>Loading</div> 
+        <LoadingLogoSpin />
         :
+        <InfiniteScroll
+          dataLength={imageData ? imageData.length:0}
+          next={()=>fetchNextPage()}
+          hasMore={hasNextPage}
+          loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
+        >
         <div className='grid grid-cols-2 md:grid-cols-5  gap-3'>
           {publicImageData.map((image,index)=>{
             const {id, urls, created_at, filename,is_storage,title,author,is_user_nsfw,is_nsfw,is_like,likes,is_collection   } = image
@@ -306,6 +321,7 @@ function User() {
 
 
           </div>
+          </InfiniteScroll>
       }
 
 

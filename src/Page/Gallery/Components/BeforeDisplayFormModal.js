@@ -47,6 +47,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
     }
   );
   const onSubmit = (data) => {
+    console.log(data)
     const add_activities = data.add_activities.filter(item=>{
       return item.status === 'add'
     })
@@ -176,6 +177,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   rules={{ required: false }}
                   render={({ field }) => (
                     <Textarea   
+                      {...field}
                       labelProps={{
                         className: "before:content-none after:content-none",
                       }} 
