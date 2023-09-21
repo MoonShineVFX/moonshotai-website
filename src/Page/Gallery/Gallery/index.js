@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback} from '../helpers/componentsHelper'
+import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback,filterModelsDate} from '../helpers/componentsHelper'
 import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState, imageModalState,lineProfileState,userState} from '../atoms/galleryAtom';
@@ -25,14 +25,7 @@ const filterDateItem = [
   {title:'30 天', type:'時間區間',command:'days',value:'30'},
   {title:'全部',type:'時間區間',command:'days',value:'all'}
 ]
-const filterModelsDate = [
-  {title:'全部',type:'Models',command:'models',value:'all'},
-  {title:'插畫 CT',type:'Models',command:'models',value:'ct'},
-  {title:'寫實 PR',type:'Models',command:'models',value:'pr'},
-  {title:'漫畫 CM', type:'Models',command:'models',value:'cm'},
-  {title:'寫實人像 PC',type:'Models',command:'models',value:'pc'},
-  {title:'SDXL',type:'Models',command:'models',value:'xl'}
- ]
+
 const bannerData = [
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/asusnftv02_1.png?v2",path:'/asusnft'},
   {url:"https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/taiwanfood.png?v2",path:'/taiwanfood'},
