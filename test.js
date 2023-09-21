@@ -28,3 +28,9 @@ const tags =[
   {title:"文化",en_title:"culture",image_url:"https://images.moonshot.today/static/134b24b/466327227680948522_0.jpg"},
   {title:"抽象",en_title:"abstract",image_url:"https://images.moonshot.today/static/134b2f5/470954905340477556_0.jpg"},
 ]
+
+
+
+
+
+//'16:9','3:2' ,'4:3' ,'5:4' ,'1:1' ,'4:5' ,'3:4' ,'2:3' ,'9:16'
