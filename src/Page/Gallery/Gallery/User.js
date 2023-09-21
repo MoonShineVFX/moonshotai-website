@@ -262,7 +262,7 @@ function User() {
         <LoadingLogoSpin />
         :
         <InfiniteScroll
-          dataLength={imageData ? imageData.length:0}
+          dataLength={publicImageData ? publicImageData.length:0}
           next={()=>fetchNextPage()}
           hasMore={hasNextPage}
           loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
