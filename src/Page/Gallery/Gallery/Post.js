@@ -378,7 +378,7 @@ function Post() {
               
               <div className='text-white/70 font-semibold my-3 pt-5'>Prompt 提示詞</div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-                <div className='p-3 text-sm'>{imageData?.prompt}</div>
+                {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>}
               </div>
               <div className='text-white/70 font-semibold my-3 pt-5'>Negative prompt 反向提示詞</div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
