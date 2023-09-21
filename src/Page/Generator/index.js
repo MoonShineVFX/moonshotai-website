@@ -10,15 +10,15 @@ import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 function Index() {
   const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
   const RATIOS = [
-    { name: '16:9', value:'16/9' },
-    { name: '3:2', value: '3/2' },
-    { name: '4:3', value: '4/3' },
-    { name: '5:4', value: '5/4' },
-    { name: '1:1', value: '1/1' },
-    { name: '4:5', value: '4/5' },
-    { name: '3:4', value: '3/4' },
-    { name: '2:3', value: '2/3' },
-    { name: '9:16', value: '9/16' },
+    { name: '16:9', value:'16/9', type:"h", aspect:"aspect-[16/9]", percent:"pt-56.25%"  },
+    { name: '3:2',  value: '3/2', type:"h", aspect:"aspect-[3/2]", percent:"pt-66.67%"  },
+    { name: '4:3',  value: '4/3', type:"h", aspect:"aspect-[4/3]", percent:"pt-75%"     },
+    { name: '5:4',  value: '5/4', type:"h", aspect:"aspect-[5/4",   percent:"pt-80%"     },
+    { name: '1:1',  value: '1/1', type:"h", aspect:"aspect-[1/1]", percent:"pt-100%"    },
+    { name: '4:5',  value: '4/5', type:"v", aspect:"aspect-[4/5]", percent:"pt-125%"    },
+    { name: '3:4',  value: '3/4', type:"v", aspect:"aspect-[3/4]", percent:"pt-133.33%" },
+    { name: '2:3',  value: '2/3', type:"v", aspect:"aspect-[2/3]", percent:"pt-150%"    },
+    { name: '9:16', value: '9/16',type:"v", aspect:"aspect-[9/16]", percent:"pt-177.78%" },
   ]
   const { register, handleSubmit, control,watch,setValue,reset, formState: { errors } } = useForm({
     defaultValues:{
@@ -61,7 +61,7 @@ function Index() {
 
   const RatioRecElement = ({rv})=>{
     const ra = RATIOS[rv - 1];
-    return <div className={` aspect-[${ra.value}] w-1/3 h-auto flex justify-center items-center bg-white/50  border-2 border-white/40 text-white/70 text-xl font-bold`}> {ra.name} </div>
+    return  <div className={` ${ra.type === 'h' ?  `w-[36%]`  :  `w-[25%]` } ${ra.aspect}  h-auto flex justify-center items-center bg-white/50  border-2 border-white/40 text-white/70 text-xl font-bold`}> {ra.name} </div>
   }
   React.useEffect(() => {
     const cookies = document.cookie.split(';');
@@ -129,6 +129,7 @@ function Index() {
     <div className=' text-white'>
       <div className='py-4 border-b border-white/30'>
         <div className='text-center '>你的創作，從這開始</div>
+
         <div className='py-1 text-xs text-white/70 text-center '>送出後的提示詞會儲存一段時間，方便繼續編輯。</div>
       </div>
      
