@@ -34,3 +34,13 @@ const tags =[
 
 
 //'16:9','3:2' ,'4:3' ,'5:4' ,'1:1' ,'4:5' ,'3:4' ,'2:3' ,'9:16'
+const RATIOS = [
+  { name: '16:9', value:'16/9',   percent:"56.25" },
+  { name: '3:2',  value: '3/2',   percent:"66.67"  },
+  { name: '4:3',  value: '4/3',   percent:"75"  },
+  { name: '5:4',  value: '5/4',   percent:"80"  },
+  { name: '1:1',  value: '1/1',   percent:"100"  },
+  { name: '4:5',  value: '4/5',   percent:"125"  },
+  { name: '3:4',  value: '3/4',   percent:"133.33"  },
+  { name: '2:3',  value: '2/3',   percent:"150"  },
+  { name: '9:16', value: '9/16',  percent:"177.78" },
