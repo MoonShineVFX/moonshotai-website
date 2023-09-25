@@ -151,7 +151,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
             </IconButton>
           </DialogHeader>
           <DialogBody className='p-2 ' >
-            <div className='grid grid-cols-3  gap-3 relative  overflow-y-auto h-[45vh] pr-4'>
+            <div className='grid grid-cols-3  gap-3 relative  overflow-y-auto h-[50vh] pr-4'>
               {data.map((item) => {
                 if(item.label==='無') return
                 return(
@@ -160,7 +160,7 @@ export const StyleSelector = ({data, onStyleChange}) =>{
                   onClick={() => handleStyleChange(item)}
                   className='border h-16 border-white/40 text-white text-xl font-bold rounded-md overflow-hidden  relative flex justify-center items-cente'>
                   <img src={`https://images-cdn.moonshot.today/moonshot/presets/${item.id}.jpg`} alt={item.label} className=' absolute top-0  object-cover object-center opacity-60 z-0 '/>
-                  <div className='flex justify-center items-center w-full text-base z-10'>{item.label}</div>
+                  <div className='flex justify-center items-center w-full text-base z-10 text-center'>{item.label}</div>
                   <div className=' absolute top-0 right-0'>
                     <Checkbox 
                       checked={selectedStyles.includes(item.label)} 
