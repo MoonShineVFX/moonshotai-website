@@ -2,13 +2,14 @@ import React,{useState,useEffect} from 'react'
 import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
-import { FaBars,FaTimes } from "react-icons/fa";
+import { FaBars,FaTimes,FaAngleRight } from "react-icons/fa";
 import { MdHome,MdDashboard,MdLogin,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,handleLogin,fetchUserProfileData} from '../helpers/fetchHelper'
 import {deletePageUrlCookie} from '../helpers/componentsHelper'
 import { useQuery, useQueryClient } from 'react-query';
+import { GiTwoCoins, GiGoldBar } from "react-icons/gi";
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 
 function Index({}) {
@@ -276,10 +277,12 @@ function Index({}) {
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
+                  <div className='flex items-center gap-2 ml-auto'> <GiTwoCoins className='text-yellow-700' size={20} /> <span className=' font-semibold'>{currentUser?.point } </span></div>
                 </Link>
 
+
                 <div className=' rounded-md hover:bg-gray-600' onClick={handleLogout}>
-                  <button className='my-4 py-1  border border-gray-500 rounded-md w-full'> Sign Out</button>
+                  <button className='my-4 py-1  border border-gray-500 rounded-md w-full'> Sign Out </button>
                 </div>
               </div>
               :

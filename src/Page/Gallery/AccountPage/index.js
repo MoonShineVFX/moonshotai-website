@@ -7,7 +7,9 @@ import { useForm,Controller } from 'react-hook-form';
 import liff from '@line/liff';
 import Header from '../header'
 import moment from 'moment';
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy } from "react-icons/md"
+import { GiTwoCoins, GiCutDiamond } from "react-icons/gi";
+import { FaAngleRight } from "react-icons/fa6";
 
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
@@ -210,6 +212,10 @@ function Index() {
           <div className='text-t_lime-500'>個人資料</div>
           
           <div>
+            <div className=' rounded-md bg-gray-800 p-4 my-2 flex justify-between' >
+              <div className='flex items-center gap-2 '> <yellow className='text-yellow-700' size={20} /> <span className=' font-semibold'>{currentProfile.point } Points</span></div>
+              <div className='flex items-center gap-2 text-white/60 text-sm'>兌換福利 <FaAngleRight /></div>
+            </div>
             <div className='text-white/70 my-2 text-xs'>會員狀態</div>
             <div className='flex items-center gap-1 border-b border-gray-700 pb-2 text-white/80'>  
               <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          

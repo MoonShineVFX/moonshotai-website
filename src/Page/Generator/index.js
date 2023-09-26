@@ -8,6 +8,7 @@ import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 
 function Index() {
+  console.log(promptPresets)
   const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
   const RATIOS = [
     { name: '16:9', value:'16/9', type:"h", aspect:"aspect-[16/9]", percent:"pt-56.25%"  },
