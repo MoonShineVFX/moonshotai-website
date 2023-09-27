@@ -13,6 +13,7 @@ import debounce from 'lodash.debounce';
 import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } from 'react-query';
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import LazyLoad from 'react-lazy-load';
 // Import Swiper styles
 import {  Autoplay,EffectFade } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -226,6 +227,7 @@ function Index() {
                   >
                     <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
                       <div className=' relative overflow-hidden   rounded-md'>
+                        <LazyLoad  >
                         <img  
                           alt={title}
                           src={urls.thumb+'?width=400'}
@@ -233,6 +235,7 @@ function Index() {
                           className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
   
                         />
+                        </LazyLoad>
                       </div>
 
 
