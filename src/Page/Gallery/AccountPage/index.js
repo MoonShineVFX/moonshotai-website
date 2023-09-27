@@ -213,10 +213,10 @@ function Index() {
           <div className='text-t_lime-500'>個人資料</div>
           
           <div>
-            <div className=' rounded-md bg-gray-800 p-4 my-2 flex justify-between' >
+            {currentProfile?.point && <div className=' rounded-md bg-gray-800 p-4 my-2 flex justify-between' >
               <div className='flex items-center gap-2 '> <GiTwoCoins className='text-yellow-700' size={20} /> <span className='text-sm font-semibold'>{currentProfile.point } Points</span></div>
               <div className='flex items-center gap-2 text-white/60 text-sm'>兌換福利 <FaAngleRight /></div>
-            </div>
+            </div>}
             <div className='text-white/70 my-2 text-xs'>會員狀態</div>
             <div className='flex items-center gap-1 border-b border-gray-700 pb-2 text-white/80'>  
               <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          
