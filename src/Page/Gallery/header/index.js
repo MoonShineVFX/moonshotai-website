@@ -277,7 +277,7 @@ function Index({}) {
                     </div>
                   </div>
                   <div>{currentUser?.name}</div>
-                  <div className='flex items-center gap-2 ml-auto'> <GiTwoCoins className='text-yellow-700' size={20} /> <span className=' font-semibold'>{currentUser?.point } </span></div>
+                  {currentUser?.point && <div className='flex items-center gap-2 ml-auto'> <GiTwoCoins className='text-yellow-700' size={20} /> <span className=' font-semibold'>{currentUser?.point } </span></div>}
                 </Link>
 
 
