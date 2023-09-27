@@ -22,7 +22,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
   //
   const [imgCampaignsData, setImgCampaignsData] = useState([])
   const { control,register, handleSubmit,setValue,watch, formState: { errors } } = useForm({
-    name:'',isNsfw:false,
+    name:'',isNsfw:false,display_prompt:true
   });
   const { fields, append:addActAppend, remove:addActRemove } = useFieldArray({
     control,
@@ -190,7 +190,7 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
               <Controller
                 name="display_prompt"
                 control={control}
-                defaultValue={image?.display_prompt}
+                defaultValue={image?.is_post ? image?.display_prompt : true}
                 render={({ field }) => (
                   <div className="flex mt-4 ">
                     <Switch 

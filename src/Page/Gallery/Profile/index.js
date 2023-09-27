@@ -23,6 +23,7 @@ import BeforeDisplayFormModal from '../Components/BeforeDisplayFormModal';
 import TutorialPage from '../TutorialPage'
 import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
 import { Chip } from '@material-tailwind/react';
+import { GiTwoCoins, GiGoldBar } from "react-icons/gi";
 const dropDownManuItem = [
   {title:"Renders", display:true,data_name:"total_photos"},
   {title:"Post", display:true,data_name:"total_post"},
@@ -782,17 +783,20 @@ function Index() {
 
               <div className=' flex flex-col justify-center items-center gap-2'>
                 <div className=' text-xl leading-4'>{currentUser && currentUser.name} </div>
+                {currentUser?.point &&  <div className='flex items-center gap-2 '> <GiTwoCoins className='text-yellow-700' size={20} /> <span className='text-sm font-semibold'>{currentUser?.point } </span></div>}
                 {currentUser && currentUser.is_banned && <div className='flex flex-col items-center'>
                   <Chip color="red" value="你已遭暫停使用網站功能。" />
                   <div className='text-xs mt-1'>很抱歉，因您違反  <a href="/docs" target='_blank' className='text-teal-200'>藝廊公約</a> 將暫停使用藝廊服務五日。如持續惡意違規，官方有權立即永久終止您使用本產品服務之授權。</div>
                 </div>    }
-                <div className='text-white flex gap-3 my-2'>
+                <div className='text-white flex gap-3 my-2 items-center'>
                 {currentUser?.portfolio_url && <a href={currentUser?.portfolio_url} target="_blank" rel="noopener noreferrer" > <HiGlobeAlt /> </a> }
                 {currentUser?.facebook_id && <a href={currentUser?.facebook_id} target="_blank" rel="noopener noreferrer" >    <FaFacebook /> </a> }
                 {currentUser?.instagram_id && <a href={currentUser?.instagram_id} target="_blank" rel="noopener noreferrer" >  <FaInstagram  /></a> }
                 {currentUser?.linkedin_id && <a href={currentUser?.linkedin_id} target="_blank" rel="noopener noreferrer" >    <FaLinkedinIn  /></a> }
                 {currentUser?.twitter_id && <a href={currentProfile?.twitter_id} target="_blank" rel="noopener noreferrer" >      <FaTwitter /></a> }
                 {currentUser?.discord_id && <a href={currentUser?.discord_id} target="_blank" rel="noopener noreferrer" >      <FaDiscord  /></a> }
+                
+               
                 </div>
                 <div className=' text-xs'>{currentUser && currentUser.bio}  </div>
               </div>              
