@@ -2,7 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { fetchLineLogin, fetchUserStorages, fetchUserCollections, userStorageAImage, fetchUserProfile, fetchUser, patchUserProfile,userDelAStorageImage,userCollectionAImage,userDelACollectionImage,userPatchDisplayHome,userPatchAStorageImage,fetchUserFollowings,userUnFollowAUser,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
-import {LoadingLogoSpin} from '../helpers/componentsHelper'
+import {EmptyProfilePage} from '../helpers/componentsHelper'
 import { useForm,Controller } from 'react-hook-form';
 import liff from '@line/liff';
 import Header from '../header'
@@ -198,10 +198,11 @@ function Index() {
     }
   }, [process.env.NODE_ENV,setIsLoggedIn,setLineLoginData,setLineProfile]);
 
-  if(!currentProfile){
-    return (
-      <LoadingLogoSpin />  
-  );
+  if(isLoggedIn === false || !currentProfile){
+    return <div className='text-white/70 text-xl    md:text-left md:text-3xl  mb-4  md:w-8/12 mx-auto'>
+
+      <EmptyProfilePage />
+  </div>
   }
   return (
     <div className='text-white pb-10 '>

@@ -387,12 +387,13 @@ export const EmptyProfilePage = ()=>{
   }, [countdown, navigate]);
   return(
     <div className='flex flex-col text-sm justify-center items-center py-12 px-4'>
-      <div className='w-1/3 my-8'>
-        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className=' rounded-full' />
+      <div className='w-1/3 my-8 mx-auto'>
+        <img src={process.env.PUBLIC_URL+'/images/logo.png'} alt="" className='max-w-full mx-auto rounded-full' />
       </div>
       <div>在這個頁面您可以管理自己的AI作品。</div>
       <div>您必須登入平台才可以繼續瀏覽。</div>
       <div>請登入您的帳號。</div>
+      <button onClick={() => {handleLogin()}}  className=' bg-t_lime-600 px-5 py-2 rounded-md font-bold text-gray-200   hover:text-gray-100 mt-4' >登入</button>
       <div className='pt-10'>{countdown} 秒後自動回到藝廊首頁。</div>
     </div>
   )
