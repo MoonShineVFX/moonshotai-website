@@ -129,7 +129,7 @@ function Post() {
   const { data:postsData , isLoading:isPostsDataLoading, isError:isPostsDataError} = useQuery(
     [ 'userPosts',currentUser],
     ({ pageParam }) =>
-    fetchUserPublicImages(currentUser.id, pageParam, pageSize),
+    fetchUserPublicImages(linLoginToken,currentUser.id, pageParam, pageSize),
     {
       enabled: isCommentModal,
     }
@@ -273,15 +273,7 @@ function Post() {
       })
       .catch((error) => console.error(error));
   }
-  const handleSelectStorageImage = ()=>{
-    fetchUserStorages(currentUser.id,currentStoragePage,pageSize,linLoginToken)
-        .then((images)=> {
-            setStorages(images)
-            setStoragesResults(images.results)
-            // console.log(images)
-        })
-        .catch((error) => console.error(error));
-  }
+
 
   const handleShare = ()=>{
     setIsShareModal(true)
@@ -308,7 +300,7 @@ function Post() {
       {isLoginForCollection && <CallToLoginModal closeModal={()=>setIsLoginForCollection(false)}/>}
       {isLoginForComment && <CallToLoginModal closeModal={()=>setIsLoginForComment(false)}/>}
       {isShareModel && <SharePostModal closeModal={()=>setIsShareModal(false)}/>}
-      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={postsImages} handleSelectStorageImage={handleSelectStorageImage}/>}
+      {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={postsImages} />}
       </AnimatePresence>
       <ToastContainer />
 

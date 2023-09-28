@@ -3,7 +3,7 @@ import { useForm,Controller } from 'react-hook-form';
 import {motion,AnimatePresence} from 'framer-motion'
 import { imageFormModalState, commentDataState,formStatusState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
-function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,handleSelectStorageImage,storagesResults}) {
+function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,storagesResults}) {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:'',facebookId:"",instagramId:"",linkedinId:"",portfolioUrl:"",bio:"",isNsfw:false,location:""
   });
@@ -84,7 +84,6 @@ function EditCommentForm({closeModal,handleSendComment,handleSaveEditComment,han
             
             </div>
             <div className='flex flex-col items-end text-sm'>
-              {/* <button type="button" className='mt-2 text-sm text-white/80 bg-lime-600 py-1 px-2 rounded-md' onClick={handleSelectStorageImage}>加入</button> */}
               <div  className='w-full text-white/80 bg-gray-600 py-1 px-2 rounded-md my-2' >
                 <div className='text-xs'>你近期的圖片 ({selectedImages.length } / 3) 張可選</div>
                 <div className=' grid grid-cols-4 gap-1 mt-2 max-h-64 overflow-y-auto'>

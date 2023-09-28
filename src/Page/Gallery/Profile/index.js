@@ -157,7 +157,7 @@ function Index() {
         }
     }
   );
-  const storageImages = storageData?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
 
   // FETCH POST  IMAGE to PAGE 
   const { data: postsData, isLoading:isPostsDataLoading, fetchNextPage:fetchPostsNextPage, hasNextPage:hasPostsNextPage, isFetchingNextPage:isFetchPostsNextPage, isError:isPostsDataError, refetch:PostsDataRefetch } = useInfiniteQuery(
@@ -212,7 +212,7 @@ function Index() {
       // 定義更新成功後的行為
       onSuccess: (data, variables) => {
         if(variables?.status  === 'on_Storagepage'){
-          storageDataRefetch()
+          PostsDataRefetch()
         }else{
           renderDataRefetch()
         }
@@ -703,9 +703,9 @@ function Index() {
   const renderComponent =  () => {
     switch (currentDropDownItem.title) {
       case 'Renders':
-        return <RenderPage title={currentDropDownItem.title} totalImage={currentUser?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isAddStorageLoading={storageMutation.isLoading} isRemoveStorageLoading={unStorageMutation.isLoading} isFetchingNextPage={isFetchingNextPage} isBanned={currentUser?.is_banned}/>;
+        return <RenderPage title={currentDropDownItem.title} totalImage={currentUser?.total_photos}  imagesResults={renderImages} handleStorage={handleStorage} handleCollection={handleCollection}  currentPage={currentPage} totalPage={totalPage} handleRemoveStorage={handleRemoveStorage} fetchMoreImages={fetchRenderNextPage} handleSelectDate={handleSelectDate} handleSelectModels={handleSelectModels}  isFetchingNextPage={isFetchingNextPage} isBanned={currentUser?.is_banned}/>;
       case 'Post':
-        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentUser?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentUser} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchStorageNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isStorageDataLoading} isFetchingNextPage={isFetchStorageNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} isBanned={currentUser?.is_banned} />;
+        return <StoragePage title={currentDropDownItem.title} totalImage={postImages.length} limitImage={currentUser?.is_subscribed ? '300' : '100'}  imagesResults={postImages} currentProfile={currentUser} handleStorage={handleStorage} handleRemoveStorage={handleRemoveStorage} handleCollection={handleCollection} handleSetBanner={handleSetBanner} handleSetAvatar={handleSetAvatar} handleDisplayHome={handleDisplayHome} handleStorageUpdate={handleStorageUpdate} fetchMoreStorageImages={fetchPostsNextPage} currentStoragePage={currentStoragePage} totalPage={totalPage} isStorageDataLoading={isPostsDataLoading} isFetchingNextPage={isFetchPostsNextPage} handleRemoveFromStorage={handleRemoveFromStorage} handleRemovePost={handleRemovePost} isBanned={currentUser?.is_banned} />;
       case 'Collections':
         return <CollectionPage title={currentDropDownItem.title} totalImage={collectionImages.length} imagesResults={collectionImages} fetchMoreImages={fetchCollectioNextPage} currentPage={currentPage} totalPage={totalPage}  handleRemoveCollection={handleRemoveCollection} isFetchingNextPage={isFetchCollectionNextPage} />;
       case 'Following':
