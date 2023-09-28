@@ -49,8 +49,9 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
       },
     },
   };
+  
+  //棄用
   const onHandleRemoveStorage = (image)=>{
-    console.log(image)
     if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)
     {
       setShow(true)
@@ -254,15 +255,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                         <MenuItem onClick={()=> {onHandleDisplayHome(image); }}>編輯分享內容</MenuItem>
                       </MenuList>
                     </Menu>
-                    <div className='flex justify-end gap-1 p-1 hidden'>
-                      <button disabled  className=' flex items-center   text-sm bg-white text-black  rounded-full   p-2 border border-white/30 ' onClick={()=>onHandleRemoveStorage(image)}>
-                        <MdRemove />
-                      </button>
-                      <button disabled className={'rounded-full p-2 flex  items-center border border-white/30 ' + (is_post ?  ' bg-gray-800 text-white/80' : ' bg-white text-gray-800' )} onClick={()=>{
-                        onHandleDisplayHome(image)
-                      }}> <FaShare size={12}/></button>
 
-                    </div>
 
 
 
