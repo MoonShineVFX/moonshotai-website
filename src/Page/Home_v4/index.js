@@ -13,8 +13,9 @@ function Index() {
   const myRef = useRef(null)
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
   const analytics = getAnalytics();
-  logEvent(analytics, 'homepage_visited')
-
+  useEffect(()=>{
+    logEvent(analytics, 'homepage_visited')
+  },[])
   return (
     <div className=''>
 

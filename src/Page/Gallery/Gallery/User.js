@@ -34,9 +34,11 @@ function User() {
   const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
   const navigate = useNavigate();
   const analytics = getAnalytics();
-  logEvent(analytics, 'user_visited',{
-    userid:id
-  })
+  useEffect(()=>{
+    logEvent(analytics, 'user_visited',{
+      userid:id
+    })
+  },[])
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }

@@ -62,7 +62,9 @@ function Index() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
   const analytics = getAnalytics();
-  logEvent(analytics, 'Gallery_visited')
+  useEffect(()=>{
+    logEvent(analytics, 'Gallery_visited')
+  },[])
   // 在此處檢查 localStorage 內的資料
   useEffect(() => {
     getStoredLocalData().then(data => {

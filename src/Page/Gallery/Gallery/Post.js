@@ -70,9 +70,11 @@ function Post() {
     }
   };
   const analytics = getAnalytics();
-  logEvent(analytics, 'Post_visited',{
-    imgid:id
-  })
+  useEffect(()=>{
+    logEvent(analytics, 'Post_visited',{
+      imgid:id
+    })
+  },[])
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)
