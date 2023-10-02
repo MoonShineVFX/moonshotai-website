@@ -8,12 +8,13 @@ import Secrtion05Countdown from './Secrtion05_countdown'
 import Section_about from './Section_about'
 import Section_models from './Section_models'
 import HomeFooter from './HomeFooter'
-import {analytics } from '../../firebaseConfig/fireanalytics'
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Index() {
   const myRef = useRef(null)
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
+  const analytics = getAnalytics();
   useEffect(()=>{
-    analytics.logEvent(enentName: "homepage_visited")
+    logEvent(analytics, 'homepage_visited'
   },[])
   return (
     <div className=''>
