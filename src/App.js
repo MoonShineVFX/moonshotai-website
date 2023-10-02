@@ -83,9 +83,11 @@ function App() {
     <BrowserRouter>
       <Routes> 
         <Route path="/login" element={<Login />} />
+        
         <Route path="spaceship"  element={ <ProtectedRoutes/>}>
           <Route path="" element={<AdminHome />} />
         </Route>
+
         <Route path="/camera" element={<Camera />} />
         <Route path="/command" element={<Command />} />
         <Route path="/generator" element={<Generator />} />

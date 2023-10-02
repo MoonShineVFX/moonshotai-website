@@ -14,6 +14,7 @@ import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } fro
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LazyLoad from 'react-lazy-load';
+import { getAnalytics, logEvent } from "firebase/analytics";
 // Import Swiper styles
 import {  Autoplay,EffectFade } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -60,6 +61,8 @@ function Index() {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+  const analytics = getAnalytics();
+  logEvent(analytics, 'Gallery_visited')
   // 在此處檢查 localStorage 內的資料
   useEffect(() => {
     getStoredLocalData().then(data => {
