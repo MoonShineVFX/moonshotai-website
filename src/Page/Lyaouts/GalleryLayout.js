@@ -12,6 +12,11 @@ const GalleryLayout = () => {
       windowHeight > 200 ? setStickyClass(true) : setStickyClass(false);
     }
   };
+  useEffect(() => {
+    document.body.style.backgroundColor = `#000`;
+
+  }, [])
+
   useEffect(()=>{
     // setStickyClass(false)
     

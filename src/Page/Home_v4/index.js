@@ -1,4 +1,4 @@
-import React,{useRef} from 'react'
+import React,{useEffect, useRef} from 'react'
 import Header from './Header'
 import Section01 from './Section01'
 import Section02 from './Section02'
@@ -8,9 +8,13 @@ import Secrtion05Countdown from './Secrtion05_countdown'
 import Section_about from './Section_about'
 import Section_models from './Section_models'
 import HomeFooter from './HomeFooter'
+import {analytics } from '../../firebaseConfig/fireanalytics'
 function Index() {
   const myRef = useRef(null)
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
+  useEffect(()=>{
+    analytics.logEvent(enentName: "homepage_visited")
+  },[])
   return (
     <div className=''>
 
