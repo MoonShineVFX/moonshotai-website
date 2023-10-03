@@ -14,6 +14,7 @@ import { HiGlobeAlt } from "react-icons/hi";
 import Header from '../header'
 import { useQuery, useMutation,useQueryClient,useInfiniteQuery } from 'react-query';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { getAnalytics, logEvent } from "firebase/analytics";
 function User() {
   const { id } = useParams();
   // const [userData, setUserData] = useState(null)
@@ -32,6 +33,12 @@ function User() {
   const [isInitialized, setIsInitialized] = useState(false);
   const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
   const navigate = useNavigate();
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'user_visited',{
+      userid:id
+    })
+  },[])
   const imageVariants = {
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }

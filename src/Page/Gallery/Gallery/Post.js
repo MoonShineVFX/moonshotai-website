@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } from 'react-query';
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Post() {
   const { id } = useParams();
   const [imageData, setImageData] = useState(null)
@@ -68,7 +69,12 @@ function Post() {
       navigate('/gallery'); 
     }
   };
-
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Post_visited',{
+      imgid:id
+    })
+  },[])
   useEffect(()=>{
     getStoredLocalData().then(localData=>{
         setIsLoggedIn(localData.isLogin)

@@ -4,7 +4,7 @@ function Header({executeScroll}) {
 
 
   return (
-    <div className='text-white flex justify-center items-center relative py-10 md:py-20' >
+    <div className='text-white flex justify-center items-center relative py-10 md:py-20  z-0' >
       <video 
         src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/website_banner_video.mp4' 
         autoPlay loop muted 

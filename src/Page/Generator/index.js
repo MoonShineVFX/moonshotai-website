@@ -57,6 +57,10 @@ function Index() {
     }
   }
   useEffect( ()=>{
+   
+    document.body.style.backgroundColor = `#000`;
+  
+  
     init()
   },[])
 

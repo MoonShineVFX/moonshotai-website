@@ -55,6 +55,13 @@ import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools";
 import LeaderBoard from './Page/Gallery/Gallery/LeaderBoardHome';
+
+// login
+import { AuthProvider } from './Spaceship/Auth';
+import Login from './Spaceship/Login';
+import ProtectedRoutes from './Spaceship/ProtectedRoutes';
+import AdminHome from './Spaceship/Pages'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -72,9 +79,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
     <RecoilRoot>
+    <AuthProvider>
     <BrowserRouter>
       <Routes> 
-       
+        <Route path="/login" element={<Login />} />
+        
+        <Route path="spaceship"  element={ <ProtectedRoutes/>}>
+          <Route path="" element={<AdminHome />} />
+        </Route>
+
         <Route path="/camera" element={<Camera />} />
         <Route path="/command" element={<Command />} />
         <Route path="/generator" element={<Generator />} />
@@ -133,6 +146,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
     </RecoilRoot>
     <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

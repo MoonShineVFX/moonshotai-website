@@ -18,7 +18,7 @@ const filterDateItem = [
 
 
 
-function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isAddStorageLoading,isRemoveStorageLoading,isFetchingNextPage,isBanned}) {
+function Index({title,images,imagesResults,handleCollection,handleStorage,handleRemoveStorage,fetchMoreImages,currentPage,totalPage,totalImage,handleSelectDate,handleSelectModels,isFetchingNextPage,isBanned}) {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false)
   const [openItems, setOpenItems] = useState([]);
   const [isShowFormModal, setIsShowFormModal] = useRecoilState(imageFormModalState)
@@ -148,15 +148,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
         {title} <div className='text-xs text-white/50'>{totalImage} items</div>  
         <div className='text-xs text-white/50'>如要「分享圖片」請點分享按鈕，要「收藏圖片」請點收藏按鈕。</div>
       </div>
-      { isAddStorageLoading&& <motion.div 
-          className='bg-gray-900 border border-white/0 absolute   rounded-md p-4 box-border text-white  top-[20%] left-1/2 -translate-x-1/2'
-          initial={{ opacity: 0, y: -20,x:'-50%' }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          >
-            資料處理中
-          </motion.div>
-      }
+
 
       <div className='flex items-center mt-6 mb-4 gap-2  justify-end w-full '>
         <ImgFilter filterItems={filterModelsDate} defaultIndex={0} onHandleSelect={onHandleSelectModels} icon="MdPhotoSizeSelectActual"/>
