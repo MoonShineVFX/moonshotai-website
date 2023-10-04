@@ -132,7 +132,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
                         </div>
                       ) :(
                         <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>
-                          {isMobile&&page==='home' ?             <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}
+                          {isMobile&&page==='home' ?  <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}
                         </div>
                       ) }
 
