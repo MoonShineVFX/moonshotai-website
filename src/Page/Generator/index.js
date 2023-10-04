@@ -103,8 +103,10 @@ function Index() {
     const model = data.selectedModel
     const ratio = data.ratio && data.ratio === 5 ? '' : RATIOS[data?.ratio-1].name+','
     let styles = '';
+    let ga_styles = '';
     if (!selectedStyles.includes("無")) {
       styles = selectedStyles.map((style) => `/style:${style}`).join(", ")+ ",";
+      ga_styles = selectedStyles.map((style) => `${style}`).join(", ")+ ",";
     }
     // const style = data.selecteStyle && data.selecteStyle === '無' ? '' : '/style:'+data.selecteStyle+','
     const steps = data.steps && parseInt(data.steps) === 25 ? '' : '/steps:'+data.steps+','
@@ -116,13 +118,11 @@ function Index() {
     const alltext = `${model} ${scale}${ratio}${styles}${steps}${prompt}${nprompt}`
     console.log(alltext)
     logEvent(analytics, 'MsGenerator_submitted',{
-      model:model,
-      ratio:ratio,
-      styles:styles,
-      steps:steps,
-      prompt:prompt,
-      nprompt:nprompt,
-      scale:scale
+      u_model:model,
+      u_steps:steps,
+      u_ratio:ratio,
+      u_styles:ga_styles,
+      u_scale:scale
     })
     setSendSuccess(false)
     liff.sendMessages([
