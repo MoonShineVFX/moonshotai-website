@@ -14,7 +14,8 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
     {command:'pr',title:'寫實 PR'},
     {command:'cm',title:'漫畫 CM'},
     {command:'pc',title:'寫實人像 PC'},
-    {command:'xl',title:'SDXL'}
+    {command:'xl',title:'SDXL'},
+    {command:'mj',title:'麥橘 MJ'}
   ]
   function ModelMapName({command}){
 
@@ -131,7 +132,7 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
                         </div>
                       ) :(
                         <div className={` text-white/80 text-xs md:text-sm truncate ${listNameStyle}`}>
-                          {isMobile&&page==='home' ?             <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}
+                          {isMobile&&page==='home' ?  <TitleWithLimit title={item?.name} maxLength={8}  /> :  <TitleWithLimit title={item?.name} maxLength={title_textlimit ? title_textlimit : 10}  />}
                         </div>
                       ) }
 

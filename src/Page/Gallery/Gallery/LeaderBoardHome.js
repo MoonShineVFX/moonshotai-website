@@ -84,7 +84,7 @@ function LeaderBoardHome () {
             data={topRanking?.top_used_models} 
             isLoading={isTopRankingLoading} 
             borderType={'model'}
-            customer_sliceNum={4} 
+            customer_sliceNum={6} 
             containerStyle={'px-0 md:px-0 w-full '}
             containerTitleStyle={'text-lg font-semibold py-2 px-4'}
             listContainerStyle={' divide-y divide-white/20'}

@@ -6,7 +6,7 @@ import {ModelSelector,StyleSelector} from './SelectorComponent'
 import { Button,Checkbox,Radio,Spinner} from "@material-tailwind/react";
 import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
-
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Index() {
   console.log(promptPresets)
   const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
@@ -48,6 +48,10 @@ function Index() {
   const [selectedStyles, setSelectedStyles] = useState([]);
   const [errMsg , setErrMsg] = useState('')
   const [sendSuccess , setSendSuccess] = useState(false)
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'MsGenerator_visited')
+  },[])
   const init=async()=>{
     try {
       await liff.init({liffId: liffID}) 
@@ -111,6 +115,15 @@ function Index() {
     const defaultText = ``
     const alltext = `${model} ${scale}${ratio}${styles}${steps}${prompt}${nprompt}`
     console.log(alltext)
+    logEvent(analytics, 'MsGenerator_submitted',{
+      model:model,
+      ratio:ratio,
+      styles:styles,
+      steps:steps,
+      prompt:prompt,
+      nprompt:nprompt,
+      scale:scale
+    })
     setSendSuccess(false)
     liff.sendMessages([
       {
