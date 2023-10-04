@@ -14,7 +14,8 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
     {command:'pr',title:'寫實 PR'},
     {command:'cm',title:'漫畫 CM'},
     {command:'pc',title:'寫實人像 PC'},
-    {command:'xl',title:'SDXL'}
+    {command:'xl',title:'SDXL'},
+    {command:'mj',title:'麥橘 MJ'}
   ]
   function ModelMapName({command}){
 
