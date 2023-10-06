@@ -16,7 +16,7 @@ function SubscriptionsList({subData,plans,currentUser}) {
     )
   }
 
-  const TitleComponent = ({ param1, param2, param3 }) => {
+  const TitleComponent = ({ param1, param2, param3, param4 }) => {
     let title;
   
     if (param1 !== null) {
@@ -25,6 +25,8 @@ function SubscriptionsList({subData,plans,currentUser}) {
       title = "活動";
     } else if (param3 !== null) {
       title = "推薦序號";
+    } else if (param4 !== null) {
+      title = "點數商品";
     } else {
       title = "其他方式";
     }
@@ -67,7 +69,7 @@ function SubscriptionsList({subData,plans,currentUser}) {
       <div className='grid grid-cols-1 md:grid-cols-2 gap-3 mt-6'>
       {
           subData.map((item,index)=>{
-            const{created_at,current_plan,days,id,invitation,is_active,refund_at,start_at,user,who_invite,gift_id,gift_name}=item
+            const{created_at,current_plan,days,id,invitation,is_active,refund_at,start_at,user,who_invite,gift_id,gift_name,point_product_id,point_product_name}=item
             return(
               <div className='text-white border p-3 border-gray-400 rounded-md' key={'orders'+index}>
                 <div className=' space-y-3'>
@@ -77,7 +79,7 @@ function SubscriptionsList({subData,plans,currentUser}) {
 
                     <div>
                       <div className='text-xs opacity-70'>購買 / 活動 / 推薦序號</div>
-                      <TitleComponent param1={current_plan} param2={gift_id} param3={invitation} />
+                      <TitleComponent param1={current_plan} param2={gift_id} param3={invitation} param4={point_product_id} />
                     </div>
                     <div>
                       <div className='text-xs opacity-70'>方案名稱</div>

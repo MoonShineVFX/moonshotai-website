@@ -96,13 +96,13 @@ function User() {
   } = useUserPublicImages(linLoginToken,id, pageSize, isInitialized, isLoggedIn);
   const publicImageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
   //ADD Collection
-  const collectionAImageMutation = useCollectionImageMutation(linLoginToken,['publicImages', id, currentPage, pageSize]);
+  const collectionAImageMutation = useCollectionImageMutation(linLoginToken,['publicImages', id, pageSize]);
   //DEL Collection 
-  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  const unCollectionAImageMutation = useDelACollectionImageMutation(linLoginToken, ['publicImages', id, pageSize]);
   //ADD LIKE
-  const likeAImageMutation = useLikeImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  const likeAImageMutation = useLikeImageMutation(linLoginToken, ['publicImages', id, pageSize]);
   //DEL LIKE
-  const unLikeAImageMutation = useDelLikedImageMutation(linLoginToken, ['publicImages', id, currentPage, pageSize]);
+  const unLikeAImageMutation = useDelLikedImageMutation(linLoginToken, ['publicImages', id, pageSize]);
   const handleLike = async(image,is_like)=>{
     if(!isLoggedIn){
       //  console.log(isLoggedIn)

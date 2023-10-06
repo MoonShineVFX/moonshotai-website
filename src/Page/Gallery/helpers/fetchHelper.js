@@ -265,7 +265,7 @@ export function usePostImageMutation(linLoginData,fnKey) {
 
   return postImageMutation;
 }
-//USER DEL-post
+//USER DEL-post 
 export const userDelAPostImage = async (image,token)=>{
   const requestOptions = {
     method: 'DELETE',
@@ -362,6 +362,7 @@ export function useLikeImageMutation(linLoginData, fnKey) {
     {
       onSuccess: (data, variables) => {
         queryClient.setQueryData(fnKey, (prevData) => {
+          console.log(prevData)
           const newData = prevData.pages.map((page) => ({
             ...page,
             results: page.results.map((image) =>
