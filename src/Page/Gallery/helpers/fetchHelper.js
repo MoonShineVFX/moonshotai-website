@@ -362,6 +362,7 @@ export function useLikeImageMutation(linLoginData, fnKey) {
     {
       onSuccess: (data, variables) => {
         queryClient.setQueryData(fnKey, (prevData) => {
+          console.log(prevData)
           const newData = prevData.pages.map((page) => ({
             ...page,
             results: page.results.map((image) =>
