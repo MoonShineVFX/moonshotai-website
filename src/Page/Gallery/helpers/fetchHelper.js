@@ -1206,3 +1206,45 @@ export const fetchTopRanking =async () =>{
   const data =await response.json()
   return data
 }
+
+// points system
+// prompt points system
+// USER POST-  prompt_buy
+export const userPromptBuyAImage =async (image,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    
+  };
+  const response =await fetch(apiUrl+'galleries/'+image.id+'/prompt_buy', requestOptions)
+  const data =await response
+  return data
+}
+//use USER POST prompt_buy
+export function usePromptBuyMutation(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const imageMutation = useMutation((updatedData) =>
+  userPromptBuyAImage(updatedData.image, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.setQueryData(fnKey, (prevData) => {
+          const newData = prevData.pages.map((page) => ({
+            ...page,
+            results: page.results.map((image) =>
+              image.id === variables.image.id
+                ? { ...image,...variables.items }
+                : image
+            ),
+          }));
+          return { pages: newData };
+        });
+
+      },
+    }
+  );
+
+  return imageMutation;
+}

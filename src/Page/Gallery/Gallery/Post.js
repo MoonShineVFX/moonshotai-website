@@ -5,7 +5,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages,usePromptBuyMutation} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
@@ -22,6 +22,10 @@ import {
   Card,
   Typography,
   Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter
 } from "@material-tailwind/react";
 import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } from 'react-query';
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -50,17 +54,15 @@ function Post() {
   const [ isCommentModal, setIsCommentModal]= useState(false)
   const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
 
-  const [currentStoragePage, setCurrentStoragePage]= useState(1)
-  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
-  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
-  const [currModels, setCurrModels] = useState('all')
-  const [currentHeaders , setCurrentHeaders] = useState({})
-
   const [totalPage, setTotalPage]= useState(0)
   const [pageSize, setPageSize] = useState(12)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
+  const [open, setOpen] = React.useState(false);
+  const [currentItem, setCurrentItem] = React.useState({});
   const handleBackClick = () => {
     const savedPageUrl = getCookieValue("pageUrl");
 
@@ -182,6 +184,8 @@ function Post() {
     }
   }
 )
+
+
   const handleCollection = async ()=>{
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
@@ -196,6 +200,23 @@ function Post() {
       setIsLoginForCollection(false)
     }
     
+  }
+
+  //BUY PROMPT
+  const buyPromptMutation = usePromptBuyMutation(linLoginToken,['galleryDetail',linLoginToken,id])
+  const handleBuyPrompt = async ()=>{
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+       setIsLoginForCollection(true)
+      }else{
+        // console.log(imageData)
+        handleOpen(); 
+        console.log(imageData)
+        setIsLoginForCollection(false)
+      }
+  }
+  const onHandleBuyPrompt = async()=>{
+
   }
   const handleLike = async ()=>{
     if(!isLoggedIn){
@@ -310,6 +331,39 @@ function Post() {
       {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={postsImages} />}
       </AnimatePresence>
       <ToastContainer />
+      <Dialog
+          open={open}
+          size={"xs"}
+          handler={handleOpen}
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0.9, y: -100 },
+          }}
+          className='bg-gray-900'
+        >
+          <DialogHeader className='text-lg text-white/80'>移除這張收藏</DialogHeader>
+          <DialogBody 
+      
+            className=' text-white '>
+            此動作不會直接從算圖圖庫中刪除圖片，僅為移除收藏。你確定要將圖片移除收藏嗎？
+          </DialogBody>
+          <DialogFooter className='border-t border-gray-600'>
+            <Button
+              variant="text"
+              color="red"
+              onClick={handleOpen}
+              className="mr-1"
+            >
+              <span>取消</span>
+            </Button>
+            <Button 
+              variant="gradient" 
+              color="" 
+              onClick={()=>onHandleBuyPrompt()}>
+              <span>確認</span>
+            </Button>
+          </DialogFooter>
+        </Dialog>
 
       {!imageData ?
       <div className='text-white'>Loading</div> 
@@ -385,8 +439,8 @@ function Post() {
                   imageData?.is_prompt_sale  ?
                     <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
                       <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
-                      未完成
-                      <Button size="sm" color="light-green" className='mt-3'>支付 {imageData.prompt_sale_point} Points</Button>
+                      
+                      <Button size="sm" color="light-green" className='mt-3' onClick={()=>handleBuyPrompt(imageData.prompt_sale_point)}>支付 {imageData.prompt_sale_point} Points 給作者</Button>
                     </div> 
                     : 
                     <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>
