@@ -1219,7 +1219,13 @@ export const userPromptBuyAImage =async (image,token) =>{
     },
     
   };
+  console.log(image)
   const response =await fetch(apiUrl+'galleries/'+image.id+'/prompt_buy', requestOptions)
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.log(errorData)
+    throw new Error(errorData.message);
+  }
   const data =await response
   return data
 }
@@ -1227,20 +1233,10 @@ export const userPromptBuyAImage =async (image,token) =>{
 export function usePromptBuyMutation(linLoginData,fnKey) {
   const queryClient = useQueryClient();
   const imageMutation = useMutation((updatedData) =>
-  userPromptBuyAImage(updatedData.image, linLoginData),
+  userPromptBuyAImage(updatedData.imageData, linLoginData),
     {
       onSuccess: (data, variables) => {
-        queryClient.setQueryData(fnKey, (prevData) => {
-          const newData = prevData.pages.map((page) => ({
-            ...page,
-            results: page.results.map((image) =>
-              image.id === variables.image.id
-                ? { ...image,...variables.items }
-                : image
-            ),
-          }));
-          return { pages: newData };
-        });
+      
 
       },
     }
@@ -1248,3 +1244,5 @@ export function usePromptBuyMutation(linLoginData,fnKey) {
 
   return imageMutation;
 }
+
+// users/<int:id>/bought_prompts

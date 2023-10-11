@@ -62,7 +62,7 @@ function Post() {
 
   const handleOpen = () => setOpen(!open);
   const [open, setOpen] = React.useState(false);
-  const [currentItem, setCurrentItem] = React.useState({});
+  const [buyError, setBuyError] = useState(null);
   const handleBackClick = () => {
     const savedPageUrl = getCookieValue("pageUrl");
 
@@ -210,13 +210,26 @@ function Post() {
        setIsLoginForCollection(true)
       }else{
         // console.log(imageData)
+        setBuyError(null)
         handleOpen(); 
-        console.log(imageData)
         setIsLoginForCollection(false)
       }
   }
   const onHandleBuyPrompt = async()=>{
-
+    console.log(imageData)
+    try {
+      await buyPromptMutation.mutateAsync({imageData})
+    } catch (error) {
+      // console.error(error)
+      // console.log(error)
+      if(error.message === 'Your already bought the prompt'){
+        setBuyError('錯誤訊息：你已經購買過這個了。')
+      }else{
+        setBuyError('錯誤訊息：操作錯誤，可能是點數不足。')
+      }
+      
+    }
+   
   }
   const handleLike = async ()=>{
     if(!isLoggedIn){
@@ -341,11 +354,13 @@ function Post() {
           }}
           className='bg-gray-900'
         >
-          <DialogHeader className='text-lg text-white/80'>移除這張收藏</DialogHeader>
+          <DialogHeader className='text-lg text-white/80'>購買 Prompt</DialogHeader>
           <DialogBody 
       
             className=' text-white '>
-            此動作不會直接從算圖圖庫中刪除圖片，僅為移除收藏。你確定要將圖片移除收藏嗎？
+            您還有剩餘 <span className='text-amber-500'>{currentUser.point} Points</span> <br />
+            將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
+            <div className='text-pink-300 text-xs font-normal'>{buyError&& buyError}</div>
           </DialogBody>
           <DialogFooter className='border-t border-gray-600'>
             <Button
@@ -360,7 +375,7 @@ function Post() {
               variant="gradient" 
               color="" 
               onClick={()=>onHandleBuyPrompt()}>
-              <span>確認</span>
+              <span>確認支付</span>
             </Button>
           </DialogFooter>
         </Dialog>
