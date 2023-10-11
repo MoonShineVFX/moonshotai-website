@@ -4,8 +4,8 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { beforeDisplayModalState, imageDataState,profilePageState,loginState } from '../atoms/galleryAtom';
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { MdCheckCircle,MdCircle,MdInfo } from "react-icons/md";
-import { FaTimes } from "react-icons/fa";
-import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,
+import { FaTimes,FaCheck } from "react-icons/fa";
+import { Button,Checkbox,Typography,Input,Textarea,Chip,Switch,  Tabs,Radio,
   TabsHeader,
   TabsBody,
   Tab,
@@ -14,6 +14,7 @@ import { useQuery } from 'react-query';
 import {getImgInCampaign} from '../helpers/fetchHelper'
 function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetStorageImage,campaignsData,handlePostImage,handlePatchPost,isBanned}) {
   const [isShoDisplayFormModal, setIsShowDisplayFormModal] = useRecoilState(beforeDisplayModalState)
+  const [count, setCount] = useState(0);
   const image = useRecoilValue(imageDataState)
   const profilePage = useRecoilValue(profilePageState)
   const [selectedActivityIds, setSelectedActivityIds] = useState([]);
@@ -46,6 +47,17 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
      }
     }
   );
+  const handleIncrement = (e) => {
+    e.preventDefault();
+    setCount(count + 1);
+  };
+
+  const handleDecrement = (e) => {
+    e.preventDefault();
+    if (count > 0) {
+      setCount(count - 1);
+    }
+  };
   const onSubmit = (data) => {
     console.log(data)
     const add_activities = data.add_activities.filter(item=>{
@@ -55,10 +67,25 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
       return item.status === 'remove'
     })
     let items ={
-      title:data.title ||null,
-      description:data.description ||null,
-      display_prompt:data.display_prompt||false,
       is_user_nsfw:data.is_user_nsfw ||false,
+    }
+    if (data.title && data.title.trim().length > 0) {
+      items.title = data.title;
+    }
+    if (data.description && data.description.trim().length > 0) {
+      items.description = data.description;
+    }
+    if(data.display_prompt === true){
+      items.display_prompt = data.display_prompt;
+    }else{
+      items.display_prompt = data.display_prompt;
+    }
+    if(data.is_prompt_sale === 'true'){
+      items.is_prompt_sale = true;
+      items.prompt_sale_point = count;
+
+    }else{
+      items.is_prompt_sale = false;
     }
     // console.log(items)
     // handleSetStorageImage(image,items,profilePage,add_activities,remove_activities)
@@ -186,11 +213,11 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   )}
                 />
             </div>
-            <div className='flex flex-col  px-4'>
+            {/* <div className='flex flex-col  px-4'>
               <Controller
                 name="display_prompt"
                 control={control}
-                defaultValue={image?.is_post ? image?.display_prompt : true}
+                defaultValue={image?.is_post ? image?.display_prompt : false}
                 render={({ field }) => (
                   <div className="flex mt-4 ">
                     <Switch 
@@ -212,6 +239,44 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                   </div>
                 )}
               />
+            </div> */}
+            <div className='flex flex-col  px-4'>
+              <label  className='text-white/50  my-2'>Prompt 觀看設定</label> 
+              <div className='w-full bg-white/20  rounded-lg flex flex-col'>
+                <Controller
+                  name="is_prompt_sale"
+                  control={control}
+                  render={({ field }) => (
+                    <Radio {...field} icon={ <FaCheck/>}  label="不開放" value={false} color="light-blue" labelProps={{className: "text-white"}} defaultChecked />
+                  )}
+                />
+                <div className=' flex items-center justify-between'>
+                  <Controller
+                    name="is_prompt_sale"
+                    control={control}
+                    render={({ field }) => (
+                      <Radio {...field} icon={ <FaCheck/>}  label="設定應付點數" value={true}color="light-blue" labelProps={{className: "text-white"}}  />
+                    )}
+                  />
+                  <div className='flex flex-row h-8  rounded-full relative bg-transparent mt-1 w-auto mr-1 bg-gray-600'> 
+                    <button 
+                      className="  bg-transparent  text-gray-300  w-7 h-7 flex items-center  rounded-full cursor-pointer outline-none"
+                      onClick={handleDecrement}
+                    >
+                      <span className="m-auto text-xl font-thin">−</span>
+                    </button>
+                    <div className=' flex items-center px-5 text-base '>{count}</div>
+                    <button 
+                      className="bg-transparent text-gray-300   w-7 h-7 flex items-center  rounded-full cursor-pointer"
+                      onClick={handleIncrement}
+                    >
+                      <span className="m-auto text-xl font-thin">+</span>
+                    </button>
+                  </div>
+                </div>
+
+
+              </div>
             </div>
 
             <Tabs value="add" className="px-4 mt-2 hidden" >
