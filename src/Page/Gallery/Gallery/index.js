@@ -86,7 +86,13 @@ function Index() {
   } = useGalleries(linLoginData, pageSize, startDate, endDate, currModels, isInitialized, isLoggedIn);
 
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
+  const loadMore = () => {
+    if (imageData.length >= 2000) {
+      console.log('full')
+      return;
+    }
+    fetchNextPage();
+  };
   //ADD Collection
   const collectionAImageMutation = useCollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
   //DEL Collection 
@@ -209,7 +215,7 @@ function Index() {
 
             <InfiniteScroll
               dataLength={imageData ? imageData.length:0}
-              next={()=>fetchNextPage()}
+              next={loadMore}
               hasMore={hasNextPage}
               loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
             >

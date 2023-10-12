@@ -978,7 +978,7 @@ export const paymentLinePay =async (serNum,token) =>{
       serial_number:  serNum,
     })
   };
-  const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)
+  const response =await fetch(apiUrl+'request_linepay_payment', requestOptions)
   const data =await response.json()
   return data
 }
@@ -995,7 +995,7 @@ export const paymentNewebPay =async (serNum,token) =>{
       serial_number:  serNum,
     })
   };
-  const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
+  const response =await fetch(apiUrl+'request_newebpay_payment', requestOptions)
   const data =await response.json()
   return data
 }
@@ -1089,6 +1089,8 @@ export const postOpenGiftMutation = (mutaionData) => {
 
   return fetch(apiUrl + 'open_gift', requestOptions).then((response) => response.json());
 };
+
+
 
 // GET /campaigns 取得活動列表
 export const fetchCampaigns =async (cursor) =>{
@@ -1246,3 +1248,39 @@ export function usePromptBuyMutation(linLoginData,fnKey) {
 }
 
 // users/<int:id>/bought_prompts
+export const fetchUserOwnPrompts =async (token,uid,cursor,pageSize)=>{
+  let newCursor = cursor === undefined ? '' : cursor
+
+  const requestOptions = {
+    method: 'GET',
+    headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
+  };
+  if(uid){
+    const response =await fetch(apiUrl+'users/'+uid+'/bought_prompts?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
+    const data =await response.json()
+    return data
+    
+  } else{
+
+  }
+
+}
+//use function :  users/<int:id>/posts 
+export function useUserOwnPrompts(linLoginToken,id, pageSize,isInitialized,isLoggedIn) {
+  return useInfiniteQuery(
+    ['ownPrompts', id, pageSize],
+    ({ pageParam }) =>
+    fetchUserOwnPrompts(linLoginToken,id, pageParam, pageSize),
+    {
+      enabled: isInitialized && (!!id || isLoggedIn !== null),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+      }
+    }
+  );
+}
