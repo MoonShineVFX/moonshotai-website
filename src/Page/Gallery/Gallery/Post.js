@@ -219,9 +219,12 @@ function Post() {
     console.log(imageData)
     try {
       await buyPromptMutation.mutateAsync({imageData})
+      setBuyError('訊息：購買已完成。')
+      setTimeout(() => {
+        setOpen(false); 
+      }, 1500);
+      
     } catch (error) {
-      // console.error(error)
-      // console.log(error)
       if(error.message === 'Your already bought the prompt'){
         setBuyError('錯誤訊息：你已經購買過這個了。')
       }else{
@@ -365,7 +368,7 @@ function Post() {
           <DialogFooter className='border-t border-gray-600'>
             <Button
               variant="text"
-              color="red"
+              color="white"
               onClick={handleOpen}
               className="mr-1"
             >

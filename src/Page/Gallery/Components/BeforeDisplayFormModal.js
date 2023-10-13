@@ -242,12 +242,22 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
             </div> */}
             <div className='flex flex-col  px-4'>
               <label  className='text-white/50  my-2'>Prompt 觀看設定</label> 
-              <div className='w-full bg-white/20  rounded-lg flex flex-col'>
+              <div className='w-full bg-white/0  rounded-lg flex flex-col'>
                 <Controller
                   name="is_prompt_sale"
                   control={control}
                   render={({ field }) => (
-                    <Radio {...field} icon={ <FaCheck/>}  label="不開放" value={false} color="light-blue" labelProps={{className: "text-white"}} defaultChecked />
+                    <Radio {...field} 
+                      icon={ <FaCheck/>}  
+                      label={
+                        <div>
+                          <Typography color="white" className="font-medium">
+                            不開放
+                          </Typography>
+
+                        </div>
+                      } 
+                      value={false} color="light-blue" labelProps={{className: "text-white"}} defaultChecked />
                   )}
                 />
                 <div className=' flex items-center justify-between'>
@@ -255,7 +265,19 @@ function BeforeDisplayForm({userData,handleEdit,handleSetUserProfile,handleSetSt
                     name="is_prompt_sale"
                     control={control}
                     render={({ field }) => (
-                      <Radio {...field} icon={ <FaCheck/>}  label="設定應付點數" value={true}color="light-blue" labelProps={{className: "text-white"}}  />
+                      <Radio {...field} 
+                        icon={ <FaCheck/>}  
+                        label={
+                          <div>
+                            <Typography color="white" className="font-medium">
+                              設定應收點數(Point)
+                            </Typography>
+                            <Typography variant="small"  className="font-normal text-xs text-white/70">
+                              請合理定價，建議是 0-15 Point 之間。
+                            </Typography>
+                          </div>
+                        }
+                        value={true}color="light-blue" labelProps={{className: "text-white"}}  />
                     )}
                   />
                   <div className='flex flex-row h-8  rounded-full relative bg-transparent mt-1 w-auto mr-1 bg-gray-600'> 

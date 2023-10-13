@@ -2,6 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
+import { AiFillDollarCircle,AiOutlineDollar } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback,filterModelsDate} from '../helpers/componentsHelper'
 import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
@@ -230,7 +231,7 @@ function Index() {
             >
       
               {imageData.map((image,index)=>{
-                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments } = image
+                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments,is_prompt_sale } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
@@ -250,8 +251,8 @@ function Index() {
                       </div>
 
 
-                      <div>
-                        
+                      <div className=' absolute z-10 top-0 right-0 p-1 text-amber-400 text'>
+                        {is_prompt_sale && <AiOutlineDollar size={18} className=' ' /> }
                       </div>
                     </Link>
 
