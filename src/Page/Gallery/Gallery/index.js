@@ -15,6 +15,7 @@ import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } fro
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LazyLoad from 'react-lazy-load';
+import { Tooltip, Typography } from "@material-tailwind/react";
 import { getAnalytics, logEvent } from "firebase/analytics";
 // Import Swiper styles
 import {  Autoplay,EffectFade } from "swiper";
@@ -231,14 +232,14 @@ function Index() {
             >
       
               {imageData.map((image,index)=>{
-                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments,is_prompt_sale } = image
+                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments,is_prompt_sale,prompt_sale_point } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                     className='  overflow-hidden relative  mb-5'
                   >
-                    <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
-                      <div className=' relative overflow-hidden   rounded-md'>
+                    <div  className=' relative group' >
+                      <Link to={`/post/${id}`} className=' relative overflow-hidden   rounded-md' onClick={recordPageUrl}>
                         <LazyLoad  >
                         <img  
                           alt={title}
@@ -248,13 +249,30 @@ function Index() {
   
                         />
                         </LazyLoad>
-                      </div>
+                      </Link>
 
+                      {is_prompt_sale && 
+                      <div className=' absolute z-10 top-0 right-0 p-1 text-amber-400 text '>
 
-                      <div className=' absolute z-10 top-0 right-0 p-1 text-amber-400 text'>
-                        {is_prompt_sale && <AiOutlineDollar size={18} className=' ' /> }
+                          <Tooltip
+                          className="bg-t_lime-600"
+                          placement="right"
+                          content={
+                            <div className="">
+                              <Typography color="white" className="text-xs font-semibold" >
+                                需要 {prompt_sale_point} Points
+                              </Typography>
+
+                            </div>
+                          }
+                        >
+                          <div className=""><AiOutlineDollar size={18} className=' ' /> </div>
+                        </Tooltip>
+                          
+                        
                       </div>
-                    </Link>
+                      }
+                    </div>
 
 
 
