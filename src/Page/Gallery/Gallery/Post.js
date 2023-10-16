@@ -74,7 +74,7 @@ function Post() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Post_visited',{
+    logEvent(analytics, 'Postpage_visited',{
       imgid:id
     })
   },[])
@@ -205,6 +205,7 @@ function Post() {
   //BUY PROMPT
   const buyPromptMutation = usePromptBuyMutation(linLoginToken,['galleryDetail',linLoginToken,id])
   const handleBuyPrompt = async ()=>{
+    logEvent(analytics, 'Postpage_BuyPrompt_visited')
     if(!isLoggedIn){
       //  console.log(isLoggedIn)
        setIsLoginForCollection(true)
@@ -219,12 +220,14 @@ function Post() {
     console.log(imageData)
     try {
       await buyPromptMutation.mutateAsync({imageData})
+      logEvent(analytics, 'Postpage_BuyPrompt_summited_success')
       setBuyError('訊息：購買已完成。')
       setTimeout(() => {
         setOpen(false); 
       }, 1500);
       
     } catch (error) {
+      logEvent(analytics, 'Postpage_BuyPrompt_summited_error')
       if(error.message === 'Your already bought the prompt'){
         setBuyError('錯誤訊息：你已經購買過這個了。')
       }else{

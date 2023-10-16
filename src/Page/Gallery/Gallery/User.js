@@ -35,7 +35,7 @@ function User() {
   const navigate = useNavigate();
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'user_visited',{
+    logEvent(analytics, 'Userpage_visited',{
       userid:id
     })
   },[])

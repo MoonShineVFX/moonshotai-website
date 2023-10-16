@@ -10,6 +10,7 @@ import { useForm,Controller } from 'react-hook-form';
 import moment from 'moment';
 import liff from '@line/liff';
 import { Button } from "@material-tailwind/react";
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -43,6 +44,10 @@ function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Price_visited')
+  },[])
 
   useEffect(()=>{
     getStoredLocalData().then(data=>{
