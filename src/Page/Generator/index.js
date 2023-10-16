@@ -50,7 +50,7 @@ function Index() {
   const [sendSuccess , setSendSuccess] = useState(false)
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'MsGenerator_visited')
+    logEvent(analytics, '咒語生成器_進入訪問')
   },[])
   const init=async()=>{
     try {
@@ -117,7 +117,7 @@ function Index() {
     const defaultText = ``
     const alltext = `${model} ${scale}${ratio}${styles}${steps}${prompt}${nprompt}`
     console.log(alltext)
-    logEvent(analytics, 'MsGenerator_submitted',{
+    logEvent(analytics, '咒語生成器_送出咒語',{
       u_model:model,
       u_steps:steps,
       u_ratio:ratio,

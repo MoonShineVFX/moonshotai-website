@@ -11,7 +11,7 @@ const PromptList = ({data}) => {
         data.map((item,index)=>{
           const {id,title,urls,prompt}= item
           return(
-            <div className='text-white border  p-4 border-gray-400/0 bg-gray-800 rounded-md ' key={'prompts'+index}>
+            <div className='text-white p-4 border-4 border-gray-400/0  hover:border-t_lime-600 bg-gray-800 rounded-md ' key={'prompts'+index}>
               <div className='flex justify-between gap-4'>
                 <div className=' relative overflow-hidden   rounded-md w-1/4'>
                   <img  
@@ -25,7 +25,7 @@ const PromptList = ({data}) => {
                 <div className='w-3/4'>
                   <div className='flex flex-col  '>
                     <div className='font-semibold'>Prompt 提示詞</div>
-                    <div>{prompt} 1</div>
+                    <div className='text-sm'>{prompt} 1</div>
                     
                   </div>
                   

@@ -269,7 +269,7 @@ function Orders() {
         {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} is_surveyed={currentOrder.is_surveyed} /> }
       </AnimatePresence>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
-       <div className='text-white text-lg flex gap-3'>
+       <div className='text-white text-base flex gap-3'>
         {
             menuItems.map((item,index)=>{
               return(

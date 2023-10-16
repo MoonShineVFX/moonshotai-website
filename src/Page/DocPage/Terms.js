@@ -1,5 +1,10 @@
-import React from 'react'
+import React,{useEffect} from 'react'
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Terms() {
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Doc_使用條款頁_進入訪問')
+  },[])
   return (
     <div className='text-white'>
       <div className='px-8'>

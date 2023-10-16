@@ -65,7 +65,7 @@ function Index() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, '藝廊頁_進入')
+    logEvent(analytics, '藝廊頁_進入訪問')
   },[])
   // 在此處檢查 localStorage 內的資料
   useEffect(() => {

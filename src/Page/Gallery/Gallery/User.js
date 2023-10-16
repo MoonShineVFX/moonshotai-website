@@ -35,7 +35,7 @@ function User() {
   const navigate = useNavigate();
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Userpage_visited',{
+    logEvent(analytics, '單一作者頁面_進入訪問',{
       userid:id
     })
   },[])

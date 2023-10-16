@@ -74,7 +74,7 @@ function Post() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Postpage_visited',{
+    logEvent(analytics, '單張圖頁面_進入訪問',{
       imgid:id
     })
   },[])
@@ -205,7 +205,7 @@ function Post() {
   //BUY PROMPT
   const buyPromptMutation = usePromptBuyMutation(linLoginToken,['galleryDetail',linLoginToken,id])
   const handleBuyPrompt = async ()=>{
-    logEvent(analytics, 'Postpage_BuyPrompt_visited')
+    logEvent(analytics, '單張圖頁面_購買咒語按鈕_提示支付')
     if(!isLoggedIn){
       //  console.log(isLoggedIn)
        setIsLoginForCollection(true)
@@ -220,14 +220,16 @@ function Post() {
     console.log(imageData)
     try {
       await buyPromptMutation.mutateAsync({imageData})
-      logEvent(analytics, 'Postpage_BuyPrompt_summited_success')
+      logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付成功')
       setBuyError('訊息：購買已完成。')
       setTimeout(() => {
         setOpen(false); 
       }, 1500);
       
     } catch (error) {
-      logEvent(analytics, 'Postpage_BuyPrompt_summited_error')
+      logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付失敗',{
+        msg:error.message 
+      })
       if(error.message === 'Your already bought the prompt'){
         setBuyError('錯誤訊息：你已經購買過這個了。')
       }else{

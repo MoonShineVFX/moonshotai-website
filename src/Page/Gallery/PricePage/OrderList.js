@@ -41,7 +41,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
                           <div className={'py-1 px-2 text-xs rounded-md bg-rose-800 '}>已完成退款</div>
                           : 
                           <div className='flex items-center'>
-                            <div className={'py-1 px-2 text-xs rounded-md bg-lime-800 '}>已完成付款</div>
+                            <div className={'py-1 px-2 text-xs rounded-md bg-t_lime-600 '}>已完成付款</div>
                             {is_surveyed && <div className={'text-xs text-yellow-500 pl-1'}> 正在受理退款流程</div>}
                           </div>
                         }
@@ -68,7 +68,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
                       <div>{serial_number} </div>
                     </div>
                     <div>
-                      <div className={'text-xs opacity-70'}>日期{status === 'Success' ? <span className='text-green-500'> (付款)</span> : <span className='text-rose-400'> (退款)</span>}</div>
+                      <div className={'text-xs opacity-70'}>日期{status === 'Success' ? <span className='text-t_lime-500'> (付款)</span> : <span className='text-rose-400'> (退款)</span>}</div>
                       <div>{refund_at ? moment(refund_at).format('YYYY-MM-DD HH:mm'): ` ${moment(paid_at).format('YYYY-MM-DD HH:mm')}`}</div>
                       <div>
                         
@@ -95,7 +95,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
                   status === "Success" &&               
                   <div className='my-3'>
                     <button 
-                      className="ml-auto px-3 flex  justify-center items-center gap-2 bg-amber-600  rounded-md py-2  text-center text-white text-sm"
+                      className="ml-auto px-3 flex  justify-center items-center gap-2 bg-amber-700  rounded-md py-2  text-center text-white text-sm"
                       onClick={()=>{
                         setCurrentOrder(item)
                         serIsShowReport(true)

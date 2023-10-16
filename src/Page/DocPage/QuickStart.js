@@ -1,6 +1,10 @@
-import React from 'react'
-
+import React,{useEffect} from 'react'
+import { getAnalytics, logEvent } from "firebase/analytics";
 function QuickStart() {
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Doc_GettingStarted頁_進入訪問')
+  },[])
   return (
     <div className='text-white '>
       <div className='px-8'>
