@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { MdAttachMoney,MdArrowRightAlt,MdHelp } from "react-icons/md";
-
+import { getAnalytics, logEvent } from "firebase/analytics";
 function SubscriptionsList({subData,plans,currentUser}) {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
   const [isReqError, setReqError] = useState(false);
-  console.log(subData)
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Order_訂閱紀錄頁面_進入訪問')
+  },[])
   const SelecPlans = ({id})=>{
     const newData = plans.filter(item=>{
       return item.id === id

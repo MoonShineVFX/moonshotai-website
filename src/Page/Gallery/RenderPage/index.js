@@ -9,6 +9,7 @@ import ImgFilter from '../Components/ImgFilter';
 import moment from 'moment';
 import debounce from 'lodash.debounce';
 import { IconButton } from "@material-tailwind/react";
+import { getAnalytics, logEvent } from "firebase/analytics";
 const filterDateItem = [
   {title:'24 小時',type:'時間區間',command:'days',value:'1'},
   {title:'7 天',type:'時間區間',command:'days',value:'7'},
@@ -32,6 +33,10 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
     hidden: { opacity: 0, },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Profile_Render頁面_進入訪問')
+  },[])
 
 
 

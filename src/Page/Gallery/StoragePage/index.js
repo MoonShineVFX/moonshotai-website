@@ -6,6 +6,7 @@ import { FaShare } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState,profilePageState } from '../atoms/galleryAtom';
 import { EmptyStoragePage } from '../helpers/componentsHelper';
+import { getAnalytics, logEvent } from "firebase/analytics";
 import debounce from 'lodash.debounce';
 import {
   Menu,
@@ -49,7 +50,10 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
       },
     },
   };
-  
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Profile_Post頁面_進入訪問')
+  },[])
   //棄用
   const onHandleRemoveStorage = (image)=>{
     if(image.urls.regular === currentProfile.profile_banner || image.urls.regular === currentProfile.profile_image)

@@ -3,6 +3,7 @@ import moment from 'moment';
 import { MdAttachMoney,MdArrowRightAlt,MdHelp,MdInfo } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { reportModalState,reportDataState } from '../atoms/galleryAtom';
+import { getAnalytics, logEvent } from "firebase/analytics";
 function OrderList({orderData,handleRefund,handleReport}) {
   const [isLoadingReq, setIsLoadingReq] = useState(false);
   const [isNeedLogin, setIsNeedLogin] = useState(false);
@@ -12,6 +13,10 @@ function OrderList({orderData,handleRefund,handleReport}) {
   const onHandleRoport  = (item)=>{
     handleReport(item)
   }
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Order_訂單列表頁面_進入訪問')
+  },[])
 
   const isPast48Hours = (date) => {
     const now = moment();

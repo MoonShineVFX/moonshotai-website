@@ -4,7 +4,7 @@ import { FaHeart,FaBookmark,FaMinus } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import {EmptyCollectionPage} from '../helpers/componentsHelper'
-import moment from 'moment';
+import { getAnalytics, logEvent } from "firebase/analytics";
 import debounce from 'lodash.debounce';
 import {
   Menu,
@@ -46,7 +46,10 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
       },
     },
   };
-
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Profile_Collections頁面_進入訪問')
+  },[])
   const onHandleRemoveCollection = (image)=>{
     handleRemoveCollection(image,'collectionPage')
     setOpen(!open)

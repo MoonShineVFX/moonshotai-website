@@ -7,6 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { imageFormModalState, imageDataState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { EmptyFollowPage,ImageWithFallback } from '../helpers/componentsHelper';
+import { getAnalytics, logEvent } from "firebase/analytics";
 import {
   Menu,
   MenuHandler,
@@ -48,11 +49,13 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
       },
     },
   };
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Profile_Following頁面_進入訪問')
+  },[])
   const onHandlUnfollow = (user)=>{
     console.log(user)
     handleUnfollow(user)
-
-
     // 
   }
   const onHandleRemoveFollow = (user)=>{

@@ -10,7 +10,7 @@ import moment from 'moment';
 import { MdContentCopy } from "react-icons/md"
 import { GiTwoCoins, GiCutDiamond } from "react-icons/gi";
 import { FaAngleRight } from "react-icons/fa6";
-
+import { getAnalytics, logEvent } from "firebase/analytics";
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -28,7 +28,10 @@ function Index() {
   const [currentProfile, setCurrentProfile] = useRecoilState(userState);
 
   const [ isSaveSuccess , setIsSaveSuccess] = useState(false)
-
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Profile_Account頁面_進入訪問')
+  },[])
   const onSubmit = (data) => {
     // console.log(data);
     const items ={

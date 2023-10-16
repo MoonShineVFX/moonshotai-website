@@ -1,7 +1,12 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import moment from 'moment';
 import {LoadingCircle} from '../helpers/componentsHelper'
+import { getAnalytics, logEvent } from "firebase/analytics";
 const PromptList = ({data}) => {
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Order_已購咒語頁面_進入訪問')
+  },[])
   return (
     <div className='text-white pb-10'>
       <div className='text-sm text-white/80'>{data.length} items</div>
