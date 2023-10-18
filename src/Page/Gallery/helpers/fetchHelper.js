@@ -274,7 +274,7 @@ export const userDelAPostImage = async (image,token)=>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'images/'+image.id+'/post', requestOptions)
+  const response =await fetch(apiUrl+'posts/'+image.id, requestOptions)
   const data =await response
   return data
 }

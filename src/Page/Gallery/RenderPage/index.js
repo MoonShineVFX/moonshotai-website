@@ -204,7 +204,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
 
                     <IconButton 
                       size="sm"
-                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (is_post ? ' bg-red-700 text-white/70   ' : ' bg-red-700 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
+                      className={' flex items-center  justify-center text-xs rounded-full  p-2    shadow-md ' + (is_post ? ' bg-blue-800 text-white   ' : ' bg-blue-800/50 text-white' ) } onClick={()=>onHandleDisplayHome(image)}
                       disabled={isBanned}
                     >
                       <FaShare />
