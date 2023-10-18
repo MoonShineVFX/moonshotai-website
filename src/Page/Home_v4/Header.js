@@ -38,7 +38,7 @@ function Header({executeScroll}) {
             variant="outlined" color='white' className="rounded-full  font-bold capitalize text-sm"  
             onClick={()=>{
               executeScroll()
-              logEvent(analytics, 'Moonshot首頁按鈕_LearnMore')
+              logEvent(analytics, 'Moonshot首頁按鈕_LearnMore_按下')
             }}>
             Learn More
           </Button>
@@ -47,7 +47,7 @@ function Header({executeScroll}) {
             href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
             target={"_blank"} rel="noreferrer"
             onClick={()=>{
-              logEvent(analytics, 'Moonshot首頁按鈕_StartForFree')
+              logEvent(analytics, 'Moonshot首頁按鈕_StartForFree_按下')
             }}
           >Start For Free </a>
           </Button>
@@ -56,7 +56,7 @@ function Header({executeScroll}) {
             href="/gallery"
             target={"_blank"} rel="noreferrer"
             onClick={()=>{
-              logEvent(analytics, 'Moonshot首頁按鈕_SeeGallery')
+              logEvent(analytics, 'Moonshot首頁按鈕_SeeGallery_按下')
             }}
           >See Gallery </a>
          </Button>

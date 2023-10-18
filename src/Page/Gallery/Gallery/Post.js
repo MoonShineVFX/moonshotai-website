@@ -5,7 +5,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages,usePromptBuyMutation} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages,usePromptBuyMutation,fetchUserProfileData} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
 import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
@@ -31,6 +31,7 @@ import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } fr
 import { getAnalytics, logEvent } from "firebase/analytics";
 function Post() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const [imageData, setImageData] = useState(null)
   const [comments, setComments] = useState([])
   const [commentsResults, setCommentsResults] = useState([])
@@ -221,20 +222,34 @@ function Post() {
     try {
       await buyPromptMutation.mutateAsync({imageData})
       logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付成功')
-      setBuyError('訊息：購買已完成。')
-      setTimeout(() => {
-        setOpen(false); 
-      }, 1500);
+      setBuyError(<LoadingLogoSpin /> )
+      setTimeout(async()=>{
+        setBuyError('訊息：購買已完成。')
+        //update user porfile
+        const udata = await fetchUserProfileData(currentUser.id, linLoginToken, queryClient);
+        console.log(udata)
+        localStorage.setItem('currentUser', JSON.stringify(udata));
+        setCurrentUser(udata)
+        setTimeout(() => {
+          setOpen(false); 
+        }, 1000);
+      },1000)
+    
+
       
     } catch (error) {
       logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付失敗',{
         msg:error.message 
       })
-      if(error.message === 'Your already bought the prompt'){
-        setBuyError('錯誤訊息：你已經購買過這個了。')
-      }else{
-        setBuyError('錯誤訊息：操作錯誤，可能是點數不足。')
-      }
+      setBuyError(<LoadingLogoSpin /> )
+      setTimeout(()=>{
+        if(error.message === 'Your already bought the prompt'){
+          setBuyError('錯誤訊息：你已經購買過這個了。')
+        }else{
+          setBuyError('錯誤訊息：操作錯誤，可能是點數不足。')
+        }
+      },1000)
+
       
     }
    
@@ -353,40 +368,40 @@ function Post() {
       </AnimatePresence>
       <ToastContainer />
       <Dialog
-          open={open}
-          size={"xs"}
-          handler={handleOpen}
-          animate={{
-            mount: { scale: 1, y: 0 },
-            unmount: { scale: 0.9, y: -100 },
-          }}
-          className='bg-gray-900'
-        >
-          <DialogHeader className='text-lg text-white/80'>購買 Prompt</DialogHeader>
-          <DialogBody 
-      
-            className=' text-white '>
-            您還有剩餘 <span className='text-amber-500'>{currentUser.point} Points</span> <br />
-            將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
-            <div className='text-pink-300 text-xs font-normal'>{buyError&& buyError}</div>
-          </DialogBody>
-          <DialogFooter className='border-t border-gray-600'>
-            <Button
-              variant="text"
-              color="white"
-              onClick={handleOpen}
-              className="mr-1"
-            >
-              <span>取消</span>
-            </Button>
-            <Button 
-              variant="gradient" 
-              color="" 
-              onClick={()=>onHandleBuyPrompt()}>
-              <span>確認支付</span>
-            </Button>
-          </DialogFooter>
-        </Dialog>
+        open={open}
+        size={"xs"}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className='bg-gray-900'
+      >
+        <DialogHeader className='text-lg text-white/80'>購買 Prompt</DialogHeader>
+        <DialogBody 
+    
+          className=' text-white '>
+          你可用的點數 <span className='text-amber-500'>{currentUser.point} Points</span> <br />
+          將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
+          <div className='text-red-300 text-sm font-semibold text-center mt-5'>{buyError&& buyError}</div>
+        </DialogBody>
+        <DialogFooter className='border-t border-gray-600'>
+          <Button
+            variant="text"
+            color="white"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>取消</span>
+          </Button>
+          <Button 
+            variant="gradient" 
+            color="" 
+            onClick={()=>onHandleBuyPrompt()}>
+            <span>確認支付</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
 
       {!imageData ?
       <div className='text-white'>Loading</div> 

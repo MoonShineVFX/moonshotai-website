@@ -43,6 +43,7 @@ import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
 import Sdxl from './Page/Gallery/CampaignPage/Sdxl';
 import Voice from './Page/Gallery/CampaignPage/Voice';
 import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
+import Rewards from './Page/Gallery/RewardPage'
 
 import  Command from  './Page/Command';
 import  Generator from './Page/Generator'
@@ -108,6 +109,7 @@ function App() {
           <Route path="sdxl" element={<Sdxl />} />
           <Route path="voice" element={<Voice />} />
           <Route path="leaderboard" element={<LeaderBoardHome />} />
+          <Route path="rewards" element={<Rewards />} />
 
  
           <Route path="post/:id" element={<Post />} />

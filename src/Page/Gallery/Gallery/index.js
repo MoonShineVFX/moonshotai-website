@@ -54,7 +54,6 @@ function Index() {
   const [ isCollected ,setIsCollected] = useState(false)
   const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
 
-
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [isInitialized, setIsInitialized] = useState(false);

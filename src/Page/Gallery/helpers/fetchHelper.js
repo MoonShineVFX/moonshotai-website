@@ -2,7 +2,7 @@
 import React, { useState }  from 'react'
 import liff from '@line/liff';
 import {   useRecoilState } from 'recoil';
-import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
+import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
@@ -663,6 +663,22 @@ export const fetchUserProfileData = async (userId, token, queryClient) => {
     fetchUserProfile(userId, token)
   );
 };
+// use 
+export function useFetchUserProfile(userId, token,isInitialized,isLoggedIn){
+  return useQuery(
+    ['userProfile', userId, token],
+    ({pageParam})=>
+    fetchUserProfile(userId,token),
+    {
+      enabled: isInitialized && (token !== null || isLoggedIn !== null),
+      onSuccess:async(data, variables) => { 
+        // to local
+        console.log(data)
+
+      }
+    }
+  )
+}
 
 export const patchUserProfile = async (userid,token,items) =>{
   const requestOptions = {
@@ -1221,7 +1237,6 @@ export const userPromptBuyAImage =async (image,token) =>{
     },
     
   };
-  console.log(image)
   const response =await fetch(apiUrl+'galleries/'+image.id+'/prompt_buy', requestOptions)
   if (!response.ok) {
     const errorData = await response.json();
@@ -1284,3 +1299,67 @@ export function useUserOwnPrompts(linLoginToken,id, pageSize,isInitialized,isLog
     }
   );
 }
+
+
+// point products
+export const fetchPointProducts =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'point_products ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//use function : point products
+export function usePointProducts(linLoginData,isInitialized,isLoggedIn) {
+  return useQuery(
+    'pointProducts',
+    ({ pageParam }) =>
+    fetchPointProducts(linLoginData,pageParam),
+    {
+      enabled: isInitialized && (linLoginData !== null || isLoggedIn !== null),
+    }
+
+  );
+}
+
+//User BUY(userRedeemPointProduct) Point product 購買點數商品
+export const userRedeemPointProduct =async (product,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    
+  };
+  const response =await fetch(apiUrl+'point_products/'+product.id+'/purchase', requestOptions)
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.log(errorData)
+    throw new Error(errorData.message);
+  }
+  const data =await response
+  return data
+}
+//use USER BUY(userRedeemPointProduct) Point product
+export function useRedeemProduct(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const imageMutation = useMutation((updatedData) =>
+  userRedeemPointProduct(updatedData.selectedProduct, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+      
+      },
+    }
+  );
+
+  return imageMutation;
+}
+
+
+
