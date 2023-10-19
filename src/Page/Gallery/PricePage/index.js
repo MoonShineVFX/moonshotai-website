@@ -278,7 +278,7 @@ function Index() {
             })
             return
           }
-
+          
           setIsCheckAccount(false)
           setIsReadyToPayPage(true)
           setTimeout(()=>{
