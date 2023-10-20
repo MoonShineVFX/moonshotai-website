@@ -4,6 +4,7 @@ import { signOut  } from "firebase/auth";
 import {
   Navbar,
   MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -93,11 +94,11 @@ const AdminNavbar = () => {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
           
 
-        </MobileNav>
+        </Collapse>
       </Navbar>
 
   )
