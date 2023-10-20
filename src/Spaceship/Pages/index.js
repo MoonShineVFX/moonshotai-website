@@ -19,17 +19,23 @@ function Index() {
     })
   }
   return (
-    <div>
-      <Button onClick={() => signOut(auth)}>登出</Button>
-      <div className='grid grid-cols-3 gap-5 justify-center'>
-        <NsfwImageForm title={"Add Nsfw"} handleAdminFun={handleAddNsfw} />
-        <NsfwImageForm title={"Del Nsfw"} handleAdminFun={handleDelNsfw} />
+    <>
+      <h1 className='text-black text-xl font-semibold mb-5'>基本快速功能</h1>
+      <div className='flex flex-col'>
+        <div className='text-black my-2'>圖片加成人標籤</div>
+        <div className='grid grid-cols-3 gap-5 justify-center'>
+          <NsfwImageForm title={"輸入圖片 id 加入 Nsfw"} handleAdminFun={handleAddNsfw} />
+          <NsfwImageForm title={"輸入圖片 id 刪除 Nsfw"} handleAdminFun={handleDelNsfw} />
+        </div>
       </div>
+
+
+
       <div>
 
       </div>
 
-    </div>
+    </>
   )
 }
 
