@@ -33,7 +33,7 @@ function Section01() {
         </div>
         <div className='w-full order-1 md:order-2'>
           <picture>
-            <source srcset="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?format=webp&width=640" type="image/webp" className='max-w-full w-[90%] mx-auto'/>
+            <source src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?format=webp&width=640" type="image/webp" className='max-w-full w-[90%] mx-auto'/>
             <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?width=640" alt="" className='max-w-full w-[90%] mx-auto' />
 
 

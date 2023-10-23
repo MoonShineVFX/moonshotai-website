@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import liff from '@line/liff';
 import { useNavigate } from 'react-router-dom';
 import { FaBars,FaTimes,FaAngleRight } from "react-icons/fa";
-import { MdHome,MdDashboard,MdLogin,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox } from "react-icons/md";
+import { MdHome,MdDashboard,MdLogin,MdStar,MdDocumentScanner,MdAssignment,MdViewModule,MdAccountBox,MdCardGiftcard } from "react-icons/md";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 import {Logout,removeLocalStorageItem,fetchLineLogin,fetchUserProfile,handleLogin,fetchUserProfileData} from '../helpers/fetchHelper'
@@ -348,6 +348,12 @@ function Index({}) {
                   onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                     <MdAssignment color="#88ad48" size={20}/> Orders
+                </Link>
+                <Link 
+                  to='/rewards' 
+                  onClick={()=>setIsOpen(false)}
+                  className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
+                    <MdCardGiftcard color="#88ad48" size={20}/> Rewards 獎勵計劃
                 </Link>
               </>
               }

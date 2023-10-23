@@ -1,4 +1,5 @@
 import React, { useState, useEffect }  from 'react'
+import { Link } from "react-router-dom";
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState, userState, imageFormModalState,imageModalState,beforeDisplayModalState } from '../atoms/galleryAtom';
 import { fetchLineLogin, fetchUserProfile, fetchUser, patchUserProfile,fetchUserFollowings,getStoredLocalData,refreshToken,getSubscriptions } from '../helpers/fetchHelper';
@@ -11,6 +12,7 @@ import { MdContentCopy } from "react-icons/md"
 import { GiTwoCoins, GiCutDiamond } from "react-icons/gi";
 import { FaAngleRight } from "react-icons/fa6";
 import { getAnalytics, logEvent } from "firebase/analytics";
+import { Chip } from "@material-tailwind/react";
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
@@ -218,11 +220,19 @@ function Index() {
           <div>
             {currentProfile?.point && <div className=' rounded-md bg-gray-800 p-4 my-2 flex justify-between' >
               <div className='flex items-center gap-2 '> <GiTwoCoins className='text-yellow-700' size={20} /> <span className='text-sm font-semibold'>{currentProfile.point } Points</span></div>
-              <div className='flex items-center gap-2 text-white/60 text-sm'>兌換福利 <FaAngleRight /></div>
+              <Link to="/rewards" className='flex items-center gap-2 text-white/60 text-sm hover:text-white'>兌換福利 <FaAngleRight /></Link>
             </div>}
-            <div className='text-white/70 my-2 text-xs'>會員狀態</div>
+            <div className='flex items-center gap-2'>
+              <div className='text-white/70 my-2 text-xs'>會員狀態 </div>
+              <Chip 
+                variant={currentProfile.is_vip ? 'gradient' : currentProfile.is_subscribed  ? 'gradient' : 'gradient'}  
+                color={currentProfile.is_vip ? 'green' : currentProfile.is_subscribed  ? 'green' : 'gray'}  
+                value={currentProfile.is_vip ? 'VIP' : currentProfile.is_subscribed  ? '進階' : '免費'} 
+                className="rounded-lg py-1 " 
+              /> 
+            </div>
             <div className='flex items-center gap-1 border-b border-gray-700 pb-2 text-white/80'>  
-              <div>{currentProfile.is_subscribed  ? '進階' : 'FREE'}   </div>          
+              <div>{currentProfile.is_subscribed  ? '使用日期' : '免費會員'}   </div>          
               {currentProfile.is_subscribed && 
                 <div htmlFor="name" className='text-sm '>至 {moment(currentProfile.subscription_end_at).format('YYYY-MM-DD HH:mm') }</div>
               }

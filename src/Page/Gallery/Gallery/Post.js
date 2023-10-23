@@ -43,7 +43,7 @@ function Post() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [lineProfile, setLineProfile] = useState({});
   const [linLoginToken, setLineLoginToken] = useState('')
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [formStatus, setFormStatus] = useRecoilState(formStatusState);
   const [currentComment, setCurrentComment] = useRecoilState(commentDataState);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -383,7 +383,7 @@ function Post() {
           className=' text-white '>
           你可用的點數 <span className='text-amber-500'>{currentUser.point} Points</span> <br />
           將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
-          <div className='text-red-300 text-sm font-semibold text-center mt-5'>{buyError&& buyError}</div>
+          <div className='text-red-500 text-sm  text-center mt-5'>{buyError&& buyError}</div>
         </DialogBody>
         <DialogFooter className='border-t border-gray-600'>
           <Button

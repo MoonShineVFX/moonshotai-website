@@ -240,13 +240,23 @@ function Index() {
                     <div  className=' relative group' >
                       <Link to={`/post/${id}`} className=' relative overflow-hidden   rounded-md' onClick={recordPageUrl}>
                         <LazyLoad  >
-                        <img  
-                          alt={title}
-                          src={urls.thumb+'?width=400'}
-                          data-id={id}
-                          className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
-  
-                        />
+                        <picture>
+                          <source  
+                            alt={title}
+                            src={urls.thumb+'?format=webp&width=350'}
+                            data-id={id}
+                            className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
+                            type="image/webp"
+                          />
+                          <img  
+                            alt={title}
+                            src={urls.thumb+'?width=350'}
+                            data-id={id}
+                            className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
+    
+                          />
+                        </picture>
+
                         </LazyLoad>
                       </Link>
 

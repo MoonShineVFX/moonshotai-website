@@ -233,15 +233,29 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
                   className=' rounded-lg overflow-hidden relative w-full aspect-square  object-cover '
                 >
                   <div className='pt-[100%] relative'>
-                    <img  
-                      src={urls.thumb} alt={image?.description} 
-                      data-id={id}
-                      className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md cursor-pointer'
-                      onClick={() => {
-                        setImageData(image)
-                        setIsShowImageModal(true)
-                      }} 
-                    />
+                    <picture>
+                      <source  
+                        src={urls.thumb+'?format=webp&width=350'} alt={image?.description} 
+                        data-id={id}
+                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md cursor-pointer'
+                        onClick={() => {
+                          setImageData(image)
+                          setIsShowImageModal(true)
+                        }} 
+                        type='image/webp'
+
+                      />
+                      <img  
+                        src={urls.thumb+'?width=350'} alt={image?.description} 
+                        data-id={id}
+                        className=' absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md cursor-pointer'
+                        onClick={() => {
+                          setImageData(image)
+                          setIsShowImageModal(true)
+                        }} 
+                      />
+                    </picture>
+
                   </div>
 
                   <div className=' absolute top-0 left-0 text-white w-full flex justify-between items-center  '> 

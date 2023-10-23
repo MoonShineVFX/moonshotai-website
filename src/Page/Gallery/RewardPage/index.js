@@ -32,7 +32,7 @@ function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [lineProfile, setLineProfile] = useState(null);
   const [linLoginData, setLineLoginData] = useState(null)
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [isInitialized, setIsInitialized] = useState(false);
   const [ isLoginForNext , setIsLoginForNext] = useState(false)
   const [selectedItem, setSelectedItem] = useState(menuItems[0]);
@@ -86,9 +86,9 @@ function Index() {
       setBuyError(<LoadingLogoSpin /> )
       setTimeout(async()=>{
         setBuyError('訊息：兌換已完成。')
+        
         //update user porfile
         const udata = await fetchUserProfileData(currentUser.id, linLoginData, queryClient);
-        console.log(udata)
         localStorage.setItem('currentUser', JSON.stringify(udata));
         setCurrentUser(udata)
 

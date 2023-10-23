@@ -94,7 +94,10 @@ function LeaderboardComp({page,title,data,isLoading,customer_sliceNum,more,conta
           (
             data.slice(0,sliceNum).map((item,index)=>{
               return(
-                <div key={title+'_leaderComp_'+index} className={`flex items-center justify-start gap-1  md:w-full ${listStyle} ${isMobile && index===0 && '  '}`}>
+                <div 
+                  key={title+'_leaderComp_'+index} 
+                  className={`flex items-center justify-start gap-1  md:w-full ${listStyle} ${isMobile && index===0 && '  '}`}>
+                  
                   {page !== 'home'&&<div className='text-white/60 text-xs mr-2'>
                     {index === 0 ?  
                       <GiLaurelsTrophy color="#ffc107" size={17} /> 

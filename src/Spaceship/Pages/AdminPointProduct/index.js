@@ -187,11 +187,7 @@ function Index() {
                             <FaPen className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip content="刪除">
-                          <IconButton variant="text">
-                            <FaTrashCan className="h-4 w-4" />
-                          </IconButton>
-                        </Tooltip>
+
                       </td>
                     </tr>
                   );
