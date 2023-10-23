@@ -23,6 +23,8 @@ function Section01() {
               className=' absolute -top-3 -left-2 md:-left-6'
               style={{animation: 'float_t01 6s ease-in-out infinite'}}  
             >
+
+              
               <img src={process.env.PUBLIC_URL+'/images/ver3_images/section01_c01.png'} alt="" />
             </div>
           </div>
@@ -30,7 +32,12 @@ function Section01() {
 
         </div>
         <div className='w-full order-1 md:order-2'>
-          <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png" alt="" className='max-w-full w-[90%] mx-auto' />
+          <picture>
+            <source srcset="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?format=webp&width=640" type="image/webp" className='max-w-full w-[90%] mx-auto'/>
+            <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?width=640" alt="" className='max-w-full w-[90%] mx-auto' />
+
+
+          </picture>
         </div>
       </div>
     </div>

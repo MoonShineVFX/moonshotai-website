@@ -4,7 +4,7 @@ function Section_about() {
   return (
     <div
       className='bg-cover bg-center bg-no-repeat h-[65vh] md:min-h-[70vh] relative'
-      style={{backgroundImage: `url(${'https://moonshine.b-cdn.net/msweb/moonshotai/home_images/moon-bg.png'})`}}
+      style={{backgroundImage: `url(${'https://moonshine.b-cdn.net/msweb/moonshotai/home_images/moon-bg.png?format=jpeg'})`}}
 
     >
     <div className=' absolute top-0 left-0 w-full h-12 md:h-32 bg-gradient-to-b from-black via-black z-0'></div>

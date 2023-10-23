@@ -23,7 +23,11 @@ function Header({executeScroll}) {
 
             <div className=' w-full mx-auto  relative md:my-7'>
               <div className="circle absolute  -z-10  "></div>
-              <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png' alt="" className='w-full'/>
+              <picture>
+                <source srcset="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png?format=webp&width=640" type="image/webp" className='w-full'/>
+                <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png?width=640' alt="" className='w-full'/>
+
+              </picture>
             </div>
           
         </div>

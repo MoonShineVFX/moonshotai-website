@@ -31,7 +31,7 @@ function Section04() {
   return (
     <div className=' relative my-16'>
       <div className='overflow-hidden'>
-        <div className='  w-[1000px] md:w-[2000px] opacity-50 mb-6   relative' id="headerBg2">
+        <div className='  w-[1000px] md:w-[2000px] opacity-50 mb-6 relative' id="headerBg2">
           <RandomImagesBg data={shuffledData1} seed={18976}/>
         </div>
         <div className='  w-[1000px] md:w-[2000px] opacity-50  relative' id="headerBg3">

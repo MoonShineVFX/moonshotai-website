@@ -613,7 +613,7 @@ export const getWordFromLetter=(letter)=>{
     case 'sd':
       return 'PR';
     case 'mj':
-      return 'CT';
+      return 'MJ';
     case 'nv':
       return 'CM';
     case 'av':
