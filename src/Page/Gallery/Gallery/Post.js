@@ -470,12 +470,16 @@ function Post() {
               
               <div className='flex  justify-between items-center my-3 pt-5'>
                 <div className='text-white/70 font-semibold '>Prompt 提示詞</div>
-                <Chip 
-                  variant={'gradient'}  
-                  color={imageData.is_prompt_sale && imageData.is_prompt_bought ? 'green' : 'amber'}  
-                  value={imageData.is_prompt_sale && imageData.is_prompt_bought  ? '已支付點數' : imageData.prompt_sale_point} 
-                  className="rounded-lg py-1 " 
-                /> 
+                {
+                  imageData?.author?.id !== currentUser?.id  &&
+                  <Chip 
+                    variant={'gradient'}  
+                    color={imageData.is_prompt_sale ? imageData.is_prompt_bought ? 'green' : 'green' : 'black'}  
+                    value={imageData.is_prompt_sale ? imageData.is_prompt_bought ? '您已買過' : imageData.prompt_sale_point+' Points' : '未販售'} 
+                    className="rounded-lg py-1 " 
+                  /> 
+                }
+
               </div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
                 {/* {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
