@@ -25,7 +25,8 @@ import {
   Dialog,
   DialogHeader,
   DialogBody,
-  DialogFooter
+  DialogFooter,
+  Chip
 } from "@material-tailwind/react";
 import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } from 'react-query';
 import { getAnalytics, logEvent } from "firebase/analytics";
@@ -467,7 +468,15 @@ function Post() {
 
             <div className='w-full md:w-full flex flex-col justify-end  relative pb-12 pt-'>
               
-              <div className='text-white/70 font-semibold my-3 pt-5'>Prompt 提示詞</div>
+              <div className='flex  justify-between items-center my-3 pt-5'>
+                <div className='text-white/70 font-semibold '>Prompt 提示詞</div>
+                <Chip 
+                  variant={'gradient'}  
+                  color={imageData.is_prompt_sale && imageData.is_prompt_bought ? 'green' : 'amber'}  
+                  value={imageData.is_prompt_sale && imageData.is_prompt_bought  ? '已支付點數' : imageData.prompt_sale_point} 
+                  className="rounded-lg py-1 " 
+                /> 
+              </div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
                 {/* {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
                 {/* {imageData?.is_prompt_sale ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
@@ -476,7 +485,10 @@ function Post() {
                   : 
                   imageData?.is_prompt_sale  ?
                     imageData?.is_prompt_bought ? 
-                    <div className='p-3 text-sm'>{imageData?.prompt}</div>
+                    <div className='p-3 text-sm border-t-2 border-t_lime-400'>
+                      {imageData?.prompt}
+                      
+                    </div>
                     :
                     <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
                       <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
