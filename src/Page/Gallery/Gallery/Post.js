@@ -381,7 +381,7 @@ function Post() {
         <DialogBody 
     
           className=' text-white '>
-          你可用的點數 <span className='text-amber-500'>{currentUser.point} Points</span> <br />
+          你可用的點數 <span className='text-amber-500'>{currentUser?.point} Points</span> <br />
           將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
           <div className='text-red-500 text-sm  text-center mt-5'>{buyError&& buyError}</div>
         </DialogBody>
@@ -475,6 +475,9 @@ function Post() {
                   <div className='p-3 text-sm'>{imageData?.prompt}</div>  
                   : 
                   imageData?.is_prompt_sale  ?
+                    imageData?.is_prompt_bought ? 
+                    <div className='p-3 text-sm'>{imageData?.prompt}</div>
+                    :
                     <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
                       <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
                       

@@ -1253,7 +1253,7 @@ export function usePromptBuyMutation(linLoginData,fnKey) {
   userPromptBuyAImage(updatedData.imageData, linLoginData),
     {
       onSuccess: (data, variables) => {
-      
+        queryClient.invalidateQueries(fnKey);
 
       },
     }
