@@ -8,7 +8,7 @@ function SubscriptionsList({subData,plans,currentUser}) {
   const [isReqError, setReqError] = useState(false);
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Order_訂閱紀錄頁面_進入訪問')
+    logEvent(analytics, 'Order_訂閱紀錄頁面_進入')
   },[])
   const SelecPlans = ({id})=>{
     const newData = plans.filter(item=>{

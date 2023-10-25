@@ -5,7 +5,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 const GiftsList = ({giftData,handleOpenGift,isMutationLoading,currentlyUpdatingGiftId,setCurrentlyUpdatingGiftId}) => {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Order_禮物箱頁面_進入訪問')
+    logEvent(analytics, 'Order_禮物箱頁面_進入')
   },[])
   return (
     <div className='text-white pb-10'>

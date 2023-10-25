@@ -23,7 +23,7 @@ const PromptList = ({data}) => {
     setIsCopied(true)
   }
   useEffect(()=>{
-    logEvent(analytics, 'Order_已購咒語頁面_進入訪問')
+    logEvent(analytics, 'Order_已購咒語頁面_進入')
   },[])
   return (
     <div className='text-white pb-10'>

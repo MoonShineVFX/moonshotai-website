@@ -7,8 +7,8 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
 import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages,usePromptBuyMutation,fetchUserProfileData} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
-import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
+import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
+import { FaHeart,FaRegHeart,FaCommentAlt,FaRegCommentAlt,FaBookmark,FaRegBookmark } from "react-icons/fa";
 
 import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
@@ -76,7 +76,7 @@ function Post() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, '單張圖頁面_進入訪問',{
+    logEvent(analytics, '單張圖頁面_訪問',{
       imgid:id
     })
   },[])
@@ -434,7 +434,7 @@ function Post() {
                     {imageData.is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span>
                   </div>
                   <button className=' ' onClick={handleComment}>
-                    <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
+                    {isHaveUserComment ? <FaRegCommentAlt /> : <FaCommentAlt /> }
                   </button>
                   <button className='' onClick={handleShare}>
                     <MdOutlineShare size={15} />
@@ -474,35 +474,38 @@ function Post() {
                   imageData?.author?.id !== currentUser?.id  &&
                   <Chip 
                     variant={'gradient'}  
-                    color={imageData.is_prompt_sale ? imageData.is_prompt_bought ? 'green' : 'green' : 'black'}  
+                    color={imageData.is_prompt_sale ? imageData.is_prompt_bought ? 'green' : 'green' : 'gray'}  
                     value={imageData.is_prompt_sale ? imageData.is_prompt_bought ? '您已買過' : imageData.prompt_sale_point+' Points' : '未販售'} 
                     className="rounded-lg py-1 " 
                   /> 
                 }
 
               </div>
-              <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-                {/* {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
-                {/* {imageData?.is_prompt_sale ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
-                {imageData?.author?.id === currentUser?.id ? 
-                  <div className='p-3 text-sm'>{imageData?.prompt}</div>  
-                  : 
-                  imageData?.is_prompt_sale  ?
-                    imageData?.is_prompt_bought ? 
-                    <div className='p-3 text-sm border-t-2 border-t_lime-400'>
-                      {imageData?.prompt}
-                      
-                    </div>
-                    :
-                    <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
-                      <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
-                      
-                      <Button size="sm" color="light-green" className='mt-3' onClick={()=>handleBuyPrompt(imageData.prompt_sale_point)}>支付 {imageData.prompt_sale_point} Points 給作者</Button>
-                    </div> 
+              <div>
+                <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+                  {/* {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
+                  {/* {imageData?.is_prompt_sale ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
+                  {imageData?.author?.id === currentUser?.id ? 
+                    <div className='p-3 text-sm'>{imageData?.prompt}</div>  
                     : 
-                    <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>
-                }
+                    imageData?.is_prompt_sale  ?
+                      imageData?.is_prompt_bought ? 
+                      <div className='p-3 text-sm border-t-2 border-t_lime-400'>
+                        {imageData?.prompt}
+                        
+                      </div>
+                      :
+                      <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
+                        <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
+                        
+                        <Button size="sm" color="light-green" className='mt-3' onClick={()=>handleBuyPrompt(imageData.prompt_sale_point)}>支付 {imageData.prompt_sale_point} Points 給作者</Button>
+                      </div> 
+                      : 
+                      <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>
+                  }
+                </div>
               </div>
+
               <div className='text-white/70 font-semibold my-3 pt-5'>Negative prompt 反向提示詞</div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
                 <div className='p-3'>{imageData?.negative_prompt}</div>
@@ -573,9 +576,6 @@ function Post() {
                     }
                     </List>
                   </Card>
-
-
-            
 
                 </div>
               }

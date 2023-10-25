@@ -4,7 +4,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 function UserDoc() {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Doc_個人帳戶頁_進入訪問')
+    logEvent(analytics, 'Doc_個人帳戶頁_進入')
   },[])
   return (
     <div className='text-white'>

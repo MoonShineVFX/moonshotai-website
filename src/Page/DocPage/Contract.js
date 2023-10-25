@@ -4,7 +4,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 function Contract() {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Doc_藝廊公約頁_進入訪問')
+    logEvent(analytics, 'Doc_藝廊公約頁_進入')
   },[])
   return (
     <div className='text-white '>

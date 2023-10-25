@@ -3,7 +3,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 function CommandDoc() {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Doc_指令介紹頁_進入訪問')
+    logEvent(analytics, 'Doc_指令介紹頁_進入')
   },[])
   const commendItem = [
     {display_name:"寫實風格",name:"PR"},

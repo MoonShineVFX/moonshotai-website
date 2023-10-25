@@ -35,7 +35,7 @@ function Index({title,images,imagesResults,handleCollection,handleStorage,handle
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Profile_Render頁面_進入訪問')
+    logEvent(analytics, 'Profile_Render頁面_進入')
   },[])
 
 

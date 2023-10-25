@@ -15,7 +15,7 @@ function OrderList({orderData,handleRefund,handleReport}) {
   }
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Order_訂單列表頁面_進入訪問')
+    logEvent(analytics, 'Order_訂單列表頁面_進入')
   },[])
 
   const isPast48Hours = (date) => {

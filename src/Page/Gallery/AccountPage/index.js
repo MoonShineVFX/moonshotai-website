@@ -32,7 +32,7 @@ function Index() {
   const [ isSaveSuccess , setIsSaveSuccess] = useState(false)
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Profile_Account頁面_進入訪問')
+    logEvent(analytics, 'Profile_Account頁面_進入')
   },[])
   const onSubmit = (data) => {
     // console.log(data);

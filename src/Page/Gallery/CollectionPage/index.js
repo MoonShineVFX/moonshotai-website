@@ -49,7 +49,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveCollection
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Profile_Collections頁面_進入訪問')
+    logEvent(analytics, 'Profile_Collections頁面_進入')
   },[])
   const onHandleRemoveCollection = (image)=>{
     handleRemoveCollection(image,'collectionPage')

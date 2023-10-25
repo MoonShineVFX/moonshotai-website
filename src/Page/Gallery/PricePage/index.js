@@ -46,7 +46,7 @@ function Index() {
   });
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, '價格介紹頁面_進入訪問')
+    logEvent(analytics, '價格介紹頁面_進入')
   },[])
 
   useEffect(()=>{

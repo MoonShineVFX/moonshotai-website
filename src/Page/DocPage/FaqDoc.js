@@ -3,7 +3,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 function FaqDoc() {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Doc_常見問答頁_進入訪問')
+    logEvent(analytics, 'Doc_常見問答頁_進入')
   },[])
   return (
     <div className='text-white'>

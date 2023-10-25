@@ -52,7 +52,7 @@ function Index({title,images,imagesResults,currentProfile,handleRemoveStorage,ha
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Profile_Post頁面_進入訪問')
+    logEvent(analytics, 'Profile_Post頁面_進入')
   },[])
   //棄用
   const onHandleRemoveStorage = (image)=>{

@@ -10,7 +10,7 @@ function SpaceshipLayout() {
   return (
     <div className=' flex flex-col h-screen'>
         <AdminNavbar />
-        <div className=' flex overflow-hidden  relative flex-nowrap relative flex-grow'>
+        <div className=' flex overflow-hidden  relative flex-nowrap flex-grow'>
           <AdminSidebar />
           <div className='flex text-white w-full p-4'>
             <div className=' overflow-y-auto min-w-full'>

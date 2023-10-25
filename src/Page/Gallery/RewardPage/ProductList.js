@@ -13,7 +13,7 @@ import {
 const ProductList = ({data,handleBuyPointProduct,setSelectedProduct}) => {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Order_已購咒語頁面_進入訪問')
+    logEvent(analytics, 'Order_已購咒語頁面_進入')
   },[])
 
   if(!data) return

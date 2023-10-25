@@ -51,7 +51,7 @@ function Index({title,follows,followsResults,currentProfile,handleUnfollow,total
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Profile_Following頁面_進入訪問')
+    logEvent(analytics, 'Profile_Following頁面_進入')
   },[])
   const onHandlUnfollow = (user)=>{
     console.log(user)

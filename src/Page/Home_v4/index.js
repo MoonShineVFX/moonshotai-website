@@ -14,7 +14,7 @@ function Index() {
   const executeScroll = () => myRef.current?.scrollIntoView({behavior: 'smooth'});
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Moonshot首頁_進入訪問')
+    logEvent(analytics, 'Moonshot首頁_進入')
   },[])
   return (
     <div className=''>

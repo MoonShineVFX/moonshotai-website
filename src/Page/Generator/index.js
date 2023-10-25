@@ -50,7 +50,7 @@ function Index() {
   const [sendSuccess , setSendSuccess] = useState(false)
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, '咒語生成器_進入訪問')
+    logEvent(analytics, '咒語生成器_進入')
   },[])
   const init=async()=>{
     try {

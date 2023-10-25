@@ -4,7 +4,7 @@ import { getAnalytics, logEvent } from "firebase/analytics";
 function Policy() {
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Doc_隱私權政策頁_進入訪問')
+    logEvent(analytics, 'Doc_隱私權政策頁_進入')
   },[])
   const [language, setLanguage] = useState('zh');
   const privacyPolicyZh = (
