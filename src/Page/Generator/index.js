@@ -196,21 +196,21 @@ function Index() {
       u_scale:scale
     })
     setSendSuccess(false)
-    // liff.sendMessages([
-    //   {
-    //     type: 'text',
-    //     text: alltext
-    //   }
-    // ]).then(function(res) {
-    //   setSendSuccess(true)
-    //   setTimeout(()=>{
-    //     liff.closeWindow()
-    //   },900)
-    // })
-    // .catch(function(error) {
-    //   console.log(error);
-    //   setErrMsg('sendmsg err:'+error)
-    // });
+    liff.sendMessages([
+      {
+        type: 'text',
+        text: alltext
+      }
+    ]).then(function(res) {
+      setSendSuccess(true)
+      setTimeout(()=>{
+        liff.closeWindow()
+      },900)
+    })
+    .catch(function(error) {
+      console.log(error);
+      setErrMsg('sendmsg err:'+error)
+    });
   };
 
 
