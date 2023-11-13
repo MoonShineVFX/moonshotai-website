@@ -112,7 +112,7 @@ function App() {
           <Route path="sdxl" element={<Sdxl />} />
           <Route path="voice" element={<Voice />} />
           <Route path="leaderboard" element={<LeaderBoardHome />} />
-          <Route path="rewards" element={<Rewards />} />
+          {/* <Route path="rewards" element={<Rewards />} /> */}
 
  
           <Route path="post/:id" element={<Post />} />

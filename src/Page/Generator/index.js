@@ -8,7 +8,7 @@ import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 import { getAnalytics, logEvent } from "firebase/analytics";
 function Index() {
-  console.log(promptPresets)
+  // console.log(promptPresets)
   const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
   const RATIOS = [
     { name: '16:9', value:'16/9', type:"h", aspect:"aspect-[16/9]", percent:"pt-56.25%"  },
@@ -82,6 +82,7 @@ function Index() {
       }
     });
     setValue('prompt', storedText);
+   
   }, [setValue]);
   React.useEffect(() => {
     const cookies = document.cookie.split(';');
@@ -94,12 +95,82 @@ function Index() {
     });
     setValue('nativeprompt', storedText);
   }, [setValue]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userRatio') {
+        storedText = decodeURIComponent(value);
+      }
+    });
+    setValue('ratio', storedText);
+  }, [setValue]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userSteps') {
+        storedText = decodeURIComponent(value);
+      }
+    });
+    setValue('steps', storedText);
+  }, [setValue]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userScale') {
+        storedText = decodeURIComponent(value);
+       
+      }
+    });
+    console.log(storedText)
+    setValue('scaleOption', storedText);
+  }, [setValue]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userStyles') {
+        storedText = decodeURIComponent(value);
+        setSelectedStyles(JSON.parse(storedText))
+      }
+    });
+  }, [setSelectedStyles]);
+  React.useEffect(() => {
+    const cookies = document.cookie.split(';');
+    let storedText = '';
+    cookies.forEach((cookie) => {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'userModel') {
+        storedText = decodeURIComponent(value);
+        setCurrentModel(storedText)
+        console.log(storedText)
+      }
+    });
+  }, [setCurrentModel]);
   const onSubmit = data => {
     console.log(data)
     console.log(selectedStyles)
+    const selectedStylesString = JSON.stringify(selectedStyles);
+    const ratioNum = data.ratio ? data.ratio : 5
+    const stepNum = data.steps ? data.steps : 25
+    const scaleNum = data.scaleOption ? data.scaleOption : "0"
+
     // 指令存cookie
-    document.cookie = `userText=${encodeURIComponent(data.prompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
-    document.cookie = `userNativeText=${encodeURIComponent(data.nativeprompt)}; expires=${new Date(new Date().getTime() + 31536000000).toUTCString()}; path=/`;
+    document.cookie = `userText=${encodeURIComponent(data.prompt)}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userNativeText=${encodeURIComponent(data.nativeprompt)}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userStyles=${selectedStylesString}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userModel=${data.selectedModel}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userRatio=${ratioNum}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userSteps=${stepNum}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+    document.cookie = `userScale=${data.scaleOption}; expires=${new Date('2030-01-01').toUTCString()}; path=/`;
+
+
     const model = data.selectedModel
     const ratio = data.ratio && data.ratio === 5 ? '' : RATIOS[data?.ratio-1].name+','
     let styles = '';
@@ -125,21 +196,21 @@ function Index() {
       u_scale:scale
     })
     setSendSuccess(false)
-    liff.sendMessages([
-      {
-        type: 'text',
-        text: alltext
-      }
-    ]).then(function(res) {
-      setSendSuccess(true)
-      setTimeout(()=>{
-        liff.closeWindow()
-      },900)
-    })
-    .catch(function(error) {
-      console.log(error);
-      setErrMsg('sendmsg err:'+error)
-    });
+    // liff.sendMessages([
+    //   {
+    //     type: 'text',
+    //     text: alltext
+    //   }
+    // ]).then(function(res) {
+    //   setSendSuccess(true)
+    //   setTimeout(()=>{
+    //     liff.closeWindow()
+    //   },900)
+    // })
+    // .catch(function(error) {
+    //   console.log(error);
+    //   setErrMsg('sendmsg err:'+error)
+    // });
   };
 
 
@@ -214,6 +285,7 @@ function Index() {
               render={({ field }) => (
                 <ModelSelector
                   data={models}
+                  selectedCookie={currentModel}
                   onModelChange={(selectedModel) => {
                     setCurrentModel(selectedModel)
                     field.onChange(selectedModel.command)
@@ -229,6 +301,7 @@ function Index() {
               render={({ field }) => (
                 <StyleSelector
                   data={promptPresets}
+                  selectedCookie={selectedStyles}
                   onStyleChange={(selectedItem) => {
                     console.log(selectedItem)
                     setSelectedStyles(selectedItem.length > 0 ? selectedItem : ['無'])
@@ -280,10 +353,15 @@ function Index() {
                 name="scaleOption"
                 control={control}
                 render={({ field }) => (
-                  <Radio {...field} icon={ <FaCheck/>}  label="預設" value="0" color="light-blue" labelProps={{className: "text-white"}} defaultChecked />
+                  <div>
+                    <Radio {...field} icon={ <FaCheck/>}  label="預設" value="0" color="light-blue" labelProps={{className: "text-white"}} checked={field.value === "0"}  />
+                    <Radio {...field} icon={ <FaCheck/>}  label="製作大圖" value="/hr" color="light-blue" labelProps={{className: "text-white"}}checked={field.value === "/hr"}/>
+                    <Radio {...field} icon={ <FaCheck/>} label="製作中圖" value="/mr" color="light-blue" labelProps={{className: "text-white"}} checked={field.value === "/mr"}/>
+                  </div>  
+                 
                 )}
               />
-              <Controller
+              {/* <Controller
                 name="scaleOption"
                 control={control}
                 render={({ field }) => (
@@ -296,13 +374,19 @@ function Index() {
                 render={({ field }) => (
                   <Radio {...field} icon={ <FaCheck/>} label="製作中圖" value="/mr" color="light-blue" labelProps={{className: "text-white"}}/>
                 )}
-              />
+              /> */}
             </div>
 
           </div>
 
           <div className='flex gap-2 my-2'>
-            <Button color="gray" variant="gradient"  className='w-1/3' onClick={() => reset()}>重設</Button>
+            <Button color="gray" variant="gradient"  className='w-1/3' 
+              onClick={() => 
+              {
+                reset()
+                setCurrentModel(models[0])
+                setSelectedStyles([])
+              }}>重設</Button>
             <Button color="blue"  type='submit' className='w-2/3 flex  justify-center items-center  relative'>送出指令 {sendSuccess && <Spinner className=' absolute right-1/4' />}</Button>
           </div>
 

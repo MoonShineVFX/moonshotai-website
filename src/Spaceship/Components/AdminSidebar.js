@@ -40,7 +40,7 @@ function AdminSidebar() {
             target='_blank'
           >
             <Typography variant="h6" color="blue-gray" className="flex items-center gap-2">
-              MS GA表 
+              MS GA頁面
             </Typography>
             <Typography variant="small" color="gray" className="font-normal">
               需登入info帳號

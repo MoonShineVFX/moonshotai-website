@@ -13,9 +13,10 @@ import { Button,
   IconButton,
   Checkbox
 } from "@material-tailwind/react";
+import { upperCase } from 'lodash';
 
 
-export const ModelSelector = ({data, onModelChange}) =>{
+export const ModelSelector = ({data, onModelChange,selectedCookie}) =>{
   const [ currentModel , setCurrentModel] = useState(data[0])
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen((cur)=> !cur);
@@ -24,13 +25,24 @@ export const ModelSelector = ({data, onModelChange}) =>{
     handleOpen(); // 设置当前模型后关闭模态框
     onModelChange(model)
   };
+  useEffect(()=>{
+    if(selectedCookie.length>0){
+      var result = data.find(item=>{
+        return item.command ===  upperCase(selectedCookie) 
+      })
+      setCurrentModel( result)
+    }
+
+   
+ 
+   },[selectedCookie])
   return(
     <>
       <div className='w-full ' onClick={handleOpen}>
         <div className={`relative  text-sm border-gray-600 break-keep  my-2`}>模型 </div>
         <div className='bg-white/20  border border-white/40 text-white  font-bold rounded-md flex items-center h-16 overflow-hidden relative'>
           <div className='w-1/2 overflow-hidden'>
-            <img src={currentModel.image+'?width=400'} alt="" className=' object-cover object-center '/>
+            <img src={currentModel.image+'?width=300'} alt="" className=' object-cover object-center '/>
           </div>
           <div className='flex justify-center items-center w-full text-base'>{currentModel.title}</div>
         </div>
@@ -65,7 +77,7 @@ export const ModelSelector = ({data, onModelChange}) =>{
                   onClick={() => handleModelClick(model) }
                   className='bg-white/10  border border-white/30 text-white  font-bold rounded-md flex items-center h-14 overflow-hidden relative'>
                   <div className='w-full aspect-square overflow-hidden opacity-60'>
-                    <img src={model.image+'?width=400'} alt={model.title} className=' object-cover object-center '/>
+                    <img src={model.image+'?width=300'} alt={model.title} className=' object-cover object-center '/>
                   </div>
                   <div className=' absolute  flex justify-center items-center w-full text-base'>{model.title}</div>
                 </div>
@@ -92,7 +104,7 @@ export const ModelSelector = ({data, onModelChange}) =>{
 }
 
 
-export const StyleSelector = ({data, onStyleChange}) =>{
+export const StyleSelector = ({data, onStyleChange,selectedCookie}) =>{
   const [ currentStyle , setCurrentStyle] = useState(data[25])
   const [selectedStyles, setSelectedStyles] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -117,6 +129,13 @@ export const StyleSelector = ({data, onStyleChange}) =>{
     onStyleChange(selectedStyles);
     handleOpen();
   };
+
+  useEffect(()=>{
+   if(selectedCookie.length>0){
+    setSelectedStyles(selectedCookie)
+   }
+
+  },[selectedCookie])
   return(
     <>
       <div className='w-full ' onClick={handleOpen}>

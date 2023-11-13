@@ -349,12 +349,12 @@ function Index({}) {
                   className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                     <MdAssignment color="#88ad48" size={20}/> Orders
                 </Link>
-                <Link 
+                {/* <Link 
                   to='/rewards' 
                   onClick={()=>setIsOpen(false)}
                   className='p-2 cursor-pointer rounded-md hover:bg-gray-800  flex items-center gap-3'>
                     <MdCardGiftcard color="#88ad48" size={20}/> Rewards 獎勵計劃
-                </Link>
+                </Link> */}
               </>
               }
           </div>

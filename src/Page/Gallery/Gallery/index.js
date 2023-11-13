@@ -260,7 +260,7 @@ function Index() {
                         </LazyLoad>
                       </Link>
 
-                      {is_prompt_sale && 
+                      {/*is_prompt_sale && 
                       <div className=' absolute z-10 top-0 right-0 p-1 text-amber-400 text '>
 
                           <Tooltip
@@ -280,7 +280,7 @@ function Index() {
                           
                         
                       </div>
-                      }
+                        */}
                     </div>
 
 

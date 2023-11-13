@@ -19,7 +19,7 @@ const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
   {id:3,title:'禮物箱'},
-  {id:4,title:'已購Prompt'},
+  // {id:4,title:'已購Prompt'},
 ]
 
 function Orders() {
@@ -286,7 +286,7 @@ function Orders() {
           {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
           {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans} currentUser={currentUser}/>}
           {selectedItem.title === '禮物箱' && <GiftsList giftData={reversedGiftData} currentUser={currentUser} handleOpenGift={handleOpenGift} isMutationLoading={isMutationLoading} setCurrentlyUpdatingGiftId={setCurrentlyUpdatingGiftId} currentlyUpdatingGiftId={currentlyUpdatingGiftId} />}
-          {selectedItem.title === '已購Prompt' && <PromptList data={imageData} currentUser={currentUser} />}
+          {/* {selectedItem.title === '已購Prompt' && <PromptList data={imageData} currentUser={currentUser} />} */}
         </div>
       )}
 

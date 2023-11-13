@@ -830,10 +830,10 @@ export const promptPresets = [
 
 export const models = 
 [
-	{command:'XL',title:'SDXL',image:"https://images-cdn.moonshot.today/aimodel/image/c170635e946b8cd061c64dc0dfa6cce938cebf42b46205f70c03fca3ed2cd697.jpeg"},
-	{command:'CT',title:'插畫 CT',image:"https://storage.moonshot.today/source/ct.jpg"},
-	{command:'PR',title:'寫實 PR',image:"https://storage.moonshot.today/source/pr.webp"},
-	{command:'CM',title:'漫畫 CM',image:"https://storage.moonshot.today/source/cm.jpg"},
-	{command:'PC',title:'寫實人像 PC',image:"https://storage.moonshot.today/source/pc.png"},
-	{command:'MJ',title:'MJ',image:"https://images-cdn.moonshot.today/aimodel/image/5604099db1c46072fce6b33bcce70db57f170e5028659765827bb90e100713b4.jpeg"}
+	{command:'XL',title:'SDXL',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/xl.jpg"},
+	{command:'CT',title:'插畫 CT',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/ct.jpg"},
+	{command:'PR',title:'寫實 PR',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/pr.webp"},
+	{command:'CM',title:'漫畫 CM',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/cm.jpg"},
+	{command:'PC',title:'寫實人像 PC',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/pc.png"},
+	{command:'MJ',title:'MJ',image:"https://moonshine.b-cdn.net/msweb/moonshotai/models/mj.jpg"}
 ]

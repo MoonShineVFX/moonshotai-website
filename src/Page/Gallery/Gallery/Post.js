@@ -76,7 +76,7 @@ function Post() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, '單張圖頁面_訪問',{
+    logEvent(analytics, '單張圖頁面_進入',{
       imgid:id
     })
   },[])
@@ -470,7 +470,7 @@ function Post() {
               
               <div className='flex  justify-between items-center my-3 pt-5'>
                 <div className='text-white/70 font-semibold '>Prompt 提示詞</div>
-                {
+                {/*
                   imageData?.author?.id !== currentUser?.id  &&
                   <Chip 
                     variant={'gradient'}  
@@ -478,7 +478,7 @@ function Post() {
                     value={imageData.is_prompt_sale ? imageData.is_prompt_bought ? '您已買過' : imageData.prompt_sale_point+' Points' : '未販售'} 
                     className="rounded-lg py-1 " 
                   /> 
-                }
+                */}
 
               </div>
               <div>
