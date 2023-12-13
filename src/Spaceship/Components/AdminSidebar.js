@@ -34,6 +34,11 @@ function AdminSidebar() {
           
         </ListItem>
         <ListItem>
+          <ListItemPrefix><FaMedal size={12} /></ListItemPrefix>
+          <Link to="./pu">管理付費會員</Link>
+          
+        </ListItem>
+        <ListItem>
           <ListItemPrefix><FaExternalLinkAlt size={12} /></ListItemPrefix>
           <a 
             href="https://analytics.google.com/analytics/web/#/p348129419/realtime/overview?params=_u..nav%3Dmaui&collectionId=life-cycle"

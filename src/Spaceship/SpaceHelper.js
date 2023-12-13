@@ -3,6 +3,19 @@ import { useInfiniteQuery,useMutation,useQuery,useQueryClient } from 'react-quer
 const adminApikey = process.env.REACT_APP_MSADMIN_API_KEY
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
 
+
+
+export function formatDateTime(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${year}/${month}/${day} ${hours}:${minutes}`;
+}
+
 const adminImageAddNsfw = async (imageid)=>{
   let items = {
     tag_ids:[1]
@@ -63,7 +76,8 @@ export function useAdminImageDelNsfw(fnKey){
   return adminImageMutation;
 
 }
-
+/** 管理禮物商品 **/
+//取得禮物商品
 const adminGetPointProduct = async ()=>{
   const requestOptions = {
     method: 'GET',
@@ -88,6 +102,7 @@ export function useAdminPPList(){
   )
 } 
 
+//新增禮物商品
 const adminCreatePointProduct = async (items)=>{
 
   const requestOptions = {
@@ -116,6 +131,9 @@ export function useAdminCreatePointProduct(fnKey){
   return adminCreateMutation;
 
 }
+
+
+//編輯禮物商品
 const adminPatchPointProduct = async (currentItem,items)=>{
 
   const requestOptions = {
@@ -132,6 +150,7 @@ const adminPatchPointProduct = async (currentItem,items)=>{
   return data
 }
 
+
 export function useAdminPatchPointProduct(fnKey){
   const queryClient = useQueryClient();
   const adminCreateMutation = useMutation((updatedData)=> 
@@ -145,3 +164,32 @@ export function useAdminPatchPointProduct(fnKey){
   return adminCreateMutation;
 
 }
+
+
+
+
+/** 管理付費會員 **/
+//取得付費會員
+const adminGetPremiumUser = async ()=>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Token ${adminApikey}`
+    },
+  };
+  const response =await fetch(apiUrl+'admin_paid_users', requestOptions)
+  const data =await response.json()
+  return data
+}
+
+export function useAdminPUserList(){
+  return useQuery(
+    'adminPUserList',
+    ({ pageParam }) =>
+    adminGetPremiumUser(),
+    {
+      onSuccess:()=>{}
+    }
+  )
+} 

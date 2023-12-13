@@ -1,5 +1,5 @@
 import React from 'react'
-import {useAdminPPList,useAdminCreatePointProduct,useAdminPatchPointProduct} from '../../SpaceHelper'
+import {useAdminPUserList,formatDateTime} from '../../SpaceHelper'
 import {
   Card,
   CardHeader,
@@ -21,18 +21,9 @@ import {
   DialogFooter
 } from "@material-tailwind/react";
 import { FaPlus,FaPen,FaTrashCan } from "react-icons/fa6";
-import AddPointProductModal from '../../Components/AddPointProductModal';
-import EditPointProductModal from '../../Components/EditPointProductModal';
-const TABLE_HEAD = ["品名", "兌換點", "狀態", "產生日期", ""];
+
+const TABLE_HEAD = ["暱稱", "訂閱情形", "VIP 情形", ""];
 function Index() {
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
-  const [currentItem, setCurrentItem] = React.useState({});
-  const handleOpen = () => setOpen(!open);
-  const handleOpenEdit = (item) => {
-    setCurrentItem(item)
-    setOpenEdit(!openEdit)
-  };
   const {
     data,
     fetchNextPage,
@@ -40,54 +31,23 @@ function Index() {
     isFetchingNextPage,
     isError,
     refetch,
-  } = useAdminPPList();
-
-  function formatDateTime(dateTimeString) {
-		const date = new Date(dateTimeString);
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, "0");
-		const day = date.getDate().toString().padStart(2, "0");
-		const hours = date.getHours().toString().padStart(2, "0");
-		const minutes = date.getMinutes().toString().padStart(2, "0");
-	
-		return `${year}/${month}/${day} ${hours}:${minutes}`;
-	}
-
-  const createPPMutation = useAdminCreatePointProduct('adminPPList')
-  const patchPPMutation = useAdminPatchPointProduct('adminPPList')
-  const handleCreate = (items) =>{
-    createPPMutation.mutateAsync({items}).then(()=>{
-      setOpen(false)
-    })
-  }
-  const handleEdit = (items) =>{
-    patchPPMutation.mutateAsync({currentItem,items}).then(()=>{
-      setOpenEdit(false)
-    })
-  }
+  } = useAdminPUserList();
+  console.log(data)
   return (
     <div>
-      <AddPointProductModal open={open} handleOpen={handleOpen} handleCreate={handleCreate}/>
-      <EditPointProductModal open={openEdit} handleOpen={handleOpenEdit} currentItem={currentItem} handleEdit={handleEdit} />
       <Card className="h-full w-full">
         <CardHeader floated={false} shadow={false} className="rounded-none">
           <div className="mb-8 flex items-center justify-between gap-8">
             <div>
               <Typography variant="h5" color="blue-gray">
-                點數商品列表
+                付費會員列表
               </Typography>
               <Typography color="gray" className="mt-1 font-normal">
-                管理現有的點數兌換商品
+                管理現有的付費會員
               </Typography>
             </div>
-            <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
 
-              <Button className="flex items-center gap-3" size="sm" onClick={handleOpen}>
-                <FaPlus strokeWidth={2} className="h-4 w-4" /> 新增商品
-              </Button>
-            </div>
           </div>
-
         </CardHeader>
         <CardBody className=" px-0">
           <table className="mt-4 w-full min-w-max table-auto text-left">
@@ -113,12 +73,11 @@ function Index() {
               {data?.length > 0 ? 
               data.map(
                 (item, index) => {
-                  const { id, name,point,subscription_days, is_active, created_at } =item
+                  const { id, name,email,is_subscribed,is_vip, subscription_end_at, uid,vip_end_at } =item
                   const isLast = index === data.length - 1;
                   const classes = isLast
                     ? "p-4"
                     : "p-4 border-b border-blue-gray-50";
-  
                   return (
                     <tr key={name}>
                       <td className={classes}>
@@ -137,26 +96,27 @@ function Index() {
                               color="blue-gray"
                               className="font-normal opacity-70"
                             >
-                              {is_active}
+                              {email}
                             </Typography>
                           </div>
                         </div>
                       </td>
                       <td className={classes}>
                         <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            支付 {point} Point
-                          </Typography>
+                          <div className="w-max">
+                            <Chip
+                              variant="ghost"
+                              size="sm"
+                              value={is_subscribed ? "啟用" : "未啟用"}
+                              color={is_subscribed ? "green" : "blue-gray"}
+                            />
+                          </div>
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal opacity-70"
                           >
-                            可換 {subscription_days} 天
+                            訂閱日期至 {formatDateTime(subscription_end_at)}
                           </Typography>
                         </div>
                       </td>
@@ -165,24 +125,22 @@ function Index() {
                           <Chip
                             variant="ghost"
                             size="sm"
-                            value={is_active ? "啟用" : "未啟用"}
-                            color={is_active ? "green" : "blue-gray"}
+                            value={is_vip ? "啟用" : "未啟用"}
+                            color={is_vip ? "green" : "blue-gray"}
                           />
                         </div>
-                      </td>
-                      <td className={classes}>
                         <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {formatDateTime(created_at)}
-                        </Typography>
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal opacity-70"
+                          >
+                            VIP 日期至 {vip_end_at ? formatDateTime(vip_end_at) : '無'}
+                          </Typography>
                       </td>
+
                       <td className={classes}>
                         <Tooltip content="編輯">
-                          <IconButton variant="text" 
-                            onClick={()=>handleOpenEdit(item)                            }>
+                          <IconButton variant="text" >
                             <FaPen className="h-4 w-4" />
                           </IconButton>
                         </Tooltip>
@@ -198,7 +156,6 @@ function Index() {
         </CardBody>
        
       </Card>
-
 
 
     </div>

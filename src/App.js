@@ -63,6 +63,7 @@ import Login from './Spaceship/Login';
 import ProtectedRoutes from './Spaceship/ProtectedRoutes';
 import AdminHome from './Spaceship/Pages'
 import AdminPointProduct from './Spaceship/Pages/AdminPointProduct'
+import AdminPremiumUser from './Spaceship/Pages/AdminPremiumUser'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -89,6 +90,7 @@ function App() {
         <Route path="/spaceship"  element={ <ProtectedRoutes/>}>
           <Route path="" element={<AdminHome />} />
           <Route path="pp" element={<AdminPointProduct />} />
+          <Route path="pu" element={<AdminPremiumUser />} />
           
         </Route>
 
