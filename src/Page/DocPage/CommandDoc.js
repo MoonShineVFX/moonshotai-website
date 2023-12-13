@@ -1,7 +1,10 @@
-import React from 'react'
-
+import React,{useEffect} from 'react'
+import { getAnalytics, logEvent } from "firebase/analytics";
 function CommandDoc() {
-
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Doc_指令介紹頁_進入')
+  },[])
   const commendItem = [
     {display_name:"寫實風格",name:"PR"},
     {display_name:"插畫風格",name:"CT"},

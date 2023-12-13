@@ -35,7 +35,7 @@ function User() {
   const navigate = useNavigate();
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'user_visited',{
+    logEvent(analytics, '單一作者頁面_進入',{
       userid:id
     })
   },[])
@@ -285,13 +285,22 @@ function User() {
               >
                 <Link to={`/post/${id}`} className=' relative' onClick={recordPageUrl} >
                   <div className='pt-[100%] relative'>
-                    <img  
-                      src={urls.thumb} alt={title} 
-                      data-id={id}
-   
-                      className={` absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md  ${is_user_nsfw || is_nsfw ? ' blur-xl'  : ' blur-0 ' }  `}
-                
-                    />
+                    <picture>
+                      <source  
+                        src={urls.thumb+'?format=webp&width=350'} alt={title} 
+                        data-id={id}
+                        type="image/webp"
+                        className={` absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md  ${is_user_nsfw || is_nsfw ? ' blur-xl'  : ' blur-0 ' }  `}
+                  
+                      />
+                      <img  
+                        src={urls.thumb+'?width=350'} alt={title} 
+                        data-id={id}
+                        className={` absolute top-1/2 left-0 -translate-y-1/2 object-cover w-full h-full rounded-md  ${is_user_nsfw || is_nsfw ? ' blur-xl'  : ' blur-0 ' }  `}
+                  
+                      />
+                    </picture>
+
                   </div>
 
                   <div className='text-orange-500 absolute top-0 p-1 flex  space-x-1'>

@@ -18,7 +18,7 @@ function Section01() {
       <div className='md:w-1/2 order-1 md:order-2 flex flex-col'>
         <div className='mx-12 md:mx-[25%] flex flex-col items-center order-2 md:order-1'>
           <div className='text-3xl font-bold text-center relative'>
-            Creating through   simple commands
+            Creating through  simple commands
             <div 
               className=' absolute -top-3 -left-2 md:-left-6'
               style={{animation: 'float_t01 6s ease-in-out infinite'}}  
@@ -30,7 +30,11 @@ function Section01() {
 
         </div>
         <div className='w-full order-1 md:order-2'>
-          <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png" alt="" className='max-w-full w-[90%] mx-auto' />
+          <picture>
+            <source src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?format=webp&width=640" type="image/webp" className='max-w-full w-[90%] mx-auto'/>
+            <img src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/msmodel00.png?width=640" alt="" className='max-w-full w-[90%] mx-auto' />
+
+          </picture>
         </div>
       </div>
     </div>

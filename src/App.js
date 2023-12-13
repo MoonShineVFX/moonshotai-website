@@ -43,6 +43,7 @@ import AsusNFT from './Page/Gallery/CampaignPage/AsusNFT';
 import Sdxl from './Page/Gallery/CampaignPage/Sdxl';
 import Voice from './Page/Gallery/CampaignPage/Voice';
 import LeaderBoardHome from './Page/Gallery/Gallery/LeaderBoardHome';
+import Rewards from './Page/Gallery/RewardPage'
 
 import  Command from  './Page/Command';
 import  Generator from './Page/Generator'
@@ -61,6 +62,8 @@ import { AuthProvider } from './Spaceship/Auth';
 import Login from './Spaceship/Login';
 import ProtectedRoutes from './Spaceship/ProtectedRoutes';
 import AdminHome from './Spaceship/Pages'
+import AdminPointProduct from './Spaceship/Pages/AdminPointProduct'
+import AdminPremiumUser from './Spaceship/Pages/AdminPremiumUser'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -84,8 +87,11 @@ function App() {
       <Routes> 
         <Route path="/login" element={<Login />} />
         
-        <Route path="spaceship"  element={ <ProtectedRoutes/>}>
+        <Route path="/spaceship"  element={ <ProtectedRoutes/>}>
           <Route path="" element={<AdminHome />} />
+          <Route path="pp" element={<AdminPointProduct />} />
+          <Route path="pu" element={<AdminPremiumUser />} />
+          
         </Route>
 
         <Route path="/camera" element={<Camera />} />
@@ -108,6 +114,7 @@ function App() {
           <Route path="sdxl" element={<Sdxl />} />
           <Route path="voice" element={<Voice />} />
           <Route path="leaderboard" element={<LeaderBoardHome />} />
+          {/* <Route path="rewards" element={<Rewards />} /> */}
 
  
           <Route path="post/:id" element={<Post />} />

@@ -10,6 +10,7 @@ import { useForm,Controller } from 'react-hook-form';
 import moment from 'moment';
 import liff from '@line/liff';
 import { Button } from "@material-tailwind/react";
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoginState);
   const [lineProfile, setLineProfile] = useRecoilState(lineProfileState);
@@ -43,6 +44,10 @@ function Index() {
   const { control,register, handleSubmit, formState: { errors } } = useForm({
     name:''
   });
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, '價格介紹頁面_進入')
+  },[])
 
   useEffect(()=>{
     getStoredLocalData().then(data=>{
@@ -245,21 +250,40 @@ function Index() {
     }).catch(e=>{console.log(e)})
   }
   const startBluePayFlow = (pid)=>{
+    setTimeout(()=>{
+      setFlowMsg('正在建立訂單。')
+    },800)
     setIsOrdering(true)
     setIsLoadingBlueReq(false);
     setReqError(false)
     postOrder(pid,linLoginData).then(odata=>{
       console.log('已建立訂單',odata)
+      setTimeout(()=>{
+        setFlowMsg('訂單建立完成。')
+      },1500)
+
       setIsOrdering(false)
       setIsLoadingBlueReq(true)
       setTimeout(()=>{
         paymentNewebPay(odata.serial_number,linLoginData).then(ldata=>{
           setIsLoadingBlueReq(false)
           setReqError(false)
+          if(ldata?.code === "token_not_valid"){
+            setReqError(true)
+            setIsNeedLogin(true)
+            liff.init({liffId: liffID}).then(()=>{
+              if(!liff.isLoggedIn()){
+                setTimeout(()=>{liff.login();},500)
+              }
+            })
+            return
+          }
+          
           setIsCheckAccount(false)
           setIsReadyToPayPage(true)
-          console.log(ldata)
-
+          setTimeout(()=>{
+            setFlowMsg('送出訂單資訊，準備跳轉頁面。')
+          },1500)
           // form call 藍新 API
           const form = document.createElement('form');
           form.method = 'post';
@@ -277,18 +301,7 @@ function Index() {
           form.submit();
 
           // const url = ldata.payment_url
-          if(ldata?.code === "token_not_valid"){
-            setReqError(true)
-            setIsNeedLogin(true)
-            liff.init({liffId: liffID}).then(()=>{
-              console.log('init完成可準備登入')
-              if(!liff.isLoggedIn()){
-                setTimeout(()=>{liff.login();},500)
-              }
 
-            })
-            return
-          }
           // window.location.href = url;
         }).catch(e=>{console.log(e)})
       },500)
@@ -407,7 +420,7 @@ function Index() {
                         {
                           block.payment_line && <div>
                             <Button 
-                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600  rounded-full py-3  text-center text-white text-sm"
+                              className="w-full flex  justify-center items-center gap-2 bg-t_lime-600 rounded-full py-3  text-center text-white text-sm"
                               onClick={()=>{
                                 handlePay('linepay')
                                 setCurrentPlan(block.full_title)
@@ -424,11 +437,11 @@ function Index() {
                           </div>
                         }
                         {
-                          !block.payment_blue && <div>
-                            <button 
-                              className="w-full flex  justify-center items-center gap-2 bg-blue-600  rounded-md py-3 mt-3  text-center text-white text-sm"
+                          block.payment_blue && <div>
+                            <Button 
+                              className="w-full flex  justify-center items-center gap-2 bg-blue-600 rounded-full py-3 mt-3  text-center text-white text-sm"
                               onClick={()=>{
-                                handlePay(block.plan_id,'bluepay')
+                                handlePay('bluepay')
                                 setCurrentPlan(block.full_title)
                                 setSelectPlanId(block.plan_id)
                                 setSelectPayment('bluepay')}
@@ -436,7 +449,7 @@ function Index() {
                             >
                               <MdCreditCard size={20} />  藍新支付 <MdArrowRightAlt />
                               {isLoadingBlueReq && <div className='text-xs'>等待回應...</div>}
-                            </button>
+                            </Button>
                           
                           </div>
                         }

@@ -5,10 +5,10 @@ import {motion,AnimatePresence} from 'framer-motion'
 import { useParams,useNavigate,Link } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { imageDataState,loginState,isLoginState,lineProfileState,userState,formStatusState,commentDataState } from '../atoms/galleryAtom';
-import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages} from '../helpers/fetchHelper'
+import {getWordFromLetter,fetchGalleries,getStoredLocalData,userCollectionAImage,userDelACollectionImage,refreshToken,fetchUserCollections,fetchComments,userPostCommentToImage,userPatchCommentToImage,fetchUserStorages,fetchGalleriesDetail,fetchImageCopyPromptTime,userLikeAImage,userDelALikedImage,fetchUserPublicImages,usePromptBuyMutation,fetchUserProfileData} from '../helpers/fetchHelper'
 import {SharePostModal ,CallToLoginModal,CommentDataFormat,LoadingLogoSpin,TitleWithLimit,recordPageUrl,getCookieValue} from '../helpers/componentsHelper'
-import { MdKeyboardArrowLeft,MdOutlineShare,MdModeComment } from "react-icons/md";
-import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
+import { MdKeyboardArrowLeft,MdOutlineShare } from "react-icons/md";
+import { FaHeart,FaRegHeart,FaCommentAlt,FaRegCommentAlt,FaBookmark,FaRegBookmark } from "react-icons/fa";
 
 import { IoCopyOutline } from "react-icons/io5";
 import Header from '../header'
@@ -21,11 +21,18 @@ import {
   Avatar,
   Card,
   Typography,
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Chip
 } from "@material-tailwind/react";
 import { useQuery, useMutation,useInfiniteQuery,useQueryClient, QueryClient } from 'react-query';
 import { getAnalytics, logEvent } from "firebase/analytics";
 function Post() {
   const { id } = useParams();
+  const queryClient = useQueryClient();
   const [imageData, setImageData] = useState(null)
   const [comments, setComments] = useState([])
   const [commentsResults, setCommentsResults] = useState([])
@@ -37,7 +44,7 @@ function Post() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [lineProfile, setLineProfile] = useState({});
   const [linLoginToken, setLineLoginToken] = useState('')
-  const [currentUser, setCurrentUser] = useState({})
+  const [currentUser, setCurrentUser] = useRecoilState(userState)
   const [formStatus, setFormStatus] = useRecoilState(formStatusState);
   const [currentComment, setCurrentComment] = useRecoilState(commentDataState);
   const [ isCopied , setIsCopied ] = useState(false);
@@ -49,17 +56,15 @@ function Post() {
   const [ isCommentModal, setIsCommentModal]= useState(false)
   const [ isHaveUserComment , setIsHaveUserComment] = useState(false)
 
-  const [currentStoragePage, setCurrentStoragePage]= useState(1)
-  const [startDate, setStartDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'))
-  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'))
-  const [currModels, setCurrModels] = useState('all')
-  const [currentHeaders , setCurrentHeaders] = useState({})
-
   const [totalPage, setTotalPage]= useState(0)
   const [pageSize, setPageSize] = useState(12)
   const navigate = useNavigate();
   const [isGoingBack, setIsGoingBack] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const handleOpen = () => setOpen(!open);
+  const [open, setOpen] = React.useState(false);
+  const [buyError, setBuyError] = useState(null);
   const handleBackClick = () => {
     const savedPageUrl = getCookieValue("pageUrl");
 
@@ -71,7 +76,7 @@ function Post() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Post_visited',{
+    logEvent(analytics, '單張圖頁面_進入',{
       imgid:id
     })
   },[])
@@ -181,6 +186,8 @@ function Post() {
     }
   }
 )
+
+
   const handleCollection = async ()=>{
     if(!isLoggedIn){
     //  console.log(isLoggedIn)
@@ -195,6 +202,58 @@ function Post() {
       setIsLoginForCollection(false)
     }
     
+  }
+
+  //BUY PROMPT
+  const buyPromptMutation = usePromptBuyMutation(linLoginToken,['galleryDetail',linLoginToken,id])
+  const handleBuyPrompt = async ()=>{
+    logEvent(analytics, '單張圖頁面_購買咒語按鈕_提示支付')
+    if(!isLoggedIn){
+      //  console.log(isLoggedIn)
+       setIsLoginForCollection(true)
+      }else{
+        // console.log(imageData)
+        setBuyError(null)
+        handleOpen(); 
+        setIsLoginForCollection(false)
+      }
+  }
+  const onHandleBuyPrompt = async()=>{
+    console.log(imageData)
+    try {
+      await buyPromptMutation.mutateAsync({imageData})
+      logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付成功')
+      setBuyError(<LoadingLogoSpin /> )
+      setTimeout(async()=>{
+        setBuyError('訊息：購買已完成。')
+        //update user porfile
+        const udata = await fetchUserProfileData(currentUser.id, linLoginToken, queryClient);
+        console.log(udata)
+        localStorage.setItem('currentUser', JSON.stringify(udata));
+        setCurrentUser(udata)
+        setTimeout(() => {
+          setOpen(false); 
+        }, 1000);
+      },1000)
+    
+
+      
+    } catch (error) {
+      logEvent(analytics, '單張圖頁面_購買咒語按鈕_支付失敗',{
+        msg:error.message 
+      })
+      setBuyError(<LoadingLogoSpin /> )
+      setTimeout(()=>{
+        if(error.message === 'Your already bought the prompt'){
+          setBuyError('錯誤訊息：你已經購買過這個了。')
+        }else{
+          setBuyError('錯誤訊息：操作錯誤，可能是點數不足。')
+        }
+      },1000)
+
+      
+    }
+   
   }
   const handleLike = async ()=>{
     if(!isLoggedIn){
@@ -309,6 +368,41 @@ function Post() {
       {isCommentModal&& <EditCommentForm handleSendComment={handleSendComment} handleSaveEditComment={handleSaveEditComment}  closeModal={()=>setIsCommentModal(false)} storagesResults={postsImages} />}
       </AnimatePresence>
       <ToastContainer />
+      <Dialog
+        open={open}
+        size={"xs"}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className='bg-gray-900'
+      >
+        <DialogHeader className='text-lg text-white/80'>購買 Prompt</DialogHeader>
+        <DialogBody 
+    
+          className=' text-white '>
+          你可用的點數 <span className='text-amber-500'>{currentUser?.point} Points</span> <br />
+          將以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 開啟這個 Prompt 。
+          <div className='text-red-500 text-sm  text-center mt-5'>{buyError&& buyError}</div>
+        </DialogBody>
+        <DialogFooter className='border-t border-gray-600'>
+          <Button
+            variant="text"
+            color="white"
+            onClick={handleOpen}
+            className="mr-1"
+          >
+            <span>取消</span>
+          </Button>
+          <Button 
+            variant="gradient" 
+            color="" 
+            onClick={()=>onHandleBuyPrompt()}>
+            <span>確認支付</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
 
       {!imageData ?
       <div className='text-white'>Loading</div> 
@@ -340,7 +434,7 @@ function Post() {
                     {imageData.is_collection ?<FaBookmark color="gold" />  :<FaRegBookmark  /> }<span></span>
                   </div>
                   <button className=' ' onClick={handleComment}>
-                    <MdModeComment className={isHaveUserComment ?  ' text-yellow-400' : ' text-white' } size={15} />
+                    {isHaveUserComment ? <FaRegCommentAlt /> : <FaCommentAlt /> }
                   </button>
                   <button className='' onClick={handleShare}>
                     <MdOutlineShare size={15} />
@@ -374,10 +468,44 @@ function Post() {
 
             <div className='w-full md:w-full flex flex-col justify-end  relative pb-12 pt-'>
               
-              <div className='text-white/70 font-semibold my-3 pt-5'>Prompt 提示詞</div>
-              <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
-                {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>}
+              <div className='flex  justify-between items-center my-3 pt-5'>
+                <div className='text-white/70 font-semibold '>Prompt 提示詞</div>
+                {/*
+                  imageData?.author?.id !== currentUser?.id  &&
+                  <Chip 
+                    variant={'gradient'}  
+                    color={imageData.is_prompt_sale ? imageData.is_prompt_bought ? 'green' : 'green' : 'gray'}  
+                    value={imageData.is_prompt_sale ? imageData.is_prompt_bought ? '您已買過' : imageData.prompt_sale_point+' Points' : '未販售'} 
+                    className="rounded-lg py-1 " 
+                  /> 
+                */}
+
               </div>
+              <div>
+                <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
+                  {/* {imageData?.display_prompt ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
+                  {/* {imageData?.is_prompt_sale ? <div className='p-3 text-sm'>{imageData?.prompt}</div> : <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>} */}
+                  {imageData?.author?.id === currentUser?.id ? 
+                    <div className='p-3 text-sm'>{imageData?.prompt}</div>  
+                    : 
+                    imageData?.is_prompt_sale  ?
+                      imageData?.is_prompt_bought ? 
+                      <div className='p-3 text-sm border-t-2 border-t_lime-400'>
+                        {imageData?.prompt}
+                        
+                      </div>
+                      :
+                      <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>
+                        <div>以 <span className='text-amber-500'>{imageData.prompt_sale_point} Points</span> 取得此 Prompt 。</div>
+                        
+                        <Button size="sm" color="light-green" className='mt-3' onClick={()=>handleBuyPrompt(imageData.prompt_sale_point)}>支付 {imageData.prompt_sale_point} Points 給作者</Button>
+                      </div> 
+                      : 
+                      <div className=' text-center px-2 py-4 text-xs text-white/70 bg-black/50'>這張作品目前沒有開放分享 Prompt 。</div>
+                  }
+                </div>
+              </div>
+
               <div className='text-white/70 font-semibold my-3 pt-5'>Negative prompt 反向提示詞</div>
               <div className='bg-gray-800 relative rounded-md whitespace-normal break-words max-h-32 overflow-hidden overflow-y-auto'>
                 <div className='p-3'>{imageData?.negative_prompt}</div>
@@ -448,9 +576,6 @@ function Post() {
                     }
                     </List>
                   </Card>
-
-
-            
 
                 </div>
               }

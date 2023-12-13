@@ -1,7 +1,12 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import moment from 'moment';
 import {LoadingCircle} from '../helpers/componentsHelper'
+import { getAnalytics, logEvent } from "firebase/analytics";
 const GiftsList = ({giftData,handleOpenGift,isMutationLoading,currentlyUpdatingGiftId,setCurrentlyUpdatingGiftId}) => {
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Order_禮物箱頁面_進入')
+  },[])
   return (
     <div className='text-white pb-10'>
       <div className='text-sm text-white/80'>{giftData.length} items</div>
@@ -11,7 +16,7 @@ const GiftsList = ({giftData,handleOpenGift,isMutationLoading,currentlyUpdatingG
         giftData.map((item,index)=>{
           const {id,created_at, expired_at, is_used,name,used_at}= item
           return(
-            <div className='text-white border  p-4 border-gray-400/0 bg-gray-800 rounded-md ' key={'gifts'+index}>
+            <div className='text-white p-4 border-4 border-gray-400/0  hover:border-t_lime-600 bg-gray-800 rounded-md  ' key={'gifts'+index}>
               <div className='flex justify-between'>
                 <div>
                   <div className='text-xs opacity-70'> {moment(created_at).format('YYYY-MM-DD')}</div>

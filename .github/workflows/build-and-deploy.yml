@@ -26,7 +26,7 @@ jobs:
       REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
       REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
-      REACT_APP_FULLBODY_TOKEN_KEY: ${{ secrets.FULLBODY_TOKEN_KEY }}
+      REACT_APP_MSADMIN_API_KEY: ${{ secrets.MSADMIN_API_KEY }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3

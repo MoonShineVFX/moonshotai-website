@@ -2,6 +2,7 @@ import React, { useState, useEffect,useRef } from 'react';
 import {motion,AnimatePresence} from 'framer-motion'
 import { MdOutlineNewReleases,MdModeComment,MdAlarm } from "react-icons/md";
 import { FaHeart,FaRegHeart,FaRegComment,FaComment,FaBookmark,FaRegBookmark } from "react-icons/fa";
+import { AiFillDollarCircle,AiOutlineDollar } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import {LoadingLogoSpin,TitleWithLimit,recordPageUrl,CallToLoginModal,ImageWithFallback,filterModelsDate} from '../helpers/componentsHelper'
 import {getStoredLocalData,useGalleries,useCollectionImageMutation,useDelACollectionImageMutation,useLikeImageMutation,useDelLikedImageMutation} from '../helpers/fetchHelper'
@@ -14,6 +15,7 @@ import { useQuery, useInfiniteQuery,QueryClient,useQueryClient,useMutation } fro
 import Masonry from 'react-masonry-css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LazyLoad from 'react-lazy-load';
+import { Tooltip, Typography } from "@material-tailwind/react";
 import { getAnalytics, logEvent } from "firebase/analytics";
 // Import Swiper styles
 import {  Autoplay,EffectFade } from "swiper";
@@ -52,7 +54,6 @@ function Index() {
   const [ isCollected ,setIsCollected] = useState(false)
   const [ isLoginForFuns , setIsLoginForFuns] = useState(false)
 
-
   // const [data, setData] = useState(null)
   const [isShowimageModal, setIsShowImageModal] = useRecoilState(imageModalState)
   const [isInitialized, setIsInitialized] = useState(false);
@@ -63,7 +64,7 @@ function Index() {
   };
   const analytics = getAnalytics();
   useEffect(()=>{
-    logEvent(analytics, 'Gallery_visited')
+    logEvent(analytics, '藝廊頁_進入')
   },[])
   // 在此處檢查 localStorage 內的資料
   useEffect(() => {
@@ -86,7 +87,13 @@ function Index() {
   } = useGalleries(linLoginData, pageSize, startDate, endDate, currModels, isInitialized, isLoggedIn);
 
   const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
-
+  const loadMore = () => {
+    if (imageData.length >= 2000) {
+      console.log('full')
+      return;
+    }
+    fetchNextPage();
+  };
   //ADD Collection
   const collectionAImageMutation = useCollectionImageMutation(linLoginData, ['galleries', linLoginData, startDate, currModels]);
   //DEL Collection 
@@ -209,7 +216,7 @@ function Index() {
 
             <InfiniteScroll
               dataLength={imageData ? imageData.length:0}
-              next={()=>fetchNextPage()}
+              next={loadMore}
               hasMore={hasNextPage}
               loading={<div className='bg-gray-900 px-4 py-2 rounded-md'>載入更多..</div> }
             >
@@ -224,30 +231,57 @@ function Index() {
             >
       
               {imageData.map((image,index)=>{
-                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments } = image
+                const {id, urls, created_at, filename,is_storage,is_collection,is_like,title,author,is_user_nsfw,is_nsfw,likes,comments,is_prompt_sale,prompt_sale_point } = image
                 return (
                   <motion.div key={'gallery-'+index} 
                     variants={imageVariants} initial="hidden" animate="visible" transition={{ delay: index * 0.1 }}
                     className='  overflow-hidden relative  mb-5'
                   >
-                    <Link to={`/post/${id}`} className=' relative group' onClick={recordPageUrl}>
-                      <div className=' relative overflow-hidden   rounded-md'>
+                    <div  className=' relative group' >
+                      <Link to={`/post/${id}`} className=' relative overflow-hidden   rounded-md' onClick={recordPageUrl}>
                         <LazyLoad  >
-                        <img  
-                          alt={title}
-                          src={urls.thumb+'?width=400'}
-                          data-id={id}
-                          className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
-  
-                        />
+                        <picture>
+                          <source  
+                            alt={title}
+                            src={urls.thumb+'?format=webp&width=350'}
+                            data-id={id}
+                            className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
+                            type="image/webp"
+                          />
+                          <img  
+                            alt={title}
+                            src={urls.thumb+'?width=350'}
+                            data-id={id}
+                            className={` object-cover w-full hover:scale-110 transition duration-700 ${is_user_nsfw || is_nsfw ? '  blur-xl  '  : ' blur-0 ' }`}
+    
+                          />
+                        </picture>
+
                         </LazyLoad>
-                      </div>
+                      </Link>
 
+                      {/*is_prompt_sale && 
+                      <div className=' absolute z-10 top-0 right-0 p-1 text-amber-400 text '>
 
-                      <div>
+                          <Tooltip
+                          className="bg-t_lime-600"
+                          placement="right"
+                          content={
+                            <div className="">
+                              <Typography color="white" className="text-xs font-semibold" >
+                                需要 {prompt_sale_point} Points
+                              </Typography>
+
+                            </div>
+                          }
+                        >
+                          <div className=""><AiOutlineDollar size={18} className=' ' /> </div>
+                        </Tooltip>
+                          
                         
                       </div>
-                    </Link>
+                        */}
+                    </div>
 
 
 

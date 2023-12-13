@@ -1,7 +1,10 @@
 import React from 'react'
+import {auth} from '../../firebaseConfig/fireauth'
+import { signOut  } from "firebase/auth";
 import {
   Navbar,
   MobileNav,
+  Collapse,
   Typography,
   Button,
   IconButton,
@@ -18,7 +21,7 @@ const AdminNavbar = () => {
   }, []);
 
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
         variant="small"
@@ -26,45 +29,18 @@ const AdminNavbar = () => {
         className="p-1 font-normal"
       >
         <a href="#" className="flex items-center">
-          Gallery
+          預備按鈕
         </a>
       </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-        Gallery
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-        Gallery
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-        Gallery
-        </a>
-      </Typography>
+
+      <Button onClick={() => signOut(auth)}>登出</Button>
     </ul>
   );
   return (
 
-      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
+      <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-2">
         <div className="flex items-center justify-between text-blue-gray-900">
+          <div className='flex items-center justify-between'>
           <Typography
             as="a"
             href="#"
@@ -72,6 +48,10 @@ const AdminNavbar = () => {
           >
             Moonshot 管理員模式
           </Typography>
+          
+          </div>
+
+
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
 
@@ -114,10 +94,11 @@ const AdminNavbar = () => {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
+          
 
-        </MobileNav>
+        </Collapse>
       </Navbar>
 
   )

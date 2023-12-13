@@ -79,7 +79,11 @@ function Section_models() {
               <SwiperSlide key={'model'+index}>
                   <div className='flex flex-col justify-center items-center my-7  md:my-20  '>
                     <div className={''}>
-                      <img src={item.image} alt="" className='w-full aspect-video object-cover rounded-md object-top' />
+                      <picture>
+                        <source src={item.image+'?format=webp&width=300'} className='w-full aspect-video object-cover rounded-md object-top'/>
+                        <img src={item.image+'?format=jpeg&width=300'} alt="" className='w-full aspect-video object-cover rounded-md object-top' />
+
+                      </picture>
                     </div>
                     <div className={' my-6 px-2 '  }>
                       <div className='text-sm font-bold text-white'>{item.title}</div>

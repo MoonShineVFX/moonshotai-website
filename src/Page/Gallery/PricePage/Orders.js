@@ -3,7 +3,7 @@ import {motion,AnimatePresence} from 'framer-motion'
 import Header from '../header'
 import {  useRecoilValue ,useRecoilState } from 'recoil';
 import { isLoginState,loginState,lineProfileState,userState} from '../atoms/galleryAtom';
-import {getStoredLocalData,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpenGiftMutation} from '../helpers/fetchHelper'
+import {getStoredLocalData,getOrders,postOrder_refund,getSubscriptions,getPlans,postRefund_surveys,fetchUserGifts,postOpenGiftMutation,useUserOwnPrompts} from '../helpers/fetchHelper'
 import OrderList from './OrderList';
 import SubscriptionsList from './SubscriptionsList';
 import ReportModal from './ReportModal';
@@ -12,12 +12,14 @@ import { reportModalState,reportDataState } from '../atoms/galleryAtom';
 import moment from 'moment';
 import liff from '@line/liff';
 import GiftsList from './GiftsList';
+import PromptList from './PromptList';
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 
 const menuItems=[
   {id:1,title:'訂閱紀錄'},
   {id:2,title:'訂單列表'},
   {id:3,title:'禮物箱'},
+  // {id:4,title:'已購Prompt'},
 ]
 
 function Orders() {
@@ -42,6 +44,11 @@ function Orders() {
   const [gifts, setGifts] = useState(null)
   const [plans, setPlans] = useState(null)
 
+  const [totalPage, setTotalPage]= useState(0)
+  const [currentPage, setCurrentPage]= useState(1)
+  const [pageSize, setPageSize] = useState(12)
+  const [isInitialized, setIsInitialized] = useState(false);
+
   const [ reportMsg , setReportMsg ] = useState('')
   useEffect(()=>{
     getStoredLocalData().then(data=>{
@@ -49,8 +56,7 @@ function Orders() {
         setLineLoginData(data.loginToken)
         setLineProfile(data.lineProfile)
         setCurrentUser(data.currentUser)
-        let loginToken = data.loginToken
-        let headers = {'Content-Type': 'application/json'} 
+        setIsInitialized(true);
 
       })
   },[setIsLoggedIn,setLineLoginData,setLineProfile])
@@ -98,6 +104,19 @@ function Orders() {
       }
     }
   );
+  //FETCH PROMPT LIST
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isError:isPromptListError,
+    refetch,
+  } = useUserOwnPrompts(linLoginData,currentUser?.id, pageSize, isInitialized, isLoggedIn);
+
+  const imageData = data?.pages?.flatMap((pageData) => pageData.results) ?? [];
+
+  
   const [currentlyUpdatingGiftId, setCurrentlyUpdatingGiftId] = useState(null);
   const { mutate, isLoading: isMutationLoading, isError } = useMutation(postOpenGiftMutation,{
     onSuccess:()=>{
@@ -250,7 +269,7 @@ function Orders() {
         {isShowReport && <ReportModal handleReport={handleReport} reportMsg={reportMsg} isRefundLoading={isRefundLoading} is_surveyed={currentOrder.is_surveyed} /> }
       </AnimatePresence>
       <main className="max-w-6xl mx-auto pt-10 pb-10 px-8">
-       <div className='text-white text-lg flex gap-3'>
+       <div className='text-white text-base flex gap-3'>
         {
             menuItems.map((item,index)=>{
               return(
@@ -267,6 +286,7 @@ function Orders() {
           {selectedItem.title === '訂單列表' && <OrderList orderData={reversedData} handleReport={handleReport} />}
           {selectedItem.title === '訂閱紀錄' && <SubscriptionsList subData={reversedSubData} plans={plans} currentUser={currentUser}/>}
           {selectedItem.title === '禮物箱' && <GiftsList giftData={reversedGiftData} currentUser={currentUser} handleOpenGift={handleOpenGift} isMutationLoading={isMutationLoading} setCurrentlyUpdatingGiftId={setCurrentlyUpdatingGiftId} currentlyUpdatingGiftId={currentlyUpdatingGiftId} />}
+          {/* {selectedItem.title === '已購Prompt' && <PromptList data={imageData} currentUser={currentUser} />} */}
         </div>
       )}
 

@@ -1,6 +1,11 @@
-import React,{ useState } from 'react'
+import React,{ useState,useEffect } from 'react'
 import { motion,AnimatePresence } from 'framer-motion';
+import { getAnalytics, logEvent } from "firebase/analytics";
 function Policy() {
+  const analytics = getAnalytics();
+  useEffect(()=>{
+    logEvent(analytics, 'Doc_隱私權政策頁_進入')
+  },[])
   const [language, setLanguage] = useState('zh');
   const privacyPolicyZh = (
     <motion.div 
@@ -169,8 +174,8 @@ function Policy() {
       </div>
       <div className='text-white pt-12 px-8'>
         <div className='flex gap-3 text-sm'>
-          <div className={'border border-white/50 px-3 py-1 rounded-md cursor-pointer ' + (language === 'zh' && ' bg-slate-200 text-black ' )} onClick={()=>setLanguage('zh')}>中</div> 
-          <div className={'border border-white/50 px-3 py-1 rounded-md cursor-pointer ' + (language === 'en' && ' bg-slate-200 text-black ' )} onClick={()=>setLanguage('en')}>ENG</div>
+          <div className={'border border-white/50 px-3 py-1 rounded-md cursor-pointer ' + (language === 'zh' ? '  text-white ':'text-white/50' )} onClick={()=>setLanguage('zh')}>中</div> 
+          <div className={'border border-white/50 px-3 py-1 rounded-md cursor-pointer ' + (language === 'en' ? '  text-white ':'text-white/50' )} onClick={()=>setLanguage('en')}>ENG</div>
         </div>
         {language === 'zh' ? privacyPolicyZh : privacyPolicyEn}
 

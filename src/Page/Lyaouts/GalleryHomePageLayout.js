@@ -1,7 +1,9 @@
-import React from 'react'
+import React,{Suspense} from 'react'
 import { Link, Outlet,useLocation} from 'react-router-dom';
 
 import {fetchTopLikedUser,fetchTopRenderdUser,fetchTopRanking} from '../../Page/Gallery/helpers/fetchHelper'
+import {LoadingLogoSpin} from '../Gallery/helpers/componentsHelper'
+
 import { useQuery } from 'react-query';
 import LeaderboardComp from '../Gallery/Gallery/LeaderboardComp';
 // Import Swiper styles
@@ -34,67 +36,70 @@ const GalleryHomePageLayout = () => {
           <img src="https://moonshine.b-cdn.net/msweb/moonshotai/gallery_banner/img001.png?width=750" alt="" className='aspect-[24/9]  w-full object-cover rounded-md' />
         </div>
         <div className='lg:w-1/2 flex flex-row md:flex-row justify-between gap-2 md:gap-4  '>
+        <Suspense>
           <LeaderboardComp 
-            page={'home'}
-            title="人氣作者" 
-            data={topRanking?.top_liked_users} 
-            isLoading={isTopRankingLoading} 
-            customer_sliceNum={10} 
-            more={true} 
-            containerStyle={''}
-            containerTitleStyle={'text-sm'}
-            listContainerStyle={'text-sm'}
-            listStyle={'h-[20%]'}
-            listAvatarStyle={'w-7'}
-            listNameStyle={'text-sm'}
-            is_link={true}
-            linkpath={'/user/'}
-            tip={'本月份以來，使用者獲得愛心數量排名。'}
-          />
-          {/* <LeaderboardComp 
-            page={'home'}
-            title="創作次數" 
-            data={topRanking?.top_render_users} 
-            isLoading={isTopRankingLoading} 
-            customer_sliceNum={10} 
-            more={true}
-            containerStyle={''}
-            containerTitleStyle={'text-sm'}
-            listStyle={'h-[25%]'}
-            listAvatarStyle={'w-7'}
-            listNameStyle={'text-sm'}
-            is_link={true}
-            linkpath={'/user/'}
-          /> */}
-          <LeaderboardComp 
-            page={'home'}
-            title="模型排名" 
-            data={topRanking?.top_used_models} 
-            borderType={'model'}
-            isLoading={isTopRankingLoading} 
-            customer_sliceNum={6} 
-            more={true}
-            containerStyle={''}
-            containerTitleStyle={'text-sm'}
-            listStyle={'h-[25%]'}
-            listAvatarStyle={'w-7'}
-            listNameStyle={'text-sm'}
-            tip={'本月份以來 Models 指令的使用量排名。'}
-          />
-          <LeaderboardComp 
-            page={'home'}
-            title="LoRA 排名" 
-            data={topRanking?.top_used_loras} 
-            isLoading={isTopRankingLoading} 
-            customer_sliceNum={10} 
-            more={true}
-            containerStyle={''}
-            containerTitleStyle={'text-sm'}
-            listStyle={'h-[25%]'}
-            listAvatarStyle={'w-7'}
-            listNameStyle={'text-sm'}
-            tip={'本月份以來 LoRA 指令的使用量排名。'}
-          />
+              page={'home'}
+              title="人氣作者" 
+              data={topRanking?.top_liked_users} 
+              isLoading={isTopRankingLoading} 
+              customer_sliceNum={10} 
+              more={true} 
+              containerStyle={''}
+              containerTitleStyle={'text-sm'}
+              listContainerStyle={'text-sm'}
+              listStyle={'h-[20%]'}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+              is_link={true}
+              linkpath={'/user/'}
+              tip={'本月份以來，使用者獲得愛心數量排名。'}
+            />
+            {/* <LeaderboardComp 
+              page={'home'}
+              title="創作次數" 
+              data={topRanking?.top_render_users} 
+              isLoading={isTopRankingLoading} 
+              customer_sliceNum={10} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={'text-sm'}
+              listStyle={'h-[25%]'}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+              is_link={true}
+              linkpath={'/user/'}
+            /> */}
+            <LeaderboardComp 
+              page={'home'}
+              title="模型排名" 
+              data={topRanking?.top_used_models} 
+              borderType={'model'}
+              isLoading={isTopRankingLoading} 
+              customer_sliceNum={6} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={'text-sm'}
+              listStyle={'h-[25%]'}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+              tip={'本月份以來 Models 指令的使用量排名。'}
+            />
+            <LeaderboardComp 
+              page={'home'}
+              title="LoRA 排名" 
+              data={topRanking?.top_used_loras} 
+              isLoading={isTopRankingLoading} 
+              customer_sliceNum={10} 
+              more={true}
+              containerStyle={''}
+              containerTitleStyle={'text-sm'}
+              listStyle={'h-[25%]'}
+              listAvatarStyle={'w-7'}
+              listNameStyle={'text-sm'}
+              tip={'本月份以來 LoRA 指令的使用量排名。'}
+            />
+        </Suspense>
+
         </div>    
 
           

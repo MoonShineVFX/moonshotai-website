@@ -1,7 +1,9 @@
 import React from 'react'
 import { Button } from "@material-tailwind/react";
-function Header({executeScroll}) {
+import { getAnalytics, logEvent } from "firebase/analytics";
 
+function Header({executeScroll}) {
+  const analytics = getAnalytics();
 
   return (
     <div className='text-white flex justify-center items-center relative py-10 md:py-20  z-0' >
@@ -21,7 +23,11 @@ function Header({executeScroll}) {
 
             <div className=' w-full mx-auto  relative md:my-7'>
               <div className="circle absolute  -z-10  "></div>
-              <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png' alt="" className='w-full'/>
+              <picture>
+                <source src="https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png?format=webp&width=640" type="image/webp" className='w-full'/>
+                <img src='https://moonshine.b-cdn.net/msweb/moonshotai/home_images/mslogo_model.png?width=640' alt="" className='w-full'/>
+
+              </picture>
             </div>
           
         </div>
@@ -32,19 +38,30 @@ function Header({executeScroll}) {
         </div> 
         <div className='text-lg  flex flex-col md:flex-row justify-around items-center space-y-6 md:space-y-0 mt-4 md:my-10 order-4'>
            
-          <Button variant="outlined" color='white' className="rounded-full  font-bold capitalize text-sm"  onClick={executeScroll}>
+          <Button 
+            variant="outlined" color='white' className="rounded-full  font-bold capitalize text-sm"  
+            onClick={()=>{
+              executeScroll()
+              logEvent(analytics, 'Moonshot首頁按鈕_LearnMore_按下')
+            }}>
             Learn More
           </Button>
           <Button className="rounded-full bg-[#BDDE48] text-black font-bold capitalize text-sm ">
           <a 
             href="https://liff.line.me/1645278921-kWRPP32q/?accountId=251vgtut"
             target={"_blank"} rel="noreferrer"
+            onClick={()=>{
+              logEvent(analytics, 'Moonshot首頁按鈕_StartForFree_按下')
+            }}
           >Start For Free </a>
           </Button>
           <Button variant="none" className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm">
           <a 
             href="/gallery"
             target={"_blank"} rel="noreferrer"
+            onClick={()=>{
+              logEvent(analytics, 'Moonshot首頁按鈕_SeeGallery_按下')
+            }}
           >See Gallery </a>
          </Button>
         </div>

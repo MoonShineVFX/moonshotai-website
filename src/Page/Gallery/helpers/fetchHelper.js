@@ -2,7 +2,7 @@
 import React, { useState }  from 'react'
 import liff from '@line/liff';
 import {   useRecoilState } from 'recoil';
-import { useInfiniteQuery,useMutation,useQueryClient } from 'react-query';
+import { useInfiniteQuery,useMutation,useQueryClient,useQuery } from 'react-query';
 import {userState,isLoginState,lineProfileState,loginState} from '../atoms/galleryAtom'
 const liffID = process.env.REACT_APP_LIFF_LOGIN_ID
 const apiUrl = process.env.REACT_APP_MOONSHOT_API_URL
@@ -274,7 +274,7 @@ export const userDelAPostImage = async (image,token)=>{
       'Authorization': `Bearer ${token}`
     }
   };
-  const response =await fetch(apiUrl+'images/'+image.id+'/post', requestOptions)
+  const response =await fetch(apiUrl+'posts/'+image.id, requestOptions)
   const data =await response
   return data
 }
@@ -518,7 +518,7 @@ export const userDelAStorageImage = async (image,token)=>{
 }
 
 export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endDate,currModels)=>{
-  let newCursor = cursor === undefined ? '' : cursor
+  let newCursor = cursor === null ? '&cursor='+cursor :''
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -527,7 +527,7 @@ export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endD
     }
   };
   
-  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'cursor='+newCursor+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels+newCursor ,requestOptions)
   let status = response.status
   let data 
   if(status === 401){
@@ -613,7 +613,7 @@ export const getWordFromLetter=(letter)=>{
     case 'sd':
       return 'PR';
     case 'mj':
-      return 'CT';
+      return 'MJ';
     case 'nv':
       return 'CM';
     case 'av':
@@ -663,6 +663,22 @@ export const fetchUserProfileData = async (userId, token, queryClient) => {
     fetchUserProfile(userId, token)
   );
 };
+// use 
+export function useFetchUserProfile(userId, token,isInitialized,isLoggedIn){
+  return useQuery(
+    ['userProfile', userId, token],
+    ({pageParam})=>
+    fetchUserProfile(userId,token),
+    {
+      enabled: isInitialized && (token !== null || isLoggedIn !== null),
+      onSuccess:async(data, variables) => { 
+        // to local
+        console.log(data)
+
+      }
+    }
+  )
+}
 
 export const patchUserProfile = async (userid,token,items) =>{
   const requestOptions = {
@@ -978,7 +994,7 @@ export const paymentLinePay =async (serNum,token) =>{
       serial_number:  serNum,
     })
   };
-  const response =await fetch(apiUrl+'request_linepay_payment ', requestOptions)
+  const response =await fetch(apiUrl+'request_linepay_payment', requestOptions)
   const data =await response.json()
   return data
 }
@@ -995,7 +1011,7 @@ export const paymentNewebPay =async (serNum,token) =>{
       serial_number:  serNum,
     })
   };
-  const response =await fetch(apiUrl+'request_newebpay_payment ', requestOptions)
+  const response =await fetch(apiUrl+'request_newebpay_payment', requestOptions)
   const data =await response.json()
   return data
 }
@@ -1089,6 +1105,8 @@ export const postOpenGiftMutation = (mutaionData) => {
 
   return fetch(apiUrl + 'open_gift', requestOptions).then((response) => response.json());
 };
+
+
 
 // GET /campaigns 取得活動列表
 export const fetchCampaigns =async (cursor) =>{
@@ -1206,3 +1224,142 @@ export const fetchTopRanking =async () =>{
   const data =await response.json()
   return data
 }
+
+// points system
+// prompt points system
+// USER POST-  prompt_buy
+export const userPromptBuyAImage =async (image,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    
+  };
+  const response =await fetch(apiUrl+'galleries/'+image.id+'/prompt_buy', requestOptions)
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.log(errorData)
+    throw new Error(errorData.message);
+  }
+  const data =await response
+  return data
+}
+//use USER POST prompt_buy
+export function usePromptBuyMutation(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const imageMutation = useMutation((updatedData) =>
+  userPromptBuyAImage(updatedData.imageData, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+        queryClient.invalidateQueries(fnKey);
+
+      },
+    }
+  );
+
+  return imageMutation;
+}
+
+// users/<int:id>/bought_prompts
+export const fetchUserOwnPrompts =async (token,uid,cursor,pageSize)=>{
+  let newCursor = cursor === undefined ? '' : cursor
+
+  const requestOptions = {
+    method: 'GET',
+    headers: token ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json'}
+  };
+  if(uid){
+    const response =await fetch(apiUrl+'users/'+uid+'/bought_prompts?'+'cursor='+newCursor+'&page_size='+pageSize ,requestOptions)
+    const data =await response.json()
+    return data
+    
+  } else{
+
+  }
+
+}
+//use function :  users/<int:id>/posts 
+export function useUserOwnPrompts(linLoginToken,id, pageSize,isInitialized,isLoggedIn) {
+  return useInfiniteQuery(
+    ['ownPrompts', id, pageSize],
+    ({ pageParam }) =>
+    fetchUserOwnPrompts(linLoginToken,id, pageParam, pageSize),
+    {
+      enabled: isInitialized && (!!id || isLoggedIn !== null),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.next) {
+          const url = new URL(lastPage.next);
+          const nextPage = url.searchParams.get("cursor");
+          return nextPage ? nextPage : undefined;
+        }
+        return undefined;
+      }
+    }
+  );
+}
+
+
+// point products
+export const fetchPointProducts =async (token) =>{
+  const requestOptions = {
+    method: 'GET',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  };
+  const response =await fetch(apiUrl+'point_products ', requestOptions)
+  const data =await response.json()
+  return data
+}
+//use function : point products
+export function usePointProducts(linLoginData,isInitialized,isLoggedIn) {
+  return useQuery(
+    'pointProducts',
+    ({ pageParam }) =>
+    fetchPointProducts(linLoginData,pageParam),
+    {
+      enabled: isInitialized && (linLoginData !== null || isLoggedIn !== null),
+    }
+
+  );
+}
+
+//User BUY(userRedeemPointProduct) Point product 購買點數商品
+export const userRedeemPointProduct =async (product,token) =>{
+  const requestOptions = {
+    method: 'POST',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    
+  };
+  const response =await fetch(apiUrl+'point_products/'+product.id+'/purchase', requestOptions)
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.log(errorData)
+    throw new Error(errorData.message);
+  }
+  const data =await response
+  return data
+}
+//use USER BUY(userRedeemPointProduct) Point product
+export function useRedeemProduct(linLoginData,fnKey) {
+  const queryClient = useQueryClient();
+  const imageMutation = useMutation((updatedData) =>
+  userRedeemPointProduct(updatedData.selectedProduct, linLoginData),
+    {
+      onSuccess: (data, variables) => {
+      
+      },
+    }
+  );
+
+  return imageMutation;
+}
+
+
+
