@@ -169,7 +169,6 @@ export const fetchUserFollowings =async (userid,token,cursor) =>{
     data = await response.json()
     return data
   }
-    
 
 }
 export const fetchUserFollowers =async (userid,token) =>{
@@ -518,7 +517,7 @@ export const userDelAStorageImage = async (image,token)=>{
 }
 
 export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endDate,currModels)=>{
-  let newCursor = cursor === null ? '&cursor='+cursor :''
+  let newCursor = cursor === undefined ? '' : cursor
   const requestOptions = {
     method: 'GET',
     headers: { 
@@ -527,7 +526,7 @@ export const fetchUserImages =async (userid,token,cursor,pageSize,startDate,endD
     }
   };
   
-  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels+newCursor ,requestOptions)
+  const response =await fetch(apiUrl+'users/'+userid+'/images?'+'cursor='+newCursor+'&page_size='+pageSize+'&start_date='+startDate+'&end_date='+endDate+'&model='+currModels ,requestOptions)
   let status = response.status
   let data 
   if(status === 401){

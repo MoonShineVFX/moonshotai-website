@@ -37,7 +37,7 @@ function HomeFooter() {
               {
                 about.map((item,index)=>{
                   return(
-                    <a href={item.link} className='hover:text-white font-semibold'>{item.title}</a>
+                    <a key={"about"+index } href={item.link} className='hover:text-white font-semibold'>{item.title}</a>
                   )
                 })
               }
@@ -49,7 +49,7 @@ function HomeFooter() {
               {
                 soical.map((item,index)=>{
                   return(
-                    <a href={item.link} target="_blank" rel="noopener noreferrer" className='hover:text-white font-semibold'>{item.title}</a>
+                    <a key={"soical"+index } href={item.link} target="_blank" rel="noopener noreferrer" className='hover:text-white font-semibold'>{item.title}</a>
                   )
                 })
               }
@@ -61,7 +61,7 @@ function HomeFooter() {
               {
                 join.map((item,index)=>{
                   return(
-                    <a href={item.link} target="_blank" rel="noopener noreferrer" className='hover:text-white font-semibold'>{item.title}</a>
+                    <a  key={"join"+index }href={item.link} target="_blank" rel="noopener noreferrer" className='hover:text-white font-semibold'>{item.title}</a>
                   )
                 })
               }
