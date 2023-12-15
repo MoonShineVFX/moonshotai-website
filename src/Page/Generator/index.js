@@ -71,6 +71,7 @@ function Index() {
   const RatioRecElement = ({rv})=>{
     console.log(rv)
     const ra = RATIOS[rv - 1];
+    console.log(ra)
     return  <div className={` ${ra?.type === 'h' ?  `w-[36%]`  :  `w-[25%]` } ${ra?.aspect}  h-auto flex justify-center items-center bg-white/50  border-2 border-blue-300/70 text-white/70 text-xl font-bold`}> {ra?.name} </div>
   }
   React.useEffect(() => {
