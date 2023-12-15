@@ -7,21 +7,20 @@ import { Button,Checkbox,Radio,Spinner} from "@material-tailwind/react";
 import { promptPresets,models} from './promptPresets'
 import { FaWandSparkles,FaCheck } from "react-icons/fa6";
 import { getAnalytics, logEvent } from "firebase/analytics";
-const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
-const RATIOS = [
-  { name: '16:9', value:'16/9', type:"h", aspect:"aspect-[16/9]", percent:"pt-56.25%"  },
-  { name: '3:2',  value: '3/2', type:"h", aspect:"aspect-[3/2]", percent:"pt-66.67%"  },
-  { name: '4:3',  value: '4/3', type:"h", aspect:"aspect-[4/3]", percent:"pt-75%"     },
-  { name: '5:4',  value: '5/4', type:"h", aspect:"aspect-[5/4",   percent:"pt-80%"     },
-  { name: '1:1',  value: '1/1', type:"h", aspect:"aspect-[1/1]", percent:"pt-100%"    },
-  { name: '4:5',  value: '4/5', type:"v", aspect:"aspect-[4/5]", percent:"pt-125%"    },
-  { name: '3:4',  value: '3/4', type:"v", aspect:"aspect-[3/4]", percent:"pt-133.33%" },
-  { name: '2:3',  value: '2/3', type:"v", aspect:"aspect-[2/3]", percent:"pt-150%"    },
-  { name: '9:16', value: '9/16',type:"v", aspect:"aspect-[9/16]", percent:"pt-177.78%" },
-]
 function Index() {
   // console.log(promptPresets)
-
+  const liffID = process.env.REACT_APP_LIFF_GERNERATOR_ID
+  const RATIOS = [
+    { name: '16:9', value:'16/9', type:"h", aspect:"aspect-[16/9]", percent:"pt-56.25%"  },
+    { name: '3:2',  value: '3/2', type:"h", aspect:"aspect-[3/2]", percent:"pt-66.67%"  },
+    { name: '4:3',  value: '4/3', type:"h", aspect:"aspect-[4/3]", percent:"pt-75%"     },
+    { name: '5:4',  value: '5/4', type:"h", aspect:"aspect-[5/4",   percent:"pt-80%"     },
+    { name: '1:1',  value: '1/1', type:"h", aspect:"aspect-[1/1]", percent:"pt-100%"    },
+    { name: '4:5',  value: '4/5', type:"v", aspect:"aspect-[4/5]", percent:"pt-125%"    },
+    { name: '3:4',  value: '3/4', type:"v", aspect:"aspect-[3/4]", percent:"pt-133.33%" },
+    { name: '2:3',  value: '2/3', type:"v", aspect:"aspect-[2/3]", percent:"pt-150%"    },
+    { name: '9:16', value: '9/16',type:"v", aspect:"aspect-[9/16]", percent:"pt-177.78%" },
+  ]
   const { register, handleSubmit, control,watch,setValue,reset, formState: { errors } } = useForm({
     defaultValues:{
       selectedModel:'xl',
@@ -70,7 +69,7 @@ function Index() {
   },[])
 
   const RatioRecElement = ({rv})=>{
-  
+    console.log(rv)
     const ra = RATIOS[rv - 1];
     return  <div className={` ${ra?.type === 'h' ?  `w-[36%]`  :  `w-[25%]` } ${ra?.aspect}  h-auto flex justify-center items-center bg-white/50  border-2 border-blue-300/70 text-white/70 text-xl font-bold`}> {ra?.name} </div>
   }
