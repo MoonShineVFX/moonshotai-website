@@ -149,7 +149,7 @@ function Index() {
                     </tr>
                   );
                 },
-              ) :  <div className='text-black/50 p-2'>目前沒有任何兌換商品。</div>
+              ) :  <div className='text-black/50 p-2'>目前沒有任何付費的會員資料。</div>
               }
             </tbody>
           </table>

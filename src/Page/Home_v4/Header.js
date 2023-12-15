@@ -55,7 +55,7 @@ function Header({executeScroll}) {
             }}
           >Start For Free </a>
           </Button>
-          <Button variant="none" className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm">
+          <Button className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm">
           <a 
             href="/gallery"
             target={"_blank"} rel="noreferrer"

@@ -38,7 +38,7 @@ function Section04() {
           <RandomImagesBg data={shuffledData2} seed={2345}/>
         </div>
       </div>
-      <Button variant="none" className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <Button  className="rounded-full bg-[#423EF5] text-white font-bold capitalize text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <a 
           href="/gallery"
           target={"_blank"} rel="noreferrer"

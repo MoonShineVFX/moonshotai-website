@@ -12,7 +12,7 @@ import {
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
-import { FaExternalLinkAlt,FaLayerGroup,FaMedal } from "react-icons/fa";
+import { FaExternalLinkAlt,FaLayerGroup,FaMedal,FaUser } from "react-icons/fa";
 
 function AdminSidebar() {
   return (
@@ -34,7 +34,7 @@ function AdminSidebar() {
           
         </ListItem>
         <ListItem>
-          <ListItemPrefix><FaMedal size={12} /></ListItemPrefix>
+          <ListItemPrefix><FaUser size={12} /></ListItemPrefix>
           <Link to="./pu">管理付費會員</Link>
           
         </ListItem>
