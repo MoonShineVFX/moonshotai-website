@@ -12,9 +12,9 @@ function Section_models() {
   const menuItems = [
     {value:'m01',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/xl.webp",title:"SDXL 1.0",desc:"Stable Diffusion 最新的開源模型。"},
     {value:'m02',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/ct.jpeg",title:"風格化插畫 (CT)",desc:"團隊組合多種精選插畫模型，易於創造出戲劇化的構圖與不同質感 (水彩、油畫)等風格圖。"},
-    {value:'m03',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/pr.jpeg",title:"Realistic Vision V1.3 (PR)",desc:"生成圖具有真實的紋理和逼真色彩，可以生成出場景、人物肖像、動物等寫實風格。"},
+    {value:'m03',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/pr.jpeg",title:"Realistic Vision V5.1 (PR)",desc:"生成圖具有真實的紋理和逼真色彩，可以生成出場景、人物肖像、動物等寫實風格。"},
     {value:'m04',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/pc.jpeg",title:"Photorealistic Character (PC)",desc:"可繪製於寫實人物，細節豐富質感佳，且能營造出精緻的光線變化。"},
-    {value:'m05',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/cm.webp",title:"Anything V4.5 (CM)",desc:"善於生成 2D 風格圖像，表現穩定入門難度低。"},
+    {value:'m05',image:"https://moonshine.b-cdn.net/msweb/moonshotai/home_images/models/cm.webp",title:"Anything V5 (CM)",desc:"善於生成 2D 風格圖像，表現穩定入門難度低。"},
   ]
   return (
     <div className='flex flex-col text-white'>
