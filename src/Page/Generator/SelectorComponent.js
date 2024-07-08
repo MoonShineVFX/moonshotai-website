@@ -152,7 +152,7 @@ export const StyleSelector = ({ data, onStyleChange, selectedCookie }) => {
         </div>
         <div className="border border-white/40 text-white text-base font-semibold rounded-md overflow-hidden  relative h-16 flex justify-center items-center">
           <img
-            src={`https://r2.wevb.moonshine.tw/msweb/moonshotai/presets/${currentStyle.id}.jpg`}
+            src={`https://r2.web.moonshine.tw/msweb/moonshotai/presets/${currentStyle.id}.jpg`}
             alt=""
             className=" absolute  object-cover object-center opacity-60 -z-10"
           />
@@ -194,7 +194,7 @@ export const StyleSelector = ({ data, onStyleChange, selectedCookie }) => {
                   className="border h-16 border-white/40 text-white text-xl font-bold rounded-md overflow-hidden  relative flex justify-center items-cente"
                 >
                   <img
-                    src={`https://r2.wevb.moonshine.tw/msweb/moonshotai/presets/${item.id}.jpg`}
+                    src={`https://r2.web.moonshine.tw/msweb/moonshotai/presets/${item.id}.jpg`}
                     alt={item.label}
                     className=" absolute top-0  object-cover object-center opacity-60 z-0 "
                   />
