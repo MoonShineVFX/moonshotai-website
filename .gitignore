@@ -27,3 +27,6 @@ test.js
 # functions
 /functions/source/index.html
 /functions/firebase-debug.log
+# Mac 系統檔案
+._*
+.DS_Store
