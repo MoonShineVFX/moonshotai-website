@@ -46,14 +46,11 @@
   },
   "scripts": {
     "start": "react-scripts --max_old_space_size=4096 start",
-    "build": "react-scripts --max_old_space_size=4096 build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts --max_old_space_size=4096 build"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
